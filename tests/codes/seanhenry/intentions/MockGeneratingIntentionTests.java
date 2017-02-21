@@ -101,6 +101,7 @@ public class MockGeneratingIntentionTests extends PlatformTestCase {
   }
 
   private void runTest(String fileName) throws IOException {
+    String expectedFileName = fileName + "_expected.swift";
     fileName += ".swift";
     System.out.println("Running test for " + fileName);
     PsiFile[] files = FilenameIndex.getFilesByName(getActiveProject(), fileName, GlobalSearchScope.projectScope(getActiveProject()));
@@ -111,7 +112,7 @@ public class MockGeneratingIntentionTests extends PlatformTestCase {
     IntentionAction action = myFixture.findSingleIntention("Generate mock");
 
     WriteCommandAction.runWriteCommandAction(getActiveProject(), () -> action.invoke(getActiveProject(), myFixture.getEditor(), psiFile));
-    myFixture.checkResultByFile("/Expected/" + fileName, true);
+    myFixture.checkResultByFile(expectedFileName, true);
   }
 
   private void copyFolder(File sourceFolder, File destinationFolder) throws IOException {

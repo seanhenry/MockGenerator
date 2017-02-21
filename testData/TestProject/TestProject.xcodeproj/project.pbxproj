@@ -19,7 +19,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		147135AE1E5CB4200096B3B4 /* Expected */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Expected; sourceTree = "<group>"; };
+		147135AF1E5CD2890096B3B4 /* OptionalProtocolMock_expected.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionalProtocolMock_expected.swift; sourceTree = "<group>"; };
+		147135B01E5CD2890096B3B4 /* OverloadProtocolMock_expected.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverloadProtocolMock_expected.swift; sourceTree = "<group>"; };
+		147135B11E5CD2890096B3B4 /* SimpleProtocolMock_expected.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleProtocolMock_expected.swift; sourceTree = "<group>"; };
 		35CDF005D869C31B4C4CDBDC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		35CDF1C8EAA0DC332B941BD1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		35CDF3913F0CE5933271C8B8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = Resources/Assets.xcassets; sourceTree = "<group>"; };
@@ -66,13 +68,15 @@
 			isa = PBXGroup;
 			children = (
 				147135A61E5CB2CE0096B3B4 /* Resources */,
-				147135AE1E5CB4200096B3B4 /* Expected */,
 				35CDF7810EE85C405F75C589 /* AppDelegate.swift */,
-				35CDF6E57C71B381F0BF5E57 /* ViewController.swift */,
-				35CDFEA3978101709224D4C8 /* SimpleProtocolMock.swift */,
-				35CDF06CB3213CCC22CA7148 /* Products */,
 				35CDFB561287FB76195FCEB4 /* OptionalProtocolMock.swift */,
+				147135AF1E5CD2890096B3B4 /* OptionalProtocolMock_expected.swift */,
 				35CDFD54367F116349E3F5B8 /* OverloadProtocolMock.swift */,
+				147135B01E5CD2890096B3B4 /* OverloadProtocolMock_expected.swift */,
+				35CDFEA3978101709224D4C8 /* SimpleProtocolMock.swift */,
+				147135B11E5CD2890096B3B4 /* SimpleProtocolMock_expected.swift */,
+				35CDF6E57C71B381F0BF5E57 /* ViewController.swift */,
+				35CDF06CB3213CCC22CA7148 /* Products */,
 			);
 			sourceTree = "<group>";
 		};

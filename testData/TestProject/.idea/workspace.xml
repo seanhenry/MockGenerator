@@ -14,36 +14,38 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="iphoneos" />
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5">
-      <split-first>
-        <leaf>
-          <file leaf-file-name="OverloadProtocolMock.swift" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/OverloadProtocolMock.swift">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="30">
-                  <caret line="2" column="26" lean-forward="false" selection-start-line="2" selection-start-column="26" selection-end-line="2" selection-end-column="26" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-first>
-      <split-second>
-        <leaf>
-          <file leaf-file-name="OverloadProtocolMock.swift" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/Expected/OverloadProtocolMock.swift">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="270">
-                  <caret line="18" column="0" lean-forward="true" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-second>
-    </splitter>
+    <leaf>
+      <file leaf-file-name="SimpleProtocolMock.swift" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/SimpleProtocolMock.swift">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="105">
+              <caret line="7" column="23" lean-forward="true" selection-start-line="7" selection-start-column="23" selection-end-line="7" selection-end-column="23" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="OptionalProtocolMock_expected.swift" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/OptionalProtocolMock_expected.swift">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="240">
+              <caret line="16" column="22" lean-forward="true" selection-start-line="16" selection-start-column="22" selection-end-line="16" selection-end-column="22" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SimpleProtocolMock_expected.swift" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/SimpleProtocolMock_expected.swift">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="225">
+              <caret line="15" column="18" lean-forward="false" selection-start-line="15" selection-start-column="18" selection-end-line="15" selection-end-column="18" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -60,6 +62,8 @@
         <option value="$PROJECT_DIR$/Expected/SimpleProtocolMock.swift" />
         <option value="$PROJECT_DIR$/OverloadProtocolMock.swift" />
         <option value="$PROJECT_DIR$/Expected/OverloadProtocolMock.swift" />
+        <option value="$PROJECT_DIR$/SimpleProtocolMock_expected.swift" />
+        <option value="$PROJECT_DIR$/OptionalProtocolMock_expected.swift" />
       </list>
     </option>
   </component>
@@ -154,27 +158,13 @@
               <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeProjectNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" />
-              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeRootNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="TestProject" />
-              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Expected" />
-              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeViewNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
       <pane id="Cidr.FilesView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="OBJC.PRESERVED_TARGET_SELECTION" value="MockGeneratorTest" />
+    <property name="OBJC.PRESERVED_TARGET_SELECTION" value="" />
     <property name="js.eslint.eslintPackage" value="" />
     <property name="settings.editor.selected.configurable" value="preferences.sourceCode.Swift" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -334,12 +324,12 @@
       <workItem from="1487544756213" duration="28000" />
       <workItem from="1487544869307" duration="4000" />
       <workItem from="1487698587743" duration="1752000" />
-      <workItem from="1487702870919" duration="3306000" />
+      <workItem from="1487702870919" duration="4239000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="16391000" />
+    <option name="totallyTimeSpent" value="17324000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="873" extended-state="6" />
@@ -378,8 +368,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/MockGeneratorTestTests/MockProtocol.swift" />
-    <entry file="file://$PROJECT_DIR$/MockGeneratorTest/Protocol.swift" />
     <entry file="file://$PROJECT_DIR$/MockGeneratorTest/Protocol.swift" />
     <entry file="file://$PROJECT_DIR$/MockGeneratorTestTests/MockProtocol.swift" />
     <entry file="file://$PROJECT_DIR$/MockGeneratorTest/Protocol.swift" />
@@ -451,14 +439,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/OverloadProtocolMock.swift">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="26" lean-forward="false" selection-start-line="2" selection-start-column="26" selection-end-line="2" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Expected/SimpleProtocolMock.swift">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="435">
@@ -467,18 +447,42 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SimpleProtocolMock.swift">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="7" lean-forward="true" selection-start-line="8" selection-start-column="7" selection-end-line="8" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Expected/OverloadProtocolMock.swift">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
           <caret line="18" column="0" lean-forward="true" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/OverloadProtocolMock.swift">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="0" lean-forward="true" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SimpleProtocolMock_expected.swift">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="15" column="18" lean-forward="false" selection-start-line="15" selection-start-column="18" selection-end-line="15" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SimpleProtocolMock.swift">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="23" lean-forward="true" selection-start-line="7" selection-start-column="23" selection-end-line="7" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/OptionalProtocolMock_expected.swift">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="16" column="22" lean-forward="true" selection-start-line="16" selection-start-column="22" selection-end-line="16" selection-end-column="22" />
           <folding />
         </state>
       </provider>
