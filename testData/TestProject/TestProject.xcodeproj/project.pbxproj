@@ -11,7 +11,8 @@
 		35CDF083C033EFE1956DBF5B /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 35CDFB629531500C3AF481FF /* Info.plist */; };
 		35CDF209D142DEDBA2F4F098 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDF7810EE85C405F75C589 /* AppDelegate.swift */; };
 		35CDF3960F50E99F2C8C4251 /* SimpleProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDFEA3978101709224D4C8 /* SimpleProtocolMock.swift */; };
-		35CDFC2CF56BB82EF1BAC46B /* SimpleProtocolMock2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDFB561287FB76195FCEB4 /* SimpleProtocolMock2.swift */; };
+		35CDF47EA31246759FFE4D08 /* OverloadProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDFD54367F116349E3F5B8 /* OverloadProtocolMock.swift */; };
+		35CDFC2CF56BB82EF1BAC46B /* OptionalProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDFB561287FB76195FCEB4 /* OptionalProtocolMock.swift */; };
 		35CDFCEA55877C5103C69A62 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35CDF5E9615CB94E27438335 /* Main.storyboard */; };
 		35CDFE3A2F9472869394877A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDF6E57C71B381F0BF5E57 /* ViewController.swift */; };
 		35CDFEC64BDE844E131B979D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35CDF3913F0CE5933271C8B8 /* Assets.xcassets */; };
@@ -25,8 +26,9 @@
 		35CDF6E57C71B381F0BF5E57 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		35CDF7810EE85C405F75C589 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		35CDF7E4282125FB61B4290B /* MockGeneratorTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MockGeneratorTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		35CDFB561287FB76195FCEB4 /* SimpleProtocolMock2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleProtocolMock2.swift; sourceTree = "<group>"; };
+		35CDFB561287FB76195FCEB4 /* OptionalProtocolMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionalProtocolMock.swift; sourceTree = "<group>"; };
 		35CDFB629531500C3AF481FF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = Resources/Info.plist; sourceTree = "<group>"; };
+		35CDFD54367F116349E3F5B8 /* OverloadProtocolMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverloadProtocolMock.swift; sourceTree = "<group>"; };
 		35CDFEA3978101709224D4C8 /* SimpleProtocolMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleProtocolMock.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -69,7 +71,8 @@
 				35CDF6E57C71B381F0BF5E57 /* ViewController.swift */,
 				35CDFEA3978101709224D4C8 /* SimpleProtocolMock.swift */,
 				35CDF06CB3213CCC22CA7148 /* Products */,
-				35CDFB561287FB76195FCEB4 /* SimpleProtocolMock2.swift */,
+				35CDFB561287FB76195FCEB4 /* OptionalProtocolMock.swift */,
+				35CDFD54367F116349E3F5B8 /* OverloadProtocolMock.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -140,7 +143,8 @@
 				35CDF209D142DEDBA2F4F098 /* AppDelegate.swift in Sources */,
 				35CDFE3A2F9472869394877A /* ViewController.swift in Sources */,
 				35CDF3960F50E99F2C8C4251 /* SimpleProtocolMock.swift in Sources */,
-				35CDFC2CF56BB82EF1BAC46B /* SimpleProtocolMock2.swift in Sources */,
+				35CDFC2CF56BB82EF1BAC46B /* OptionalProtocolMock.swift in Sources */,
+				35CDF47EA31246759FFE4D08 /* OverloadProtocolMock.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

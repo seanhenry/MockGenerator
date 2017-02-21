@@ -48,10 +48,7 @@ import org.jetbrains.annotations.Nullable;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintStream;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.HashSet;
@@ -92,16 +89,20 @@ public class MockGeneratingIntentionTests extends PlatformTestCase {
     return myFixture.getProject();
   }
 
-  public void testSimpleProtocolMock() throws Exception {
-    runTestForTestName();
+  public void testAll() throws Exception {
+    String[] fileNames = {
+      "SimpleProtocolMock",
+      "OptionalProtocolMock",
+      "OverloadProtocolMock",
+    };
+    for (String fileName : fileNames) {
+      runTest(fileName);
+    }
   }
 
-  public void testSimpleProtocolMock2() throws Exception {
-    runTestForTestName();
-  }
-
-  private void runTestForTestName() {
-    String fileName = getTestName(false) + ".swift";
+  private void runTest(String fileName) throws IOException {
+    fileName += ".swift";
+    System.out.println("Running test for " + fileName);
     PsiFile[] files = FilenameIndex.getFilesByName(getActiveProject(), fileName, GlobalSearchScope.projectScope(getActiveProject()));
     PsiFile psiFile = files[0];
     VirtualFile file = psiFile.getVirtualFile();
