@@ -50,16 +50,11 @@ public class UniqueMethodNameGenerator {
     if (models.size() == 0) {
       return methodName;
     }
-    //MethodModel otherModel = models.get(0);
     if (model.getParamLabels().length > 0) {
       String param = model.getParamLabels()[0];
       return methodName + param.substring(0, 1).toUpperCase() + param.substring(1);
     }
     return methodName;
-  }
-
-  public String generate(SwiftFunctionDeclaration function) {
-    return null;//generate(function.getName(), getParameterNames(function, p -> p.getName()).toArray(new String[0]));
   }
 
   private List<String> getParameterNames(SwiftFunctionDeclaration function, Function<SwiftParameter, String> operation) {

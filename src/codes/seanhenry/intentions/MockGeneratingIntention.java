@@ -207,13 +207,30 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   }
 
   private List<UniqueMethodNameGenerator.MethodModel> getMethodModels(List<SwiftFunctionDeclaration> functions) {
+
     return functions.stream()
-      .map(f -> new UniqueMethodNameGenerator.MethodModel(getFunctionID(f), f.getName(), getParameterNames(f, p -> p.getName()).toArray(new String[]{})))
+      .map(this::toMethodModel)
       .collect(Collectors.toList());
   }
 
+  private UniqueMethodNameGenerator.MethodModel toMethodModel(SwiftFunctionDeclaration function) {
+    return new UniqueMethodNameGenerator.MethodModel(
+      getFunctionID(function),
+      function.getName(),
+      getParameterNames(function, p -> toFirstParameterLabel(p)).toArray(new String[]{})
+    );
+  }
+
+  private String toFirstParameterLabel(SwiftParameter parameter) {
+    SwiftIdentifierPattern pattern = PsiTreeUtil.findChildOfType(parameter, SwiftIdentifierPattern.class);
+    if (pattern != null) {
+      return pattern.getName();
+    }
+    return "";
+  }
+
   private String getFunctionID(SwiftFunctionDeclaration function) {
-    return function.getName() + String.join(":", getParameterNames(function, p -> p.getName()));
+    return function.getName() + String.join(":", getParameterNames(function, p -> p.getText()));
   }
 
   @Nls
