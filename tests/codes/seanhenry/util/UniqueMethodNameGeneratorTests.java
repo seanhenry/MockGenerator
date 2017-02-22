@@ -21,7 +21,7 @@ public class UniqueMethodNameGeneratorTests extends TestCase {
 
   private UniqueMethodNameGenerator generator;
 
-  public void test_uniqueMethodName_shouldReturnFirstPartOfMethod() throws Exception {
+  public void test_uniqueMethodName_shouldReturnMethodName() throws Exception {
     generator = new UniqueMethodNameGenerator(
       new UniqueMethodNameGenerator.MethodModel("1","methodName")
     );
@@ -44,5 +44,27 @@ public class UniqueMethodNameGeneratorTests extends TestCase {
       new UniqueMethodNameGenerator.MethodModel("3", "methodName", "param")
     );
     assertEquals("methodNameParam", generator.generate("3"));
+  }
+
+  public void test_duplicateMethodName_shouldAppendFirstParameterLabel_toMethodName_whenGivenMethod_hasMultipleParamLabels() throws Exception {
+    generator = new UniqueMethodNameGenerator(
+      new UniqueMethodNameGenerator.MethodModel("1", "methodName"),
+      new UniqueMethodNameGenerator.MethodModel("2", "anotherMethod"),
+      new UniqueMethodNameGenerator.MethodModel("3", "methodName", "param"),
+      new UniqueMethodNameGenerator.MethodModel("4", "methodName", "param", "param2")
+    );
+    assertEquals("methodNameParamParam2", generator.generate("4"));
+  }
+
+  public void test_uniqueMethodName_shouldReturnMethodName_whenNoOverriddenMethods() throws Exception {
+    generator = new UniqueMethodNameGenerator(
+      new UniqueMethodNameGenerator.MethodModel("1", "methodName", "param", "param2")
+    );
+    assertEquals("methodName", generator.generate("1"));
+  }
+
+  public void test_shouldReturnNull_whenIDDoesNotExist() throws Exception {
+    generator = new UniqueMethodNameGenerator();
+    assertNull(generator.generate("1"));
   }
 }

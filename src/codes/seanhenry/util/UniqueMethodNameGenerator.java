@@ -41,28 +41,25 @@ public class UniqueMethodNameGenerator {
 
   public String generate(String id) {
     MethodModel model = methodModels.get(id);
+    if (model == null) return null;
     String methodName = model.getMethodName();
-    List<MethodModel> models = methodModels.values()
+    List<MethodModel> overriddenModels = methodModels.values()
       .stream()
       .filter(m -> m.getMethodName().equals(methodName))
       .filter(m -> !m.getID().equals(id))
       .collect(Collectors.toList());
-    if (models.size() == 0) {
+    if (overriddenModels.size() == 0) {
       return methodName;
     }
-    if (model.getParamLabels().length > 0) {
-      String param = model.getParamLabels()[0];
-      return methodName + param.substring(0, 1).toUpperCase() + param.substring(1);
-    }
-    return methodName;
+    String params = model.getParamLabels()
+      .stream()
+      .map(this::toCapitalizedString)
+      .reduce("", String::concat);
+    return methodName + params;
   }
 
-  private List<String> getParameterNames(SwiftFunctionDeclaration function, Function<SwiftParameter, String> operation) {
-    return function.getParameterClauseList().stream()
-      .map(SwiftParameterClause::getParameterList)
-      .flatMap(Collection::stream)
-      .map(operation)
-      .collect(Collectors.toList());
+  private String toCapitalizedString(String param) {
+    return param.substring(0, 1).toUpperCase() + param.substring(1);
   }
 
   public static class MethodModel {
@@ -81,8 +78,8 @@ public class UniqueMethodNameGenerator {
       return id;
     }
 
-    public String[] getParamLabels() {
-      return paramLabels;
+    public List<String> getParamLabels() {
+      return Arrays.asList(paramLabels);
     }
 
     public String getMethodName() {
