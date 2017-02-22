@@ -1,5 +1,8 @@
 package codes.seanhenry.intentions;
 
+import codes.seanhenry.util.AppendStringDecorator;
+import codes.seanhenry.util.PrependStringDecorator;
+import codes.seanhenry.util.StringDecorator;
 import com.intellij.codeInsight.hint.HintManager;
 import com.intellij.codeInsight.intention.IntentionAction;
 import com.intellij.codeInsight.intention.PsiElementBaseIntentionAction;
