@@ -3,6 +3,7 @@ package codes.seanhenry.intentions;
 import codes.seanhenry.util.AppendStringDecorator;
 import codes.seanhenry.util.PrependStringDecorator;
 import codes.seanhenry.util.StringDecorator;
+import codes.seanhenry.util.UniqueMethodNameGenerator;
 import com.intellij.codeInsight.hint.HintManager;
 import com.intellij.codeInsight.intention.IntentionAction;
 import com.intellij.codeInsight.intention.PsiElementBaseIntentionAction;
@@ -43,6 +44,7 @@ class MethodGatheringVisitor extends PsiRecursiveElementVisitor {
 public class MockGeneratingIntention extends PsiElementBaseIntentionAction implements IntentionAction {
 
   private Editor editor;
+  private UniqueMethodNameGenerator methodNameGenerator;
 
   @Override
   public boolean isAvailable(@NotNull Project project, Editor editor, @NotNull PsiElement psiElement) {
@@ -96,6 +98,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   }
 
   private void addProtocolFunctionsToClass(List<SwiftFunctionDeclaration> functions, SwiftClassDeclaration classDeclaration) {
+    methodNameGenerator = new UniqueMethodNameGenerator(getMethodModels(functions));
     for (SwiftFunctionDeclaration function : functions) {
       SwiftFunctionDeclaration functionWithBody = SwiftPsiElementFactory.getInstance(function).createFunction(function.getText() + "{ }");
       addInvokedCheckExpression(functionWithBody);
@@ -109,7 +112,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   }
 
   private void addInvocationCheckVariable(SwiftFunctionDeclaration function, SwiftClassDeclaration classDeclaration) {
-    SwiftStatement variable = SwiftPsiElementFactory.getInstance(function).createStatement("var " + createInvokedVariableName(function.getName()) + " = false");
+    SwiftStatement variable = SwiftPsiElementFactory.getInstance(function).createStatement("var " + createInvokedVariableName(function) + " = false");
     classDeclaration.addBefore(variable, classDeclaration.getLastChild());
   }
 
@@ -120,7 +123,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     } else if (parameters.size() == 1) {
       parameters.add("Void");
     }
-    String variable = "var " + createInvokedParametersName(function.getName()) + ": (" + String.join(", ", parameters) + ")?";
+    String variable = "var " + createInvokedParametersName(function) + ": (" + String.join(", ", parameters) + ")?";
     SwiftStatement statement = SwiftPsiElementFactory.getInstance(function).createStatement(variable);
     classDeclaration.addBefore(statement, classDeclaration.getLastChild());
   }
@@ -129,13 +132,13 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     if (function.getFunctionResult() == null) {
       return;
     }
-    String name = createStubbedVariableName(function.getName());
+    String name = createStubbedVariableName(function);
     SwiftStatement variable = SwiftPsiElementFactory.getInstance(function).createStatement("var " + name + ": " + getType(function.getFunctionResult()) + "!");
     classDeclaration.addBefore(variable, classDeclaration.getLastChild());
   }
 
   private void addInvokedCheckExpression(SwiftFunctionDeclaration function) {
-    SwiftExpression expression = SwiftPsiElementFactory.getInstance(function).createExpression(createInvokedVariableName(function.getName()) + " = true ", function);
+    SwiftExpression expression = SwiftPsiElementFactory.getInstance(function).createExpression(createInvokedVariableName(function) + " = true ", function);
     function.getCodeBlock().addBefore(expression, function.getCodeBlock().getLastChild());
   }
 
@@ -147,7 +150,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
       parameters.add("()");
     }
 
-    String string = createInvokedParametersName(function.getName()) + " = (" + String.join(", ", parameters) + ")";
+    String string = createInvokedParametersName(function) + " = (" + String.join(", ", parameters) + ")";
     SwiftExpression expression = SwiftPsiElementFactory.getInstance(function).createExpression(string, function);
     function.getCodeBlock().addBefore(expression, function.getCodeBlock().getLastChild());
   }
@@ -156,24 +159,27 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     if (function.getFunctionResult() == null) {
       return;
     }
-    SwiftStatement statement = SwiftPsiElementFactory.getInstance(function).createStatement("return " + createStubbedVariableName(function.getName()));
+    SwiftStatement statement = SwiftPsiElementFactory.getInstance(function).createStatement("return " + createStubbedVariableName(function));
     function.getCodeBlock().addBefore(statement, function.getCodeBlock().getLastChild());
   }
 
-  private String createInvokedVariableName(String name) {
+  private String createInvokedVariableName(SwiftFunctionDeclaration function) {
     StringDecorator prependDecorator = new PrependStringDecorator(null, "invoked");
+    String name = methodNameGenerator.generate(getFunctionID(function));
     return prependDecorator.process(name);
   }
 
-  private String createStubbedVariableName(String name) {
+  private String createStubbedVariableName(SwiftFunctionDeclaration function) {
     StringDecorator prependDecorator = new PrependStringDecorator(null, "stubbed");
     StringDecorator appendDecorator = new AppendStringDecorator(prependDecorator, "Result");
+    String name = methodNameGenerator.generate(getFunctionID(function));
     return appendDecorator.process(name);
   }
 
-  private String createInvokedParametersName(String name) {
+  private String createInvokedParametersName(SwiftFunctionDeclaration function) {
     StringDecorator prependDecorator = new PrependStringDecorator(null, "invoked");
     StringDecorator appendDecorator = new AppendStringDecorator(prependDecorator, "Parameters");
+    String name = methodNameGenerator.generate(getFunctionID(function));
     return appendDecorator.process(name);
   }
 
@@ -198,6 +204,16 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
         .flatMap(Collection::stream)
         .map(operation)
         .collect(Collectors.toList());
+  }
+
+  private List<UniqueMethodNameGenerator.MethodModel> getMethodModels(List<SwiftFunctionDeclaration> functions) {
+    return functions.stream()
+      .map(f -> new UniqueMethodNameGenerator.MethodModel(getFunctionID(f), f.getName(), getParameterNames(f, p -> p.getName()).toArray(new String[]{})))
+      .collect(Collectors.toList());
+  }
+
+  private String getFunctionID(SwiftFunctionDeclaration function) {
+    return function.getName() + String.join(":", getParameterNames(function, p -> p.getName()));
   }
 
   @Nls
