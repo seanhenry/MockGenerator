@@ -1,48 +1,83 @@
 protocol OverloadProtocol {
-    func method() -> String
-    func method(withString: String)
-    func method(withInt: Int)
-    func method(with float: Float)
-    func method(with string: String, at int: Int)
-    func method(with string: String, at int: Int, for float: Float)
+    func setValue(_ string: String, forKey key: String)
+    func setValue(_ int: Int, forKey key: String)
+    func set(value: String)
+    func set(value: Int)
+    func animate() -> Bool
+    func animate(withDuration duration: TimeInterval)
+    func animate(withDuration duration: TimeInterval, delay: TimeInterval)
+    func present(_ viewControllerToPresent: UIViewController)
+    func present(_ viewControllerToPresent: UIViewController, animated: Bool)
+    func present(from viewControllerToPresent: UIViewController)
+    func present(from viewControllerToPresent: UINavigationController)
 }
 
 class Mock: OverloadProtocol {
 
-    var invokedMethod = false
-    var stubbedMethodResult: String!
-    func method() -> String {
-        invokedMethod = true
-        return stubbedMethodResult
+    var invokedSetValueStringForKey = false
+    var invokedSetValueStringForKeyParameters: (string: String, key: String)?
+    func setValue(_ string: String, forKey key: String) {
+        invokedSetValueStringForKey = true
+        invokedSetValueStringForKeyParameters = (string, key)
     }
-    var invokedMethodWithString = false
-    var invokedMethodWithStringParameters: (withString: String, Void)?
-    func method(withString: String) {
-        invokedMethodWithString = true
-        invokedMethodWithStringParameters = (withString, ())
+    var invokedSetValueIntForKey = false
+    var invokedSetValueIntForKeyParameters: (int: Int, key: String)?
+    func setValue(_ int: Int, forKey key: String) {
+        invokedSetValueIntForKey = true
+        invokedSetValueIntForKeyParameters = (int, key)
     }
-    var invokedMethodWithInt = false
-    var invokedMethodWithIntParameters: (withInt: Int, Void)?
-    func method(withInt: Int) {
-        invokedMethodWithInt = true
-        invokedMethodWithIntParameters = (withInt, ())
+    var invokedSetValueString = false
+    var invokedSetValueStringParameters: (value: String, Void)?
+    func set(value: String) {
+        invokedSetValueString = true
+        invokedSetValueStringParameters = (value, ())
     }
-    var invokedMethodWith = false
-    var invokedMethodWithParameters: (float: Float, Void)?
-    func method(with float: Float) {
-        invokedMethodWith = true
-        invokedMethodWithParameters = (float, ())
+    var invokedSetValueInt = false
+    var invokedSetValueIntParameters: (value: Int, Void)?
+    func set(value: Int) {
+        invokedSetValueInt = true
+        invokedSetValueIntParameters = (value, ())
     }
-    var invokedMethodWithAt = false
-    var invokedMethodWithAtParameters: (string: String, int: Int)?
-    func method(with string: String, at int: Int) {
-        invokedMethodWithAt = true
-        invokedMethodWithAtParameters = (string, int)
+    var invokedAnimate = false
+    var stubbedAnimateResult: Bool!
+    func animate() -> Bool {
+        invokedAnimate = true
+        return stubbedAnimateResult
     }
-    var invokedMethodWithAtFor = false
-    var invokedMethodWithAtForParameters: (string: String, int: Int, float: Float)?
-    func method(with string: String, at int: Int, for float: Float) {
-        invokedMethodWithAtFor = true
-        invokedMethodWithAtForParameters = (string, int, float)
+    var invokedAnimateWithDuration = false
+    var invokedAnimateWithDurationParameters: (duration: TimeInterval, Void)?
+    func animate(withDuration duration: TimeInterval) {
+        invokedAnimateWithDuration = true
+        invokedAnimateWithDurationParameters = (duration, ())
+    }
+    var invokedAnimateWithDurationDelay = false
+    var invokedAnimateWithDurationDelayParameters: (duration: TimeInterval, delay: TimeInterval)?
+    func animate(withDuration duration: TimeInterval, delay: TimeInterval) {
+        invokedAnimateWithDurationDelay = true
+        invokedAnimateWithDurationDelayParameters = (duration, delay)
+    }
+    var invokedPresent = false
+    var invokedPresentParameters: (viewControllerToPresent: UIViewController, Void)?
+    func present(_ viewControllerToPresent: UIViewController) {
+        invokedPresent = true
+        invokedPresentParameters = (viewControllerToPresent, ())
+    }
+    var invokedPresentAnimated = false
+    var invokedPresentAnimatedParameters: (viewControllerToPresent: UIViewController, animated: Bool)?
+    func present(_ viewControllerToPresent: UIViewController, animated: Bool) {
+        invokedPresentAnimated = true
+        invokedPresentAnimatedParameters = (viewControllerToPresent, animated)
+    }
+    var invokedPresentFromUIViewController = false
+    var invokedPresentFromUIViewControllerParameters: (viewControllerToPresent: UIViewController, Void)?
+    func present(from viewControllerToPresent: UIViewController) {
+        invokedPresentFromUIViewController = true
+        invokedPresentFromUIViewControllerParameters = (viewControllerToPresent, ())
+    }
+    var invokedPresentFromUINavigationController = false
+    var invokedPresentFromUINavigationControllerParameters: (viewControllerToPresent: UINavigationController, Void)?
+    func present(from viewControllerToPresent: UINavigationController) {
+        invokedPresentFromUINavigationController = true
+        invokedPresentFromUINavigationControllerParameters = (viewControllerToPresent, ())
     }
 }

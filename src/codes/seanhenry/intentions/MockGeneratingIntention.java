@@ -217,16 +217,12 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     return new UniqueMethodNameGenerator.MethodModel(
       getFunctionID(function),
       function.getName(),
-      getParameterNames(function, p -> toFirstParameterLabel(p)).toArray(new String[]{})
+      getParameterNames(function, p -> toParameterLabel(p)).toArray(new String[]{})
     );
   }
 
-  private String toFirstParameterLabel(SwiftParameter parameter) {
-    SwiftIdentifierPattern pattern = PsiTreeUtil.findChildOfType(parameter, SwiftIdentifierPattern.class);
-    if (pattern != null) {
-      return pattern.getName();
-    }
-    return "";
+  private String toParameterLabel(SwiftParameter parameter) {
+    return parameter.getText();
   }
 
   private String getFunctionID(SwiftFunctionDeclaration function) {

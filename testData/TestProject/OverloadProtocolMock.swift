@@ -1,10 +1,15 @@
 protocol OverloadProtocol {
-    func method() -> String
-    func method(withString: String)
-    func method(withInt: Int)
-    func method(with float: Float)
-    func method(with string: String, at int: Int)
-    func method(with string: String, at int: Int, for float: Float)
+    func setValue(_ string: String, forKey key: String)
+    func setValue(_ int: Int, forKey key: String)
+    func set(value: String)
+    func set(value: Int)
+    func animate() -> Bool
+    func animate(withDuration duration: TimeInterval)
+    func animate(withDuration duration: TimeInterval, delay: TimeInterval)
+    func present(_ viewControllerToPresent: UIViewController)
+    func present(_ viewControllerToPresent: UIViewController, animated: Bool)
+    func present(from viewControllerToPresent: UIViewController)
+    func present(from viewControllerToPresent: UINavigationController)
 }
 
 class Mock: OverloadProtocol {
