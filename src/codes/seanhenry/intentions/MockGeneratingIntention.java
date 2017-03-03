@@ -91,9 +91,8 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
       showErrorMessage("The protocol '" + protocol.getName() + "' could not be found.");
       return Collections.emptyList();
     }
-    PsiFile resolvedFile = resolved.getContainingFile();
     MethodGatheringVisitor visitor = new MethodGatheringVisitor();
-    resolvedFile.accept(visitor);
+    resolved.accept(visitor);
     return visitor.getElements();
   }
 

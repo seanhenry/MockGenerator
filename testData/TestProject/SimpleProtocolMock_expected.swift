@@ -5,6 +5,13 @@ protocol SimpleProtocol {
     func duplicateParam(var1: String)
 }
 
+class AnotherDeclarationInTheFileShouldNotBeAffected {
+
+    func shouldNotInterfere() {
+
+    }
+}
+
 class Mock: SimpleProtocol {
 
     var invokedSimpleMethod = false
