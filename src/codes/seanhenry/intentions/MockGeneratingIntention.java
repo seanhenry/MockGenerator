@@ -10,6 +10,7 @@ import com.intellij.codeInsight.intention.PsiElementBaseIntentionAction;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
+import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
 import com.jetbrains.swift.psi.*;
@@ -73,6 +74,9 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     deleteClassStatements(classDeclaration);
     List<SwiftFunctionDeclaration> protocolMethods = getProtocolMethods(protocol);
     addProtocolFunctionsToClass(protocolMethods, classDeclaration);
+
+    CodeStyleManager codeStyleManager = CodeStyleManager.getInstance(psiElement.getManager());
+    codeStyleManager.reformat(classDeclaration);
   }
 
   private void showErrorMessage(String message) {
