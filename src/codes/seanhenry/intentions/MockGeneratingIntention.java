@@ -22,9 +22,20 @@ import java.util.stream.Collectors;
 public class MockGeneratingIntention extends PsiElementBaseIntentionAction implements IntentionAction {
 
   private Editor editor;
-  private UniqueMethodNameGenerator methodNameGenerator; // TODO: all string decorators
-  private final PrependStringDecorator invokedPropertyNameDecorator = new PrependStringDecorator(null, "invoked");
-  private final PrependStringDecorator stubbedPropertyNameDecorator = new PrependStringDecorator(null, "stubbed");
+  private UniqueMethodNameGenerator methodNameGenerator;
+  private final StringDecorator invokedPropertyNameDecorator = new PrependStringDecorator(null, "invoked");
+  private final StringDecorator stubbedPropertyNameDecorator = new PrependStringDecorator(null, "stubbed");
+  private final StringDecorator invokedMethodNameDecorator = new PrependStringDecorator(null, "invoked");
+  private final StringDecorator stubMethodNameDecorator;
+  {
+    StringDecorator prependDecorator = new PrependStringDecorator(null, "stubbed");
+    stubMethodNameDecorator = new AppendStringDecorator(prependDecorator, "Result");
+  }
+  private final StringDecorator methodParametersNameDecorator;
+  {
+    StringDecorator prependDecorator = new PrependStringDecorator(null, "invoked");
+    methodParametersNameDecorator = new AppendStringDecorator(prependDecorator, "Parameters");
+  }
 
   @Override
   public boolean isAvailable(@NotNull Project project, Editor editor, @NotNull PsiElement psiElement) {
@@ -192,23 +203,18 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   }
 
   private String createInvokedVariableName(SwiftFunctionDeclaration function) {
-    StringDecorator prependDecorator = new PrependStringDecorator(null, "invoked");
     String name = methodNameGenerator.generate(getFunctionID(function));
-    return prependDecorator.process(name);
+    return invokedMethodNameDecorator.process(name);
   }
 
   private String createStubbedVariableName(SwiftFunctionDeclaration function) {
-    StringDecorator prependDecorator = new PrependStringDecorator(null, "stubbed");
-    StringDecorator appendDecorator = new AppendStringDecorator(prependDecorator, "Result");
     String name = methodNameGenerator.generate(getFunctionID(function));
-    return appendDecorator.process(name);
+    return stubMethodNameDecorator.process(name);
   }
 
   private String createInvokedParametersName(SwiftFunctionDeclaration function) {
-    StringDecorator prependDecorator = new PrependStringDecorator(null, "invoked");
-    StringDecorator appendDecorator = new AppendStringDecorator(prependDecorator, "Parameters");
     String name = methodNameGenerator.generate(getFunctionID(function));
-    return appendDecorator.process(name);
+    return methodParametersNameDecorator.process(name);
   }
 
   private List<String> getParameterNames(SwiftFunctionDeclaration function, Function<SwiftParameter, String> operation) {
