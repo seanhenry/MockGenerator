@@ -123,31 +123,45 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
         .decorate(property);
       SwiftVariableDeclaration stubbedProperty = new PropertyDecorator(stubbedPropertyNameDecorator, PropertyDecorator.IMPLICITLY_UNWRAPPED_OPTIONAL)
         .decorate(property);
-
       boolean hasSetter = PsiTreeUtil.findChildOfType(property, SwiftSetterClause.class) != null;
-      SwiftTypeAnnotatedPattern pattern = (SwiftTypeAnnotatedPattern) property.getPatternInitializerList().get(0).getPattern();
-      String attributes = property.getAttributes().getText();
-      String label = pattern.getPattern().getText();
-      String literal = attributes + " var " + label + pattern.getTypeAnnotation().getText() + "{\n";
-      String returnLabel = "return " + MySwiftPsiUtil.getName(stubbedProperty) + "\n";
-      if (hasSetter) {
-        literal += "set {\n" +
-                     MySwiftPsiUtil.getName(invokedProperty) + " = newValue\n" +
-                   "}\n";
-        literal += "get {\n" +
-                     returnLabel +
-                   "}\n";
-        classDeclaration.addBefore(invokedProperty, classDeclaration.getLastChild());
-      } else {
-        literal += returnLabel;
-      }
-      literal += "}";
-
-      classDeclaration.addBefore(stubbedProperty, classDeclaration.getLastChild());
-
+      String literal = buildConcreteProperty(property, invokedProperty, stubbedProperty, hasSetter);
       SwiftVariableDeclaration concreteProperty = (SwiftVariableDeclaration) SwiftPsiElementFactory.getInstance(property).createStatement(literal);
-      classDeclaration.addBefore(concreteProperty, classDeclaration.getLastChild());
+      addProperty(classDeclaration, invokedProperty, hasSetter);
+      addProperty(classDeclaration, stubbedProperty);
+      addProperty(classDeclaration, concreteProperty);
     }
+  }
+
+  @NotNull
+  private String buildConcreteProperty(SwiftVariableDeclaration property,
+                                       SwiftVariableDeclaration invokedProperty,
+                                       SwiftVariableDeclaration stubbedProperty, boolean hasSetter) {
+    SwiftTypeAnnotatedPattern pattern = (SwiftTypeAnnotatedPattern) property.getPatternInitializerList().get(0).getPattern();
+    String attributes = property.getAttributes().getText();
+    String label = pattern.getPattern().getText();
+    String literal = attributes + " var " + label + pattern.getTypeAnnotation().getText() + "{\n";
+    String returnLabel = "return " + MySwiftPsiUtil.getName(stubbedProperty) + "\n";
+    if (hasSetter) {
+      literal += "set {\n" +
+                 MySwiftPsiUtil.getName(invokedProperty) + " = newValue\n" +
+                 "}\n";
+      literal += "get {\n" +
+                 returnLabel +
+                 "}\n";
+    } else {
+      literal += returnLabel;
+    }
+    literal += "}";
+    return literal;
+  }
+
+  private void addProperty(SwiftClassDeclaration declaration, SwiftVariableDeclaration property) {
+    addProperty(declaration, property, true);
+  }
+
+  private void addProperty(SwiftClassDeclaration classDeclaration, SwiftVariableDeclaration invokedProperty, boolean shouldAdd) {
+    if (shouldAdd)
+      classDeclaration.addBefore(invokedProperty, classDeclaration.getLastChild());
   }
 
   private void addInvocationCheckVariable(SwiftFunctionDeclaration function, SwiftClassDeclaration classDeclaration) {
