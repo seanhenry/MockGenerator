@@ -14,33 +14,10 @@ import com.jetbrains.swift.psi.*;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-class ElementGatheringVisitor<T extends PsiElement> extends PsiRecursiveElementVisitor {
-
-  private Class<T> type;
-  private ArrayList<T> elements = new ArrayList<>();
-
-  public ElementGatheringVisitor(Class<T> type) {
-    this.type = type;
-  }
-
-  @Override
-  public void visitElement(PsiElement element) {
-    if (type.isInstance(element)) {
-      elements.add((T) element);
-    }
-    super.visitElement(element);
-  }
-
-  List<T> getElements() {
-    return elements;
-  }
-}
 
 public class MockGeneratingIntention extends PsiElementBaseIntentionAction implements IntentionAction {
 
