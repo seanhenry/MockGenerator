@@ -1,9 +1,6 @@
 package codes.seanhenry.intentions;
 
-import codes.seanhenry.util.AppendStringDecorator;
-import codes.seanhenry.util.PrependStringDecorator;
-import codes.seanhenry.util.StringDecorator;
-import codes.seanhenry.util.UniqueMethodNameGenerator;
+import codes.seanhenry.util.*;
 import com.intellij.codeInsight.hint.HintManager;
 import com.intellij.codeInsight.intention.IntentionAction;
 import com.intellij.codeInsight.intention.PsiElementBaseIntentionAction;
@@ -19,25 +16,28 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-class MethodGatheringVisitor extends PsiRecursiveElementVisitor {
+class ElementGatheringVisitor<T extends PsiElement> extends PsiRecursiveElementVisitor {
 
-  private ArrayList<SwiftFunctionDeclaration> elements = new ArrayList<>();
+  private Class<T> type;
+  private ArrayList<T> elements = new ArrayList<>();
+
+  public ElementGatheringVisitor(Class<T> type) {
+    this.type = type;
+  }
 
   @Override
   public void visitElement(PsiElement element) {
-    if (element instanceof SwiftFunctionDeclaration) {
-      SwiftFunctionDeclaration declaration = (SwiftFunctionDeclaration) element;
-      elements.add(declaration);
+    if (type.isInstance(element)) {
+      elements.add((T) element);
     }
     super.visitElement(element);
   }
 
-  List<SwiftFunctionDeclaration> getElements() {
+  List<T> getElements() {
     return elements;
   }
 }
@@ -45,7 +45,9 @@ class MethodGatheringVisitor extends PsiRecursiveElementVisitor {
 public class MockGeneratingIntention extends PsiElementBaseIntentionAction implements IntentionAction {
 
   private Editor editor;
-  private UniqueMethodNameGenerator methodNameGenerator;
+  private UniqueMethodNameGenerator methodNameGenerator; // TODO: all string decorators
+  private final PrependStringDecorator invokedPropertyNameDecorator = new PrependStringDecorator(null, "invoked");
+  private final PrependStringDecorator stubbedPropertyNameDecorator = new PrependStringDecorator(null, "stubbed");
 
   @Override
   public boolean isAvailable(@NotNull Project project, Editor editor, @NotNull PsiElement psiElement) {
@@ -72,7 +74,10 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     }
     SwiftReferenceTypeElement protocol = inheritanceClause.getReferenceTypeElementList().get(0);
     deleteClassStatements(classDeclaration);
-    List<SwiftFunctionDeclaration> protocolMethods = getProtocolMethods(protocol);
+    PsiElement resolvedProtocol = getResolvedProtocol(protocol);
+    List<SwiftVariableDeclaration> protocolProperties = getProtocolProperties(resolvedProtocol);
+    List<SwiftFunctionDeclaration> protocolMethods = getProtocolMethods(resolvedProtocol);
+    addProtocolPropertiesToClass(protocolProperties, classDeclaration);
     addProtocolFunctionsToClass(protocolMethods, classDeclaration);
 
     CodeStyleManager codeStyleManager = CodeStyleManager.getInstance(psiElement.getManager());
@@ -89,15 +94,24 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     }
   }
 
-  private List<SwiftFunctionDeclaration> getProtocolMethods(SwiftReferenceTypeElement protocol) {
+  private List<SwiftFunctionDeclaration> getProtocolMethods(PsiElement protocol) {
+    ElementGatheringVisitor<SwiftFunctionDeclaration> visitor = new ElementGatheringVisitor<>(SwiftFunctionDeclaration.class);
+    protocol.accept(visitor);
+    return visitor.getElements();
+  }
+
+  private List<SwiftVariableDeclaration> getProtocolProperties(PsiElement protocol) {
+    ElementGatheringVisitor<SwiftVariableDeclaration> visitor = new ElementGatheringVisitor<>(SwiftVariableDeclaration.class);
+    protocol.accept(visitor);
+    return visitor.getElements();
+  }
+
+  private PsiElement getResolvedProtocol(SwiftReferenceTypeElement protocol) {
     PsiElement resolved = protocol.resolve();
     if (resolved == null) {
       showErrorMessage("The protocol '" + protocol.getName() + "' could not be found.");
-      return Collections.emptyList();
     }
-    MethodGatheringVisitor visitor = new MethodGatheringVisitor();
-    resolved.accept(visitor);
-    return visitor.getElements();
+    return resolved;
   }
 
   private void addProtocolFunctionsToClass(List<SwiftFunctionDeclaration> functions, SwiftClassDeclaration classDeclaration) {
@@ -114,13 +128,47 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     }
   }
 
+  private void addProtocolPropertiesToClass(List<SwiftVariableDeclaration> properties, SwiftClassDeclaration classDeclaration) {
+    for (SwiftVariableDeclaration property : properties) {
+
+      SwiftVariableDeclaration invokedProperty = new PropertyDecorator(invokedPropertyNameDecorator, PropertyDecorator.OPTIONAL)
+        .decorate(property);
+      SwiftVariableDeclaration stubbedProperty = new PropertyDecorator(stubbedPropertyNameDecorator, PropertyDecorator.IMPLICITLY_UNWRAPPED_OPTIONAL)
+        .decorate(property);
+
+      boolean hasSetter = PsiTreeUtil.findChildOfType(property, SwiftSetterClause.class) != null;
+      SwiftTypeAnnotatedPattern pattern = (SwiftTypeAnnotatedPattern) property.getPatternInitializerList().get(0).getPattern();
+      String attributes = property.getAttributes().getText();
+      String label = pattern.getPattern().getText();
+      String literal = attributes + " var " + label + pattern.getTypeAnnotation().getText() + "{\n";
+      String returnLabel = "return " + MySwiftPsiUtil.getName(stubbedProperty) + "\n";
+      if (hasSetter) {
+        literal += "set {\n" +
+                     MySwiftPsiUtil.getName(invokedProperty) + " = newValue\n" +
+                   "}\n";
+        literal += "get {\n" +
+                     returnLabel +
+                   "}\n";
+        classDeclaration.addBefore(invokedProperty, classDeclaration.getLastChild());
+      } else {
+        literal += returnLabel;
+      }
+      literal += "}";
+
+      classDeclaration.addBefore(stubbedProperty, classDeclaration.getLastChild());
+
+      SwiftVariableDeclaration concreteProperty = (SwiftVariableDeclaration) SwiftPsiElementFactory.getInstance(property).createStatement(literal);
+      classDeclaration.addBefore(concreteProperty, classDeclaration.getLastChild());
+    }
+  }
+
   private void addInvocationCheckVariable(SwiftFunctionDeclaration function, SwiftClassDeclaration classDeclaration) {
     SwiftStatement variable = SwiftPsiElementFactory.getInstance(function).createStatement("var " + createInvokedVariableName(function) + " = false");
     classDeclaration.addBefore(variable, classDeclaration.getLastChild());
   }
 
   private void addInvokedParameterVariables(SwiftFunctionDeclaration function, SwiftClassDeclaration classDeclaration) {
-    List<String> parameters = getParameterNames(function, p -> p.getName() + ": " + getType(p.getParameterTypeAnnotation(), false));
+    List<String> parameters = getParameterNames(function, p -> p.getName() + ": " + MySwiftPsiUtil.getType(p.getParameterTypeAnnotation(), false));
     if (parameters.isEmpty()) {
       return;
     } else if (parameters.size() == 1) {
@@ -136,7 +184,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
       return;
     }
     String name = createStubbedVariableName(function);
-    SwiftStatement variable = SwiftPsiElementFactory.getInstance(function).createStatement("var " + name + ": " + getType(function.getFunctionResult()) + "!");
+    SwiftStatement variable = SwiftPsiElementFactory.getInstance(function).createStatement("var " + name + ": " + MySwiftPsiUtil.getType(function.getFunctionResult()) + "!");
     classDeclaration.addBefore(variable, classDeclaration.getLastChild());
   }
 
@@ -184,21 +232,6 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     StringDecorator appendDecorator = new AppendStringDecorator(prependDecorator, "Parameters");
     String name = methodNameGenerator.generate(getFunctionID(function));
     return appendDecorator.process(name);
-  }
-
-  private String getType(PsiElement element) {
-    return getType(element, true);
-  }
-
-  private String getType(PsiElement element, boolean removeOptional) {
-    SwiftTypeElement type = PsiTreeUtil.findChildOfType(element, SwiftTypeElement.class);
-    if (type == null) return null;
-    SwiftTypeElement nextType = PsiTreeUtil.findChildOfType(type, SwiftTypeElement.class);
-    boolean isOptional = type instanceof SwiftImplicitlyUnwrappedOptionalTypeElement || type instanceof SwiftOptionalTypeElement;
-    if (nextType != null && removeOptional && isOptional) {
-      return nextType.getText();
-    }
-    return type.getText();
   }
 
   private List<String> getParameterNames(SwiftFunctionDeclaration function, Function<SwiftParameter, String> operation) {
