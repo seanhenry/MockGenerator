@@ -58,6 +58,7 @@ public class MockGeneratingIntentionTests extends PlatformTestCase {
       "OptionalProtocolMock",
       "OverloadProtocolMock",
       "PropertyProtocolMock",
+      "ClosureProtocolMock",
     };
     for (String fileName : fileNames) {
       runTest(fileName);

@@ -33,7 +33,7 @@ public class ElementGatheringVisitor<T extends PsiElement> extends PsiRecursiveE
   @Override
   public void visitElement(PsiElement element) {
     if (type.isInstance(element)) {
-      elements.add((T) element);
+      elements.add(type.cast(element));
     }
     super.visitElement(element);
   }

@@ -21,17 +21,46 @@ import com.jetbrains.swift.psi.*;
 
 public class MySwiftPsiUtil {
 
-  public static String getType(PsiElement element) {
-    return getType(element, true);
+  public static <T extends PsiElement> T findResolvedType(PsiElement element, Class<T> type) {
+    T result = findType(element, type);
+    if (result != null) {
+      return result;
+    }
+    SwiftReferenceTypeElement referenceType = findType(element, SwiftReferenceTypeElement.class);
+    if (referenceType == null) {
+      return null;
+    }
+    PsiElement resolved = referenceType.resolve();
+    return findType(resolved, type);
   }
 
-  public static String getType(PsiElement element, boolean removeOptional) {
-    SwiftTypeElement type = PsiTreeUtil.findChildOfType(element, SwiftTypeElement.class);
-    if (type == null) return null;
-    SwiftTypeElement nextType = PsiTreeUtil.findChildOfType(type, SwiftTypeElement.class);
-    boolean isOptional = type instanceof SwiftImplicitlyUnwrappedOptionalTypeElement || type instanceof SwiftOptionalTypeElement;
-    if (nextType != null && removeOptional && isOptional) {
-      return nextType.getText();
+  private static <T extends PsiElement> T findType(PsiElement element, Class<T> type) {
+    if (element == null) {
+      return null;
+    }
+    if (type.isInstance(element)) {
+      return type.cast(element);
+    }
+    return PsiTreeUtil.findChildOfType(element, type);
+  }
+
+  public static boolean isOptional(PsiElement element) {
+    return findType(element, SwiftOptionalTypeElement.class) != null;
+  }
+
+  public static String getResolvedTypeName(PsiElement element) {
+    return getResolvedTypeName(element, true);
+  }
+
+  public static String getResolvedTypeName(PsiElement element, boolean removeOptional) {
+    SwiftTypeElement type =  getType(element, removeOptional);
+    if (type == null) {
+      return null;
+    }
+    SwiftTypeAliasDeclaration alias = findResolvedType(type, SwiftTypeAliasDeclaration.class);
+    SwiftProtocolDeclaration protocol = PsiTreeUtil.getParentOfType(alias, SwiftProtocolDeclaration.class);
+    if (protocol != null) {
+      return protocol.getName() + "." + type.getText();
     }
     return type.getText();
   }
@@ -39,5 +68,16 @@ public class MySwiftPsiUtil {
   public static String getName(SwiftVariableDeclaration property) {
     SwiftTypeAnnotatedPattern pattern = (SwiftTypeAnnotatedPattern) property.getPatternInitializerList().get(0).getPattern();
     return pattern.getPattern().getText();
+  }
+
+  private static SwiftTypeElement getType(PsiElement element, boolean removeOptional) {
+    SwiftTypeElement type = PsiTreeUtil.findChildOfType(element, SwiftTypeElement.class);
+    if (type == null) return null;
+    SwiftTypeElement nextType = PsiTreeUtil.findChildOfType(type, SwiftTypeElement.class);
+    boolean isOptional = type instanceof SwiftImplicitlyUnwrappedOptionalTypeElement || type instanceof SwiftOptionalTypeElement;
+    if (nextType != null && removeOptional && isOptional) {
+      return nextType;
+    }
+    return type;
   }
 }

@@ -10,7 +10,9 @@
 		35CDF06D44F883D45A5B6D80 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35CDF434C8CF2AC28EBA0449 /* LaunchScreen.storyboard */; };
 		35CDF083C033EFE1956DBF5B /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 35CDFB629531500C3AF481FF /* Info.plist */; };
 		35CDF209D142DEDBA2F4F098 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDF7810EE85C405F75C589 /* AppDelegate.swift */; };
+		35CDF286DC9E46B5F53F8843 /* ClosureProtocolMock_expected.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDF61B4D511A920C38257F /* ClosureProtocolMock_expected.swift */; };
 		35CDF3960F50E99F2C8C4251 /* SimpleProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDFEA3978101709224D4C8 /* SimpleProtocolMock.swift */; };
+		35CDF3DE1A23A2A2F5EB6F71 /* ClosureProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDF799FE481CD57EC5739B /* ClosureProtocolMock.swift */; };
 		35CDF47EA31246759FFE4D08 /* OverloadProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDFD54367F116349E3F5B8 /* OverloadProtocolMock.swift */; };
 		35CDF4E595D5EFAE69131738 /* PropertyProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDF3A6162EB52FFB75945D /* PropertyProtocolMock.swift */; };
 		35CDF9C477B65D8A79FF7E38 /* PropertyProtocolMock_expected.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDF89B66BA022FCD7EBE19 /* PropertyProtocolMock_expected.swift */; };
@@ -28,8 +30,10 @@
 		35CDF1C8EAA0DC332B941BD1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		35CDF3913F0CE5933271C8B8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = Resources/Assets.xcassets; sourceTree = "<group>"; };
 		35CDF3A6162EB52FFB75945D /* PropertyProtocolMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PropertyProtocolMock.swift; sourceTree = "<group>"; };
+		35CDF61B4D511A920C38257F /* ClosureProtocolMock_expected.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClosureProtocolMock_expected.swift; sourceTree = "<group>"; };
 		35CDF6E57C71B381F0BF5E57 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		35CDF7810EE85C405F75C589 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		35CDF799FE481CD57EC5739B /* ClosureProtocolMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClosureProtocolMock.swift; sourceTree = "<group>"; };
 		35CDF7E4282125FB61B4290B /* MockGeneratorTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MockGeneratorTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		35CDF89B66BA022FCD7EBE19 /* PropertyProtocolMock_expected.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PropertyProtocolMock_expected.swift; sourceTree = "<group>"; };
 		35CDFB561287FB76195FCEB4 /* OptionalProtocolMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionalProtocolMock.swift; sourceTree = "<group>"; };
@@ -83,6 +87,8 @@
 				35CDF06CB3213CCC22CA7148 /* Products */,
 				35CDF3A6162EB52FFB75945D /* PropertyProtocolMock.swift */,
 				35CDF89B66BA022FCD7EBE19 /* PropertyProtocolMock_expected.swift */,
+				35CDF799FE481CD57EC5739B /* ClosureProtocolMock.swift */,
+				35CDF61B4D511A920C38257F /* ClosureProtocolMock_expected.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -157,6 +163,8 @@
 				35CDF47EA31246759FFE4D08 /* OverloadProtocolMock.swift in Sources */,
 				35CDF4E595D5EFAE69131738 /* PropertyProtocolMock.swift in Sources */,
 				35CDF9C477B65D8A79FF7E38 /* PropertyProtocolMock_expected.swift in Sources */,
+				35CDF3DE1A23A2A2F5EB6F71 /* ClosureProtocolMock.swift in Sources */,
+				35CDF286DC9E46B5F53F8843 /* ClosureProtocolMock_expected.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
