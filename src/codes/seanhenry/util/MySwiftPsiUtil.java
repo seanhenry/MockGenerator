@@ -31,7 +31,12 @@ public class MySwiftPsiUtil {
       return null;
     }
     PsiElement resolved = referenceType.resolve();
-    return findType(resolved, type);
+    if (resolved instanceof SwiftTypeAliasDeclaration) {
+      return findType(resolved, type);
+    } else if (type.isInstance(resolved)) {
+      return type.cast(resolved);
+    }
+    return null;
   }
 
   private static <T extends PsiElement> T findType(PsiElement element, Class<T> type) {

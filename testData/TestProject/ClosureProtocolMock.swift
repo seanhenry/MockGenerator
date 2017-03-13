@@ -1,3 +1,5 @@
+import Foundation
+
 typealias Completion = (Int) -> (String)
 
 protocol ClosureProtocol {
@@ -13,6 +15,7 @@ protocol ClosureProtocol {
     func returnClosure() -> (() -> ())
     func returnClosureArgs() -> (Int, String) -> (String)
     func optionalParams(_ closure: (String?, Int!) -> ())
+    func parse(response data: Data) // should not resolve Data and treat as closure
 }
 
 class Mock: ClosureProtocol {
