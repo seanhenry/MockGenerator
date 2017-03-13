@@ -12,6 +12,7 @@ protocol ClosureProtocol {
     func escaping(closure: @escaping () -> ())
     func returnClosure() -> (() -> ())
     func returnClosureArgs() -> (Int, String) -> (String)
+    func optionalParams(_ closure: (String?, Int!) -> ())
 }
 
 class Mock: ClosureProtocol {

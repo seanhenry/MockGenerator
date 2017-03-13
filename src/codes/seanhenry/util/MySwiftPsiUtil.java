@@ -44,8 +44,12 @@ public class MySwiftPsiUtil {
     return PsiTreeUtil.findChildOfType(element, type);
   }
 
-  public static boolean isOptional(PsiElement element) {
-    return findType(element, SwiftOptionalTypeElement.class) != null;
+  public static <T extends PsiElement> boolean containsOptionalOfType(PsiElement element, Class<T> type) {
+    PsiElement possibleOptional = findType(element, type);
+    if (possibleOptional != null) {
+      return possibleOptional.getParent() instanceof SwiftOptionalTypeElement;
+    }
+    return false;
   }
 
   public static String getResolvedTypeName(PsiElement element) {

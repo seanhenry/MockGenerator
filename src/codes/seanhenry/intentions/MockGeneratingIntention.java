@@ -288,7 +288,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
       int count = getClosureParameterTypes(parameter).size();
       String name = parameter.getName();
       String closureCall;
-      String optional = MySwiftPsiUtil.isOptional(parameter) ? "?" : "";
+      String optional = MySwiftPsiUtil.containsOptionalOfType(parameter, SwiftTupleTypeElement.class) ? "?" : "";
       if (count == 0) {
         closureCall = name + optional + "()";
       } else {

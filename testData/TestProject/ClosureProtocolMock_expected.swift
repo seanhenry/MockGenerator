@@ -12,6 +12,7 @@ protocol ClosureProtocol {
     func escaping(closure: @escaping () -> ())
     func returnClosure() -> (() -> ())
     func returnClosureArgs() -> (Int, String) -> (String)
+    func optionalParams(_ closure: (String?, Int!) -> ())
 }
 
 class Mock: ClosureProtocol {
@@ -90,5 +91,13 @@ class Mock: ClosureProtocol {
     func returnClosureArgs() -> (Int, String) -> (String) {
         invokedReturnClosureArgs = true
         return stubbedReturnClosureArgsResult
+    }
+    var invokedOptionalParams = false
+    var stubbedOptionalParamsClosureResult: (String?, Int!)?
+    func optionalParams(_ closure: (String?, Int!) -> ()) {
+        invokedOptionalParams = true
+        if let result = stubbedOptionalParamsClosureResult {
+            closure(result)
+        }
     }
 }
