@@ -18,6 +18,7 @@ package codes.seanhenry.util;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.jetbrains.swift.psi.*;
+import org.jetbrains.annotations.Nullable;
 
 public class MySwiftPsiUtil {
 
@@ -31,10 +32,19 @@ public class MySwiftPsiUtil {
       return null;
     }
     PsiElement resolved = referenceType.resolve();
-    if (resolved instanceof SwiftTypeAliasDeclaration) {
-      return findType(resolved, type);
-    } else if (type.isInstance(resolved)) {
+    if (type.isInstance(resolved)) {
       return type.cast(resolved);
+    } else if (resolved instanceof SwiftTypeAliasDeclaration) {
+      return findTypeAliasType((SwiftTypeAliasDeclaration)resolved, type);
+    }
+    return null;
+  }
+
+  @Nullable
+  private static <T extends PsiElement> T findTypeAliasType(SwiftTypeAliasDeclaration typeAlias, Class<T> type) {
+    SwiftTypeElement typeAliasType = typeAlias.getTypeAssignment().getTypeElement();
+    if (type.isInstance(typeAliasType)) {
+      return type.cast(typeAliasType);
     }
     return null;
   }
