@@ -14,8 +14,7 @@ import com.jetbrains.swift.psi.*;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -31,7 +30,6 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   private SwiftClassDeclaration classDeclaration;
   private SwiftFunctionDeclaration implementedFunction;
   private SwiftFunctionDeclaration protocolFunction;
-
   {
     StringDecorator prependDecorator = new PrependStringDecorator(null, "stubbed");
     stubMethodNameDecorator = new AppendStringDecorator(prependDecorator, "Result");
@@ -66,17 +64,18 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
       showErrorMessage("Mock class does not inherit from anything.");
       return;
     }
-    if (inheritanceClause.getReferenceTypeElementList().isEmpty()) {
+    List<SwiftProtocolDeclaration> protocols = getResolvedProtocols(classDeclaration);
+    if (protocols.isEmpty()) {
       showErrorMessage("Could not find a protocol reference.");
       return;
     }
-    SwiftReferenceTypeElement protocol = inheritanceClause.getReferenceTypeElementList().get(0);
     deleteClassStatements();
-    PsiElement resolvedProtocol = getResolvedProtocol(protocol);
-    List<SwiftVariableDeclaration> protocolProperties = getProtocolProperties(resolvedProtocol);
-    List<SwiftFunctionDeclaration> protocolMethods = getProtocolMethods(resolvedProtocol);
-    addProtocolPropertiesToClass(protocolProperties);
-    addProtocolFunctionsToClass(protocolMethods);
+    for (PsiElement resolvedProtocol : protocols) {
+      List<SwiftVariableDeclaration> protocolProperties = getProtocolProperties(resolvedProtocol);
+      List<SwiftFunctionDeclaration> protocolMethods = getProtocolMethods(resolvedProtocol);
+      addProtocolPropertiesToClass(protocolProperties);
+      addProtocolFunctionsToClass(protocolMethods);
+    }
 
     CodeStyleManager codeStyleManager = CodeStyleManager.getInstance(psiElement.getManager());
     codeStyleManager.reformat(classDeclaration);
@@ -104,12 +103,35 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     return visitor.getElements();
   }
 
-  private PsiElement getResolvedProtocol(SwiftReferenceTypeElement protocol) {
-    PsiElement resolved = protocol.resolve();
-    if (resolved == null) {
-      showErrorMessage("The protocol '" + protocol.getName() + "' could not be found.");
+  private List<SwiftProtocolDeclaration> getResolvedProtocols(SwiftTypeDeclaration typeDeclaration) {
+    SwiftTypeInheritanceClause inheritanceClause = typeDeclaration.getTypeInheritanceClause();
+    if (inheritanceClause == null) {
+      return Collections.emptyList();
     }
-    return resolved;
+    List<SwiftProtocolDeclaration> results = inheritanceClause.getReferenceTypeElementList()
+      .stream()
+      .map(this::getResolvedProtocol)
+      .filter(Objects::nonNull)
+      .collect(Collectors.toList());
+    results.addAll(results
+      .stream()
+      .flatMap(p -> getResolvedProtocols(p).stream())
+      .collect(Collectors.toList()));
+    return results;
+  }
+
+  private SwiftProtocolDeclaration getResolvedProtocol(SwiftReferenceTypeElement reference) {
+    PsiElement element = reference.resolve();
+    if (element == null) {
+      showErrorMessage("The protocol '" + reference.getName() + "' could not be found.");
+      return null;
+    }
+    if (element instanceof SwiftProtocolDeclaration) {
+      return (SwiftProtocolDeclaration) element;
+    } else {
+      showErrorMessage("This plugin currently only supports protocols.");
+    }
+    return null;
   }
 
   private void addProtocolFunctionsToClass(List<SwiftFunctionDeclaration> functions) {
