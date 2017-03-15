@@ -70,6 +70,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
       return;
     }
     deleteClassStatements();
+    protocols = new ArrayList<>(new LinkedHashSet<>(protocols));
     for (PsiElement resolvedProtocol : protocols) {
       List<SwiftVariableDeclaration> protocolProperties = getProtocolProperties(resolvedProtocol);
       List<SwiftFunctionDeclaration> protocolMethods = getProtocolMethods(resolvedProtocol);

@@ -11,6 +11,7 @@
 		35CDF06D44F883D45A5B6D80 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35CDF434C8CF2AC28EBA0449 /* LaunchScreen.storyboard */; };
 		35CDF083C033EFE1956DBF5B /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 35CDFB629531500C3AF481FF /* Info.plist */; };
 		35CDF209D142DEDBA2F4F098 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDF7810EE85C405F75C589 /* AppDelegate.swift */; };
+		35CDF22F37C69702B18B8369 /* DiamondInheritanceProtocolMock_expected.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDF6C15A836C3E7D8B9A6A /* DiamondInheritanceProtocolMock_expected.swift */; };
 		35CDF23EC681BB55A9E628A0 /* MultipleProtocolMock_expected.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDF9AFA7EE2AE257005A0D /* MultipleProtocolMock_expected.swift */; };
 		35CDF28626E2220F0C6D7C3C /* DeepInheritanceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDF79ECC02283FE3901846 /* DeepInheritanceMock.swift */; };
 		35CDF286DC9E46B5F53F8843 /* ClosureProtocolMock_expected.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDF61B4D511A920C38257F /* ClosureProtocolMock_expected.swift */; };
@@ -18,6 +19,7 @@
 		35CDF3960F50E99F2C8C4251 /* SimpleProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDFEA3978101709224D4C8 /* SimpleProtocolMock.swift */; };
 		35CDF3DE1A23A2A2F5EB6F71 /* ClosureProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDF799FE481CD57EC5739B /* ClosureProtocolMock.swift */; };
 		35CDF47EA31246759FFE4D08 /* OverloadProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDFD54367F116349E3F5B8 /* OverloadProtocolMock.swift */; };
+		35CDF4B50D1DBE891128D6F7 /* DiamondInheritanceProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDF17B3D4673A7834E5E6E /* DiamondInheritanceProtocolMock.swift */; };
 		35CDF4E595D5EFAE69131738 /* PropertyProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDF3A6162EB52FFB75945D /* PropertyProtocolMock.swift */; };
 		35CDF9C477B65D8A79FF7E38 /* PropertyProtocolMock_expected.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDF89B66BA022FCD7EBE19 /* PropertyProtocolMock_expected.swift */; };
 		35CDFA76C08D1B494DE0C050 /* RecursiveProtocolMock_expected.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDF79DCE1D697B15C0A2D0 /* RecursiveProtocolMock_expected.swift */; };
@@ -33,11 +35,13 @@
 		147135B01E5CD2890096B3B4 /* OverloadProtocolMock_expected.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverloadProtocolMock_expected.swift; sourceTree = "<group>"; };
 		147135B11E5CD2890096B3B4 /* SimpleProtocolMock_expected.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleProtocolMock_expected.swift; sourceTree = "<group>"; };
 		35CDF005D869C31B4C4CDBDC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		35CDF17B3D4673A7834E5E6E /* DiamondInheritanceProtocolMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiamondInheritanceProtocolMock.swift; sourceTree = "<group>"; };
 		35CDF1C8EAA0DC332B941BD1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		35CDF3913F0CE5933271C8B8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = Resources/Assets.xcassets; sourceTree = "<group>"; };
 		35CDF3A6162EB52FFB75945D /* PropertyProtocolMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PropertyProtocolMock.swift; sourceTree = "<group>"; };
 		35CDF4CA1B6CCE7386ECBE3C /* DeepInheritanceMock_expected.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeepInheritanceMock_expected.swift; sourceTree = "<group>"; };
 		35CDF61B4D511A920C38257F /* ClosureProtocolMock_expected.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClosureProtocolMock_expected.swift; sourceTree = "<group>"; };
+		35CDF6C15A836C3E7D8B9A6A /* DiamondInheritanceProtocolMock_expected.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiamondInheritanceProtocolMock_expected.swift; sourceTree = "<group>"; };
 		35CDF6E57C71B381F0BF5E57 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		35CDF7810EE85C405F75C589 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		35CDF799FE481CD57EC5739B /* ClosureProtocolMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClosureProtocolMock.swift; sourceTree = "<group>"; };
@@ -107,6 +111,8 @@
 				35CDF9AFA7EE2AE257005A0D /* MultipleProtocolMock_expected.swift */,
 				35CDF79ECC02283FE3901846 /* DeepInheritanceMock.swift */,
 				35CDF4CA1B6CCE7386ECBE3C /* DeepInheritanceMock_expected.swift */,
+				35CDF17B3D4673A7834E5E6E /* DiamondInheritanceProtocolMock.swift */,
+				35CDF6C15A836C3E7D8B9A6A /* DiamondInheritanceProtocolMock_expected.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -189,6 +195,8 @@
 				35CDF23EC681BB55A9E628A0 /* MultipleProtocolMock_expected.swift in Sources */,
 				35CDF28626E2220F0C6D7C3C /* DeepInheritanceMock.swift in Sources */,
 				35CDF014B20360FC2E443D8A /* DeepInheritanceMock_expected.swift in Sources */,
+				35CDF4B50D1DBE891128D6F7 /* DiamondInheritanceProtocolMock.swift in Sources */,
+				35CDF22F37C69702B18B8369 /* DiamondInheritanceProtocolMock_expected.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
