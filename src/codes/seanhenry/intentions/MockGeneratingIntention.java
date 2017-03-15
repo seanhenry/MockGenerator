@@ -70,16 +70,24 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
       return;
     }
     deleteClassStatements();
-    protocols = new ArrayList<>(new LinkedHashSet<>(protocols));
-    for (PsiElement resolvedProtocol : protocols) {
-      List<SwiftVariableDeclaration> protocolProperties = getProtocolProperties(resolvedProtocol);
-      List<SwiftFunctionDeclaration> protocolMethods = getProtocolMethods(resolvedProtocol);
-      addProtocolPropertiesToClass(protocolProperties);
-      addProtocolFunctionsToClass(protocolMethods);
-    }
+    protocols = removeDuplicates(protocols);
+    List<SwiftVariableDeclaration> properties = protocols
+      .stream()
+      .flatMap(p -> getProtocolProperties(p).stream())
+      .collect(Collectors.toList());
+    List<SwiftFunctionDeclaration> methods = protocols
+      .stream()
+      .flatMap(p -> getProtocolMethods(p).stream())
+      .collect(Collectors.toList());
+    addProtocolPropertiesToClass(removeDuplicates(properties));
+    addProtocolFunctionsToClass(removeDuplicates(methods));
 
     CodeStyleManager codeStyleManager = CodeStyleManager.getInstance(psiElement.getManager());
     codeStyleManager.reformat(classDeclaration);
+  }
+
+  private <T> List<T> removeDuplicates(List<T> list) {
+    return new ArrayList<>(new LinkedHashSet<>(list));
   }
 
   private void showErrorMessage(String message) {

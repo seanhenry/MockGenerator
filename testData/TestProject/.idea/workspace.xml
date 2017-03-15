@@ -15,21 +15,21 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="iphoneos" />
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="DiamondInheritanceProtocolMock.swift" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/DiamondInheritanceProtocolMock.swift">
+      <file leaf-file-name="DeepInheritanceMock.swift" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/DeepInheritanceMock.swift">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="195">
-              <caret line="13" column="7" lean-forward="false" selection-start-line="13" selection-start-column="7" selection-end-line="13" selection-end-column="7" />
+            <state relative-caret-position="390">
+              <caret line="26" column="1" lean-forward="false" selection-start-line="26" selection-start-column="1" selection-end-line="26" selection-end-column="1" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DiamondInheritanceProtocolMock_expected.swift" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/DiamondInheritanceProtocolMock_expected.swift">
+      <file leaf-file-name="DeepInheritanceMock_expected.swift" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DeepInheritanceMock_expected.swift">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="405">
-              <caret line="27" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
+            <state relative-caret-position="318">
+              <caret line="39" column="5" lean-forward="true" selection-start-line="39" selection-start-column="5" selection-end-line="39" selection-end-column="5" />
               <folding />
             </state>
           </provider>
@@ -66,14 +66,14 @@
         <option value="$PROJECT_DIR$/PropertyProtocolMock_expected.swift" />
         <option value="$PROJECT_DIR$/ClosureProtocolMock.swift" />
         <option value="$PROJECT_DIR$/ClosureProtocolMock_expected.swift" />
-        <option value="$PROJECT_DIR$/RecursiveProtocolMock.swift" />
         <option value="$PROJECT_DIR$/MultipleProtocolMock.swift" />
-        <option value="$PROJECT_DIR$/DeepInheritanceMock.swift" />
-        <option value="$PROJECT_DIR$/RecursiveProtocolMock_expected.swift" />
         <option value="$PROJECT_DIR$/MultipleProtocolMock_expected.swift" />
-        <option value="$PROJECT_DIR$/DeepInheritanceMock_expected.swift" />
         <option value="$PROJECT_DIR$/DiamondInheritanceProtocolMock_expected.swift" />
         <option value="$PROJECT_DIR$/DiamondInheritanceProtocolMock.swift" />
+        <option value="$PROJECT_DIR$/RecursiveProtocolMock.swift" />
+        <option value="$PROJECT_DIR$/RecursiveProtocolMock_expected.swift" />
+        <option value="$PROJECT_DIR$/DeepInheritanceMock_expected.swift" />
+        <option value="$PROJECT_DIR$/DeepInheritanceMock.swift" />
       </list>
     </option>
   </component>
@@ -190,8 +190,8 @@
     <option name="FILTER_WHITESPACE" value="false" />
     <option name="SHOW_PROPERTIES" value="true" />
     <option name="SPLIT_DIVIDER_POSITION" value="300" />
-    <option name="AUTOSCROLL_TO_SOURCE" value="true" />
-    <option name="AUTOSCROLL_FROM_SOURCE" value="true" />
+    <option name="AUTOSCROLL_TO_SOURCE" value="false" />
+    <option name="AUTOSCROLL_FROM_SOURCE" value="false" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -365,12 +365,12 @@
       <workItem from="1489428521986" duration="11000" />
       <workItem from="1489428626235" duration="14000" />
       <workItem from="1489512942878" duration="4776000" />
-      <workItem from="1489599496315" duration="368000" />
+      <workItem from="1489599496315" duration="2402000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="55759000" />
+    <option name="totallyTimeSpent" value="57793000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="873" extended-state="6" />
@@ -525,52 +525,42 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/MultipleProtocolMock.swift">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/RecursiveProtocolMock_expected.swift">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="13" column="5" lean-forward="false" selection-start-line="13" selection-start-column="5" selection-end-line="13" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/MultipleProtocolMock_expected.swift">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
           <caret line="20" column="18" lean-forward="false" selection-start-line="20" selection-start-column="18" selection-end-line="20" selection-end-column="18" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/RecursiveProtocolMock.swift">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="7" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultipleProtocolMock.swift">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
-          <caret line="9" column="0" lean-forward="false" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="7" />
+          <caret line="9" column="12" lean-forward="true" selection-start-line="9" selection-start-column="12" selection-end-line="9" selection-end-column="12" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/DeepInheritanceMock.swift">
+    <entry file="file://$PROJECT_DIR$/RecursiveProtocolMock_expected.swift">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="406">
-          <caret line="33" column="7" lean-forward="false" selection-start-line="33" selection-start-column="7" selection-end-line="33" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DeepInheritanceMock_expected.swift">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="61" column="5" lean-forward="false" selection-start-line="61" selection-start-column="5" selection-end-line="61" selection-end-column="5" />
+        <state relative-caret-position="120">
+          <caret line="8" column="0" lean-forward="true" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/DiamondInheritanceProtocolMock_expected.swift">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="27" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
+        <state relative-caret-position="120">
+          <caret line="8" column="22" lean-forward="true" selection-start-line="8" selection-start-column="22" selection-end-line="8" selection-end-column="22" />
           <folding />
         </state>
       </provider>
@@ -579,6 +569,22 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="195">
           <caret line="13" column="7" lean-forward="false" selection-start-line="13" selection-start-column="7" selection-end-line="13" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DeepInheritanceMock_expected.swift">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="318">
+          <caret line="39" column="5" lean-forward="true" selection-start-line="39" selection-start-column="5" selection-end-line="39" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DeepInheritanceMock.swift">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="390">
+          <caret line="26" column="1" lean-forward="false" selection-start-line="26" selection-start-column="1" selection-end-line="26" selection-end-column="1" />
           <folding />
         </state>
       </provider>
