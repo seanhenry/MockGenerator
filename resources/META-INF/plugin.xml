@@ -1,46 +1,30 @@
-<!--
-  ~ Copyright 2000-2017 JetBrains s.r.o.
-  ~
-  ~ Licensed under the Apache License, Version 2.0 (the "License");
-  ~ you may not use this file except in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~ http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software
-  ~ distributed under the License is distributed on an "AS IS" BASIS,
-  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and
-  ~ limitations under the License.
-  -->
 <idea-plugin version="2">
-  <id>com.your.company.unique.plugin.id</id>
-  <name>Plugin display name here</name>
+  <id>codes.seanhenry.mockgenerator</id>
+  <name>Swift Mock Generator for AppCode</name>
   <version>1.0</version>
-  <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+  <vendor email="hello@seanhenry.codes" url="http://www.seanhenry.codes">Sean Henry</vendor>
 
   <description><![CDATA[
-      Enter short description for your plugin here.<br>
-      <em>most HTML tags may be used</em>
+      Automatically generate your mocks in one action.
+      <ul>
+        <li>Captures invocation status of a method.</li>
+        <li>Captures invoked method parameters.</li>
+        <li>Stub values for your mocks to return.</li>
+        <li>Automatically calls closure parameters with stubbed values.</li>
+        <li>Supports mocks conforming to one or or many protocols.</li>
+        <li>Handles overloaded method declarations.</li>
+        <li>Regenerate your mock in one action.</li>
+      </ul>
     ]]></description>
 
   <change-notes><![CDATA[
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>
     ]]>
   </change-notes>
 
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-  <idea-version since-build="145.0"/>
-
-  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
-       on how to target different products -->
-  <!--&lt;!&ndash; uncomment to enable plugin in all products-->
-  <!--<depends>com.intellij.modules.lang</depends>-->
-  <!--&ndash;&gt;-->
+  <idea-version since-build="163.0"/>
 
   <actions>
-    <!-- Add your actions here -->
   </actions>
 
   <!-- 1. Must be used with AppCode -->
