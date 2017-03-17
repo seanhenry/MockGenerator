@@ -109,7 +109,7 @@ class Mock: ClosureProtocol {
     func optionalParams(_ closure: (String?, Int!) -> ()) {
         invokedOptionalParams = true
         if let result = stubbedOptionalParamsClosureResult {
-            closure(result)
+            closure(result.0, result.1)
         }
     }
     var invokedParse = false

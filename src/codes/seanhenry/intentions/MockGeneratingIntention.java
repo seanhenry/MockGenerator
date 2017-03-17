@@ -11,6 +11,7 @@ import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
 import com.jetbrains.swift.psi.*;
+import kotlin.ranges.IntRange;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,6 +19,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class MockGeneratingIntention extends PsiElementBaseIntentionAction implements IntentionAction {
 
@@ -323,9 +325,15 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
       if (count == 0) {
         closureCall = name + optional + "()";
       } else {
-        closureCall = "if let result = " + createClosureResultName(name) + " {"
-                      + name + optional + "(result)" +
-                      "}";
+        closureCall = "if let result = " + createClosureResultName(name) + " {";
+        closureCall += name + optional + "(";
+        if(count == 1) {
+          closureCall += "result";
+        } else {
+          closureCall += IntStream.range(0, count).mapToObj(i -> "result." + i).collect(Collectors.joining(","));
+        }
+        closureCall += ") }";
+
       }
       PsiElement statement = getElementFactory().createStatement(closureCall, protocolFunction);
       appendInImplementedFunction(statement);
