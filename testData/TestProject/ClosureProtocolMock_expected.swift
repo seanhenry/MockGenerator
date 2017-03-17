@@ -14,6 +14,7 @@ protocol ClosureProtocol {
     func escaping(closure: @escaping () -> ())
     func returnClosure() -> (() -> ())
     func returnClosureArgs() -> (Int, String) -> (String)
+    func optionalParam(_ closure: (String?) -> ())
     func optionalParams(_ closure: (String?, Int!) -> ())
     func parse(response data: Data) // should not resolve Data and treat as closure
 }
@@ -94,6 +95,14 @@ class Mock: ClosureProtocol {
     func returnClosureArgs() -> (Int, String) -> (String) {
         invokedReturnClosureArgs = true
         return stubbedReturnClosureArgsResult
+    }
+    var invokedOptionalParam = false
+    var stubbedOptionalParamClosureResult: String??
+    func optionalParam(_ closure: (String?) -> ()) {
+        invokedOptionalParam = true
+        if let result = stubbedOptionalParamClosureResult {
+            closure(result)
+        }
     }
     var invokedOptionalParams = false
     var stubbedOptionalParamsClosureResult: (String?, Int!)?
