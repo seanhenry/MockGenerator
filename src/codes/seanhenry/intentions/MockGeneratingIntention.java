@@ -267,7 +267,14 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   }
 
   private void addInvokedParameterVariables() {
-    List<String> parameters = getParameterNames(protocolFunction, p -> p.getName() + ": " + MySwiftPsiUtil.getResolvedTypeName(p.getParameterTypeAnnotation(), false), true);
+    List<String> parameters = getParameterNames(protocolFunction, p -> {
+      SwiftParameterTypeAnnotation typeAnnotation = p.getParameterTypeAnnotation();
+      String name = p.getName() + ": " + MySwiftPsiUtil.getResolvedTypeName(typeAnnotation, true);
+      if (MySwiftPsiUtil.containsOptionalOfType(typeAnnotation, SwiftReferenceTypeElement.class)) {
+        return name + "?";
+      }
+      return name;
+    }, true);
     if (parameters.isEmpty()) {
       return;
     } else if (parameters.size() == 1) {

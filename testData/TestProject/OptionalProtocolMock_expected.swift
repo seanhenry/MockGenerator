@@ -15,7 +15,7 @@ class Mock: OptionalProtocol {
         return stubbedOptionalsResult
     }
     var invokedUnwrappedOptionals = false
-    var invokedUnwrappedOptionalsParameters: (unwrapped: UInt!, Void)?
+    var invokedUnwrappedOptionalsParameters: (unwrapped: UInt?, Void)?
     var stubbedUnwrappedOptionalsResult: UInt!
     func unwrappedOptionals(unwrapped: UInt!) -> UInt! {
         invokedUnwrappedOptionals = true
@@ -23,7 +23,7 @@ class Mock: OptionalProtocol {
         return stubbedUnwrappedOptionalsResult
     }
     var invokedMixed = false
-    var invokedMixedParameters: (unwrapped: UInt!, optional: String?, value: Int)?
+    var invokedMixedParameters: (unwrapped: UInt?, optional: String?, value: Int)?
     var stubbedMixedResult: String!
     func mixed(unwrapped: UInt!, optional: String?, value: Int) -> String {
         invokedMixed = true

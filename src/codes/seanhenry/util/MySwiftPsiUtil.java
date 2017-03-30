@@ -62,7 +62,8 @@ public class MySwiftPsiUtil {
   public static <T extends PsiElement> boolean containsOptionalOfType(PsiElement element, Class<T> type) {
     PsiElement possibleOptional = findType(element, type);
     if (possibleOptional != null) {
-      return possibleOptional.getParent() instanceof SwiftOptionalTypeElement;
+      return possibleOptional.getParent() instanceof SwiftOptionalTypeElement
+             || possibleOptional.getParent() instanceof SwiftImplicitlyUnwrappedOptionalTypeElement;
     }
     return false;
   }

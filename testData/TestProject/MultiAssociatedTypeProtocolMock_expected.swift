@@ -17,7 +17,7 @@ class Mock<SomeType, AnotherType>: MultiAssociated {
         return stubbedDoSomethingResult
     }
     var invokedDoSomethingElse = false
-    var invokedDoSomethingElseParameters: (with: SomeType!, Void)?
+    var invokedDoSomethingElseParameters: (with: SomeType?, Void)?
     var stubbedDoSomethingElseResult: SomeType!
     func doSomethingElse(with: SomeType!) -> SomeType? {
         invokedDoSomethingElse = true
