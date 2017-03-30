@@ -54,28 +54,29 @@ public class MockGeneratingIntentionTests extends PlatformTestCase {
 
   public void testAll() throws Exception {
     String[] fileNames = {
-      "SimpleProtocolMock",
-      "OptionalProtocolMock",
-      "OverloadProtocolMock",
-      "PropertyProtocolMock",
-      "ClosureProtocolMock",
-      "RecursiveProtocolMock",
-      "MultipleProtocolMock",
-      "DeepInheritanceMock",
-      "DiamondInheritanceProtocolMock",
-      "AssociatedTypeProtocolMock",
-      "MultiAssociatedTypeProtocolMock",
+      "SimpleProtocol",
+      "OptionalProtocol",
+      "OverloadProtocol",
+      "PropertyProtocol",
+      "ClosureProtocol",
+      "RecursiveProtocol",
+      "MultipleProtocol",
+      "DeepInheritance",
+      "DiamondInheritanceProtocol",
+      "AssociatedTypeProtocol",
+      "MultiAssociatedTypeProtocol",
     };
+
     for (String fileName : fileNames) {
       runTest(fileName);
     }
   }
 
   private void runTest(String fileName) throws IOException {
-    String expectedFileName = fileName + "_expected.swift";
-    fileName += ".swift";
+    String expectedFileName = fileName + "Mock_expected.swift";
+    String mockFileName = fileName + "Mock.swift";
     System.out.println("Running test for " + fileName);
-    PsiFile[] files = FilenameIndex.getFilesByName(getActiveProject(), fileName, GlobalSearchScope.projectScope(getActiveProject()));
+    PsiFile[] files = FilenameIndex.getFilesByName(getActiveProject(), mockFileName, GlobalSearchScope.projectScope(getActiveProject()));
     PsiFile psiFile = files[0];
     VirtualFile file = psiFile.getVirtualFile();
     myFixture.configureFromExistingVirtualFile(file);

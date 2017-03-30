@@ -1,10 +1,3 @@
-protocol SimpleProtocol {
-    func simpleMethod()
-    func anotherMethod(var1: String, var2: Int, var3: Double)
-    func returnMethod(_ hello: String) -> String
-    func duplicateParam(var1: String)
-}
-
 class AnotherDeclarationInTheFileShouldNotBeAffected {
 
     func shouldNotInterfere() {
@@ -12,7 +5,7 @@ class AnotherDeclarationInTheFileShouldNotBeAffected {
     }
 }
 
-class Mock: SimpleProtocol {
+class SimpleProtocolMock: SimpleProtocol {
 
     var invokedSimpleMethod = false
     func simpleMethod() {

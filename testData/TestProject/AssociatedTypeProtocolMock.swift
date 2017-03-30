@@ -1,9 +1,3 @@
-protocol SingleAssociated {
-
-    associatedtype SomeType
-    func doSomething(with: SomeType) -> SomeType
-}
-
-class Mock: SingleAssociated {
+class MockAssociatedTypeProtocol: AssociatedTypeProtocol {
 <caret>
 }

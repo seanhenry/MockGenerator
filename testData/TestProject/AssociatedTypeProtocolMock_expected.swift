@@ -1,10 +1,4 @@
-protocol SingleAssociated {
-
-    associatedtype SomeType
-    func doSomething(with: SomeType) -> SomeType
-}
-
-class Mock<SomeType>: SingleAssociated {
+class MockAssociatedTypeProtocol<SomeType>: AssociatedTypeProtocol {
 
     var invokedDoSomething = false
     var invokedDoSomethingParameters: (with: SomeType, Void)?

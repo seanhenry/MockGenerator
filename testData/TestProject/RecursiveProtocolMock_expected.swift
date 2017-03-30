@@ -1,13 +1,4 @@
-protocol InheritedProtocol {
-    func inherited(method: String)
-}
-
-protocol InheritingProtocol: InheritedProtocol {
-    func inheriting()
-    func inherited(overloaded: Int)
-}
-
-class Mock: InheritingProtocol {
+class MockRecursiveProtocol: InheritingProtocol {
 
     var invokedInheriting = false
     func inheriting() {
