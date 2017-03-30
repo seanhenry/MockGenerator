@@ -63,6 +63,8 @@ public class MockGeneratingIntentionTests extends PlatformTestCase {
       "MultipleProtocolMock",
       "DeepInheritanceMock",
       "DiamondInheritanceProtocolMock",
+      "AssociatedTypeProtocolMock",
+      "MultiAssociatedTypeProtocolMock",
     };
     for (String fileName : fileNames) {
       runTest(fileName);

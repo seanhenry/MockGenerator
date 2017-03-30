@@ -11,7 +11,6 @@ import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
 import com.jetbrains.swift.psi.*;
-import kotlin.ranges.IntRange;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
@@ -81,6 +80,11 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
       .stream()
       .flatMap(p -> getProtocolMethods(p).stream())
       .collect(Collectors.toList());
+    List<SwiftAssociatedTypeDeclaration> associatedTypes = protocols
+      .stream()
+      .flatMap(p -> getProtocolAssociatedTypes(p).stream())
+      .collect(Collectors.toList());
+    addGenericParametersToClass(removeDuplicates(associatedTypes));
     addProtocolPropertiesToClass(removeDuplicates(properties));
     addProtocolFunctionsToClass(removeDuplicates(methods));
 
@@ -110,6 +114,12 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
 
   private List<SwiftVariableDeclaration> getProtocolProperties(PsiElement protocol) {
     ElementGatheringVisitor<SwiftVariableDeclaration> visitor = new ElementGatheringVisitor<>(SwiftVariableDeclaration.class);
+    protocol.accept(visitor);
+    return visitor.getElements();
+  }
+
+  private List<SwiftAssociatedTypeDeclaration> getProtocolAssociatedTypes(PsiElement protocol) {
+    ElementGatheringVisitor<SwiftAssociatedTypeDeclaration> visitor = new ElementGatheringVisitor<>(SwiftAssociatedTypeDeclaration.class);
     protocol.accept(visitor);
     return visitor.getElements();
   }
@@ -197,6 +207,21 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
       appendInClass(stubbedProperty);
       appendInClass(concreteProperty);
     }
+  }
+
+  private void addGenericParametersToClass(List<SwiftAssociatedTypeDeclaration> associatedTypes) {
+
+    if (associatedTypes.isEmpty()) {
+      return;
+    }
+    if (classDeclaration.getGenericParameterClause() != null) {
+      classDeclaration.getGenericParameterClause().delete();
+    }
+    String literal = "<";
+    literal += associatedTypes.stream().map(PsiNamedElement::getName).collect(Collectors.joining(", "));
+    literal += ">";
+    SwiftStatement statement = getElementFactory().createStatement(literal);
+    classDeclaration.addBefore(statement, classDeclaration.getTypeInheritanceClause());
   }
 
   @NotNull

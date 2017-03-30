@@ -14,6 +14,7 @@
         <li>Supports mocks conforming to one or or many protocols.</li>
         <li>Handles overloaded method declarations.</li>
         <li>Regenerate your mock in one action.</li>
+        <li>Supports associated types.</li>
       </ul>
     ]]></description>
 

@@ -15,21 +15,31 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="iphoneos" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="ClosureProtocolMock.swift" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ClosureProtocolMock.swift">
+      <file leaf-file-name="MultiAssociatedTypeProtocolMock.swift" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/MultiAssociatedTypeProtocolMock.swift">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="16" column="50" lean-forward="false" selection-start-line="16" selection-start-column="50" selection-end-line="16" selection-end-column="50" />
+            <state relative-caret-position="120">
+              <caret line="8" column="23" lean-forward="false" selection-start-line="8" selection-start-column="23" selection-end-line="8" selection-end-column="23" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ClosureProtocolMock_expected.swift" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/ClosureProtocolMock_expected.swift">
+      <file leaf-file-name="MultiAssociatedTypeProtocolMock_expected.swift" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/MultiAssociatedTypeProtocolMock_expected.swift">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="551">
-              <caret line="112" column="9" lean-forward="true" selection-start-line="112" selection-start-column="9" selection-end-line="112" selection-end-column="9" />
+            <state relative-caret-position="135">
+              <caret line="9" column="0" lean-forward="true" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="OptionalProtocolMock_expected.swift" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/OptionalProtocolMock_expected.swift">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="17" column="47" lean-forward="true" selection-start-line="17" selection-start-column="47" selection-end-line="17" selection-end-column="47" />
               <folding />
             </state>
           </provider>
@@ -74,6 +84,10 @@
         <option value="$PROJECT_DIR$/DeepInheritanceMock.swift" />
         <option value="$PROJECT_DIR$/ClosureProtocolMock.swift" />
         <option value="$PROJECT_DIR$/ClosureProtocolMock_expected.swift" />
+        <option value="$PROJECT_DIR$/AssociatedTypeProtocolMock.swift" />
+        <option value="$PROJECT_DIR$/AssociatedTypeProtocolMock_expected.swift" />
+        <option value="$PROJECT_DIR$/MultiAssociatedTypeProtocolMock_expected.swift" />
+        <option value="$PROJECT_DIR$/MultiAssociatedTypeProtocolMock.swift" />
       </list>
     </option>
   </component>
@@ -156,6 +170,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Cidr.FilesView" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -170,7 +185,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Cidr.FilesView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -367,11 +381,13 @@
       <workItem from="1489512942878" duration="4776000" />
       <workItem from="1489599496315" duration="3387000" />
       <workItem from="1489612389123" duration="226000" />
+      <workItem from="1490806336638" duration="498000" />
+      <workItem from="1490892321246" duration="2152000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="59872000" />
+    <option name="totallyTimeSpent" value="62522000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="873" extended-state="6" />
@@ -411,10 +427,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/MockGeneratorTestTests/MockProtocol.swift" />
-    <entry file="file://$PROJECT_DIR$/MockGeneratorTest/Protocol.swift" />
-    <entry file="file://$PROJECT_DIR$/MockGeneratorTestTests/MockProtocol.swift" />
-    <entry file="file://$PROJECT_DIR$/MockGeneratorTest/Protocol.swift" />
     <entry file="file://$PROJECT_DIR$/MockGeneratorTest/Protocol.swift" />
     <entry file="file://$PROJECT_DIR$/MockGeneratorTestTests/MockProtocol.swift" />
     <entry file="file://$PROJECT_DIR$/MockGeneratorTest/Protocol.swift" />
@@ -467,13 +479,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
           <caret line="20" column="5" lean-forward="true" selection-start-line="20" selection-start-column="5" selection-end-line="20" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/OptionalProtocolMock_expected.swift">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="26" column="35" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -568,6 +573,22 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/AssociatedTypeProtocolMock.swift">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="0" lean-forward="true" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ClosureProtocolMock_expected.swift">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="554">
+          <caret line="112" column="9" lean-forward="false" selection-start-line="112" selection-start-column="9" selection-end-line="112" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/ClosureProtocolMock.swift">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
@@ -576,10 +597,34 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ClosureProtocolMock_expected.swift">
+    <entry file="file://$PROJECT_DIR$/AssociatedTypeProtocolMock_expected.swift">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="551">
-          <caret line="112" column="9" lean-forward="true" selection-start-line="112" selection-start-column="9" selection-end-line="112" selection-end-column="9" />
+        <state relative-caret-position="120">
+          <caret line="8" column="18" lean-forward="true" selection-start-line="8" selection-start-column="18" selection-end-line="8" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/OptionalProtocolMock_expected.swift">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" column="47" lean-forward="true" selection-start-line="17" selection-start-column="47" selection-end-line="17" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiAssociatedTypeProtocolMock_expected.swift">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="0" lean-forward="true" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiAssociatedTypeProtocolMock.swift">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="23" lean-forward="false" selection-start-line="8" selection-start-column="23" selection-end-line="8" selection-end-column="23" />
           <folding />
         </state>
       </provider>
