@@ -15,6 +15,7 @@
         <li>Handles overloaded method declarations.</li>
         <li>Regenerate your mock in one action.</li>
         <li>Supports associated types.</li>
+        <li>Respects public mocks and makes queries publicly available.</li>
       </ul>
     ]]></description>
 
