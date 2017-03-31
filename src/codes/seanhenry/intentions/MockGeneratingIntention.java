@@ -72,6 +72,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     }
     deleteClassStatements();
     protocols = removeDuplicates(protocols);
+    protocols = removeNSObjectProtocol(protocols);
     List<SwiftVariableDeclaration> properties = protocols
       .stream()
       .flatMap(p -> getProtocolProperties(p).stream())
@@ -90,6 +91,10 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
 
     CodeStyleManager codeStyleManager = CodeStyleManager.getInstance(psiElement.getManager());
     codeStyleManager.reformat(classDeclaration);
+  }
+
+  private List<SwiftProtocolDeclaration> removeNSObjectProtocol(List<SwiftProtocolDeclaration> protocols) {
+    return protocols.stream().filter(p -> !p.getName().equals("NSObjectProtocol")).collect(Collectors.toList());
   }
 
   private <T> List<T> removeDuplicates(List<T> list) {

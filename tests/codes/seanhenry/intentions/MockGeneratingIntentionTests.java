@@ -65,6 +65,7 @@ public class MockGeneratingIntentionTests extends PlatformTestCase {
       "DiamondInheritanceProtocol",
       "AssociatedTypeProtocol",
       "MultiAssociatedTypeProtocol",
+      "UIKitProtocol",
     };
 
     for (String fileName : fileNames) {
