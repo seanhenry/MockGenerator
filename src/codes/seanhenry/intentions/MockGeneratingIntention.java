@@ -46,6 +46,8 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     stubbedClosureResultNameDecorator = new AppendStringDecorator(prependDecorator, "Result");
   }
 
+  private String scope = "";
+
   @Override
   public boolean isAvailable(@NotNull Project project, Editor editor, @NotNull PsiElement psiElement) {
     SwiftClassDeclaration classDeclaration = PsiTreeUtil.getParentOfType(psiElement, SwiftClassDeclaration.class);
@@ -71,6 +73,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
       return;
     }
     deleteClassStatements();
+    scope = getMockScope();
     protocols = removeDuplicates(protocols);
     protocols = removeNSObjectProtocol(protocols);
     List<SwiftVariableDeclaration> properties = protocols
@@ -91,6 +94,13 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
 
     CodeStyleManager codeStyleManager = CodeStyleManager.getInstance(psiElement.getManager());
     codeStyleManager.reformat(classDeclaration);
+  }
+
+  private String getMockScope() {
+    if (classDeclaration.getAttributes().getText().contains("public")) {
+      return "public ";
+    }
+    return "";
   }
 
   private List<SwiftProtocolDeclaration> removeNSObjectProtocol(List<SwiftProtocolDeclaration> protocols) {
@@ -179,7 +189,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
 
   private SwiftFunctionDeclaration createImplementedFunction() {
     List<String> params = getParameterNames(protocolFunction, p -> constructParameter(p), false);
-    String literal = "func " + protocolFunction.getName() + "(";
+    String literal = scope + "func " + protocolFunction.getName() + "(";
     literal += String.join(", ", params);
     literal += ")";
     if (protocolFunction.getFunctionResult() != null)
@@ -201,9 +211,9 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   private void addProtocolPropertiesToClass(List<SwiftVariableDeclaration> properties) {
     for (SwiftVariableDeclaration property : properties) {
 
-      SwiftVariableDeclaration invokedProperty = new PropertyDecorator(invokedPropertyNameDecorator, PropertyDecorator.OPTIONAL)
+      SwiftVariableDeclaration invokedProperty = new PropertyDecorator(invokedPropertyNameDecorator, PropertyDecorator.OPTIONAL, scope)
         .decorate(property);
-      SwiftVariableDeclaration stubbedProperty = new PropertyDecorator(stubbedPropertyNameDecorator, PropertyDecorator.IMPLICITLY_UNWRAPPED_OPTIONAL)
+      SwiftVariableDeclaration stubbedProperty = new PropertyDecorator(stubbedPropertyNameDecorator, PropertyDecorator.IMPLICITLY_UNWRAPPED_OPTIONAL, scope)
         .decorate(property);
       boolean hasSetter = PsiTreeUtil.findChildOfType(property, SwiftSetterClause.class) != null;
       String literal = buildConcreteProperty(property, invokedProperty, stubbedProperty, hasSetter);
@@ -236,7 +246,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     SwiftTypeAnnotatedPattern pattern = (SwiftTypeAnnotatedPattern) property.getPatternInitializerList().get(0).getPattern();
     String attributes = property.getAttributes().getText();
     String label = pattern.getPattern().getText();
-    String literal = attributes + " var " + label + pattern.getTypeAnnotation().getText() + "{\n";
+    String literal = scope + attributes + " var " + label + pattern.getTypeAnnotation().getText() + "{\n";
     String returnLabel = "return " + MySwiftPsiUtil.getName(stubbedProperty) + "\n";
     if (hasSetter) {
       literal += "set {\n" +
@@ -267,7 +277,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   }
 
   private void addInvocationCheckVariable() {
-    SwiftStatement variable = getElementFactory().createStatement("var " + createInvokedVariableName() + " = false");
+    SwiftStatement variable = getElementFactory().createStatement(scope + "var " + createInvokedVariableName() + " = false");
     appendInClass(variable);
   }
 
@@ -285,7 +295,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     } else if (parameters.size() == 1) {
       parameters.add("Void");
     }
-    String variable = "var " + createInvokedParametersName() + ": (" + String.join(", ", parameters) + ")?";
+    String variable = scope + "var " + createInvokedParametersName() + ": (" + String.join(", ", parameters) + ")?";
     SwiftStatement statement = getElementFactory().createStatement(variable);
     appendInClass(statement);
   }
@@ -295,7 +305,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     for (SwiftParameter parameter : parameters) {
       String name = parameter.getName();
       List<String> types = getClosureParameterTypes(parameter);
-      String variable = "var " + createClosureResultName(name) + ": ";
+      String variable = scope + "var " + createClosureResultName(name) + ": ";
       if (types.isEmpty()) {
         continue;
       } else if (types.size() == 1) {
@@ -330,7 +340,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
       resultString = "(" + resultString + ")";
     }
     String name = createStubbedVariableName();
-    String literal = "var " + name + ": " + resultString + "!";
+    String literal = scope + "var " + name + ": " + resultString + "!";
     SwiftStatement variable = getElementFactory().createStatement(literal);
     appendInClass(variable);
   }

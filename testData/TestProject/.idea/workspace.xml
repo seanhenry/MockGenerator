@@ -15,31 +15,21 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="iphoneos" />
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="UIKitProtocolMock_expected.swift" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/UIKitProtocolMock_expected.swift">
+      <file leaf-file-name="PublicProtocol.swift" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/PublicProtocol.swift">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="30">
-              <caret line="2" column="54" lean-forward="false" selection-start-line="2" selection-start-column="35" selection-end-line="2" selection-end-column="54" />
+            <state relative-caret-position="15">
+              <caret line="1" column="35" lean-forward="false" selection-start-line="1" selection-start-column="35" selection-end-line="1" selection-end-column="35" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="UIKitProtocolMock.swift" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/UIKitProtocolMock.swift">
+      <file leaf-file-name="PublicProtocolMock_expected.swift" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/PublicProtocolMock_expected.swift">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="30">
-              <caret line="2" column="54" lean-forward="false" selection-start-line="2" selection-start-column="54" selection-end-line="2" selection-end-column="54" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="UIKit.UITextField.swift" pinned="false" current-in-tab="false">
-        <entry file="mock:///UIKit.UITextField.swift">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="78">
-              <caret line="142" column="16" lean-forward="false" selection-start-line="142" selection-start-column="16" selection-end-line="142" selection-end-column="16" />
+            <state relative-caret-position="210">
+              <caret line="14" column="26" lean-forward="false" selection-start-line="14" selection-start-column="26" selection-end-line="14" selection-end-column="26" />
               <folding />
             </state>
           </provider>
@@ -103,6 +93,9 @@
         <option value="$PROJECT_DIR$/UIKitProtocol.swift" />
         <option value="$PROJECT_DIR$/UIKitProtocolMock_expected.swift" />
         <option value="$PROJECT_DIR$/UIKitProtocolMock.swift" />
+        <option value="$PROJECT_DIR$/PublicProtocolMock.swift" />
+        <option value="$PROJECT_DIR$/PublicProtocol.swift" />
+        <option value="$PROJECT_DIR$/PublicProtocolMock_expected.swift" />
       </list>
     </option>
   </component>
@@ -401,12 +394,12 @@
       <workItem from="1490895451506" duration="358000" />
       <workItem from="1490910205030" duration="760000" />
       <workItem from="1490910978084" duration="713000" />
-      <workItem from="1490977843978" duration="1227000" />
+      <workItem from="1490977843978" duration="2585000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="65580000" />
+    <option name="totallyTimeSpent" value="66938000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="873" extended-state="6" />
@@ -446,9 +439,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/MockGeneratorTestTests/MockProtocol.swift" />
-    <entry file="file://$PROJECT_DIR$/MockGeneratorTest/Protocol.swift" />
-    <entry file="file://$PROJECT_DIR$/MockGeneratorTest/Protocol.swift" />
     <entry file="file://$PROJECT_DIR$/MockGeneratorTestTests/MockProtocol.swift" />
     <entry file="file://$PROJECT_DIR$/MockGeneratorTest/Protocol.swift" />
     <entry file="file://$PROJECT_DIR$/MockGeneratorTestTests/MockProtocol.swift" />
@@ -724,6 +714,30 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
           <caret line="2" column="54" lean-forward="false" selection-start-line="2" selection-start-column="54" selection-end-line="2" selection-end-column="54" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PublicProtocolMock.swift">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="0" lean-forward="true" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PublicProtocol.swift">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" column="35" lean-forward="false" selection-start-line="1" selection-start-column="35" selection-end-line="1" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PublicProtocolMock_expected.swift">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="14" column="26" lean-forward="false" selection-start-line="14" selection-start-column="26" selection-end-line="14" selection-end-column="26" />
           <folding />
         </state>
       </provider>
