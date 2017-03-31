@@ -28,17 +28,14 @@
   <actions>
   </actions>
 
-  <!-- 1. Must be used with AppCode -->
   <depends>com.intellij.modules.appcode</depends>
 
-  <!-- 2. Tells AppCode where to find our intention -->
   <project-components>
     <component>
       <implementation-class>codes.seanhenry.intentions.MockGeneratingIntention</implementation-class>
     </component>
   </project-components>
 
-  <!-- 3. Tells AppCode the type of extension and where to find it -->
   <extensions defaultExtensionNs="com.intellij">
     <intentionAction>
       <className>codes.seanhenry.intentions.MockGeneratingIntention</className>
