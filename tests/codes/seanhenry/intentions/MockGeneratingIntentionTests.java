@@ -6,6 +6,7 @@ import com.intellij.codeInsight.intention.IntentionAction;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.newvfs.impl.VfsRootAccess;
 import com.intellij.psi.*;
 import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
@@ -27,15 +28,21 @@ public class MockGeneratingIntentionTests extends PlatformTestCase {
   protected void tearDown() throws Exception {
     try {
       myFixture.tearDown();
+    } catch (Throwable ignored) {
     } finally {
       myFixture = null;
-      super.tearDown();
+      try {
+
+        super.tearDown();
+      } catch (Throwable ignored) {}
     }
   }
 
   @Override
   protected void setUpProject() throws Exception {
     super.setUpProject();
+
+    VfsRootAccess.allowRootAccess("/Applications/Xcode-8.3.2.app/Contents");
 
     TempDirTestFixtureImpl tempDirTestFixture = new TempDirTestFixtureImpl();
     String projectDir = tempDirTestFixture.getTempDirPath();
