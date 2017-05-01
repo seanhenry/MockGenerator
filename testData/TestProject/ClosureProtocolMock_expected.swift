@@ -11,51 +11,51 @@ class MockClosureProtocol: ClosureProtocol {
         closure()
     }
     var invokedFilter = false
-    var stubbedFilterClosureResult: String?
+    var stubbedFilterClosureResult: (String, Void)?
     func filter(closure: (String) -> Bool) {
         invokedFilter = true
         if let result = stubbedFilterClosureResult {
-            closure(result)
+            closure(result.0)
         }
     }
     var invokedTypealiasClosure = false
-    var stubbedTypealiasClosureClosureResult: Int?
+    var stubbedTypealiasClosureClosureResult: (Int, Void)?
     func typealiasClosure(closure: Completion) {
         invokedTypealiasClosure = true
         if let result = stubbedTypealiasClosureClosureResult {
-            closure(result)
+            closure(result.0)
         }
     }
     var invokedInternalTypealiasClosure = false
-    var stubbedInternalTypealiasClosureClosureResult: String?
+    var stubbedInternalTypealiasClosureClosureResult: (String, Void)?
     func internalTypealiasClosure(closure: ClosureProtocol.T) {
         invokedInternalTypealiasClosure = true
         if let result = stubbedInternalTypealiasClosureClosureResult {
-            closure(result)
+            closure(result.0)
         }
     }
     var invokedMulti = false
-    var stubbedMultiAnimationsResult: Int?
-    var stubbedMultiCompletionResult: Bool?
+    var stubbedMultiAnimationsResult: (Int, Void)?
+    var stubbedMultiCompletionResult: (Bool, Void)?
     func multi(animations: (Int) -> (), completion: (Bool) -> ()) {
         invokedMulti = true
         if let result = stubbedMultiAnimationsResult {
-            animations(result)
+            animations(result.0)
         }
         if let result = stubbedMultiCompletionResult {
-            completion(result)
+            completion(result.0)
         }
     }
     var invokedOptional = false
-    var stubbedOptionalAnimationsResult: Int?
-    var stubbedOptionalCompletionResult: Bool?
+    var stubbedOptionalAnimationsResult: (Int, Void)?
+    var stubbedOptionalCompletionResult: (Bool, Void)?
     func optional(animations: ((Int) -> ())?, completion: ((Bool) -> ())?) {
         invokedOptional = true
         if let result = stubbedOptionalAnimationsResult {
-            animations?(result)
+            animations?(result.0)
         }
         if let result = stubbedOptionalCompletionResult {
-            completion?(result)
+            completion?(result.0)
         }
     }
     var invokedEscaping = false
@@ -76,11 +76,11 @@ class MockClosureProtocol: ClosureProtocol {
         return stubbedReturnClosureArgsResult
     }
     var invokedOptionalParam = false
-    var stubbedOptionalParamClosureResult: String??
+    var stubbedOptionalParamClosureResult: (String?, Void)?
     func optionalParam(_ closure: (String?) -> ()) {
         invokedOptionalParam = true
         if let result = stubbedOptionalParamClosureResult {
-            closure(result)
+            closure(result.0)
         }
     }
     var invokedOptionalParams = false

@@ -308,11 +308,12 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
       String variable = scope + "var " + createClosureResultName(name) + ": ";
       if (types.isEmpty()) {
         continue;
-      } else if (types.size() == 1) {
-        variable += types.get(0) + "?";
-      } else {
-        variable += "(" + String.join(", ", types) + ")?";
       }
+      if (types.size() == 1) {
+        types.add("Void");
+      }
+
+      variable += "(" + String.join(", ", types) + ")?";
       SwiftStatement statement = getElementFactory().createStatement(variable);
       appendInClass(statement);
     }
@@ -374,13 +375,8 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
       } else {
         closureCall = "if let result = " + createClosureResultName(name) + " {";
         closureCall += name + optional + "(";
-        if(count == 1) {
-          closureCall += "result";
-        } else {
-          closureCall += IntStream.range(0, count).mapToObj(i -> "result." + i).collect(Collectors.joining(","));
-        }
+        closureCall += IntStream.range(0, count).mapToObj(i -> "result." + i).collect(Collectors.joining(","));
         closureCall += ") }";
-
       }
       PsiElement statement = getElementFactory().createStatement(closureCall, protocolFunction);
       appendInImplementedFunction(statement);
