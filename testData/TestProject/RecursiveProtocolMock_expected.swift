@@ -4,12 +4,14 @@ class MockRecursiveProtocol: InheritingProtocol {
     var invokedInheritingCount = 0
     func inheriting() {
         invokedInheriting = true
+        invokedInheritingCount += 1
     }
     var invokedInheritedOverloaded = false
     var invokedInheritedOverloadedCount = 0
     var invokedInheritedOverloadedParameters: (overloaded: Int, Void)?
     func inherited(overloaded: Int) {
         invokedInheritedOverloaded = true
+        invokedInheritedOverloadedCount += 1
         invokedInheritedOverloadedParameters = (overloaded, ())
     }
     var invokedInheritedMethod = false
@@ -17,6 +19,7 @@ class MockRecursiveProtocol: InheritingProtocol {
     var invokedInheritedMethodParameters: (method: String, Void)?
     func inherited(method: String) {
         invokedInheritedMethod = true
+        invokedInheritedMethodCount += 1
         invokedInheritedMethodParameters = (method, ())
     }
 }

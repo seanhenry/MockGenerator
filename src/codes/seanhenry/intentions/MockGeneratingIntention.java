@@ -178,6 +178,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
       protocolFunction = function;
       implementedFunction = createImplementedFunction();
       addInvokedCheckExpression();
+      addInvokedCountExpression();
       addInvokedParameterExpression();
       addCallToClosure();
       addReturnExpression();
@@ -356,6 +357,11 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
 
   private void addInvokedCheckExpression() {
     SwiftExpression expression = getElementFactory().createExpression(createInvokedVariableName() + " = true ", protocolFunction);
+    appendInImplementedFunction(expression);
+  }
+
+  private void addInvokedCountExpression() {
+    SwiftExpression expression = getElementFactory().createExpression(createInvokedCountVariableName() + " += 1", protocolFunction);
     appendInImplementedFunction(expression);
   }
 

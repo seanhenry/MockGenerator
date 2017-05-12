@@ -6,6 +6,7 @@ class MockOptionalProtocol: OptionalProtocol {
     var stubbedOptionalsResult: Int!
     func optionals(optional: Double?) -> Int? {
         invokedOptionals = true
+        invokedOptionalsCount += 1
         invokedOptionalsParameters = (optional, ())
         return stubbedOptionalsResult
     }
@@ -15,6 +16,7 @@ class MockOptionalProtocol: OptionalProtocol {
     var stubbedUnwrappedOptionalsResult: UInt!
     func unwrappedOptionals(unwrapped: UInt!) -> UInt! {
         invokedUnwrappedOptionals = true
+        invokedUnwrappedOptionalsCount += 1
         invokedUnwrappedOptionalsParameters = (unwrapped, ())
         return stubbedUnwrappedOptionalsResult
     }
@@ -24,6 +26,7 @@ class MockOptionalProtocol: OptionalProtocol {
     var stubbedMixedResult: String!
     func mixed(unwrapped: UInt!, optional: String?, value: Int) -> String {
         invokedMixed = true
+        invokedMixedCount += 1
         invokedMixedParameters = (unwrapped, optional, value)
         return stubbedMixedResult
     }

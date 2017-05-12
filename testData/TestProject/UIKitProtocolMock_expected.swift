@@ -8,6 +8,7 @@ class MockUIKitProtocol: NSObject, UITextFieldDelegate {
     var stubbedTextFieldShouldBeginEditingResult: Bool!
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         invokedTextFieldShouldBeginEditing = true
+        invokedTextFieldShouldBeginEditingCount += 1
         invokedTextFieldShouldBeginEditingParameters = (textField, ())
         return stubbedTextFieldShouldBeginEditingResult
     }
@@ -16,6 +17,7 @@ class MockUIKitProtocol: NSObject, UITextFieldDelegate {
     var invokedTextFieldDidBeginEditingParameters: (textField: UITextField, Void)?
     func textFieldDidBeginEditing(_ textField: UITextField) {
         invokedTextFieldDidBeginEditing = true
+        invokedTextFieldDidBeginEditingCount += 1
         invokedTextFieldDidBeginEditingParameters = (textField, ())
     }
     var invokedTextFieldShouldEndEditing = false
@@ -24,6 +26,7 @@ class MockUIKitProtocol: NSObject, UITextFieldDelegate {
     var stubbedTextFieldShouldEndEditingResult: Bool!
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         invokedTextFieldShouldEndEditing = true
+        invokedTextFieldShouldEndEditingCount += 1
         invokedTextFieldShouldEndEditingParameters = (textField, ())
         return stubbedTextFieldShouldEndEditingResult
     }
@@ -32,6 +35,7 @@ class MockUIKitProtocol: NSObject, UITextFieldDelegate {
     var invokedTextFieldDidEndEditingParameters: (textField: UITextField, Void)?
     func textFieldDidEndEditing(_ textField: UITextField) {
         invokedTextFieldDidEndEditing = true
+        invokedTextFieldDidEndEditingCount += 1
         invokedTextFieldDidEndEditingParameters = (textField, ())
     }
     var invokedTextFieldDidEndEditingReason = false
@@ -39,6 +43,7 @@ class MockUIKitProtocol: NSObject, UITextFieldDelegate {
     var invokedTextFieldDidEndEditingReasonParameters: (textField: UITextField, reason: UITextFieldDidEndEditingReason)?
     func textFieldDidEndEditing(_ textField: UITextField, reason: UITextFieldDidEndEditingReason) {
         invokedTextFieldDidEndEditingReason = true
+        invokedTextFieldDidEndEditingReasonCount += 1
         invokedTextFieldDidEndEditingReasonParameters = (textField, reason)
     }
     var invokedTextField = false
@@ -47,6 +52,7 @@ class MockUIKitProtocol: NSObject, UITextFieldDelegate {
     var stubbedTextFieldResult: Bool!
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         invokedTextField = true
+        invokedTextFieldCount += 1
         invokedTextFieldParameters = (textField, range, string)
         return stubbedTextFieldResult
     }
@@ -56,6 +62,7 @@ class MockUIKitProtocol: NSObject, UITextFieldDelegate {
     var stubbedTextFieldShouldClearResult: Bool!
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
         invokedTextFieldShouldClear = true
+        invokedTextFieldShouldClearCount += 1
         invokedTextFieldShouldClearParameters = (textField, ())
         return stubbedTextFieldShouldClearResult
     }
@@ -65,6 +72,7 @@ class MockUIKitProtocol: NSObject, UITextFieldDelegate {
     var stubbedTextFieldShouldReturnResult: Bool!
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         invokedTextFieldShouldReturn = true
+        invokedTextFieldShouldReturnCount += 1
         invokedTextFieldShouldReturnParameters = (textField, ())
         return stubbedTextFieldShouldReturnResult
     }

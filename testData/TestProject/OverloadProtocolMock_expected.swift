@@ -5,6 +5,7 @@ class MockOverloadProtocol: OverloadProtocol {
     var invokedSetValueStringForKeyParameters: (string: String, key: String)?
     func setValue(_ string: String, forKey key: String) {
         invokedSetValueStringForKey = true
+        invokedSetValueStringForKeyCount += 1
         invokedSetValueStringForKeyParameters = (string, key)
     }
     var invokedSetValueIntForKey = false
@@ -12,6 +13,7 @@ class MockOverloadProtocol: OverloadProtocol {
     var invokedSetValueIntForKeyParameters: (int: Int, key: String)?
     func setValue(_ int: Int, forKey key: String) {
         invokedSetValueIntForKey = true
+        invokedSetValueIntForKeyCount += 1
         invokedSetValueIntForKeyParameters = (int, key)
     }
     var invokedSetValueString = false
@@ -19,6 +21,7 @@ class MockOverloadProtocol: OverloadProtocol {
     var invokedSetValueStringParameters: (value: String, Void)?
     func set(value: String) {
         invokedSetValueString = true
+        invokedSetValueStringCount += 1
         invokedSetValueStringParameters = (value, ())
     }
     var invokedSetValueInt = false
@@ -26,6 +29,7 @@ class MockOverloadProtocol: OverloadProtocol {
     var invokedSetValueIntParameters: (value: Int, Void)?
     func set(value: Int) {
         invokedSetValueInt = true
+        invokedSetValueIntCount += 1
         invokedSetValueIntParameters = (value, ())
     }
     var invokedAnimate = false
@@ -33,6 +37,7 @@ class MockOverloadProtocol: OverloadProtocol {
     var stubbedAnimateResult: Bool!
     func animate() -> Bool {
         invokedAnimate = true
+        invokedAnimateCount += 1
         return stubbedAnimateResult
     }
     var invokedAnimateWithDuration = false
@@ -40,6 +45,7 @@ class MockOverloadProtocol: OverloadProtocol {
     var invokedAnimateWithDurationParameters: (duration: TimeInterval, Void)?
     func animate(withDuration duration: TimeInterval) {
         invokedAnimateWithDuration = true
+        invokedAnimateWithDurationCount += 1
         invokedAnimateWithDurationParameters = (duration, ())
     }
     var invokedAnimateWithDurationDelay = false
@@ -47,6 +53,7 @@ class MockOverloadProtocol: OverloadProtocol {
     var invokedAnimateWithDurationDelayParameters: (duration: TimeInterval, delay: TimeInterval)?
     func animate(withDuration duration: TimeInterval, delay: TimeInterval) {
         invokedAnimateWithDurationDelay = true
+        invokedAnimateWithDurationDelayCount += 1
         invokedAnimateWithDurationDelayParameters = (duration, delay)
     }
     var invokedPresent = false
@@ -54,6 +61,7 @@ class MockOverloadProtocol: OverloadProtocol {
     var invokedPresentParameters: (viewControllerToPresent: UIViewController, Void)?
     func present(_ viewControllerToPresent: UIViewController) {
         invokedPresent = true
+        invokedPresentCount += 1
         invokedPresentParameters = (viewControllerToPresent, ())
     }
     var invokedPresentAnimated = false
@@ -61,6 +69,7 @@ class MockOverloadProtocol: OverloadProtocol {
     var invokedPresentAnimatedParameters: (viewControllerToPresent: UIViewController, animated: Bool)?
     func present(_ viewControllerToPresent: UIViewController, animated: Bool) {
         invokedPresentAnimated = true
+        invokedPresentAnimatedCount += 1
         invokedPresentAnimatedParameters = (viewControllerToPresent, animated)
     }
     var invokedPresentFromUIViewController = false
@@ -68,6 +77,7 @@ class MockOverloadProtocol: OverloadProtocol {
     var invokedPresentFromUIViewControllerParameters: (viewControllerToPresent: UIViewController, Void)?
     func present(from viewControllerToPresent: UIViewController) {
         invokedPresentFromUIViewController = true
+        invokedPresentFromUIViewControllerCount += 1
         invokedPresentFromUIViewControllerParameters = (viewControllerToPresent, ())
     }
     var invokedPresentFromUINavigationController = false
@@ -75,6 +85,7 @@ class MockOverloadProtocol: OverloadProtocol {
     var invokedPresentFromUINavigationControllerParameters: (viewControllerToPresent: UINavigationController, Void)?
     func present(from viewControllerToPresent: UINavigationController) {
         invokedPresentFromUINavigationController = true
+        invokedPresentFromUINavigationControllerCount += 1
         invokedPresentFromUINavigationControllerParameters = (viewControllerToPresent, ())
     }
 }

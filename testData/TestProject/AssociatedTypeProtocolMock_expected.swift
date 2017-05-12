@@ -6,6 +6,7 @@ class MockAssociatedTypeProtocol<SomeType>: AssociatedTypeProtocol {
     var stubbedDoSomethingResult: SomeType!
     func doSomething(with: SomeType) -> SomeType {
         invokedDoSomething = true
+        invokedDoSomethingCount += 1
         invokedDoSomethingParameters = (with, ())
         return stubbedDoSomethingResult
     }

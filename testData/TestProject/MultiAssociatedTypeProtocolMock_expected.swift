@@ -6,6 +6,7 @@ class MockMultiAssociatedTypeProtocol<SomeType, AnotherType>: MultiAssociatedTyp
     var stubbedDoSomethingResult: AnotherType!
     func doSomething(with: SomeType) -> AnotherType {
         invokedDoSomething = true
+        invokedDoSomethingCount += 1
         invokedDoSomethingParameters = (with, ())
         return stubbedDoSomethingResult
     }
@@ -15,6 +16,7 @@ class MockMultiAssociatedTypeProtocol<SomeType, AnotherType>: MultiAssociatedTyp
     var stubbedDoSomethingElseResult: SomeType!
     func doSomethingElse(with: SomeType!) -> SomeType? {
         invokedDoSomethingElse = true
+        invokedDoSomethingElseCount += 1
         invokedDoSomethingElseParameters = (with, ())
         return stubbedDoSomethingElseResult
     }

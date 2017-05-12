@@ -4,12 +4,14 @@ class MockClosureProtocol: ClosureProtocol {
     var invokedMapCount = 0
     func map(closure: () -> ()) {
         invokedMap = true
+        invokedMapCount += 1
         closure()
     }
     var invokedFlatMap = false
     var invokedFlatMapCount = 0
     func flatMap(closure: () -> Void) {
         invokedFlatMap = true
+        invokedFlatMapCount += 1
         closure()
     }
     var invokedFilter = false
@@ -17,6 +19,7 @@ class MockClosureProtocol: ClosureProtocol {
     var stubbedFilterClosureResult: (String, Void)?
     func filter(closure: (String) -> Bool) {
         invokedFilter = true
+        invokedFilterCount += 1
         if let result = stubbedFilterClosureResult {
             closure(result.0)
         }
@@ -26,6 +29,7 @@ class MockClosureProtocol: ClosureProtocol {
     var stubbedTypealiasClosureClosureResult: (Int, Void)?
     func typealiasClosure(closure: Completion) {
         invokedTypealiasClosure = true
+        invokedTypealiasClosureCount += 1
         if let result = stubbedTypealiasClosureClosureResult {
             closure(result.0)
         }
@@ -35,6 +39,7 @@ class MockClosureProtocol: ClosureProtocol {
     var stubbedInternalTypealiasClosureClosureResult: (String, Void)?
     func internalTypealiasClosure(closure: ClosureProtocol.T) {
         invokedInternalTypealiasClosure = true
+        invokedInternalTypealiasClosureCount += 1
         if let result = stubbedInternalTypealiasClosureClosureResult {
             closure(result.0)
         }
@@ -45,6 +50,7 @@ class MockClosureProtocol: ClosureProtocol {
     var stubbedMultiCompletionResult: (Bool, Void)?
     func multi(animations: (Int) -> (), completion: (Bool) -> ()) {
         invokedMulti = true
+        invokedMultiCount += 1
         if let result = stubbedMultiAnimationsResult {
             animations(result.0)
         }
@@ -58,6 +64,7 @@ class MockClosureProtocol: ClosureProtocol {
     var stubbedOptionalCompletionResult: (Bool, Void)?
     func optional(animations: ((Int) -> ())?, completion: ((Bool) -> ())?) {
         invokedOptional = true
+        invokedOptionalCount += 1
         if let result = stubbedOptionalAnimationsResult {
             animations?(result.0)
         }
@@ -69,6 +76,7 @@ class MockClosureProtocol: ClosureProtocol {
     var invokedEscapingCount = 0
     func escaping(closure: @escaping () -> ()) {
         invokedEscaping = true
+        invokedEscapingCount += 1
         closure()
     }
     var invokedReturnClosure = false
@@ -76,6 +84,7 @@ class MockClosureProtocol: ClosureProtocol {
     var stubbedReturnClosureResult: (() -> ())!
     func returnClosure() -> (() -> ()) {
         invokedReturnClosure = true
+        invokedReturnClosureCount += 1
         return stubbedReturnClosureResult
     }
     var invokedReturnClosureArgs = false
@@ -83,6 +92,7 @@ class MockClosureProtocol: ClosureProtocol {
     var stubbedReturnClosureArgsResult: ((Int, String) -> (String))!
     func returnClosureArgs() -> (Int, String) -> (String) {
         invokedReturnClosureArgs = true
+        invokedReturnClosureArgsCount += 1
         return stubbedReturnClosureArgsResult
     }
     var invokedOptionalParam = false
@@ -90,6 +100,7 @@ class MockClosureProtocol: ClosureProtocol {
     var stubbedOptionalParamClosureResult: (String?, Void)?
     func optionalParam(_ closure: (String?) -> ()) {
         invokedOptionalParam = true
+        invokedOptionalParamCount += 1
         if let result = stubbedOptionalParamClosureResult {
             closure(result.0)
         }
@@ -99,6 +110,7 @@ class MockClosureProtocol: ClosureProtocol {
     var stubbedOptionalParamsClosureResult: (String?, Int!)?
     func optionalParams(_ closure: (String?, Int!) -> ()) {
         invokedOptionalParams = true
+        invokedOptionalParamsCount += 1
         if let result = stubbedOptionalParamsClosureResult {
             closure(result.0, result.1)
         }
@@ -108,6 +120,7 @@ class MockClosureProtocol: ClosureProtocol {
     var invokedParseParameters: (data: Data, Void)?
     func parse(response data: Data) {
         invokedParse = true
+        invokedParseCount += 1
         invokedParseParameters = (data, ())
     }
 }

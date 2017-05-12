@@ -16,6 +16,7 @@ public class MockPublicProtocol: PublicProtocol {
     public var stubbedMethodResult: String!
     public func method(param: String, closure: () -> ()) -> String {
         invokedMethod = true
+        invokedMethodCount += 1
         invokedMethodParameters = (param, ())
         closure()
         return stubbedMethodResult
