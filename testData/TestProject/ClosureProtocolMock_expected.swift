@@ -1,16 +1,19 @@
 class MockClosureProtocol: ClosureProtocol {
 
     var invokedMap = false
+    var invokedMapCount = 0
     func map(closure: () -> ()) {
         invokedMap = true
         closure()
     }
     var invokedFlatMap = false
+    var invokedFlatMapCount = 0
     func flatMap(closure: () -> Void) {
         invokedFlatMap = true
         closure()
     }
     var invokedFilter = false
+    var invokedFilterCount = 0
     var stubbedFilterClosureResult: (String, Void)?
     func filter(closure: (String) -> Bool) {
         invokedFilter = true
@@ -19,6 +22,7 @@ class MockClosureProtocol: ClosureProtocol {
         }
     }
     var invokedTypealiasClosure = false
+    var invokedTypealiasClosureCount = 0
     var stubbedTypealiasClosureClosureResult: (Int, Void)?
     func typealiasClosure(closure: Completion) {
         invokedTypealiasClosure = true
@@ -27,6 +31,7 @@ class MockClosureProtocol: ClosureProtocol {
         }
     }
     var invokedInternalTypealiasClosure = false
+    var invokedInternalTypealiasClosureCount = 0
     var stubbedInternalTypealiasClosureClosureResult: (String, Void)?
     func internalTypealiasClosure(closure: ClosureProtocol.T) {
         invokedInternalTypealiasClosure = true
@@ -35,6 +40,7 @@ class MockClosureProtocol: ClosureProtocol {
         }
     }
     var invokedMulti = false
+    var invokedMultiCount = 0
     var stubbedMultiAnimationsResult: (Int, Void)?
     var stubbedMultiCompletionResult: (Bool, Void)?
     func multi(animations: (Int) -> (), completion: (Bool) -> ()) {
@@ -47,6 +53,7 @@ class MockClosureProtocol: ClosureProtocol {
         }
     }
     var invokedOptional = false
+    var invokedOptionalCount = 0
     var stubbedOptionalAnimationsResult: (Int, Void)?
     var stubbedOptionalCompletionResult: (Bool, Void)?
     func optional(animations: ((Int) -> ())?, completion: ((Bool) -> ())?) {
@@ -59,23 +66,27 @@ class MockClosureProtocol: ClosureProtocol {
         }
     }
     var invokedEscaping = false
+    var invokedEscapingCount = 0
     func escaping(closure: @escaping () -> ()) {
         invokedEscaping = true
         closure()
     }
     var invokedReturnClosure = false
+    var invokedReturnClosureCount = 0
     var stubbedReturnClosureResult: (() -> ())!
     func returnClosure() -> (() -> ()) {
         invokedReturnClosure = true
         return stubbedReturnClosureResult
     }
     var invokedReturnClosureArgs = false
+    var invokedReturnClosureArgsCount = 0
     var stubbedReturnClosureArgsResult: ((Int, String) -> (String))!
     func returnClosureArgs() -> (Int, String) -> (String) {
         invokedReturnClosureArgs = true
         return stubbedReturnClosureArgsResult
     }
     var invokedOptionalParam = false
+    var invokedOptionalParamCount = 0
     var stubbedOptionalParamClosureResult: (String?, Void)?
     func optionalParam(_ closure: (String?) -> ()) {
         invokedOptionalParam = true
@@ -84,6 +95,7 @@ class MockClosureProtocol: ClosureProtocol {
         }
     }
     var invokedOptionalParams = false
+    var invokedOptionalParamsCount = 0
     var stubbedOptionalParamsClosureResult: (String?, Int!)?
     func optionalParams(_ closure: (String?, Int!) -> ()) {
         invokedOptionalParams = true
@@ -92,6 +104,7 @@ class MockClosureProtocol: ClosureProtocol {
         }
     }
     var invokedParse = false
+    var invokedParseCount = 0
     var invokedParseParameters: (data: Data, Void)?
     func parse(response data: Data) {
         invokedParse = true

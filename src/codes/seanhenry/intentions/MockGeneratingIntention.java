@@ -27,10 +27,12 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   private final StringDecorator invokedPropertyNameDecorator = new PrependStringDecorator(null, "invoked");
   private final StringDecorator stubbedPropertyNameDecorator = new PrependStringDecorator(null, "stubbed");
   private final StringDecorator invokedMethodNameDecorator = new PrependStringDecorator(null, "invoked");
+  private StringDecorator invokedMethodCountNameDecorator = new AppendStringDecorator(invokedMethodNameDecorator, "Count");
   private final StringDecorator stubMethodNameDecorator;
   private SwiftClassDeclaration classDeclaration;
   private SwiftFunctionDeclaration implementedFunction;
   private SwiftFunctionDeclaration protocolFunction;
+
   {
     StringDecorator prependDecorator = new PrependStringDecorator(null, "stubbed");
     stubMethodNameDecorator = new AppendStringDecorator(prependDecorator, "Result");
@@ -180,6 +182,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
       addCallToClosure();
       addReturnExpression();
       addInvocationCheckVariable();
+      addInvocationCountVariable();
       addInvokedParameterVariables();
       addClosureResultVariables();
       addReturnVariable();
@@ -278,6 +281,11 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
 
   private void addInvocationCheckVariable() {
     SwiftStatement variable = getElementFactory().createStatement(scope + "var " + createInvokedVariableName() + " = false");
+    appendInClass(variable);
+  }
+
+  private void addInvocationCountVariable() {
+    SwiftStatement variable = getElementFactory().createStatement(scope + "var " + createInvokedCountVariableName() + " = 0");
     appendInClass(variable);
   }
 
@@ -399,6 +407,11 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   private String createInvokedVariableName() {
     String name = methodNameGenerator.generate(getFunctionID(protocolFunction));
     return invokedMethodNameDecorator.process(name);
+  }
+
+  private String createInvokedCountVariableName() {
+    String name = methodNameGenerator.generate(getFunctionID(protocolFunction));
+    return invokedMethodCountNameDecorator.process(name);
   }
 
   private String createStubbedVariableName() {
