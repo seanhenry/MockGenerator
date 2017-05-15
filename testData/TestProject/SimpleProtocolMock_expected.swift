@@ -16,6 +16,7 @@ class SimpleProtocolMock: SimpleProtocol {
     var invokedAnotherMethod = false
     var invokedAnotherMethodCount = 0
     var invokedAnotherMethodParameters: (var1: String, var2: Int, var3: Double)?
+    var invokedAnotherMethodParametersList = [(var1: String, var2: Int, var3: Double)]()
     func anotherMethod(var1: String, var2: Int, var3: Double) {
         invokedAnotherMethod = true
         invokedAnotherMethodCount += 1
@@ -24,6 +25,7 @@ class SimpleProtocolMock: SimpleProtocol {
     var invokedReturnMethod = false
     var invokedReturnMethodCount = 0
     var invokedReturnMethodParameters: (hello: String, Void)?
+    var invokedReturnMethodParametersList = [(hello: String, Void)]()
     var stubbedReturnMethodResult: String!
     func returnMethod(_ hello: String) -> String {
         invokedReturnMethod = true
@@ -34,6 +36,7 @@ class SimpleProtocolMock: SimpleProtocol {
     var invokedDuplicateParam = false
     var invokedDuplicateParamCount = 0
     var invokedDuplicateParamParameters: (var1: String, Void)?
+    var invokedDuplicateParamParametersList = [(var1: String, Void)]()
     func duplicateParam(var1: String) {
         invokedDuplicateParam = true
         invokedDuplicateParamCount += 1

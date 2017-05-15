@@ -118,6 +118,7 @@ class MockClosureProtocol: ClosureProtocol {
     var invokedParse = false
     var invokedParseCount = 0
     var invokedParseParameters: (data: Data, Void)?
+    var invokedParseParametersList = [(data: Data, Void)]()
     func parse(response data: Data) {
         invokedParse = true
         invokedParseCount += 1

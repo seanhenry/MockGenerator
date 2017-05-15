@@ -42,6 +42,11 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     StringDecorator prependDecorator = new PrependStringDecorator(null, "invoked");
     methodParametersNameDecorator = new AppendStringDecorator(prependDecorator, "Parameters");
   }
+  private final StringDecorator methodParametersListNameDecorator;
+  {
+    StringDecorator prependDecorator = new PrependStringDecorator(null, "invoked");
+    methodParametersListNameDecorator = new AppendStringDecorator(prependDecorator, "ParametersList");
+  }
   private final StringDecorator stubbedClosureResultNameDecorator;
   {
     StringDecorator prependDecorator = new PrependStringDecorator(null, "stubbed");
@@ -307,6 +312,10 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     String variable = scope + "var " + createInvokedParametersName() + ": (" + String.join(", ", parameters) + ")?";
     SwiftStatement statement = getElementFactory().createStatement(variable);
     appendInClass(statement);
+
+    String listVariable = scope + "var " + createInvokedParametersListName() + " = [(" + String.join(", ", parameters) + ")]()";
+    SwiftStatement listStatement = getElementFactory().createStatement(listVariable);
+    appendInClass(listStatement);
   }
 
   private void addClosureResultVariables() {
@@ -428,6 +437,11 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   private String createInvokedParametersName() {
     String name = methodNameGenerator.generate(getFunctionID(protocolFunction));
     return methodParametersNameDecorator.process(name);
+  }
+
+  private String createInvokedParametersListName() {
+    String name = methodNameGenerator.generate(getFunctionID(protocolFunction));
+    return methodParametersListNameDecorator.process(name);
   }
 
   private List<String> getParameterNames(SwiftFunctionDeclaration function, Function<SwiftParameter, String> operation, boolean shouldRemoveClosures) {
