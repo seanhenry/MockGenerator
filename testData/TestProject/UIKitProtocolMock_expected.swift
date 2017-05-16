@@ -11,6 +11,7 @@ class MockUIKitProtocol: NSObject, UITextFieldDelegate {
         invokedTextFieldShouldBeginEditing = true
         invokedTextFieldShouldBeginEditingCount += 1
         invokedTextFieldShouldBeginEditingParameters = (textField, ())
+        invokedTextFieldShouldBeginEditingParametersList.append((textField, ()))
         return stubbedTextFieldShouldBeginEditingResult
     }
     var invokedTextFieldDidBeginEditing = false
@@ -21,6 +22,7 @@ class MockUIKitProtocol: NSObject, UITextFieldDelegate {
         invokedTextFieldDidBeginEditing = true
         invokedTextFieldDidBeginEditingCount += 1
         invokedTextFieldDidBeginEditingParameters = (textField, ())
+        invokedTextFieldDidBeginEditingParametersList.append((textField, ()))
     }
     var invokedTextFieldShouldEndEditing = false
     var invokedTextFieldShouldEndEditingCount = 0
@@ -31,6 +33,7 @@ class MockUIKitProtocol: NSObject, UITextFieldDelegate {
         invokedTextFieldShouldEndEditing = true
         invokedTextFieldShouldEndEditingCount += 1
         invokedTextFieldShouldEndEditingParameters = (textField, ())
+        invokedTextFieldShouldEndEditingParametersList.append((textField, ()))
         return stubbedTextFieldShouldEndEditingResult
     }
     var invokedTextFieldDidEndEditing = false
@@ -41,6 +44,7 @@ class MockUIKitProtocol: NSObject, UITextFieldDelegate {
         invokedTextFieldDidEndEditing = true
         invokedTextFieldDidEndEditingCount += 1
         invokedTextFieldDidEndEditingParameters = (textField, ())
+        invokedTextFieldDidEndEditingParametersList.append((textField, ()))
     }
     var invokedTextFieldDidEndEditingReason = false
     var invokedTextFieldDidEndEditingReasonCount = 0
@@ -50,6 +54,7 @@ class MockUIKitProtocol: NSObject, UITextFieldDelegate {
         invokedTextFieldDidEndEditingReason = true
         invokedTextFieldDidEndEditingReasonCount += 1
         invokedTextFieldDidEndEditingReasonParameters = (textField, reason)
+        invokedTextFieldDidEndEditingReasonParametersList.append((textField, reason))
     }
     var invokedTextField = false
     var invokedTextFieldCount = 0
@@ -60,6 +65,7 @@ class MockUIKitProtocol: NSObject, UITextFieldDelegate {
         invokedTextField = true
         invokedTextFieldCount += 1
         invokedTextFieldParameters = (textField, range, string)
+        invokedTextFieldParametersList.append((textField, range, string))
         return stubbedTextFieldResult
     }
     var invokedTextFieldShouldClear = false
@@ -71,6 +77,7 @@ class MockUIKitProtocol: NSObject, UITextFieldDelegate {
         invokedTextFieldShouldClear = true
         invokedTextFieldShouldClearCount += 1
         invokedTextFieldShouldClearParameters = (textField, ())
+        invokedTextFieldShouldClearParametersList.append((textField, ()))
         return stubbedTextFieldShouldClearResult
     }
     var invokedTextFieldShouldReturn = false
@@ -82,6 +89,7 @@ class MockUIKitProtocol: NSObject, UITextFieldDelegate {
         invokedTextFieldShouldReturn = true
         invokedTextFieldShouldReturnCount += 1
         invokedTextFieldShouldReturnParameters = (textField, ())
+        invokedTextFieldShouldReturnParametersList.append((textField, ()))
         return stubbedTextFieldShouldReturnResult
     }
 }

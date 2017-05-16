@@ -19,6 +19,7 @@ public class MockPublicProtocol: PublicProtocol {
         invokedMethod = true
         invokedMethodCount += 1
         invokedMethodParameters = (param, ())
+        invokedMethodParametersList.append((param, ()))
         closure()
         return stubbedMethodResult
     }

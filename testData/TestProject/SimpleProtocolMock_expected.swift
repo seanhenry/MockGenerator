@@ -21,6 +21,7 @@ class SimpleProtocolMock: SimpleProtocol {
         invokedAnotherMethod = true
         invokedAnotherMethodCount += 1
         invokedAnotherMethodParameters = (var1, var2, var3)
+        invokedAnotherMethodParametersList.append((var1, var2, var3))
     }
     var invokedReturnMethod = false
     var invokedReturnMethodCount = 0
@@ -31,6 +32,7 @@ class SimpleProtocolMock: SimpleProtocol {
         invokedReturnMethod = true
         invokedReturnMethodCount += 1
         invokedReturnMethodParameters = (hello, ())
+        invokedReturnMethodParametersList.append((hello, ()))
         return stubbedReturnMethodResult
     }
     var invokedDuplicateParam = false
@@ -41,5 +43,6 @@ class SimpleProtocolMock: SimpleProtocol {
         invokedDuplicateParam = true
         invokedDuplicateParamCount += 1
         invokedDuplicateParamParameters = (var1, ())
+        invokedDuplicateParamParametersList.append((var1, ()))
     }
 }

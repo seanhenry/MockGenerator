@@ -1,3 +1,5 @@
+import Foundation
+
 class MockClosureProtocol: ClosureProtocol {
 
     var invokedMap = false
@@ -107,8 +109,8 @@ class MockClosureProtocol: ClosureProtocol {
     }
     var invokedOptionalParams = false
     var invokedOptionalParamsCount = 0
-    var stubbedOptionalParamsClosureResult: (String?, Int!)?
-    func optionalParams(_ closure: (String?, Int!) -> ()) {
+    var stubbedOptionalParamsClosureResult: (String?, Int?)?
+    func optionalParams(_ closure: (String?, Int?) -> ()) {
         invokedOptionalParams = true
         invokedOptionalParamsCount += 1
         if let result = stubbedOptionalParamsClosureResult {
@@ -123,5 +125,6 @@ class MockClosureProtocol: ClosureProtocol {
         invokedParse = true
         invokedParseCount += 1
         invokedParseParameters = (data, ())
+        invokedParseParametersList.append((data, ()))
     }
 }

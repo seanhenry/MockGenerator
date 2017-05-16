@@ -9,6 +9,7 @@ class MockAssociatedTypeProtocol<SomeType>: AssociatedTypeProtocol {
         invokedDoSomething = true
         invokedDoSomethingCount += 1
         invokedDoSomethingParameters = (with, ())
+        invokedDoSomethingParametersList.append((with, ()))
         return stubbedDoSomethingResult
     }
 }

@@ -1,3 +1,6 @@
+import Foundation
+import UIKit
+
 class MockOverloadProtocol: OverloadProtocol {
 
     var invokedSetValueStringForKey = false
@@ -8,6 +11,7 @@ class MockOverloadProtocol: OverloadProtocol {
         invokedSetValueStringForKey = true
         invokedSetValueStringForKeyCount += 1
         invokedSetValueStringForKeyParameters = (string, key)
+        invokedSetValueStringForKeyParametersList.append((string, key))
     }
     var invokedSetValueIntForKey = false
     var invokedSetValueIntForKeyCount = 0
@@ -17,6 +21,7 @@ class MockOverloadProtocol: OverloadProtocol {
         invokedSetValueIntForKey = true
         invokedSetValueIntForKeyCount += 1
         invokedSetValueIntForKeyParameters = (int, key)
+        invokedSetValueIntForKeyParametersList.append((int, key))
     }
     var invokedSetValueString = false
     var invokedSetValueStringCount = 0
@@ -26,6 +31,7 @@ class MockOverloadProtocol: OverloadProtocol {
         invokedSetValueString = true
         invokedSetValueStringCount += 1
         invokedSetValueStringParameters = (value, ())
+        invokedSetValueStringParametersList.append((value, ()))
     }
     var invokedSetValueInt = false
     var invokedSetValueIntCount = 0
@@ -35,6 +41,7 @@ class MockOverloadProtocol: OverloadProtocol {
         invokedSetValueInt = true
         invokedSetValueIntCount += 1
         invokedSetValueIntParameters = (value, ())
+        invokedSetValueIntParametersList.append((value, ()))
     }
     var invokedAnimate = false
     var invokedAnimateCount = 0
@@ -52,6 +59,7 @@ class MockOverloadProtocol: OverloadProtocol {
         invokedAnimateWithDuration = true
         invokedAnimateWithDurationCount += 1
         invokedAnimateWithDurationParameters = (duration, ())
+        invokedAnimateWithDurationParametersList.append((duration, ()))
     }
     var invokedAnimateWithDurationDelay = false
     var invokedAnimateWithDurationDelayCount = 0
@@ -61,6 +69,7 @@ class MockOverloadProtocol: OverloadProtocol {
         invokedAnimateWithDurationDelay = true
         invokedAnimateWithDurationDelayCount += 1
         invokedAnimateWithDurationDelayParameters = (duration, delay)
+        invokedAnimateWithDurationDelayParametersList.append((duration, delay))
     }
     var invokedPresent = false
     var invokedPresentCount = 0
@@ -70,6 +79,7 @@ class MockOverloadProtocol: OverloadProtocol {
         invokedPresent = true
         invokedPresentCount += 1
         invokedPresentParameters = (viewControllerToPresent, ())
+        invokedPresentParametersList.append((viewControllerToPresent, ()))
     }
     var invokedPresentAnimated = false
     var invokedPresentAnimatedCount = 0
@@ -79,6 +89,7 @@ class MockOverloadProtocol: OverloadProtocol {
         invokedPresentAnimated = true
         invokedPresentAnimatedCount += 1
         invokedPresentAnimatedParameters = (viewControllerToPresent, animated)
+        invokedPresentAnimatedParametersList.append((viewControllerToPresent, animated))
     }
     var invokedPresentFromUIViewController = false
     var invokedPresentFromUIViewControllerCount = 0
@@ -88,6 +99,7 @@ class MockOverloadProtocol: OverloadProtocol {
         invokedPresentFromUIViewController = true
         invokedPresentFromUIViewControllerCount += 1
         invokedPresentFromUIViewControllerParameters = (viewControllerToPresent, ())
+        invokedPresentFromUIViewControllerParametersList.append((viewControllerToPresent, ()))
     }
     var invokedPresentFromUINavigationController = false
     var invokedPresentFromUINavigationControllerCount = 0
@@ -97,5 +109,6 @@ class MockOverloadProtocol: OverloadProtocol {
         invokedPresentFromUINavigationController = true
         invokedPresentFromUINavigationControllerCount += 1
         invokedPresentFromUINavigationControllerParameters = (viewControllerToPresent, ())
+        invokedPresentFromUINavigationControllerParametersList.append((viewControllerToPresent, ()))
     }
 }

@@ -385,6 +385,10 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     String string = createInvokedParametersName() + " = (" + String.join(", ", parameters) + ")";
     SwiftExpression expression = getElementFactory().createExpression(string, protocolFunction);
     appendInImplementedFunction(expression);
+
+    string = createInvokedParametersListName() + ".append((" + String.join(", ", parameters) + "))";
+    expression = getElementFactory().createExpression(string, protocolFunction);
+    appendInImplementedFunction(expression);
   }
 
   private void addCallToClosure() {

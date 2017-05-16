@@ -12,25 +12,17 @@
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="iphoneos" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="iphonesimulatoriPhone_7_10.3_x86_64_1" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="SimpleProtocolMock_expected.swift" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/SimpleProtocolMock_expected.swift">
+      <file leaf-file-name="UnitTests.swift" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/UnitTests/UnitTests.swift">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="4" column="5" lean-forward="true" selection-start-line="4" selection-start-column="5" selection-end-line="4" selection-end-column="5" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="RecursiveProtocolMock_expected.swift" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/RecursiveProtocolMock_expected.swift">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
-              <caret line="19" column="40" lean-forward="true" selection-start-line="19" selection-start-column="40" selection-end-line="19" selection-end-column="40" />
-              <folding />
+            <state relative-caret-position="322">
+              <caret line="70" column="34" lean-forward="false" selection-start-line="70" selection-start-column="34" selection-end-line="70" selection-end-column="34" />
+              <folding>
+                <element signature="e#0#2#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -60,20 +52,15 @@
         <option value="$PROJECT_DIR$/SimpleProtocol.swift" />
         <option value="$PROJECT_DIR$/SimpleProtocolMock.swift" />
         <option value="$PROJECT_DIR$/AssociatedTypeProtocol.swift" />
-        <option value="$PROJECT_DIR$/ClosureProtocol.swift" />
-        <option value="$PROJECT_DIR$/ClosureProtocolMock.swift" />
         <option value="$PROJECT_DIR$/DeepInheritance.swift" />
         <option value="$PROJECT_DIR$/DeepInheritanceMock.swift" />
-        <option value="$PROJECT_DIR$/DiamondInheritanceProtocol.swift" />
         <option value="$PROJECT_DIR$/DiamondInheritanceProtocolMock.swift" />
         <option value="$PROJECT_DIR$/MultiAssociatedTypeProtocol.swift" />
         <option value="$PROJECT_DIR$/MultiAssociatedTypeProtocolMock.swift" />
         <option value="$PROJECT_DIR$/MultipleProtocol.swift" />
         <option value="$PROJECT_DIR$/MultipleProtocolMock.swift" />
         <option value="$PROJECT_DIR$/OptionalProtocol.swift" />
-        <option value="$PROJECT_DIR$/OptionalProtocolMock.swift" />
         <option value="$PROJECT_DIR$/OverloadProtocol.swift" />
-        <option value="$PROJECT_DIR$/OverloadProtocolMock.swift" />
         <option value="$PROJECT_DIR$/PropertyProtocolMock.swift" />
         <option value="$PROJECT_DIR$/PropertyProtocol.swift" />
         <option value="$PROJECT_DIR$/RecursiveProtocol.swift" />
@@ -86,16 +73,22 @@
         <option value="$PROJECT_DIR$/MultipleProtocolMock_expected.swift" />
         <option value="$PROJECT_DIR$/PropertyProtocolMock_expected.swift" />
         <option value="$PROJECT_DIR$/DiamondInheritanceProtocolMock_expected.swift" />
-        <option value="$PROJECT_DIR$/DeepInheritanceMock_expected.swift" />
+        <option value="$PROJECT_DIR$/OverloadProtocolMock.swift" />
+        <option value="$PROJECT_DIR$/DiamondInheritanceProtocol.swift" />
+        <option value="$PROJECT_DIR$/ClosureProtocolMock.swift" />
+        <option value="$PROJECT_DIR$/ClosureProtocol.swift" />
+        <option value="$PROJECT_DIR$/SimpleProtocolMock_expected.swift" />
         <option value="$PROJECT_DIR$/AssociatedTypeProtocolMock_expected.swift" />
         <option value="$PROJECT_DIR$/ClosureProtocolMock_expected.swift" />
-        <option value="$PROJECT_DIR$/OptionalProtocolMock_expected.swift" />
         <option value="$PROJECT_DIR$/MultiAssociatedTypeProtocolMock_expected.swift" />
+        <option value="$PROJECT_DIR$/OptionalProtocolMock_expected.swift" />
         <option value="$PROJECT_DIR$/OverloadProtocolMock_expected.swift" />
         <option value="$PROJECT_DIR$/PublicProtocolMock_expected.swift" />
-        <option value="$PROJECT_DIR$/UIKitProtocolMock_expected.swift" />
-        <option value="$PROJECT_DIR$/SimpleProtocolMock_expected.swift" />
         <option value="$PROJECT_DIR$/RecursiveProtocolMock_expected.swift" />
+        <option value="$PROJECT_DIR$/UIKitProtocolMock_expected.swift" />
+        <option value="$PROJECT_DIR$/DeepInheritanceMock_expected.swift" />
+        <option value="$PROJECT_DIR$/OptionalProtocolMock.swift" />
+        <option value="$PROJECT_DIR$/UnitTests/UnitTests.swift" />
       </list>
     </option>
   </component>
@@ -190,6 +183,20 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TestProject" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.CidrFilesViewHelper$MyProjectTreeStructure$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TestProject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="UnitTests" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
       <pane id="ProjectPane">
@@ -209,7 +216,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="OBJC.PRESERVED_TARGET_SELECTION" value="" />
+    <property name="OBJC.PRESERVED_TARGET_SELECTION" value="MockGeneratorTest" />
     <property name="js.eslint.eslintPackage" value="" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -241,7 +248,11 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.MockGeneratorTest">
+  <component name="RunManager" selected="XCTest/Kiwi.All in UnitTests">
+    <configuration default="false" name="All in UnitTests" type="OCUnitRunConfiguration" factoryName="XCTest/Kiwi" temporary="true" PASS_PARENT_ENVS_2="true" PROJECT_NAME="TestProject" TARGET_NAME="UnitTests" CONFIG_NAME="Debug" SCHEME_NAME="All in UnitTests" TEST_CLASS="UnitTests" TEST_MODE="SUITE_TEST">
+      <envs />
+      <method />
+    </configuration>
     <configuration default="true" type="AppleRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="MockGeneratorTest" TARGET_NAME="MockGeneratorTest" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="MockGeneratorTest" RUN_TARGET_NAME="MockGeneratorTest" MAKE_ACTIVE="TRUE">
       <envs />
       <EXTENSION ID="org.jetbrains.appcode.reveal.RevealRunConfigurationExtension">
@@ -289,9 +300,15 @@
       <envs />
       <method />
     </configuration>
-    <list size="1">
+    <list size="2">
       <item index="0" class="java.lang.String" itemvalue="Application.MockGeneratorTest" />
+      <item index="1" class="java.lang.String" itemvalue="XCTest/Kiwi.All in UnitTests" />
     </list>
+    <recent_temporary>
+      <list size="1">
+        <item index="0" class="java.lang.String" itemvalue="XCTest/Kiwi.All in UnitTests" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="ShelveChangesManager" show_recycled="false">
     <option name="remove_strategy" value="false" />
@@ -443,31 +460,64 @@
       <workItem from="1494260968576" duration="597000" />
       <workItem from="1494574872957" duration="1588000" />
       <workItem from="1494603795599" duration="813000" />
-      <workItem from="1494829161165" duration="1297000" />
+      <workItem from="1494829161165" duration="2392000" />
+      <workItem from="1494967702011" duration="1937000" />
     </task>
     <servers />
   </component>
+  <component name="TestHistory">
+    <history-entry file="All_in_UnitTests - 2017.05.15 at 07h 59m 20s.xml">
+      <configuration name="All in UnitTests" configurationId="OCUnitRunConfiguration" />
+    </history-entry>
+    <history-entry file="All_in_UnitTests - 2017.05.15 at 08h 00m 39s.xml">
+      <configuration name="All in UnitTests" configurationId="OCUnitRunConfiguration" />
+    </history-entry>
+    <history-entry file="All_in_UnitTests - 2017.05.15 at 08h 02m 23s.xml">
+      <configuration name="All in UnitTests" configurationId="OCUnitRunConfiguration" />
+    </history-entry>
+    <history-entry file="All_in_UnitTests - 2017.05.15 at 08h 04m 26s.xml">
+      <configuration name="All in UnitTests" configurationId="OCUnitRunConfiguration" />
+    </history-entry>
+    <history-entry file="All_in_UnitTests - 2017.05.16 at 21h 52m 09s.xml">
+      <configuration name="All in UnitTests" configurationId="OCUnitRunConfiguration" />
+    </history-entry>
+    <history-entry file="All_in_UnitTests - 2017.05.16 at 21h 53m 17s.xml">
+      <configuration name="All in UnitTests" configurationId="OCUnitRunConfiguration" />
+    </history-entry>
+    <history-entry file="All_in_UnitTests - 2017.05.16 at 21h 55m 07s.xml">
+      <configuration name="All in UnitTests" configurationId="OCUnitRunConfiguration" />
+    </history-entry>
+    <history-entry file="All_in_UnitTests - 2017.05.16 at 22h 44m 53s.xml">
+      <configuration name="All in UnitTests" configurationId="OCUnitRunConfiguration" />
+    </history-entry>
+    <history-entry file="All_in_UnitTests - 2017.05.16 at 22h 46m 26s.xml">
+      <configuration name="All in UnitTests" configurationId="OCUnitRunConfiguration" />
+    </history-entry>
+    <history-entry file="All_in_UnitTests - 2017.05.16 at 22h 48m 39s.xml">
+      <configuration name="All in UnitTests" configurationId="OCUnitRunConfiguration" />
+    </history-entry>
+  </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="75518000" />
+    <option name="totallyTimeSpent" value="78550000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="873" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329602" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="PsiViewer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39444444" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.39925373" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.329602" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Run Dashboard" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -488,7 +538,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/MockGeneratorTestTests/MockProtocol.swift" />
     <entry file="file://$PROJECT_DIR$/MockGeneratorTest/Protocol.swift" />
     <entry file="file://$PROJECT_DIR$/MockGeneratorTestTests/MockProtocol.swift" />
     <entry file="appcode.project-settings://39cdfc21">
@@ -504,11 +553,6 @@
     <entry file="file://$PROJECT_DIR$/MockGeneratorTestTests/ExpectedMockProtocol.swift" />
     <entry file="file://$PROJECT_DIR$/MockGeneratorTestTests/MockProtocol.swift" />
     <entry file="file://$PROJECT_DIR$/MockGeneratorTest/Protocol.swift" />
-    <entry file="appcode.project-settings://614a1169">
-      <provider selected="true" editor-type-id="AppCode.ProjectSettings">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Expected/OptionalProtocolMock.swift" />
     <entry file="file://$PROJECT_DIR$/Expected/SimpleProtocolMock.swift" />
     <entry file="file://$PROJECT_DIR$/Expected/OverloadProtocolMock.swift" />
@@ -523,20 +567,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
           <caret line="7" column="22" lean-forward="false" selection-start-line="7" selection-start-column="22" selection-end-line="7" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ClosureProtocol.swift">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="13" column="21" lean-forward="false" selection-start-line="13" selection-start-column="21" selection-end-line="13" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ClosureProtocolMock.swift">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="25" lean-forward="false" selection-start-line="0" selection-start-column="25" selection-end-line="0" selection-end-column="25" />
         </state>
       </provider>
     </entry>
@@ -568,52 +598,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/DiamondInheritanceProtocolMock.swift">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="36" lean-forward="false" selection-start-line="0" selection-start-column="6" selection-end-line="0" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DiamondInheritanceProtocol.swift">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="1" lean-forward="false" selection-start-line="10" selection-start-column="1" selection-end-line="10" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DeepInheritanceMock.swift">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="25" lean-forward="false" selection-start-line="0" selection-start-column="25" selection-end-line="0" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/OptionalProtocol.swift">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="25" lean-forward="false" selection-start-line="0" selection-start-column="9" selection-end-line="0" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/OptionalProtocolMock.swift">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="26" lean-forward="false" selection-start-line="0" selection-start-column="26" selection-end-line="0" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/OverloadProtocol.swift">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" column="0" lean-forward="false" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/OverloadProtocolMock.swift">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="26" lean-forward="false" selection-start-line="0" selection-start-column="26" selection-end-line="0" selection-end-column="26" />
         </state>
       </provider>
     </entry>
@@ -653,13 +641,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/UIKitProtocol.swift" />
-    <entry file="file://$PROJECT_DIR$/UIKitProtocolMock.swift">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="54" lean-forward="false" selection-start-line="2" selection-start-column="54" selection-end-line="2" selection-end-column="54" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/PublicProtocolMock.swift">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
@@ -688,46 +669,64 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/AssociatedTypeProtocolMock_expected.swift">
+    <entry file="appcode.project-settings://614a1169">
+      <provider selected="true" editor-type-id="AppCode.ProjectSettings">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/UIKitProtocolMock.swift">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="42" lean-forward="false" selection-start-line="5" selection-start-column="42" selection-end-line="5" selection-end-column="42" />
+        <state relative-caret-position="45">
+          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/OverloadProtocol.swift">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="16" column="0" lean-forward="false" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ClosureProtocolMock_expected.swift">
+    <entry file="file://$PROJECT_DIR$/OverloadProtocolMock.swift">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="602">
-          <caret line="120" column="37" lean-forward="false" selection-start-line="120" selection-start-column="37" selection-end-line="120" selection-end-column="37" />
+        <state relative-caret-position="15">
+          <caret line="1" column="12" lean-forward="false" selection-start-line="1" selection-start-column="12" selection-end-line="1" selection-end-column="12" />
+          <folding>
+            <element signature="e#0#17#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DiamondInheritanceProtocol.swift">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="26" lean-forward="false" selection-start-line="8" selection-start-column="26" selection-end-line="8" selection-end-column="26" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/DeepInheritanceMock_expected.swift">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="44">
-          <caret line="8" column="16" lean-forward="false" selection-start-line="8" selection-start-column="16" selection-end-line="8" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DiamondInheritanceProtocolMock_expected.swift">
+    <entry file="file://$PROJECT_DIR$/ClosureProtocol.swift">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
-          <caret line="5" column="23" lean-forward="false" selection-start-line="5" selection-start-column="23" selection-end-line="5" selection-end-column="23" />
-          <caret line="11" column="23" lean-forward="false" selection-start-line="11" selection-start-column="23" selection-end-line="11" selection-end-column="23" />
-          <caret line="17" column="23" lean-forward="false" selection-start-line="17" selection-start-column="23" selection-end-line="17" selection-end-column="23" />
+          <caret line="17" column="45" lean-forward="false" selection-start-line="17" selection-start-column="45" selection-end-line="17" selection-end-column="45" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/OptionalProtocolMock_expected.swift">
+    <entry file="file://$PROJECT_DIR$/AssociatedTypeProtocolMock_expected.swift">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="5" column="38" lean-forward="false" selection-start-line="5" selection-start-column="38" selection-end-line="5" selection-end-column="38" />
-          <caret line="16" column="47" lean-forward="false" selection-start-line="16" selection-start-column="47" selection-end-line="16" selection-end-column="47" />
-          <caret line="27" column="34" lean-forward="false" selection-start-line="27" selection-start-column="34" selection-end-line="27" selection-end-column="34" />
+        <state relative-caret-position="165">
+          <caret line="11" column="59" lean-forward="false" selection-start-line="11" selection-start-column="59" selection-end-line="11" selection-end-column="59" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiAssociatedTypeProtocolMock_expected.swift">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="23" column="53" lean-forward="false" selection-start-line="23" selection-start-column="53" selection-end-line="23" selection-end-column="53" />
           <folding />
         </state>
       </provider>
@@ -742,35 +741,28 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/MultiAssociatedTypeProtocolMock_expected.swift">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="5" column="40" lean-forward="false" selection-start-line="5" selection-start-column="40" selection-end-line="5" selection-end-column="40" />
-          <caret line="16" column="44" lean-forward="false" selection-start-line="16" selection-start-column="44" selection-end-line="16" selection-end-column="44" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/OverloadProtocolMock_expected.swift">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="749">
-          <caret line="5" column="53" lean-forward="false" selection-start-line="5" selection-start-column="53" selection-end-line="5" selection-end-column="53" />
-          <caret line="14" column="50" lean-forward="false" selection-start-line="14" selection-start-column="50" selection-end-line="14" selection-end-column="50" />
-          <caret line="23" column="47" lean-forward="false" selection-start-line="23" selection-start-column="47" selection-end-line="23" selection-end-column="47" />
-          <caret line="32" column="44" lean-forward="false" selection-start-line="32" selection-start-column="44" selection-end-line="32" selection-end-column="44" />
-          <caret line="49" column="52" lean-forward="false" selection-start-line="49" selection-start-column="52" selection-end-line="49" selection-end-column="52" />
-          <caret line="58" column="57" lean-forward="false" selection-start-line="58" selection-start-column="57" selection-end-line="58" selection-end-column="57" />
-          <caret line="67" column="40" lean-forward="false" selection-start-line="67" selection-start-column="40" selection-end-line="67" selection-end-column="40" />
-          <caret line="76" column="48" lean-forward="false" selection-start-line="76" selection-start-column="48" selection-end-line="76" selection-end-column="48" />
-          <caret line="85" column="60" lean-forward="false" selection-start-line="85" selection-start-column="60" selection-end-line="85" selection-end-column="60" />
-          <caret line="94" column="66" lean-forward="false" selection-start-line="94" selection-start-column="66" selection-end-line="94" selection-end-column="66" />
-          <folding />
+        <state relative-caret-position="428">
+          <caret line="13" column="57" lean-forward="false" selection-start-line="13" selection-start-column="57" selection-end-line="13" selection-end-column="57" />
+          <caret line="23" column="54" lean-forward="false" selection-start-line="23" selection-start-column="54" selection-end-line="23" selection-end-column="54" />
+          <caret line="33" column="51" lean-forward="false" selection-start-line="33" selection-start-column="51" selection-end-line="33" selection-end-column="51" />
+          <caret line="43" column="48" lean-forward="false" selection-start-line="43" selection-start-column="48" selection-end-line="43" selection-end-column="48" />
+          <caret line="61" column="56" lean-forward="false" selection-start-line="61" selection-start-column="56" selection-end-line="61" selection-end-column="56" />
+          <caret line="71" column="61" lean-forward="false" selection-start-line="71" selection-start-column="61" selection-end-line="71" selection-end-column="61" />
+          <caret line="81" column="44" lean-forward="false" selection-start-line="81" selection-start-column="44" selection-end-line="81" selection-end-column="44" />
+          <caret line="91" column="52" lean-forward="false" selection-start-line="91" selection-start-column="52" selection-end-line="91" selection-end-column="52" />
+          <caret line="101" column="64" lean-forward="false" selection-start-line="101" selection-start-column="64" selection-end-line="101" selection-end-column="64" />
+          <caret line="111" column="70" lean-forward="false" selection-start-line="111" selection-start-column="70" selection-end-line="111" selection-end-column="70" />
+          <folding>
+            <element signature="e#0#17#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/PropertyProtocolMock_expected.swift">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="644">
+        <state relative-caret-position="323">
           <caret line="50" column="31" lean-forward="false" selection-start-line="50" selection-start-column="31" selection-end-line="50" selection-end-column="31" />
           <folding />
         </state>
@@ -778,33 +770,112 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/PublicProtocolMock_expected.swift">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="42" lean-forward="false" selection-start-line="15" selection-start-column="42" selection-end-line="15" selection-end-column="42" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/UIKitProtocolMock_expected.swift">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="7" column="60" lean-forward="false" selection-start-line="7" selection-start-column="60" selection-end-line="7" selection-end-column="60" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SimpleProtocolMock_expected.swift">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="5" lean-forward="true" selection-start-line="4" selection-start-column="5" selection-end-line="4" selection-end-column="5" />
+        <state relative-caret-position="315">
+          <caret line="21" column="55" lean-forward="false" selection-start-line="21" selection-start-column="55" selection-end-line="21" selection-end-column="55" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/RecursiveProtocolMock_expected.swift">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="19" column="40" lean-forward="true" selection-start-line="19" selection-start-column="40" selection-end-line="19" selection-end-column="40" />
+        <state relative-caret-position="390">
+          <caret line="16" column="48" lean-forward="false" selection-start-line="16" selection-start-column="48" selection-end-line="16" selection-end-column="48" />
+          <caret line="26" column="44" lean-forward="false" selection-start-line="26" selection-start-column="44" selection-end-line="26" selection-end-column="44" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SimpleProtocolMock_expected.swift">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="368">
+          <caret line="23" column="42" lean-forward="false" selection-start-line="23" selection-start-column="42" selection-end-line="23" selection-end-column="42" />
+          <caret line="34" column="41" lean-forward="false" selection-start-line="34" selection-start-column="41" selection-end-line="34" selection-end-column="41" />
+          <caret line="45" column="43" lean-forward="false" selection-start-line="45" selection-start-column="43" selection-end-line="45" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/UIKitProtocolMock_expected.swift">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="33" lean-forward="false" selection-start-line="5" selection-start-column="33" selection-end-line="5" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ClosureProtocolMock.swift">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="17" lean-forward="false" selection-start-line="0" selection-start-column="17" selection-end-line="0" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ClosureProtocolMock_expected.swift">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="26" lean-forward="true" selection-start-line="4" selection-start-column="26" selection-end-line="4" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DeepInheritanceMock_expected.swift">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DeepInheritanceMock.swift">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="0" lean-forward="true" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DiamondInheritanceProtocolMock.swift">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="36" lean-forward="false" selection-start-line="0" selection-start-column="6" selection-end-line="0" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DiamondInheritanceProtocolMock_expected.swift">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="14" lean-forward="true" selection-start-line="4" selection-start-column="14" selection-end-line="4" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/OptionalProtocolMock_expected.swift">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="13" column="46" lean-forward="false" selection-start-line="13" selection-start-column="46" selection-end-line="13" selection-end-column="46" />
+          <caret line="25" column="55" lean-forward="false" selection-start-line="25" selection-start-column="55" selection-end-line="25" selection-end-column="55" />
+          <caret line="37" column="42" lean-forward="false" selection-start-line="37" selection-start-column="42" selection-end-line="37" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/OptionalProtocolMock.swift">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="17" lean-forward="false" selection-start-line="0" selection-start-column="17" selection-end-line="0" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/UnitTests/UnitTests.swift">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="322">
+          <caret line="70" column="34" lean-forward="false" selection-start-line="70" selection-start-column="34" selection-end-line="70" selection-end-column="34" />
+          <folding>
+            <element signature="e#0#2#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

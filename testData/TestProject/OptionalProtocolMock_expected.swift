@@ -1,3 +1,5 @@
+import Foundation
+
 class MockOptionalProtocol: OptionalProtocol {
 
     var invokedOptionals = false
@@ -9,6 +11,7 @@ class MockOptionalProtocol: OptionalProtocol {
         invokedOptionals = true
         invokedOptionalsCount += 1
         invokedOptionalsParameters = (optional, ())
+        invokedOptionalsParametersList.append((optional, ()))
         return stubbedOptionalsResult
     }
     var invokedUnwrappedOptionals = false
@@ -20,6 +23,7 @@ class MockOptionalProtocol: OptionalProtocol {
         invokedUnwrappedOptionals = true
         invokedUnwrappedOptionalsCount += 1
         invokedUnwrappedOptionalsParameters = (unwrapped, ())
+        invokedUnwrappedOptionalsParametersList.append((unwrapped, ()))
         return stubbedUnwrappedOptionalsResult
     }
     var invokedMixed = false
@@ -31,6 +35,7 @@ class MockOptionalProtocol: OptionalProtocol {
         invokedMixed = true
         invokedMixedCount += 1
         invokedMixedParameters = (unwrapped, optional, value)
+        invokedMixedParametersList.append((unwrapped, optional, value))
         return stubbedMixedResult
     }
 }

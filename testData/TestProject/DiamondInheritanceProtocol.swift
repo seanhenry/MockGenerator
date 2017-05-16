@@ -6,6 +6,6 @@ protocol DiamondB: DiamondA {
     func b()
 }
 
-protocol DiamondC: A {
+protocol DiamondC: DiamondA {
     func c()
 }

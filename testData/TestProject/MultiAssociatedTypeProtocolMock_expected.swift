@@ -9,6 +9,7 @@ class MockMultiAssociatedTypeProtocol<SomeType, AnotherType>: MultiAssociatedTyp
         invokedDoSomething = true
         invokedDoSomethingCount += 1
         invokedDoSomethingParameters = (with, ())
+        invokedDoSomethingParametersList.append((with, ()))
         return stubbedDoSomethingResult
     }
     var invokedDoSomethingElse = false
@@ -20,6 +21,7 @@ class MockMultiAssociatedTypeProtocol<SomeType, AnotherType>: MultiAssociatedTyp
         invokedDoSomethingElse = true
         invokedDoSomethingElseCount += 1
         invokedDoSomethingElseParameters = (with, ())
+        invokedDoSomethingElseParametersList.append((with, ()))
         return stubbedDoSomethingElseResult
     }
 }

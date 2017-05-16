@@ -14,6 +14,7 @@ class MockRecursiveProtocol: InheritingProtocol {
         invokedInheritedOverloaded = true
         invokedInheritedOverloadedCount += 1
         invokedInheritedOverloadedParameters = (overloaded, ())
+        invokedInheritedOverloadedParametersList.append((overloaded, ()))
     }
     var invokedInheritedMethod = false
     var invokedInheritedMethodCount = 0
@@ -23,5 +24,6 @@ class MockRecursiveProtocol: InheritingProtocol {
         invokedInheritedMethod = true
         invokedInheritedMethodCount += 1
         invokedInheritedMethodParameters = (method, ())
+        invokedInheritedMethodParametersList.append((method, ()))
     }
 }
