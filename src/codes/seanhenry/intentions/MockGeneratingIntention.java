@@ -179,6 +179,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
 
   private void addProtocolFunctionsToClass(List<SwiftFunctionDeclaration> functions) {
     methodNameGenerator = new UniqueMethodNameGenerator(getMethodModels(functions));
+    methodNameGenerator.generateMethodNames();
     for (SwiftFunctionDeclaration function : functions) {
       protocolFunction = function;
       implementedFunction = createImplementedFunction();
@@ -424,27 +425,27 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   }
 
   private String createInvokedVariableName() {
-    String name = methodNameGenerator.generate(getFunctionID(protocolFunction));
+    String name = methodNameGenerator.getMethodName(getFunctionID(protocolFunction));
     return invokedMethodNameDecorator.process(name);
   }
 
   private String createInvokedCountVariableName() {
-    String name = methodNameGenerator.generate(getFunctionID(protocolFunction));
+    String name = methodNameGenerator.getMethodName(getFunctionID(protocolFunction));
     return invokedMethodCountNameDecorator.process(name);
   }
 
   private String createStubbedVariableName() {
-    String name = methodNameGenerator.generate(getFunctionID(protocolFunction));
+    String name = methodNameGenerator.getMethodName(getFunctionID(protocolFunction));
     return stubMethodNameDecorator.process(name);
   }
 
   private String createInvokedParametersName() {
-    String name = methodNameGenerator.generate(getFunctionID(protocolFunction));
+    String name = methodNameGenerator.getMethodName(getFunctionID(protocolFunction));
     return methodParametersNameDecorator.process(name);
   }
 
   private String createInvokedParametersListName() {
-    String name = methodNameGenerator.generate(getFunctionID(protocolFunction));
+    String name = methodNameGenerator.getMethodName(getFunctionID(protocolFunction));
     return methodParametersListNameDecorator.process(name);
   }
 

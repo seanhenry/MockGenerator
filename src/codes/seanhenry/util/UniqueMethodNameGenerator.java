@@ -9,6 +9,7 @@ public class UniqueMethodNameGenerator {
   private List<MethodModel> overloadedModels;
   private List<String> generatedComponents;
   private MethodModel generatingModel;
+  private final HashMap<String, String> methodNames = new HashMap<>();
 
   public UniqueMethodNameGenerator(MethodModel... methodModels) {
     this(Arrays.asList(methodModels));
@@ -22,7 +23,17 @@ public class UniqueMethodNameGenerator {
     this.methodModels = models;
   }
 
-  public String generate(String id) {
+  public void generateMethodNames() {
+    for (MethodModel m : methodModels.values()) {
+      methodNames.put(m.getID(), generateMethodName(m.getID()));
+    }
+  }
+
+  public String getMethodName(String id) {
+    return methodNames.get(id);
+  }
+
+  private String generateMethodName(String id) {
     generatedComponents = new ArrayList<>();
     generatingModel = methodModels.get(id);
     if (generatingModel == null)
