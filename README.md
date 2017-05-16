@@ -68,7 +68,7 @@ Closures without parameters are executed automatically so no need to stub the `a
 Closures with parameters will not be executed unless you provide their values.
 
 ```
-mockAnimator.stubbedAnimateCompletionResult = true
+mockAnimator.stubbedAnimateCompletionResult = (true, ())
 ```
 
 ### Perform the test
@@ -88,6 +88,18 @@ XCTAssert(mockAnimator.invokedAnimate)
 XCTAssertEqualWithAccuracy(mockAnimator.invokedAnimateParameters.duration, 0.25, accuracy: 0.01)
 ```
 
+### Query multiple invocations
+
+```
+XCTAssertEqual(mockAnimator.invokedAnimateCount, 2)
+```
+
+### Query multiple parameters
+
+```
+XCTAssertEqualWithAccuracy(mockAnimator.invokedAnimateParametersList[0].duration, 0.25, accuracy: 0.01)
+```
+
 ## Features
 
 - Captures invocation status of a method.
@@ -99,3 +111,4 @@ XCTAssertEqualWithAccuracy(mockAnimator.invokedAnimateParameters.duration, 0.25,
 - Regenerate your mock in one action.
 - Supports associated types.
 - Respects public mocks and makes queries publicly available.
+- Records multiple invocations of methods and their parameters.
