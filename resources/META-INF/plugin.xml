@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>codes.seanhenry.mockgenerator</id>
   <name>Swift Mock Generator for AppCode</name>
-  <version>2</version>
+  <version>3</version>
   <vendor email="hello@seanhenry.codes" url="http://www.seanhenry.codes">Sean Henry</vendor>
 
   <description><![CDATA[
@@ -21,12 +21,7 @@
     ]]></description>
 
   <change-notes><![CDATA[
-      <ul>
-        <li>Records multiple invocations of methods and their parameters.</li>
-        <li>Improves performance.</li>
-        <li>Fixes double optional issue with single closure optional arguments.</li>
-        <li>Built for AppCode 2017.1 and above.</li>
-      </ul>
+      Adds intention description and example usage.
     ]]>
   </change-notes>
 
