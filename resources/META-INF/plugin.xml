@@ -47,9 +47,7 @@
   <extensions defaultExtensionNs="com.intellij">
     <intentionAction>
       <className>codes.seanhenry.intentions.MockGeneratingIntention</className>
-      <category>Generate mock</category>
-      <descriptionDirectoryName>MockGenerator</descriptionDirectoryName>
-
+      <category>Swift</category>
     </intentionAction>
   </extensions>
 
