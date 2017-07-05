@@ -1,9 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="MockGeneratorTest" type="AppleRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="TestProject" TARGET_NAME="MockGeneratorTest" CONFIG_NAME="Debug" SCHEME_NAME="MockGeneratorTest" RUN_TARGET_PROJECT_NAME="TestProject" RUN_TARGET_NAME="MockGeneratorTest" MAKE_ACTIVE="TRUE">
-    <envs />
-    <EXTENSION ID="org.jetbrains.appcode.reveal.RevealRunConfigurationExtension">
-      <REVEAL_SETTINGS autoInject="false" autoInstall="true" askToEnableAutoInstall="true" />
-    </EXTENSION>
-    <method />
-  </configuration>
-</component>
