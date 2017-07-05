@@ -21,7 +21,7 @@
     ]]></description>
 
   <change-notes><![CDATA[
-      Adds intention description and example usage.
+      Fixes issue where array parameter's optional value was ignored.
     ]]>
   </change-notes>
 
