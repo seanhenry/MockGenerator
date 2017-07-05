@@ -15,11 +15,21 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="iphonesimulatoriPhone_7_10.3_x86_64_1" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="UnitTests.swift" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/UnitTests/UnitTests.swift">
+      <file leaf-file-name="ClosureProtocol.swift" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ClosureProtocol.swift">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="630">
-              <caret line="42" column="32" lean-forward="false" selection-start-line="42" selection-start-column="32" selection-end-line="42" selection-end-column="32" />
+            <state relative-caret-position="255">
+              <caret line="17" column="57" lean-forward="true" selection-start-line="17" selection-start-column="57" selection-end-line="18" selection-end-column="66" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ClosureProtocolMock_expected.swift" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/ClosureProtocolMock_expected.swift">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="224">
+              <caret line="109" column="37" lean-forward="true" selection-start-line="109" selection-start-column="37" selection-end-line="109" selection-end-column="37" />
               <folding />
             </state>
           </provider>
@@ -57,7 +67,6 @@
         <option value="$PROJECT_DIR$/MultiAssociatedTypeProtocolMock.swift" />
         <option value="$PROJECT_DIR$/MultipleProtocol.swift" />
         <option value="$PROJECT_DIR$/MultipleProtocolMock.swift" />
-        <option value="$PROJECT_DIR$/OptionalProtocol.swift" />
         <option value="$PROJECT_DIR$/OverloadProtocol.swift" />
         <option value="$PROJECT_DIR$/PropertyProtocolMock.swift" />
         <option value="$PROJECT_DIR$/PropertyProtocol.swift" />
@@ -74,12 +83,9 @@
         <option value="$PROJECT_DIR$/OverloadProtocolMock.swift" />
         <option value="$PROJECT_DIR$/DiamondInheritanceProtocol.swift" />
         <option value="$PROJECT_DIR$/ClosureProtocolMock.swift" />
-        <option value="$PROJECT_DIR$/ClosureProtocol.swift" />
         <option value="$PROJECT_DIR$/SimpleProtocolMock_expected.swift" />
         <option value="$PROJECT_DIR$/AssociatedTypeProtocolMock_expected.swift" />
-        <option value="$PROJECT_DIR$/ClosureProtocolMock_expected.swift" />
         <option value="$PROJECT_DIR$/MultiAssociatedTypeProtocolMock_expected.swift" />
-        <option value="$PROJECT_DIR$/OptionalProtocolMock_expected.swift" />
         <option value="$PROJECT_DIR$/OverloadProtocolMock_expected.swift" />
         <option value="$PROJECT_DIR$/PublicProtocolMock_expected.swift" />
         <option value="$PROJECT_DIR$/RecursiveProtocolMock_expected.swift" />
@@ -87,6 +93,10 @@
         <option value="$PROJECT_DIR$/DeepInheritanceMock_expected.swift" />
         <option value="$PROJECT_DIR$/OptionalProtocolMock.swift" />
         <option value="$PROJECT_DIR$/UnitTests/UnitTests.swift" />
+        <option value="$PROJECT_DIR$/OptionalProtocolMock_expected.swift" />
+        <option value="$PROJECT_DIR$/OptionalProtocol.swift" />
+        <option value="$PROJECT_DIR$/ClosureProtocol.swift" />
+        <option value="$PROJECT_DIR$/ClosureProtocolMock_expected.swift" />
       </list>
     </option>
   </component>
@@ -98,9 +108,9 @@
   </component>
   <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
   <component name="ProjectFrameBounds">
-    <option name="x" value="619" />
+    <option name="x" value="68" />
     <option name="y" value="23" />
-    <option name="width" value="821" />
+    <option name="width" value="1372" />
     <option name="height" value="873" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
@@ -170,7 +180,20 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Cidr.FilesView" />
+      <pane id="Cidr.FilesView">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TestProject" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.CidrFilesViewHelper$MyProjectTreeStructure$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TestProject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
       <pane id="ProjectPane" />
     </panes>
   </component>
@@ -427,19 +450,12 @@
       <workItem from="1498568274399" duration="177000" />
       <workItem from="1498568858396" duration="173000" />
       <workItem from="1498569057982" duration="626000" />
+      <workItem from="1498570546372" duration="117000" />
+      <workItem from="1499286091942" duration="4278000" />
     </task>
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="All_in_UnitTests - 2017.05.15 at 08h 00m 39s.xml">
-      <configuration name="All in UnitTests" configurationId="OCUnitRunConfiguration" />
-    </history-entry>
-    <history-entry file="All_in_UnitTests - 2017.05.15 at 08h 02m 23s.xml">
-      <configuration name="All in UnitTests" configurationId="OCUnitRunConfiguration" />
-    </history-entry>
-    <history-entry file="All_in_UnitTests - 2017.05.15 at 08h 04m 26s.xml">
-      <configuration name="All in UnitTests" configurationId="OCUnitRunConfiguration" />
-    </history-entry>
     <history-entry file="All_in_UnitTests - 2017.05.16 at 21h 52m 09s.xml">
       <configuration name="All in UnitTests" configurationId="OCUnitRunConfiguration" />
     </history-entry>
@@ -461,32 +477,41 @@
     <history-entry file="All_in_UnitTests - 2017.05.16 at 23h 15m 58s.xml">
       <configuration name="All in UnitTests" configurationId="OCUnitRunConfiguration" />
     </history-entry>
+    <history-entry file="All_in_UnitTests - 2017.06.27 at 09h 37m 03s.xml">
+      <configuration name="All in UnitTests" configurationId="OCUnitRunConfiguration" />
+    </history-entry>
+    <history-entry file="All_in_UnitTests - 2017.07.05 at 16h 29m 39s.xml">
+      <configuration name="All in UnitTests" configurationId="OCUnitRunConfiguration" />
+    </history-entry>
+    <history-entry file="All_in_UnitTests - 2017.07.05 at 17h 34m 23s.xml">
+      <configuration name="All in UnitTests" configurationId="OCUnitRunConfiguration" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="80994000" />
+    <option name="totallyTimeSpent" value="85389000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="619" y="23" width="821" height="873" extended-state="0" />
+    <frame x="68" y="23" width="1372" height="873" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2496955" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329602" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="PsiViewer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.39431486" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14941691" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39925373" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329602" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Run Dashboard" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="PsiViewer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39444444" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -521,13 +546,6 @@
     <entry file="file://$PROJECT_DIR$/Expected/OptionalProtocolMock.swift" />
     <entry file="file://$PROJECT_DIR$/Expected/SimpleProtocolMock.swift" />
     <entry file="file://$PROJECT_DIR$/Expected/OverloadProtocolMock.swift" />
-    <entry file="file://$PROJECT_DIR$/SimpleProtocol.swift">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="1" lean-forward="false" selection-start-line="5" selection-start-column="1" selection-end-line="5" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/SimpleProtocolMock.swift">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
@@ -560,13 +578,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="36" lean-forward="false" selection-start-line="0" selection-start-column="9" selection-end-line="0" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/OptionalProtocol.swift">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="25" lean-forward="false" selection-start-line="0" selection-start-column="9" selection-end-line="0" selection-end-column="25" />
         </state>
       </provider>
     </entry>
@@ -667,13 +678,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ClosureProtocol.swift">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" column="45" lean-forward="false" selection-start-line="17" selection-start-column="45" selection-end-line="17" selection-end-column="45" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/AssociatedTypeProtocolMock_expected.swift">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
@@ -758,13 +762,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ClosureProtocolMock_expected.swift">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="26" lean-forward="true" selection-start-line="4" selection-start-column="26" selection-end-line="4" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/DeepInheritanceMock_expected.swift">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -793,12 +790,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/OptionalProtocolMock_expected.swift">
+    <entry file="file://$PROJECT_DIR$/UnitTests/UnitTests.swift">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="13" column="46" lean-forward="false" selection-start-line="13" selection-start-column="46" selection-end-line="13" selection-end-column="46" />
-          <caret line="25" column="55" lean-forward="false" selection-start-line="25" selection-start-column="55" selection-end-line="25" selection-end-column="55" />
-          <caret line="37" column="42" lean-forward="false" selection-start-line="37" selection-start-column="42" selection-end-line="37" selection-end-column="42" />
+        <state relative-caret-position="360">
+          <caret line="30" column="5" lean-forward="false" selection-start-line="30" selection-start-column="5" selection-end-line="30" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SimpleProtocol.swift">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="37" lean-forward="false" selection-start-line="4" selection-start-column="37" selection-end-line="4" selection-end-column="37" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -806,13 +810,38 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="17" lean-forward="false" selection-start-line="0" selection-start-column="17" selection-end-line="0" selection-end-column="17" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/UnitTests/UnitTests.swift">
+    <entry file="file://$PROJECT_DIR$/OptionalProtocolMock_expected.swift">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="630">
-          <caret line="42" column="32" lean-forward="false" selection-start-line="42" selection-start-column="32" selection-end-line="42" selection-end-column="32" />
+        <state relative-caret-position="479">
+          <caret line="39" column="5" lean-forward="true" selection-start-line="39" selection-start-column="5" selection-end-line="39" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/OptionalProtocol.swift">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="1" lean-forward="false" selection-start-line="4" selection-start-column="1" selection-end-line="4" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ClosureProtocol.swift">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" column="57" lean-forward="true" selection-start-line="17" selection-start-column="57" selection-end-line="18" selection-end-column="66" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ClosureProtocolMock_expected.swift">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="224">
+          <caret line="109" column="37" lean-forward="true" selection-start-line="109" selection-start-column="37" selection-end-line="109" selection-end-column="37" />
           <folding />
         </state>
       </provider>
