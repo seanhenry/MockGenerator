@@ -301,7 +301,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     List<String> parameters = getParameterNames(protocolFunction, p -> {
       SwiftParameterTypeAnnotation typeAnnotation = p.getParameterTypeAnnotation();
       String name = p.getName() + ": " + MySwiftPsiUtil.getResolvedTypeName(typeAnnotation, true);
-      if (MySwiftPsiUtil.containsOptionalOfType(typeAnnotation, SwiftReferenceTypeElement.class)) {
+      if (MySwiftPsiUtil.isOptional(p)) {
         return name + "?";
       }
       return name;
@@ -398,7 +398,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
       int count = getClosureParameterTypes(parameter).size();
       String name = parameter.getName();
       String closureCall;
-      String optional = MySwiftPsiUtil.containsOptionalOfType(parameter, SwiftTupleTypeElement.class) ? "?" : "";
+      String optional = MySwiftPsiUtil.isOptional(parameter) ? "?" : "";
       if (count == 0) {
         closureCall = name + optional + "()";
       } else {

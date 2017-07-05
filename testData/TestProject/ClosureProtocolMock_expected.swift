@@ -117,6 +117,16 @@ class MockClosureProtocol: ClosureProtocol {
             closure(result.0, result.1)
         }
     }
+    var invokedOptionalArrayParams = false
+    var invokedOptionalArrayParamsCount = 0
+    var stubbedOptionalArrayParamsClosureResult: ([String]?, [UInt])?
+    func optionalArrayParams(_ closure: ([String]?, [UInt]) -> ()) {
+        invokedOptionalArrayParams = true
+        invokedOptionalArrayParamsCount += 1
+        if let result = stubbedOptionalArrayParamsClosureResult {
+            closure(result.0, result.1)
+        }
+    }
     var invokedParse = false
     var invokedParseCount = 0
     var invokedParseParameters: (data: Data, Void)?
