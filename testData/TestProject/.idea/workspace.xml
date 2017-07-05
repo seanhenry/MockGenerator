@@ -25,11 +25,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ClosureProtocolMock_expected.swift" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/ClosureProtocolMock_expected.swift">
+      <file leaf-file-name="OptionalProtocol.swift" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/OptionalProtocol.swift">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="224">
-              <caret line="109" column="37" lean-forward="true" selection-start-line="109" selection-start-column="37" selection-end-line="109" selection-end-column="37" />
+            <state relative-caret-position="60">
+              <caret line="4" column="4" lean-forward="false" selection-start-line="4" selection-start-column="4" selection-end-line="4" selection-end-column="118" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="OptionalProtocolMock_expected.swift" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/OptionalProtocolMock_expected.swift">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="544">
+              <caret line="43" column="87" lean-forward="false" selection-start-line="43" selection-start-column="87" selection-end-line="43" selection-end-column="87" />
               <folding />
             </state>
           </provider>
@@ -93,10 +103,10 @@
         <option value="$PROJECT_DIR$/DeepInheritanceMock_expected.swift" />
         <option value="$PROJECT_DIR$/OptionalProtocolMock.swift" />
         <option value="$PROJECT_DIR$/UnitTests/UnitTests.swift" />
-        <option value="$PROJECT_DIR$/OptionalProtocolMock_expected.swift" />
-        <option value="$PROJECT_DIR$/OptionalProtocol.swift" />
         <option value="$PROJECT_DIR$/ClosureProtocol.swift" />
         <option value="$PROJECT_DIR$/ClosureProtocolMock_expected.swift" />
+        <option value="$PROJECT_DIR$/OptionalProtocol.swift" />
+        <option value="$PROJECT_DIR$/OptionalProtocolMock_expected.swift" />
       </list>
     </option>
   </component>
@@ -451,7 +461,7 @@
       <workItem from="1498568858396" duration="173000" />
       <workItem from="1498569057982" duration="626000" />
       <workItem from="1498570546372" duration="117000" />
-      <workItem from="1499286091942" duration="4278000" />
+      <workItem from="1499286091942" duration="5242000" />
     </task>
     <servers />
   </component>
@@ -488,7 +498,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="85389000" />
+    <option name="totallyTimeSpent" value="86353000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="68" y="23" width="1372" height="873" extended-state="0" />
@@ -814,22 +824,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/OptionalProtocolMock_expected.swift">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="479">
-          <caret line="39" column="5" lean-forward="true" selection-start-line="39" selection-start-column="5" selection-end-line="39" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/OptionalProtocol.swift">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="1" lean-forward="false" selection-start-line="4" selection-start-column="1" selection-end-line="4" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ClosureProtocol.swift">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
@@ -840,8 +834,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/ClosureProtocolMock_expected.swift">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="224">
-          <caret line="109" column="37" lean-forward="true" selection-start-line="109" selection-start-column="37" selection-end-line="109" selection-end-column="37" />
+        <state relative-caret-position="134">
+          <caret line="103" column="33" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="140" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/OptionalProtocol.swift">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="4" lean-forward="false" selection-start-line="4" selection-start-column="4" selection-end-line="4" selection-end-column="118" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/OptionalProtocolMock_expected.swift">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="544">
+          <caret line="43" column="87" lean-forward="false" selection-start-line="43" selection-start-column="87" selection-end-line="43" selection-end-column="87" />
           <folding />
         </state>
       </provider>

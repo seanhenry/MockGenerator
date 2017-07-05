@@ -38,4 +38,16 @@ class MockOptionalProtocol: OptionalProtocol {
         invokedMixedParametersList.append((unwrapped, optional, value))
         return stubbedMixedResult
     }
+    var invokedArrayOptionals = false
+    var invokedArrayOptionalsCount = 0
+    var invokedArrayOptionalsParameters: (optional: [UInt]?, unwrapped: [String]?, value: [Int], optionalValue: [String?]?)?
+    var invokedArrayOptionalsParametersList = [(optional: [UInt]?, unwrapped: [String]?, value: [Int], optionalValue: [String?]?)]()
+    var stubbedArrayOptionalsResult: [String]!
+    func arrayOptionals(optional: [UInt]?, unwrapped: [String]!, value: [Int], optionalValue: [String?]?) -> [String]? {
+        invokedArrayOptionals = true
+        invokedArrayOptionalsCount += 1
+        invokedArrayOptionalsParameters = (optional, unwrapped, value, optionalValue)
+        invokedArrayOptionalsParametersList.append((optional, unwrapped, value, optionalValue))
+        return stubbedArrayOptionalsResult
+    }
 }
