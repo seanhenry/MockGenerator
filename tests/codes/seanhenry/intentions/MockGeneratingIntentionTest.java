@@ -12,6 +12,8 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.testFramework.*;
 import com.intellij.testFramework.fixtures.*;
 import com.intellij.testFramework.fixtures.impl.TempDirTestFixtureImpl;
+import org.jetbrains.annotations.NotNull;
+import org.junit.Assert;
 
 import java.io.IOException;
 
@@ -67,20 +69,32 @@ public class MockGeneratingIntentionTest extends PlatformTestCase {
     for (String fileName : fileNames) {
       runTest(fileName);
     }
+    Assert.assertFalse(isIntentionAvailable("NotAvailableInProductionCodeTarget"));
+  }
+
+  private boolean isIntentionAvailable(String fileName) {
+    configureFile(fileName + ".swift");
+    return myFixture.filterAvailableIntentions("Generate mock").size() > 0;
   }
 
   private void runTest(String fileName) throws IOException {
     String expectedFileName = fileName + "Mock_expected.swift";
     String mockFileName = fileName + "Mock.swift";
     System.out.println("Running test for " + fileName);
+    PsiFile targetFile = configureFile(mockFileName);
+
+    IntentionAction action = myFixture.findSingleIntention("Generate mock");
+
+    WriteCommandAction.runWriteCommandAction(getActiveProject(), () -> action.invoke(getActiveProject(), myFixture.getEditor(), targetFile));
+    myFixture.checkResultByFile(expectedFileName, true);
+  }
+
+  @NotNull
+  private PsiFile configureFile(String mockFileName) {
     PsiFile[] files = FilenameIndex.getFilesByName(getActiveProject(), mockFileName, GlobalSearchScope.projectScope(getActiveProject()));
     PsiFile psiFile = files[0];
     VirtualFile file = psiFile.getVirtualFile();
     myFixture.configureFromExistingVirtualFile(file);
-
-    IntentionAction action = myFixture.findSingleIntention("Generate mock");
-
-    WriteCommandAction.runWriteCommandAction(getActiveProject(), () -> action.invoke(getActiveProject(), myFixture.getEditor(), psiFile));
-    myFixture.checkResultByFile(expectedFileName, true);
+    return psiFile;
   }
 }

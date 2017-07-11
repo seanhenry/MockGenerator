@@ -1,0 +1,3 @@
+class NotAvailableProductionCodeTarget: SimpleProtocol {
+<caret>
+}

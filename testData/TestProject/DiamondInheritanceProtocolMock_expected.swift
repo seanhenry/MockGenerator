@@ -1,3 +1,5 @@
+@testable import MockGeneratorTest
+
 class MockDiamondInheritanceProtocol: DiamondC, DiamondB {
 
     var invokedC = false

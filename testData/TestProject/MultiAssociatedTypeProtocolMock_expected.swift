@@ -1,3 +1,5 @@
+@testable import MockGeneratorTest
+
 class MockMultiAssociatedTypeProtocol<SomeType, AnotherType>: MultiAssociatedTypeProtocol {
 
     var invokedDoSomething = false

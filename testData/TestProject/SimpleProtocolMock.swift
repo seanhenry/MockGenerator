@@ -1,3 +1,5 @@
+@testable import MockGeneratorTest
+
 class AnotherDeclarationInTheFileShouldNotBeAffected {
 
     func shouldNotInterfere() {

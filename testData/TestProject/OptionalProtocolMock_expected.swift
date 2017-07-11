@@ -1,4 +1,4 @@
-import Foundation
+@testable import MockGeneratorTest
 
 class MockOptionalProtocol: OptionalProtocol {
 

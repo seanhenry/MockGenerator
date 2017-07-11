@@ -1,3 +1,5 @@
+@testable import MockGeneratorTest
+
 public class MockPublicProtocol: PublicProtocol {
 
     public var invokedVariable: String?

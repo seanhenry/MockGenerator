@@ -7,10 +7,12 @@ import com.intellij.codeInsight.intention.PsiElementBaseIntentionAction;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
+import com.jetbrains.cidr.xcode.model.*;
 import com.jetbrains.swift.psi.*;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
@@ -59,7 +61,21 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   @Override
   public boolean isAvailable(@NotNull Project project, Editor editor, @NotNull PsiElement psiElement) {
     SwiftClassDeclaration classDeclaration = PsiTreeUtil.getParentOfType(psiElement, SwiftClassDeclaration.class);
-    return classDeclaration != null;
+    return classDeclaration != null && isElementInTestTarget(psiElement, project);
+  }
+
+  private static boolean isElementInTestTarget(PsiElement element, Project project) {
+    VirtualFile containingFile = element.getContainingFile().getVirtualFile();
+    List<PBXProjectFile> projectFiles = XcodeMetaData.getInstance(project).findAllContainingProjects(containingFile);
+    for (PBXProjectFile projectFile : projectFiles) {
+      List<PBXTarget> targets = projectFile.getTargetsFor(containingFile, PBXTarget.class, true);
+      for (PBXTarget target : targets) {
+        if (target.isAnyXCTestTests()) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   @Override
