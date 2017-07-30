@@ -17,6 +17,7 @@ public class MockPublicProtocol: PublicProtocol {
     public var invokedMethodParameters: (param: String, Void)?
     public var invokedMethodParametersList = [(param: String, Void)]()
     public var stubbedMethodResult: String!
+
     public func method(param: String, closure: () -> ()) -> String {
         invokedMethod = true
         invokedMethodCount += 1

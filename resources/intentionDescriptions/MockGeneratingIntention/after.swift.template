@@ -2,26 +2,33 @@ class MockBotDataStore: BotDataStore {
 
     var invokedLoad = false
     var stubbedLoadResult: [Bot]!
+
     func load() -> [Bot] {
       invokedLoad = true
       return stubbedLoadResult
     }
+
     var invokedLoadFromBranchName = false
     var invokedLoadFromBranchNameParameters: (name: String, Void)?
     var stubbedLoadFromBranchNameResult: Bot!
+
     func load(fromBranchName name: String) -> Bot? {
         invokedLoadFromBranchName = true
         invokedLoadFromBranchNameParameters = (name, ())
         return stubbedLoadFromBranchNameResult
     }
+
     var invokedSave = false
     var invokedSaveParameters: (branch: Bot, Void)?
+
     func save(_ branch: Bot) {
         invokedSave = true
         invokedSaveParameters = (branch, ())
     }
+
     var invokedDelete = false
     var invokedDeleteParameters: (branch: Bot, Void)?
+
     func delete(_ branch: Bot) {
         invokedDelete = true
         invokedDeleteParameters = (branch, ())

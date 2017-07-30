@@ -48,6 +48,7 @@ class MockPropertyProtocol: PropertyProtocol {
     }
     var invokedMethod = false
     var invokedMethodCount = 0
+
     func method() {
         invokedMethod = true
         invokedMethodCount += 1
