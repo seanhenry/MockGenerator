@@ -51,6 +51,7 @@
       <className>codes.seanhenry.intentions.MockGeneratingIntention</className>
       <category>Swift</category>
     </intentionAction>
+    <projectConfigurable instance="codes.seanhenry.settings.MockGeneratorSettings" groupId="other"/>
   </extensions>
 
 </idea-plugin>
