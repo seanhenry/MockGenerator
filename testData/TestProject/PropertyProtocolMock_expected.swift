@@ -1,7 +1,7 @@
 @testable import MockGeneratorTest
 
 class MockPropertyProtocol: PropertyProtocol {
-    
+
     var invokedReadWriteSetter = false
     var invokedReadWriteSetterCount = 0
     var invokedReadWrite: String?
@@ -88,6 +88,26 @@ class MockPropertyProtocol: PropertyProtocol {
             invokedWeakVarGetter = true
             invokedWeakVarGetterCount += 1
             return stubbedWeakVar
+        }
+    }
+    var invokedTupleSetter = false
+    var invokedTupleSetterCount = 0
+    var invokedTuple: (Int, String?)?
+    var invokedTupleList = [(Int, String?)?]()
+    var invokedTupleGetter = false
+    var invokedTupleGetterCount = 0
+    var stubbedTuple: (Int, String?)!
+    var tuple: (Int, String?)? {
+        set {
+            invokedTupleSetter = true
+            invokedTupleSetterCount += 1
+            invokedTuple = newValue
+            invokedTupleList.append(newValue)
+        }
+        get {
+            invokedTupleGetter = true
+            invokedTupleGetterCount += 1
+            return stubbedTuple
         }
     }
     var invokedMethod = false
