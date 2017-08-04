@@ -18,7 +18,7 @@ See my [original blog post](http://seanhenry.codes/ios/generate-swift-mock-appco
 
 ## How to create a new Swift mock
 
-- Create a mock class inheriting from from protocol(s) you would like to mock.
+- Create an empty mock class conforming to one or many protocols.
 - With the cursor inside the class declaration, press `⌥↵`.
 - Select 'Generate mock'.
 
@@ -30,7 +30,7 @@ To regenerate the mock, place the cursor anywhere inside the mock and select ‘
 
 ## Features
 
-- Captures invocation status of a method.
+- Captures invocation status of methods and properties.
 - Captures invoked method parameters.
 - Stub values for your mocks to return.
 - Automatically calls closure parameters with stubbed values.
@@ -38,7 +38,7 @@ To regenerate the mock, place the cursor anywhere inside the mock and select ‘
 - Handles overloaded method declarations.
 - Regenerate your mock in one action.
 - Supports associated types.
-- Respects public mocks and makes queries publicly available.
+- Respects public and open mocks and makes queries publicly available.
 - Records multiple invocations of methods and their parameters.
 
 ## Usage example
