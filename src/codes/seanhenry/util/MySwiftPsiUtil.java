@@ -40,6 +40,16 @@ public class MySwiftPsiUtil {
     return null;
   }
 
+  public static String getPropertyName(SwiftVariableDeclaration property) {
+    SwiftTypeAnnotatedPattern pattern = (SwiftTypeAnnotatedPattern) property.getPatternInitializerList().get(0).getPattern();
+    return pattern.getPattern().getText();
+  }
+
+  public static SwiftTypeAnnotation getPropertyTypeAnnotation(SwiftVariableDeclaration property) {
+    SwiftTypeAnnotatedPattern pattern = (SwiftTypeAnnotatedPattern) property.getPatternInitializerList().get(0).getPattern();
+    return pattern.getTypeAnnotation();
+  }
+
   @Nullable
   private static <T extends PsiElement> T findTypeAliasType(SwiftTypeAliasDeclaration typeAlias, Class<T> type) {
     SwiftTypeElement typeAliasType = typeAlias.getTypeAssignment().getTypeElement();
@@ -87,8 +97,8 @@ public class MySwiftPsiUtil {
   }
 
   public static String getName(SwiftVariableDeclaration property) {
-    SwiftTypeAnnotatedPattern pattern = (SwiftTypeAnnotatedPattern) property.getPatternInitializerList().get(0).getPattern();
-    return pattern.getPattern().getText();
+    SwiftPatternInitializer pattern = property.getPatternInitializerList().get(0);
+    return PsiTreeUtil.findChildOfType(pattern, SwiftIdentifierPattern.class).getText();
   }
 
   private static SwiftTypeElement getType(PsiElement element, boolean removeOptional) {

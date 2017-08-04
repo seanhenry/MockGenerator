@@ -35,7 +35,6 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   private SwiftClassDeclaration classDeclaration;
   private SwiftFunctionDeclaration implementedFunction;
   private SwiftFunctionDeclaration protocolFunction;
-
   {
     StringDecorator prependDecorator = new PrependStringDecorator(null, "stubbed");
     stubMethodNameDecorator = new AppendStringDecorator(prependDecorator, "Result");
@@ -55,6 +54,12 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     StringDecorator prependDecorator = new PrependStringDecorator(null, "stubbed");
     stubbedClosureResultNameDecorator = new AppendStringDecorator(prependDecorator, "Result");
   }
+  private final StringDecorator
+    invokedPropertySetterDecorator = new PrependStringDecorator(new AppendStringDecorator(null, "Setter"), "invoked");
+  private final StringDecorator invokedPropertySetterCountDecorator = new PrependStringDecorator(new AppendStringDecorator(null, "SetterCount"), "invoked");
+  private final StringDecorator invokedPropertySetterListDecorator = new PrependStringDecorator(new AppendStringDecorator(null, "List"), "invoked");
+  private final StringDecorator invokedPropertyGetterDecorator = new PrependStringDecorator(new AppendStringDecorator(null, "Getter"), "invoked");
+  private final StringDecorator invokedPropertyGetterCountDecorator = new PrependStringDecorator(new AppendStringDecorator(null, "GetterCount"), "invoked");
 
   private String scope = "";
 
@@ -238,14 +243,26 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   private void addProtocolPropertiesToClass(List<SwiftVariableDeclaration> properties) {
     for (SwiftVariableDeclaration property : properties) {
 
+      SwiftVariableDeclaration invokedPropertySetterCheck = (SwiftVariableDeclaration)getElementFactory().createStatement(scope + "var " + invokedPropertySetterDecorator.process(MySwiftPsiUtil.getPropertyName(property)) + " = false");
+      SwiftVariableDeclaration invokedPropertySetterCount = (SwiftVariableDeclaration)getElementFactory().createStatement(scope + "var " + invokedPropertySetterCountDecorator.process(MySwiftPsiUtil.getPropertyName(property)) + " = 0");
       SwiftVariableDeclaration invokedProperty = new PropertyDecorator(invokedPropertyNameDecorator, PropertyDecorator.OPTIONAL, scope)
         .decorate(property);
+      SwiftVariableDeclaration invokedPropertyList = (SwiftVariableDeclaration)getElementFactory().createStatement(scope + "var " + invokedPropertySetterListDecorator.process(MySwiftPsiUtil.getPropertyName(property)) + " = [" + MySwiftPsiUtil.getPropertyTypeAnnotation(property).getTypeElement().getText() + "]()");
+
+      SwiftVariableDeclaration invokedPropertyGetterCheck = (SwiftVariableDeclaration)getElementFactory().createStatement(scope + "var " + invokedPropertyGetterDecorator.process(MySwiftPsiUtil.getPropertyName(property)) + " = false");
+      SwiftVariableDeclaration invokedPropertyGetterCount = (SwiftVariableDeclaration)getElementFactory().createStatement(scope + "var " + invokedPropertyGetterCountDecorator.process(MySwiftPsiUtil.getPropertyName(property)) + " = 0");
       SwiftVariableDeclaration stubbedProperty = new PropertyDecorator(stubbedPropertyNameDecorator, PropertyDecorator.IMPLICITLY_UNWRAPPED_OPTIONAL, scope)
         .decorate(property);
       boolean hasSetter = PsiTreeUtil.findChildOfType(property, SwiftSetterClause.class) != null;
-      String literal = buildConcreteProperty(property, invokedProperty, stubbedProperty, hasSetter);
-      SwiftVariableDeclaration concreteProperty = (SwiftVariableDeclaration) getElementFactory().createStatement(literal);
+      String literal = buildConcreteProperty(property, invokedPropertySetterCheck, invokedPropertySetterCount, invokedProperty, invokedPropertyList, invokedPropertyGetterCheck, invokedPropertyGetterCount, stubbedProperty, hasSetter);
+      SwiftVariableDeclaration concreteProperty = (SwiftVariableDeclaration)getElementFactory().createStatement(literal);
+
+      appendInClass(invokedPropertySetterCheck, hasSetter);
+      appendInClass(invokedPropertySetterCount, hasSetter);
       appendInClass(invokedProperty, hasSetter);
+      appendInClass(invokedPropertyList, hasSetter);
+      appendInClass(invokedPropertyGetterCheck);
+      appendInClass(invokedPropertyGetterCount);
       appendInClass(stubbedProperty);
       appendInClass(concreteProperty);
     }
@@ -268,22 +285,33 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
 
   @NotNull
   private String buildConcreteProperty(SwiftVariableDeclaration property,
+                                       SwiftVariableDeclaration invokedPropertySetter,
+                                       SwiftVariableDeclaration invokedPropertySetterCount,
                                        SwiftVariableDeclaration invokedProperty,
+                                       SwiftVariableDeclaration invokedPropertyList,
+                                       SwiftVariableDeclaration invokedPropertyGetter,
+                                       SwiftVariableDeclaration invokedPropertyGetterCount,
                                        SwiftVariableDeclaration stubbedProperty, boolean hasSetter) {
     SwiftTypeAnnotatedPattern pattern = (SwiftTypeAnnotatedPattern) property.getPatternInitializerList().get(0).getPattern();
     String attributes = property.getAttributes().getText();
     String label = pattern.getPattern().getText();
     String literal = scope + attributes + " var " + label + pattern.getTypeAnnotation().getText() + "{\n";
-    String returnLabel = "return " + MySwiftPsiUtil.getName(stubbedProperty) + "\n";
+    String getterStatements =
+      MySwiftPsiUtil.getName(invokedPropertyGetter) + " = true\n" +
+      MySwiftPsiUtil.getName(invokedPropertyGetterCount) + " += 1\n" +
+      "return " + MySwiftPsiUtil.getName(stubbedProperty) + "\n";
     if (hasSetter) {
       literal += "set {\n" +
+                 MySwiftPsiUtil.getName(invokedPropertySetter) + " = true\n" +
+                 MySwiftPsiUtil.getName(invokedPropertySetterCount) + " += 1\n" +
                  MySwiftPsiUtil.getName(invokedProperty) + " = newValue\n" +
+                 MySwiftPsiUtil.getName(invokedPropertyList) + ".append(newValue)\n" +
                  "}\n";
       literal += "get {\n" +
-                 returnLabel +
+                 getterStatements +
                  "}\n";
     } else {
-      literal += returnLabel;
+      literal += getterStatements;
     }
     literal += "}";
     return literal;
