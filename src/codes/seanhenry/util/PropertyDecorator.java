@@ -19,9 +19,8 @@ public class PropertyDecorator {
   }
 
   public SwiftVariableDeclaration decorate(SwiftVariableDeclaration property) {
-    SwiftTypeAnnotatedPattern pattern = (SwiftTypeAnnotatedPattern) property.getPatternInitializerList().get(0).getPattern();
-    String label = stringDecorator.process(pattern.getPattern().getText());
-    String literal = scope + "var " + label + ": " + MySwiftPsiUtil.getResolvedTypeName(pattern.getTypeAnnotation(), true) + optional;
+    String label = stringDecorator.process(MySwiftPsiUtil.getPropertyName(property));
+    String literal = scope + "var " + label + ": " + MySwiftPsiUtil.getResolvedTypeName(property, true) + optional;
     return (SwiftVariableDeclaration)SwiftPsiElementFactory.getInstance(property).createStatement(literal);
   }
 }

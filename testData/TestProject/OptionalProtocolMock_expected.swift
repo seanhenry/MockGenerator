@@ -1,4 +1,4 @@
-import Foundation
+@testable import MockGeneratorTest
 
 class MockOptionalProtocol: OptionalProtocol {
 
@@ -7,6 +7,7 @@ class MockOptionalProtocol: OptionalProtocol {
     var invokedOptionalsParameters: (optional: Double?, Void)?
     var invokedOptionalsParametersList = [(optional: Double?, Void)]()
     var stubbedOptionalsResult: Int!
+
     func optionals(optional: Double?) -> Int? {
         invokedOptionals = true
         invokedOptionalsCount += 1
@@ -14,11 +15,13 @@ class MockOptionalProtocol: OptionalProtocol {
         invokedOptionalsParametersList.append((optional, ()))
         return stubbedOptionalsResult
     }
+
     var invokedUnwrappedOptionals = false
     var invokedUnwrappedOptionalsCount = 0
     var invokedUnwrappedOptionalsParameters: (unwrapped: UInt?, Void)?
     var invokedUnwrappedOptionalsParametersList = [(unwrapped: UInt?, Void)]()
     var stubbedUnwrappedOptionalsResult: UInt!
+
     func unwrappedOptionals(unwrapped: UInt!) -> UInt! {
         invokedUnwrappedOptionals = true
         invokedUnwrappedOptionalsCount += 1
@@ -26,11 +29,13 @@ class MockOptionalProtocol: OptionalProtocol {
         invokedUnwrappedOptionalsParametersList.append((unwrapped, ()))
         return stubbedUnwrappedOptionalsResult
     }
+
     var invokedMixed = false
     var invokedMixedCount = 0
     var invokedMixedParameters: (unwrapped: UInt?, optional: String?, value: Int)?
     var invokedMixedParametersList = [(unwrapped: UInt?, optional: String?, value: Int)]()
     var stubbedMixedResult: String!
+
     func mixed(unwrapped: UInt!, optional: String?, value: Int) -> String {
         invokedMixed = true
         invokedMixedCount += 1
@@ -38,11 +43,13 @@ class MockOptionalProtocol: OptionalProtocol {
         invokedMixedParametersList.append((unwrapped, optional, value))
         return stubbedMixedResult
     }
+
     var invokedArrayOptionals = false
     var invokedArrayOptionalsCount = 0
     var invokedArrayOptionalsParameters: (optional: [UInt]?, unwrapped: [String]?, value: [Int], optionalValue: [String?]?)?
     var invokedArrayOptionalsParametersList = [(optional: [UInt]?, unwrapped: [String]?, value: [Int], optionalValue: [String?]?)]()
     var stubbedArrayOptionalsResult: [String]!
+
     func arrayOptionals(optional: [UInt]?, unwrapped: [String]!, value: [Int], optionalValue: [String?]?) -> [String]? {
         invokedArrayOptionals = true
         invokedArrayOptionalsCount += 1

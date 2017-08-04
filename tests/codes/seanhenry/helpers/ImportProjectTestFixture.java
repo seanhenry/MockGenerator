@@ -52,7 +52,7 @@ public class ImportProjectTestFixture implements IdeaProjectTestFixture {
     return null;
   }
 
-  private void copyFolder(File sourceFolder, File destinationFolder) throws IOException {
+  static void copyFolder(File sourceFolder, File destinationFolder) throws IOException {
     //Check if sourceFolder is a directory or file
     //If sourceFolder is file; then copy the file directly to new location
     if (sourceFolder.isDirectory())
