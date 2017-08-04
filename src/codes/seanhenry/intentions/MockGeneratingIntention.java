@@ -128,6 +128,8 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   private String getMockScope() {
     if (classDeclaration.getAttributes().getText().contains("public")) {
       return "public ";
+    } else if (classDeclaration.getAttributes().getText().contains("open")) {
+      return "open ";
     }
     return "";
   }
