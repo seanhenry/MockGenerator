@@ -54,7 +54,7 @@ class MockOverloadProtocol: OverloadProtocol {
 
     var invokedAnimate = false
     var invokedAnimateCount = 0
-    var stubbedAnimateResult: Bool!
+    var stubbedAnimateResult: Bool! = false
 
     func animate() -> Bool {
         invokedAnimate = true

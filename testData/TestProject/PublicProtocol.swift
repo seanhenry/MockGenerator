@@ -1,4 +1,4 @@
 protocol PublicProtocol {
-    var variable: String { get set }
-    func method(param: String, closure: () -> ()) -> String
+    var variable: Object { get set }
+    func method(param: String, closure: () -> ()) -> Object
 }

@@ -75,7 +75,7 @@ public class MySwiftPsiUtil {
     return isOptional(parameter.getParameterTypeAnnotation().getTypeElement());
   }
 
-  private static boolean isOptional(PsiElement element) {
+  public static boolean isOptional(PsiElement element) {
     return element instanceof SwiftOptionalTypeElement || element instanceof SwiftImplicitlyUnwrappedOptionalTypeElement;
   }
 

@@ -34,9 +34,9 @@ class MockOptionalProtocol: OptionalProtocol {
     var invokedMixedCount = 0
     var invokedMixedParameters: (unwrapped: UInt?, optional: String?, value: Int)?
     var invokedMixedParametersList = [(unwrapped: UInt?, optional: String?, value: Int)]()
-    var stubbedMixedResult: String!
+    var stubbedMixedResult: Object!
 
-    func mixed(unwrapped: UInt!, optional: String?, value: Int) -> String {
+    func mixed(unwrapped: UInt!, optional: String?, value: Int) -> Object {
         invokedMixed = true
         invokedMixedCount += 1
         invokedMixedParameters = (unwrapped, optional, value)

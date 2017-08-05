@@ -4,12 +4,12 @@ public class MockPublicProtocol: PublicProtocol {
 
     public var invokedVariableSetter = false
     public var invokedVariableSetterCount = 0
-    public var invokedVariable: String?
-    public var invokedVariableList = [String]()
+    public var invokedVariable: Object?
+    public var invokedVariableList = [Object]()
     public var invokedVariableGetter = false
     public var invokedVariableGetterCount = 0
-    public var stubbedVariable: String!
-    public var variable: String {
+    public var stubbedVariable: Object!
+    public var variable: Object {
         set {
             invokedVariableSetter = true
             invokedVariableSetterCount += 1
@@ -26,9 +26,9 @@ public class MockPublicProtocol: PublicProtocol {
     public var invokedMethodCount = 0
     public var invokedMethodParameters: (param: String, Void)?
     public var invokedMethodParametersList = [(param: String, Void)]()
-    public var stubbedMethodResult: String!
+    public var stubbedMethodResult: Object!
 
-    public func method(param: String, closure: () -> ()) -> String {
+    public func method(param: String, closure: () -> ()) -> Object {
         invokedMethod = true
         invokedMethodCount += 1
         invokedMethodParameters = (param, ())

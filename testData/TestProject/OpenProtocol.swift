@@ -1,4 +1,4 @@
 protocol OpenProtocol {
-    var variable: String { get set }
-    func method(param: String, closure: () -> ()) -> String
+    var variable: Object { get set }
+    func method(param: Object, closure: () -> ()) -> Object
 }

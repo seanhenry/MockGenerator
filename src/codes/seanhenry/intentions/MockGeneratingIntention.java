@@ -1,5 +1,6 @@
 package codes.seanhenry.intentions;
 
+import codes.seanhenry.helpers.DefaultValueStore;
 import codes.seanhenry.util.*;
 import com.intellij.codeInsight.hint.HintManager;
 import com.intellij.codeInsight.intention.IntentionAction;
@@ -8,11 +9,14 @@ import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.*;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiNamedElement;
 import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
-import com.jetbrains.cidr.xcode.model.*;
+import com.jetbrains.cidr.xcode.model.PBXProjectFile;
+import com.jetbrains.cidr.xcode.model.PBXTarget;
+import com.jetbrains.cidr.xcode.model.XcodeMetaData;
 import com.jetbrains.swift.psi.*;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
@@ -31,10 +35,12 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   private final StringDecorator stubbedPropertyNameDecorator = new PrependStringDecorator(null, "stubbed");
   private final StringDecorator invokedMethodNameDecorator = new PrependStringDecorator(null, "invoked");
   private StringDecorator invokedMethodCountNameDecorator = new AppendStringDecorator(invokedMethodNameDecorator, "Count");
-  private final StringDecorator stubMethodNameDecorator;
   private SwiftClassDeclaration classDeclaration;
   private SwiftFunctionDeclaration implementedFunction;
   private SwiftFunctionDeclaration protocolFunction;
+  private DefaultValueStore defaultValueStore = new DefaultValueStore();
+
+  private final StringDecorator stubMethodNameDecorator;
   {
     StringDecorator prependDecorator = new PrependStringDecorator(null, "stubbed");
     stubMethodNameDecorator = new AppendStringDecorator(prependDecorator, "Result");
@@ -253,8 +259,9 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
 
       SwiftVariableDeclaration invokedPropertyGetterCheck = (SwiftVariableDeclaration)getElementFactory().createStatement(scope + "var " + invokedPropertyGetterDecorator.process(MySwiftPsiUtil.getPropertyName(property)) + " = false");
       SwiftVariableDeclaration invokedPropertyGetterCount = (SwiftVariableDeclaration)getElementFactory().createStatement(scope + "var " + invokedPropertyGetterCountDecorator.process(MySwiftPsiUtil.getPropertyName(property)) + " = 0");
-      SwiftVariableDeclaration stubbedProperty = new PropertyDecorator(stubbedPropertyNameDecorator, PropertyDecorator.IMPLICITLY_UNWRAPPED_OPTIONAL, scope)
-        .decorate(property);
+      String stubbedName = stubbedPropertyNameDecorator.process(MySwiftPsiUtil.getPropertyName(property));
+      SwiftTypeElement type = PsiTreeUtil.findChildOfType(property, SwiftTypeElement.class);
+      SwiftVariableDeclaration stubbedProperty = buildStubbedVariable(stubbedName, type, MySwiftPsiUtil.getResolvedTypeName(property, true));
       boolean hasSetter = PsiTreeUtil.findChildOfType(property, SwiftSetterClause.class) != null;
       String literal = buildConcreteProperty(property, invokedPropertySetterCheck, invokedPropertySetterCount, invokedProperty, invokedPropertyList, invokedPropertyGetterCheck, invokedPropertyGetterCount, stubbedProperty, hasSetter);
       SwiftVariableDeclaration concreteProperty = (SwiftVariableDeclaration)getElementFactory().createStatement(literal);
@@ -407,9 +414,18 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
       resultString = "(" + resultString + ")";
     }
     String name = createStubbedVariableName();
-    String literal = scope + "var " + name + ": " + resultString + "!";
-    SwiftStatement variable = getElementFactory().createStatement(literal);
+    SwiftStatement variable = buildStubbedVariable(name, result.getTypeElement(), resultString);
     appendInClass(variable);
+  }
+
+  private SwiftVariableDeclaration buildStubbedVariable(String name, SwiftTypeElement typeElement, String typeString) {
+    String defaultValueAssignment = "";
+    String defaultValue = defaultValueStore.getDefaultValue(typeElement);
+    if (defaultValue != null && !defaultValue.isEmpty()) {
+      defaultValueAssignment = " = " + defaultValue;
+    }
+    String literal = scope + "var " + name + ": " + typeString + "!" + defaultValueAssignment;
+    return (SwiftVariableDeclaration)getElementFactory().createStatement(literal);
   }
 
   private void addInvokedCheckExpression() {

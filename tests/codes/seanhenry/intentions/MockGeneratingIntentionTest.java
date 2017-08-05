@@ -61,6 +61,7 @@ public class MockGeneratingIntentionTest extends PlatformTestCase {
       //"UIKitProtocol",
       "PublicProtocol",
       "OpenProtocol",
+      "DefaultValues",
     };
 
     for (String fileName : fileNames) {

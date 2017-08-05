@@ -33,9 +33,9 @@ class SimpleProtocolMock: SimpleProtocol {
     var invokedReturnMethodCount = 0
     var invokedReturnMethodParameters: (hello: String, Void)?
     var invokedReturnMethodParametersList = [(hello: String, Void)]()
-    var stubbedReturnMethodResult: String!
+    var stubbedReturnMethodResult: Object!
 
-    func returnMethod(_ hello: String) -> String {
+    func returnMethod(_ hello: String) -> Object {
         invokedReturnMethod = true
         invokedReturnMethodCount += 1
         invokedReturnMethodParameters = (hello, ())

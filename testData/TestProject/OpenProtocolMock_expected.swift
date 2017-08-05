@@ -4,12 +4,12 @@ open class MockOpenProtocol: OpenProtocol {
 
     open var invokedVariableSetter = false
     open var invokedVariableSetterCount = 0
-    open var invokedVariable: String?
-    open var invokedVariableList = [String]()
+    open var invokedVariable: Object?
+    open var invokedVariableList = [Object]()
     open var invokedVariableGetter = false
     open var invokedVariableGetterCount = 0
-    open var stubbedVariable: String!
-    open var variable: String {
+    open var stubbedVariable: Object!
+    open var variable: Object {
         set {
             invokedVariableSetter = true
             invokedVariableSetterCount += 1
@@ -24,11 +24,11 @@ open class MockOpenProtocol: OpenProtocol {
     }
     open var invokedMethod = false
     open var invokedMethodCount = 0
-    open var invokedMethodParameters: (param: String, Void)?
-    open var invokedMethodParametersList = [(param: String, Void)]()
-    open var stubbedMethodResult: String!
+    open var invokedMethodParameters: (param: Object, Void)?
+    open var invokedMethodParametersList = [(param: Object, Void)]()
+    open var stubbedMethodResult: Object!
 
-    open func method(param: String, closure: () -> ()) -> String {
+    open func method(param: Object, closure: () -> ()) -> Object {
         invokedMethod = true
         invokedMethodCount += 1
         invokedMethodParameters = (param, ())
