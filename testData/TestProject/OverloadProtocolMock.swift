@@ -1,6 +1,6 @@
 import Foundation
 import UIKit
-@testable import MockGeneratorTest
+@testable import MockableTypes
 
 class MockOverloadProtocol: OverloadProtocol {
 <caret>

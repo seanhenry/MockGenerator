@@ -1,4 +1,4 @@
-@testable import MockGeneratorTest
+@testable import MockableTypes
 
 class MockOptionalProtocol: OptionalProtocol {
 <caret>

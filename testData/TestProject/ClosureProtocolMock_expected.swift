@@ -1,5 +1,5 @@
 import Foundation
-@testable import MockGeneratorTest
+@testable import MockableTypes
 
 class MockClosureProtocol: ClosureProtocol {
 

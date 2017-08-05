@@ -1,5 +1,5 @@
 import UIKit
-@testable import MockGeneratorTest
+@testable import MockableTypes
 
 class MockUIKitProtocol: NSObject, UITextFieldDelegate {
 
