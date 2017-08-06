@@ -1,9 +1,11 @@
-package codes.seanhenry.helpers;
+package codes.seanhenry.testhelpers;
 
 import com.intellij.ide.impl.ProjectUtil;
+import com.intellij.idea.IdeaTestApplication;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ex.ProjectManagerEx;
+import com.intellij.testFramework.LightPlatformTestCase;
 import com.intellij.testFramework.fixtures.IdeaProjectTestFixture;
 import com.intellij.testFramework.fixtures.TempDirTestFixture;
 
@@ -52,7 +54,7 @@ public class ImportProjectTestFixture implements IdeaProjectTestFixture {
     return null;
   }
 
-  static void copyFolder(File sourceFolder, File destinationFolder) throws IOException {
+  private void copyFolder(File sourceFolder, File destinationFolder) throws IOException {
     //Check if sourceFolder is a directory or file
     //If sourceFolder is file; then copy the file directly to new location
     if (sourceFolder.isDirectory())
