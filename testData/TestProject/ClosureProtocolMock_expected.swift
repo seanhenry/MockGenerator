@@ -29,7 +29,7 @@ class MockClosureProtocol: ClosureProtocol {
         invokedFilter = true
         invokedFilterCount += 1
         if let result = stubbedFilterClosureResult {
-            closure(result.0)
+            _ = closure(result.0)
         }
     }
 
@@ -41,7 +41,7 @@ class MockClosureProtocol: ClosureProtocol {
         invokedTypealiasClosure = true
         invokedTypealiasClosureCount += 1
         if let result = stubbedTypealiasClosureClosureResult {
-            closure(result.0)
+            _ = closure(result.0)
         }
     }
 
@@ -164,5 +164,68 @@ class MockClosureProtocol: ClosureProtocol {
         invokedParseCount += 1
         invokedParseParameters = (data, ())
         invokedParseParametersList.append((data, ()))
+    }
+
+    var invokedDoNotSuppressWarning1 = false
+    var invokedDoNotSuppressWarning1Count = 0
+
+    func doNotSuppressWarning1(_ closure: () -> ()) {
+        invokedDoNotSuppressWarning1 = true
+        invokedDoNotSuppressWarning1Count += 1
+        closure()
+    }
+
+    var invokedDoNotSuppressWarning2 = false
+    var invokedDoNotSuppressWarning2Count = 0
+
+    func doNotSuppressWarning2(_ closure: () -> Void) {
+        invokedDoNotSuppressWarning2 = true
+        invokedDoNotSuppressWarning2Count += 1
+        closure()
+    }
+
+    var invokedDoNotSuppressWarning3 = false
+    var invokedDoNotSuppressWarning3Count = 0
+
+    func doNotSuppressWarning3(_ closure: () -> (Void)) {
+        invokedDoNotSuppressWarning3 = true
+        invokedDoNotSuppressWarning3Count += 1
+        closure()
+    }
+
+    var invokedSuppressWarning1 = false
+    var invokedSuppressWarning1Count = 0
+
+    func suppressWarning1(_ closure: () -> String) {
+        invokedSuppressWarning1 = true
+        invokedSuppressWarning1Count += 1
+        _ = closure()
+    }
+
+    var invokedSuppressWarning2 = false
+    var invokedSuppressWarning2Count = 0
+
+    func suppressWarning2(_ closure: () -> (String)) {
+        invokedSuppressWarning2 = true
+        invokedSuppressWarning2Count += 1
+        _ = closure()
+    }
+
+    var invokedSuppressWarning3 = false
+    var invokedSuppressWarning3Count = 0
+
+    func suppressWarning3(_ closure: () -> String?) {
+        invokedSuppressWarning3 = true
+        invokedSuppressWarning3Count += 1
+        _ = closure()
+    }
+
+    var invokedSuppressWarning4 = false
+    var invokedSuppressWarning4Count = 0
+
+    func suppressWarning4(_ closure: () -> String!) {
+        invokedSuppressWarning4 = true
+        invokedSuppressWarning4Count += 1
+        _ = closure()
     }
 }

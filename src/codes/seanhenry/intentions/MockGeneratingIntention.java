@@ -18,6 +18,7 @@ import com.jetbrains.cidr.xcode.model.PBXProjectFile;
 import com.jetbrains.cidr.xcode.model.PBXTarget;
 import com.jetbrains.cidr.xcode.model.XcodeMetaData;
 import com.jetbrains.swift.psi.*;
+import com.jetbrains.swift.psi.impl.types.SwiftTypeUtil;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
@@ -461,17 +462,29 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
       String name = parameter.getName();
       String closureCall;
       String optional = MySwiftPsiUtil.isOptional(parameter) ? "?" : "";
+      String suppressWarning = getSuppressWarningString(parameter);
+
       if (count == 0) {
-        closureCall = name + optional + "()";
+        closureCall = suppressWarning + name + optional + "()";
       } else {
         closureCall = "if let result = " + createClosureResultName(name) + " {";
-        closureCall += name + optional + "(";
+        closureCall += suppressWarning + name + optional + "(";
         closureCall += IntStream.range(0, count).mapToObj(i -> "result." + i).collect(Collectors.joining(","));
         closureCall += ") }";
       }
       PsiElement statement = getElementFactory().createStatement(closureCall, protocolFunction);
       appendInImplementedFunction(statement);
     }
+  }
+
+  private String getSuppressWarningString(SwiftParameter parameter) {
+    SwiftFunctionTypeElement closure = MySwiftPsiUtil.findResolvedType(parameter, SwiftFunctionTypeElement.class);
+    String suppressWarning = "";
+    if (closure != null && closure.getTypeElementList().size() > 1) {
+      SwiftTypeElement typeElement = closure.getTypeElementList().get(closure.getTypeElementList().size() - 1);
+      suppressWarning = MySwiftPsiUtil.isVoid(typeElement) ? "" : "_ = ";
+    }
+    return suppressWarning;
   }
 
   private void addReturnExpression() {

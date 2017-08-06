@@ -18,4 +18,11 @@ protocol ClosureProtocol {
     func optionalParams(_ closure: (String?, Int?) -> ())
     func optionalArrayParams(_ closure: ([String]?, [UInt]) -> ())
     func parse(response data: Data) // should not resolve Data and treat as closure
+    func doNotSuppressWarning1(_ closure: () -> ())
+    func doNotSuppressWarning2(_ closure: () -> Void)
+    func doNotSuppressWarning3(_ closure: () -> (Void))
+    func suppressWarning1(_ closure: () -> String)
+    func suppressWarning2(_ closure: () -> (String))
+    func suppressWarning3(_ closure: () -> String?)
+    func suppressWarning4(_ closure: () -> String!)
 }

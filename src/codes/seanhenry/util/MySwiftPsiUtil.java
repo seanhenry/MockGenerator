@@ -18,6 +18,7 @@ package codes.seanhenry.util;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.jetbrains.swift.psi.*;
+import com.jetbrains.swift.psi.impl.types.SwiftTypeUtil;
 import org.jetbrains.annotations.Nullable;
 
 public class MySwiftPsiUtil {
@@ -77,6 +78,12 @@ public class MySwiftPsiUtil {
 
   public static boolean isOptional(PsiElement element) {
     return element instanceof SwiftOptionalTypeElement || element instanceof SwiftImplicitlyUnwrappedOptionalTypeElement;
+  }
+
+  public static boolean isVoid(SwiftTypeElement typeElement) {
+    return SwiftTypeUtil.equalsToVoid(typeElement.getType())
+           || typeElement.getText().equals("Void")
+           || typeElement.getText().equals("(Void)");
   }
 
   public static String getResolvedTypeName(PsiElement element) {
