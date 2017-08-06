@@ -1,11 +1,15 @@
 package codes.seanhenry.intentions;
 
 import codes.seanhenry.entities.BoolPropertyDeclaration;
+import codes.seanhenry.entities.IntPropertyDeclaration;
 import codes.seanhenry.helpers.DefaultValueStore;
 import codes.seanhenry.helpers.KeywordsStore;
 import codes.seanhenry.swift.BoolPropertyAssignmentToSwift;
 import codes.seanhenry.swift.BoolPropertyDeclarationToSwift;
+import codes.seanhenry.swift.IntPropertyDeclarationToSwift;
+import codes.seanhenry.swift.IntPropertyIncrementAssignmentToSwift;
 import codes.seanhenry.usecases.CreateInvocationCheck;
+import codes.seanhenry.usecases.CreateInvocationCount;
 import codes.seanhenry.util.*;
 import com.intellij.codeInsight.hint.HintManager;
 import com.intellij.codeInsight.intention.IntentionAction;
@@ -39,8 +43,6 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   private UniqueMethodNameGenerator methodNameGenerator;
   private final StringDecorator invokedPropertyNameDecorator = new PrependStringDecorator(null, "invoked");
   private final StringDecorator stubbedPropertyNameDecorator = new PrependStringDecorator(null, "stubbed");
-  private final StringDecorator invokedMethodNameDecorator = new PrependStringDecorator(null, "invoked");
-  private StringDecorator invokedMethodCountNameDecorator = new AppendStringDecorator(invokedMethodNameDecorator, "Count");
   private SwiftClassDeclaration classDeclaration;
   private SwiftFunctionDeclaration implementedFunction;
   private SwiftFunctionDeclaration protocolFunction;
@@ -67,9 +69,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     StringDecorator prependDecorator = new PrependStringDecorator(null, "stubbed");
     stubbedClosureResultNameDecorator = new AppendStringDecorator(prependDecorator, "Result");
   }
-  private final StringDecorator invokedPropertySetterCountDecorator = new PrependStringDecorator(new AppendStringDecorator(null, "SetterCount"), "invoked");
   private final StringDecorator invokedPropertySetterListDecorator = new PrependStringDecorator(new AppendStringDecorator(null, "List"), "invoked");
-  private final StringDecorator invokedPropertyGetterCountDecorator = new PrependStringDecorator(new AppendStringDecorator(null, "GetterCount"), "invoked");
 
   private String scope = "";
 
@@ -268,16 +268,14 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
       String getterName = name + "Getter";
       String setterName = name + "Setter";
       SwiftVariableDeclaration invokedPropertySetterCheck = createInvocationCheckDeclaration(setterName);
-      SwiftVariableDeclaration invokedPropertySetterCount = (SwiftVariableDeclaration)getElementFactory().createStatement(scope + "var " + invokedPropertySetterCountDecorator.process(
-        name) + " = 0");
+      SwiftVariableDeclaration invokedPropertySetterCount = createInvocationCountDeclaration(setterName);
       SwiftVariableDeclaration invokedProperty = new PropertyDecorator(invokedPropertyNameDecorator, PropertyDecorator.OPTIONAL, scope)
         .decorate(property);
       SwiftVariableDeclaration invokedPropertyList = (SwiftVariableDeclaration)getElementFactory().createStatement(scope + "var " + invokedPropertySetterListDecorator.process(
         name) + " = [" + MySwiftPsiUtil.getPropertyTypeAnnotation(property).getTypeElement().getText() + "]()");
 
       SwiftVariableDeclaration invokedPropertyGetterCheck = createInvocationCheckDeclaration(getterName);
-      SwiftVariableDeclaration invokedPropertyGetterCount = (SwiftVariableDeclaration)getElementFactory().createStatement(scope + "var " + invokedPropertyGetterCountDecorator.process(
-        name) + " = 0");
+      SwiftVariableDeclaration invokedPropertyGetterCount = createInvocationCountDeclaration(getterName);
       String stubbedName = stubbedPropertyNameDecorator.process(name);
       SwiftTypeElement type = PsiTreeUtil.findChildOfType(property, SwiftTypeElement.class);
       SwiftVariableDeclaration stubbedProperty = buildStubbedVariable(stubbedName, type, MySwiftPsiUtil.getResolvedTypeName(property, true));
@@ -302,9 +300,20 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     return (SwiftVariableDeclaration)getElementFactory().createStatement(scope + swiftString);
   }
 
+  private SwiftVariableDeclaration createInvocationCountDeclaration(String name) {
+    IntPropertyDeclaration declaration = new CreateInvocationCount().transform(name);
+    String swiftString = new IntPropertyDeclarationToSwift().transform(declaration);
+    return (SwiftVariableDeclaration)getElementFactory().createStatement(scope + swiftString);
+  }
+
   private String createInvocationCheckAssignment(String name) {
     BoolPropertyDeclaration invokedSetterCheck = new CreateInvocationCheck(true).transform(name);
     return new BoolPropertyAssignmentToSwift().transform(invokedSetterCheck);
+  }
+
+  private String createInvocationCountIncrementExpression(String name) {
+    IntPropertyDeclaration incrementExpression = new CreateInvocationCount().transform(name);
+    return new IntPropertyIncrementAssignmentToSwift().transform(incrementExpression);
   }
 
   private void addGenericParametersToClass(List<SwiftAssociatedTypeDeclaration> associatedTypes) {
@@ -331,20 +340,18 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
                                        SwiftVariableDeclaration invokedPropertyList,
                                        SwiftVariableDeclaration invokedPropertyGetterCount,
                                        SwiftVariableDeclaration stubbedProperty, boolean hasSetter) {
-    String setterInvocationCheckAssignment = createInvocationCheckAssignment(setterName);
-    String getterInvocationCheckAssignment = createInvocationCheckAssignment(getterName);
     SwiftTypeAnnotatedPattern pattern = (SwiftTypeAnnotatedPattern) property.getPatternInitializerList().get(0).getPattern();
     String attributes = property.getAttributes().getText();
     String label = pattern.getPattern().getText();
     String literal = scope + attributes + " var " + label + pattern.getTypeAnnotation().getText() + "{\n";
     String getterStatements =
-      getterInvocationCheckAssignment + "\n" +
-      MySwiftPsiUtil.getName(invokedPropertyGetterCount) + " += 1\n" +
+      createInvocationCheckAssignment(getterName) + "\n" +
+      createInvocationCountIncrementExpression(getterName) + "\n" +
       "return " + MySwiftPsiUtil.getName(stubbedProperty) + "\n";
     if (hasSetter) {
       literal += "set {\n" +
-                 setterInvocationCheckAssignment + "\n" +
-                 MySwiftPsiUtil.getName(invokedPropertySetterCount) + " += 1\n" +
+                 createInvocationCheckAssignment(setterName) + "\n" +
+                 createInvocationCountIncrementExpression(setterName) + "\n" +
                  MySwiftPsiUtil.getName(invokedProperty) + " = newValue\n" +
                  MySwiftPsiUtil.getName(invokedPropertyList) + ".append(newValue)\n" +
                  "}\n";
@@ -378,8 +385,8 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   }
 
   private void addInvocationCountVariable() {
-    SwiftStatement variable = getElementFactory().createStatement(scope + "var " + createInvokedCountVariableName() + " = 0");
-    appendInClass(variable);
+    String name = methodNameGenerator.getMethodName(getFunctionID(protocolFunction));
+    appendInClass(createInvocationCountDeclaration(name));
   }
 
   private void addInvokedParameterVariables() {
@@ -467,7 +474,8 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   }
 
   private void addInvokedCountExpression() {
-    SwiftExpression expression = getElementFactory().createExpression(createInvokedCountVariableName() + " += 1", protocolFunction);
+    String name = methodNameGenerator.getMethodName(getFunctionID(protocolFunction));
+    SwiftExpression expression = getElementFactory().createExpression(createInvocationCountIncrementExpression(name), protocolFunction);
     appendInImplementedFunction(expression);
   }
 
@@ -530,11 +538,6 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   private String createClosureResultName(String name) {
     return new PrependStringDecorator(stubbedClosureResultNameDecorator, protocolFunction.getName())
       .process(name);
-  }
-
-  private String createInvokedCountVariableName() {
-    String name = methodNameGenerator.getMethodName(getFunctionID(protocolFunction));
-    return invokedMethodCountNameDecorator.process(name);
   }
 
   private String createStubbedVariableName() {
