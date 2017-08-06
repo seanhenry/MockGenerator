@@ -33,6 +33,7 @@ To regenerate the mock, place the cursor anywhere inside the mock and select ‘
 - Captures invocation status of methods and properties.
 - Captures invoked method parameters.
 - Stub values for your mocks to return.
+- Stubs a default value for return values where possible.
 - Automatically calls closure parameters with stubbed values.
 - Supports mocks conforming to one or or many protocols.
 - Handles overloaded method declarations.

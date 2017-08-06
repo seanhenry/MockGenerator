@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>codes.seanhenry.mockgenerator</id>
   <name>Swift Mock Generator for AppCode</name>
-  <version>5</version>
+  <version>6</version>
   <vendor email="hello@seanhenry.codes" url="http://www.seanhenry.codes">Sean Henry</vendor>
 
   <description><![CDATA[
@@ -10,6 +10,7 @@
         <li>Captures invocation status of methods and properties.</li>
         <li>Captures invoked method parameters.</li>
         <li>Stub values for your mocks to return.</li>
+        <li>Stubs a default value for return values where possible.</li>
         <li>Automatically calls closure parameters with stubbed values.</li>
         <li>Supports mocks conforming to one or or many protocols.</li>
         <li>Handles overloaded method declarations.</li>
@@ -22,8 +23,8 @@
 
   <change-notes><![CDATA[
       <ul>
-        <li>Promotes property getter and setters to have the same functionality as methods.</li>
-        <li>Supports open mocks.</li>
+        <li>Stubs a default value for return values where possible.</li>
+        <li>Suppresses warnings produced by calling closures who return a value.</li>
       </ul>
     ]]>
   </change-notes>
