@@ -31,5 +31,5 @@ public abstract class StringDecorator {
     return decorated;
   }
 
-  abstract public String decorate(String string);
+  abstract protected String decorate(String string);
 }

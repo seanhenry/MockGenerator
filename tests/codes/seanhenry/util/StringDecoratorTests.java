@@ -11,7 +11,7 @@ public class StringDecoratorTests extends TestCase {
     }
 
     @Override
-    public String decorate(String string) {
+    protected String decorate(String string) {
       return string;
     }
   }

@@ -25,7 +25,7 @@ public class PrependStringDecorator extends StringDecorator {
   }
 
   @Override
-  public String decorate(String string) {
+  protected String decorate(String string) {
     if (string == null || string.isEmpty()) return "";
     if (prefix == null || prefix.isEmpty()) return string;
     String capitalised = string.substring(0, 1).toUpperCase();

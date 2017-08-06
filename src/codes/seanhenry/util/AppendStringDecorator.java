@@ -25,7 +25,7 @@ public class AppendStringDecorator extends StringDecorator {
   }
 
   @Override
-  public String decorate(String string) {
+  protected String decorate(String string) {
     if (string == null || string.isEmpty()) return "";
     if (suffix == null || suffix.isEmpty()) return string;
     return string + suffix;
