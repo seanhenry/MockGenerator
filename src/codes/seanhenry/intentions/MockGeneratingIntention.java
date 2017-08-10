@@ -1,6 +1,7 @@
 package codes.seanhenry.intentions;
 
 import codes.seanhenry.helpers.DefaultValueStore;
+import codes.seanhenry.helpers.KeywordsStore;
 import codes.seanhenry.util.*;
 import com.intellij.codeInsight.hint.HintManager;
 import com.intellij.codeInsight.intention.IntentionAction;
@@ -39,7 +40,8 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   private SwiftClassDeclaration classDeclaration;
   private SwiftFunctionDeclaration implementedFunction;
   private SwiftFunctionDeclaration protocolFunction;
-  private DefaultValueStore defaultValueStore = new DefaultValueStore();
+  private final DefaultValueStore defaultValueStore = new DefaultValueStore();
+  private final KeywordsStore keywordsStore = new KeywordsStore();
 
   private final StringDecorator stubMethodNameDecorator;
   {
@@ -541,7 +543,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   }
 
   private String escapeSwiftKeyword(String input) {
-    if (input.equals("for") || input.equals("in")) {
+    if (keywordsStore.isSwiftKeyword(input)) {
       return "`" + input + "`";
     }
     return input;
