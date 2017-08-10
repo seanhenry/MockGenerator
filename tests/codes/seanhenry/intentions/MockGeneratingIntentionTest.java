@@ -38,6 +38,7 @@ public class MockGeneratingIntentionTest extends ImportProjectTestCase {
       "PublicProtocol",
       "OpenProtocol",
       "DefaultValues",
+      "Keywords",
     };
 
     for (String fileName : fileNames) {

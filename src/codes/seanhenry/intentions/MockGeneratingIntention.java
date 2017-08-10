@@ -18,7 +18,6 @@ import com.jetbrains.cidr.xcode.model.PBXProjectFile;
 import com.jetbrains.cidr.xcode.model.PBXTarget;
 import com.jetbrains.cidr.xcode.model.XcodeMetaData;
 import com.jetbrains.swift.psi.*;
-import com.jetbrains.swift.psi.impl.types.SwiftTypeUtil;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
@@ -27,6 +26,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class MockGeneratingIntention extends PsiElementBaseIntentionAction implements IntentionAction, ProjectComponent {
 
@@ -216,7 +216,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
       implementedFunction = createImplementedFunction();
       addInvokedCheckExpression();
       addInvokedCountExpression();
-      addInvokedParameterExpression();
+      addInvokedParameterExpressions();
       addCallToClosure();
       addReturnExpression();
       addInvocationCheckVariable();
@@ -439,8 +439,8 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     appendInImplementedFunction(expression);
   }
 
-  private void addInvokedParameterExpression() {
-    List<String> parameters = getParameterNames(protocolFunction, PsiNamedElement::getName, true);
+  private void addInvokedParameterExpressions() {
+    List<String> parameters = getEscapedParameterNames(protocolFunction, PsiNamedElement::getName, true);
     if (parameters.isEmpty()) {
       return;
     } else if (parameters.size() == 1) {
@@ -525,7 +525,25 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     return methodParametersListNameDecorator.process(name);
   }
 
+  private List<String> getEscapedParameterNames(SwiftFunctionDeclaration function, Function<SwiftParameter, String> operation, boolean shouldRemoveClosures) {
+    return streamParameterNames(function, operation, shouldRemoveClosures)
+      .map(p -> escapeSwiftKeyword(p))
+      .collect(Collectors.toList());
+  }
+
+  private String escapeSwiftKeyword(String input) {
+    if (input.equals("for")) {
+      return "`" + input + "`";
+    }
+    return input;
+  }
+
   private List<String> getParameterNames(SwiftFunctionDeclaration function, Function<SwiftParameter, String> operation, boolean shouldRemoveClosures) {
+    return streamParameterNames(function, operation, shouldRemoveClosures)
+      .collect(Collectors.toList());
+  }
+
+  private Stream<String> streamParameterNames(SwiftFunctionDeclaration function, Function<SwiftParameter, String> operation, boolean shouldRemoveClosures) {
     Predicate<? super SwiftParameter> filter = p -> true;
     if (shouldRemoveClosures) {
       filter = p -> !isClosure(p);
@@ -534,8 +552,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
       .map(SwiftParameterClause::getParameterList)
       .flatMap(Collection::stream)
       .filter(filter)
-      .map(operation)
-      .collect(Collectors.toList());
+      .map(operation);
   }
 
   private List<SwiftParameter> getClosureParameters() {
