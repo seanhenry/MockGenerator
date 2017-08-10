@@ -1,8 +1,6 @@
 package codes.seanhenry.intentions;
 
 import codes.seanhenry.testhelpers.ImportProjectTestCase;
-import com.intellij.codeInsight.intention.IntentionAction;
-import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Assert;

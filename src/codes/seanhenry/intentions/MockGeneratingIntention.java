@@ -229,14 +229,23 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   }
 
   private SwiftFunctionDeclaration createImplementedFunction() {
+    String name = getUnescapedProtocolFunctionName();
     List<String> params = getParameterNames(protocolFunction, p -> constructParameter(p), false);
-    String literal = scope + "func " + protocolFunction.getName() + "(";
+    String literal = scope + "func " + name + "(";
     literal += String.join(", ", params);
     literal += ")";
     if (protocolFunction.getFunctionResult() != null)
       literal += " " + protocolFunction.getFunctionResult().getText();
     literal += " { }";
     return getElementFactory().createFunction(literal);
+  }
+
+  private String getUnescapedProtocolFunctionName() {
+    String name = protocolFunction.getName();
+    if (protocolFunction.getText().contains("`" + name + "`")) {
+      name = "`" + name + "`";
+    }
+    return name;
   }
 
   private String constructParameter(SwiftParameter parameter) {
@@ -532,7 +541,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   }
 
   private String escapeSwiftKeyword(String input) {
-    if (input.equals("for")) {
+    if (input.equals("for") || input.equals("in")) {
       return "`" + input + "`";
     }
     return input;

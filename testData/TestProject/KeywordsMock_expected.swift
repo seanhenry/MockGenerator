@@ -13,4 +13,16 @@ class KeywordsMock: Keywords {
         invokedRunParameters = (`for`, ())
         invokedRunParametersList.append((`for`, ()))
     }
+
+    var invokedFor = false
+    var invokedForCount = 0
+    var invokedForParameters: (in : String, Void)?
+    var invokedForParametersList = [(in: String, Void)]()
+
+    func `for`(in: String) {
+        invokedFor = true
+        invokedForCount += 1
+        invokedForParameters = (`in`, ())
+        invokedForParametersList.append((`in`, ()))
+    }
 }
