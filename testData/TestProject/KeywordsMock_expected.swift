@@ -25,4 +25,16 @@ class KeywordsMock: Keywords {
         invokedForParameters = (`in`, ())
         invokedForParametersList.append((`in`, ()))
     }
+
+    var invokedKeywords1 = false
+    var invokedKeywords1Count = 0
+    var invokedKeywords1Parameters: (while: Int, repeat: Int, switch: Int, case : Int, default: Int, do: Int, catch: Int, defer: Int)?
+    var invokedKeywords1ParametersList = [(while: Int, repeat: Int, switch: Int, case: Int, default: Int, do: Int, catch: Int, defer: Int)]()
+
+    func keywords1(while: Int, repeat: Int, switch: Int, case: Int, default: Int, do: Int, catch: Int, defer: Int) {
+        invokedKeywords1 = true
+        invokedKeywords1Count += 1
+        invokedKeywords1Parameters = (`while`, `repeat`, `switch`, `case`, `default`, `do`, `catch`, `defer`)
+        invokedKeywords1ParametersList.append((`while`, `repeat`, `switch`, `case`, `default`, `do`, `catch`, `defer`))
+    }
 }
