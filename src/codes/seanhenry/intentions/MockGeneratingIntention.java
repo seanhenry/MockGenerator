@@ -263,15 +263,21 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   private void addProtocolPropertiesToClass(List<SwiftVariableDeclaration> properties) {
     for (SwiftVariableDeclaration property : properties) {
 
-      SwiftVariableDeclaration invokedPropertySetterCheck = (SwiftVariableDeclaration)getElementFactory().createStatement(scope + "var " + invokedPropertySetterDecorator.process(MySwiftPsiUtil.getPropertyName(property)) + " = false");
-      SwiftVariableDeclaration invokedPropertySetterCount = (SwiftVariableDeclaration)getElementFactory().createStatement(scope + "var " + invokedPropertySetterCountDecorator.process(MySwiftPsiUtil.getPropertyName(property)) + " = 0");
+      String name = MySwiftPsiUtil.getUnescapedPropertyName(property);
+      SwiftVariableDeclaration invokedPropertySetterCheck = (SwiftVariableDeclaration)getElementFactory().createStatement(scope + "var " + invokedPropertySetterDecorator.process(
+        name) + " = false");
+      SwiftVariableDeclaration invokedPropertySetterCount = (SwiftVariableDeclaration)getElementFactory().createStatement(scope + "var " + invokedPropertySetterCountDecorator.process(
+        name) + " = 0");
       SwiftVariableDeclaration invokedProperty = new PropertyDecorator(invokedPropertyNameDecorator, PropertyDecorator.OPTIONAL, scope)
         .decorate(property);
-      SwiftVariableDeclaration invokedPropertyList = (SwiftVariableDeclaration)getElementFactory().createStatement(scope + "var " + invokedPropertySetterListDecorator.process(MySwiftPsiUtil.getPropertyName(property)) + " = [" + MySwiftPsiUtil.getPropertyTypeAnnotation(property).getTypeElement().getText() + "]()");
+      SwiftVariableDeclaration invokedPropertyList = (SwiftVariableDeclaration)getElementFactory().createStatement(scope + "var " + invokedPropertySetterListDecorator.process(
+        name) + " = [" + MySwiftPsiUtil.getPropertyTypeAnnotation(property).getTypeElement().getText() + "]()");
 
-      SwiftVariableDeclaration invokedPropertyGetterCheck = (SwiftVariableDeclaration)getElementFactory().createStatement(scope + "var " + invokedPropertyGetterDecorator.process(MySwiftPsiUtil.getPropertyName(property)) + " = false");
-      SwiftVariableDeclaration invokedPropertyGetterCount = (SwiftVariableDeclaration)getElementFactory().createStatement(scope + "var " + invokedPropertyGetterCountDecorator.process(MySwiftPsiUtil.getPropertyName(property)) + " = 0");
-      String stubbedName = stubbedPropertyNameDecorator.process(MySwiftPsiUtil.getPropertyName(property));
+      SwiftVariableDeclaration invokedPropertyGetterCheck = (SwiftVariableDeclaration)getElementFactory().createStatement(scope + "var " + invokedPropertyGetterDecorator.process(
+        name) + " = false");
+      SwiftVariableDeclaration invokedPropertyGetterCount = (SwiftVariableDeclaration)getElementFactory().createStatement(scope + "var " + invokedPropertyGetterCountDecorator.process(
+        name) + " = 0");
+      String stubbedName = stubbedPropertyNameDecorator.process(name);
       SwiftTypeElement type = PsiTreeUtil.findChildOfType(property, SwiftTypeElement.class);
       SwiftVariableDeclaration stubbedProperty = buildStubbedVariable(stubbedName, type, MySwiftPsiUtil.getResolvedTypeName(property, true));
       boolean hasSetter = PsiTreeUtil.findChildOfType(property, SwiftSetterClause.class) != null;
@@ -365,7 +371,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   private void addInvokedParameterVariables() {
     List<String> parameters = getParameterNames(protocolFunction, p -> {
       SwiftParameterTypeAnnotation typeAnnotation = p.getParameterTypeAnnotation();
-      String name = p.getName() + ": " + MySwiftPsiUtil.getResolvedTypeName(typeAnnotation, true);
+      String name = getUnescapedParameterName(p) + ": " + MySwiftPsiUtil.getResolvedTypeName(typeAnnotation, true);
       if (MySwiftPsiUtil.isOptional(p)) {
         return name + "?";
       }
@@ -564,6 +570,14 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
       .flatMap(Collection::stream)
       .filter(filter)
       .map(operation);
+  }
+
+  private String getUnescapedParameterName(SwiftParameter parameter) {
+    String name = parameter.getName();
+    if (parameter.getText().contains("`" + name + "`")) {
+      name = "`" + name + "`";
+    }
+    return name;
   }
 
   private List<SwiftParameter> getClosureParameters() {

@@ -41,7 +41,11 @@ public class MySwiftPsiUtil {
     return null;
   }
 
-  public static String getPropertyName(SwiftVariableDeclaration property) {
+  public static String getUnescapedPropertyName(SwiftVariableDeclaration property) {
+    return getPropertyName(property).replaceAll("`", "");
+  }
+
+  private static String getPropertyName(SwiftVariableDeclaration property) {
     SwiftTypeAnnotatedPattern pattern = (SwiftTypeAnnotatedPattern) property.getPatternInitializerList().get(0).getPattern();
     return pattern.getPattern().getText();
   }

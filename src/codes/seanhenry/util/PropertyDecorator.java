@@ -19,7 +19,7 @@ public class PropertyDecorator {
   }
 
   public SwiftVariableDeclaration decorate(SwiftVariableDeclaration property) {
-    String label = stringDecorator.process(MySwiftPsiUtil.getPropertyName(property));
+    String label = stringDecorator.process(MySwiftPsiUtil.getUnescapedPropertyName(property));
     String literal = scope + "var " + label + ": " + MySwiftPsiUtil.getResolvedTypeName(property, true) + optional;
     return (SwiftVariableDeclaration)SwiftPsiElementFactory.getInstance(property).createStatement(literal);
   }
