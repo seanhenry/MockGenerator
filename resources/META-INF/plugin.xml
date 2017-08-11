@@ -2,7 +2,7 @@
   <id>codes.seanhenry.mockgenerator</id>
   <name>Swift Mock Generator for AppCode</name>
   <version>6</version>
-  <vendor email="hello@seanhenry.codes" url="http://www.seanhenry.codes">Sean Henry</vendor>
+  <vendor email="hello@seanhenry.codes" url="http://seanhenry.codes">Sean Henry</vendor>
 
   <description><![CDATA[
       Automatically generate your mocks in one action.
@@ -18,6 +18,7 @@
         <li>Supports associated types.</li>
         <li>Respects public and open mocks and makes queries publicly available.</li>
         <li>Records multiple invocations of methods and their parameters.</li>
+        <li>Handles methods, properties and parameters named with keywords.</li>
       </ul>
     ]]></description>
 
@@ -25,6 +26,7 @@
       <ul>
         <li>Stubs a default value for return values where possible.</li>
         <li>Suppresses warnings produced by calling closures who return a value.</li>
+        <li>Handles methods, properties and parameters named with keywords.</li>
       </ul>
     ]]>
   </change-notes>

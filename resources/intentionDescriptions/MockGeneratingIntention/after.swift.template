@@ -2,7 +2,7 @@ class MockBotDataStore: BotDataStore {
 
     var invokedLoad = false
     var invokedLoadCount = 0
-    var stubbedLoadResult: [Bot]!
+    var stubbedLoadResult: [Bot]! = []
 
     func load() -> [Bot] {
         invokedLoad = true

@@ -41,6 +41,7 @@ To regenerate the mock, place the cursor anywhere inside the mock and select ‘
 - Supports associated types.
 - Respects public and open mocks and makes queries publicly available.
 - Records multiple invocations of methods and their parameters.
+- Handles methods, properties and parameters named with keywords.
 
 ## Usage example
 
@@ -84,7 +85,7 @@ class MockAnimator: Animator {
     var invokedAnimateParameters: (duration: TimeInterval, Void)?
     var invokedAnimateParametersList = [(duration: TimeInterval, Void)]()
     var stubbedAnimateCompletionResult: (Bool, Void)?
-    var stubbedAnimateResult: Bool!
+    var stubbedAnimateResult: Bool! = false
   
     func animate(duration: TimeInterval, animations: () -> (), completion: (Bool) -> ()) -> Bool {
         invokedAnimate = true
