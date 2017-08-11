@@ -7,7 +7,7 @@ class MockUIKitProtocol: NSObject, UITextFieldDelegate {
     var invokedTextFieldShouldBeginEditingCount = 0
     var invokedTextFieldShouldBeginEditingParameters: (textField: UITextField, Void)?
     var invokedTextFieldShouldBeginEditingParametersList = [(textField: UITextField, Void)]()
-    var stubbedTextFieldShouldBeginEditingResult: Bool!
+    var stubbedTextFieldShouldBeginEditingResult: Bool! = false
 
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         invokedTextFieldShouldBeginEditing = true
@@ -33,7 +33,7 @@ class MockUIKitProtocol: NSObject, UITextFieldDelegate {
     var invokedTextFieldShouldEndEditingCount = 0
     var invokedTextFieldShouldEndEditingParameters: (textField: UITextField, Void)?
     var invokedTextFieldShouldEndEditingParametersList = [(textField: UITextField, Void)]()
-    var stubbedTextFieldShouldEndEditingResult: Bool!
+    var stubbedTextFieldShouldEndEditingResult: Bool! = false
 
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         invokedTextFieldShouldEndEditing = true
@@ -71,7 +71,7 @@ class MockUIKitProtocol: NSObject, UITextFieldDelegate {
     var invokedTextFieldCount = 0
     var invokedTextFieldParameters: (textField: UITextField, range: NSRange, string: String)?
     var invokedTextFieldParametersList = [(textField: UITextField, range: NSRange, string: String)]()
-    var stubbedTextFieldResult: Bool!
+    var stubbedTextFieldResult: Bool! = false
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         invokedTextField = true
@@ -85,7 +85,7 @@ class MockUIKitProtocol: NSObject, UITextFieldDelegate {
     var invokedTextFieldShouldClearCount = 0
     var invokedTextFieldShouldClearParameters: (textField: UITextField, Void)?
     var invokedTextFieldShouldClearParametersList = [(textField: UITextField, Void)]()
-    var stubbedTextFieldShouldClearResult: Bool!
+    var stubbedTextFieldShouldClearResult: Bool! = false
 
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
         invokedTextFieldShouldClear = true
@@ -99,7 +99,7 @@ class MockUIKitProtocol: NSObject, UITextFieldDelegate {
     var invokedTextFieldShouldReturnCount = 0
     var invokedTextFieldShouldReturnParameters: (textField: UITextField, Void)?
     var invokedTextFieldShouldReturnParametersList = [(textField: UITextField, Void)]()
-    var stubbedTextFieldShouldReturnResult: Bool!
+    var stubbedTextFieldShouldReturnResult: Bool! = false
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         invokedTextFieldShouldReturn = true
