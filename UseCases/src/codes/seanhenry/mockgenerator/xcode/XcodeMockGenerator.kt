@@ -23,7 +23,7 @@ class XcodeMockGenerator {
       val invocationCount = CreateInvocationCount().transform(method.name)
       lines.add(BoolPropertyDeclarationToSwift().transform(invocationCheck))
       lines.add(IntPropertyDeclarationToSwift().transform(invocationCount))
-      lines.add("func " + method.name + "() {")
+      lines.add(method.signature + " {")
       val invocationAssignment = CreateInvocationCheck(true).transform(method.name)
       lines.add(BoolPropertyAssignmentToSwift().transform(invocationAssignment))
       lines.add(IntPropertyIncrementAssignmentToSwift().transform(invocationCount))
