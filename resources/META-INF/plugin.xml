@@ -25,9 +25,8 @@
 
   <change-notes><![CDATA[
       <ul>
-        <li>Stubs a default value for return values where possible.</li>
-        <li>Suppresses warnings produced by calling closures who return a value.</li>
-        <li>Handles methods, properties and parameters named with keywords.</li>
+        <li>Adds support for 2017.2.3</li>
+        <li>Adds support for parameter inout types.</li>
       </ul>
     ]]>
   </change-notes>
