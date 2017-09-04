@@ -9,7 +9,7 @@
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/testData" type="java-test-resource" />
     </content>
-    <orderEntry type="jdk" jdkName="AppCode OC-171.4073.48" jdkType="IDEA JDK" />
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="testFramework" scope="TEST" />
     <orderEntry type="library" scope="TEST" name="JUnit3" level="project" />
