@@ -16,6 +16,7 @@
         <li>Handles overloaded method declarations.</li>
         <li>Regenerate your mock in one action.</li>
         <li>Supports associated types.</li>
+        <li>Supports parameter type-annotation attributes and inout.</li>
         <li>Respects public and open mocks and makes queries publicly available.</li>
         <li>Records multiple invocations of methods and their parameters.</li>
         <li>Handles methods, properties and parameters named with keywords.</li>
