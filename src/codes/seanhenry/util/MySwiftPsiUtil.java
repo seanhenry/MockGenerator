@@ -99,12 +99,26 @@ public class MySwiftPsiUtil {
            || typeElement.getText().equals("(Void)");
   }
 
+  public static String getResolvedTypeNameRemovingInout(SwiftParameter parameter) {
+    String typeName = "";
+    if (parameter.getTypeAnnotation() != null) {
+      SwiftTypeElement typeElement = parameter.getTypeAnnotation().getTypeElement();
+      if (typeElement instanceof SwiftInoutTypeElement) {
+        SwiftInoutTypeElement inOut = (SwiftInoutTypeElement)typeElement;
+        typeName = getResolvedTypeName(inOut.getTypeElement(), true);
+      } else {
+        typeName = getResolvedTypeName(typeElement, true);
+      }
+    }
+    return typeName;
+  }
+
   public static String getResolvedTypeName(PsiElement element) {
     return getResolvedTypeName(element, true);
   }
 
   public static String getResolvedTypeName(PsiElement element, boolean removeOptional) {
-    SwiftTypeElement type =  getType(element, removeOptional);
+    SwiftTypeElement type = getType(element, removeOptional);
     if (type == null) {
       return null;
     }
@@ -122,7 +136,12 @@ public class MySwiftPsiUtil {
   }
 
   private static SwiftTypeElement getType(PsiElement element, boolean removeOptional) {
-    SwiftTypeElement type = PsiTreeUtil.findChildOfType(element, SwiftTypeElement.class);
+    SwiftTypeElement type;
+    if (element instanceof SwiftTypeElement) {
+      type = (SwiftTypeElement)element;
+    } else {
+      type = PsiTreeUtil.findChildOfType(element, SwiftTypeElement.class);
+    }
     if (type == null) return null;
     SwiftTypeElement nextType = PsiTreeUtil.findChildOfType(type, SwiftTypeElement.class);
     boolean isOptional = type instanceof SwiftImplicitlyUnwrappedOptionalTypeElement || type instanceof SwiftOptionalTypeElement;
