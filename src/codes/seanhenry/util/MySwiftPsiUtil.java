@@ -75,9 +75,18 @@ public class MySwiftPsiUtil {
   }
 
   public static boolean isOptional(SwiftParameter parameter) {
-    if (parameter == null || parameter.getParameterTypeAnnotation() == null)
-      return false;
-    return isOptional(parameter.getParameterTypeAnnotation().getTypeElement());
+    SwiftTypeElement type = getType(parameter);
+    if (type != null) {
+      return isOptional(type);
+    }
+    return false;
+  }
+
+  private static SwiftTypeElement getType(SwiftParameter parameter) {
+    if (parameter != null && parameter.getTypeAnnotation() != null) {
+      return parameter.getTypeAnnotation().getTypeElement();
+    }
+    return null;
   }
 
   public static boolean isOptional(PsiElement element) {

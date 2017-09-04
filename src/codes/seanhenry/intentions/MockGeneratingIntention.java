@@ -257,7 +257,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
       .map(p -> p.getText())
       .collect(Collectors.toList());
     String labelString = String.join(" ", labels);
-    return labelString + ": " + parameter.getParameterTypeAnnotation().getAttributes().getText() + " " + MySwiftPsiUtil.getResolvedTypeName(parameter, false);
+    return labelString + ": " + parameter.getAttributes().getText() + " " + MySwiftPsiUtil.getResolvedTypeName(parameter, false);
   }
 
   private void addProtocolPropertiesToClass(List<SwiftVariableDeclaration> properties) {
@@ -370,7 +370,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
 
   private void addInvokedParameterVariables() {
     List<String> parameters = getParameterNames(protocolFunction, p -> {
-      SwiftParameterTypeAnnotation typeAnnotation = p.getParameterTypeAnnotation();
+      SwiftTypeAnnotation typeAnnotation = p.getTypeAnnotation();
       String name = getUnescapedParameterName(p) + ": " + MySwiftPsiUtil.getResolvedTypeName(typeAnnotation, true);
       if (MySwiftPsiUtil.isOptional(p)) {
         return name + "?";
