@@ -50,6 +50,8 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   private final KeywordsStore keywordsStore = new KeywordsStore();
 
   private final StringDecorator stubMethodNameDecorator;
+  private String name;
+
   {
     StringDecorator prependDecorator = new PrependStringDecorator(null, "stubbed");
     stubMethodNameDecorator = new AppendStringDecorator(prependDecorator, "Result");
@@ -217,6 +219,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     for (SwiftFunctionDeclaration function : functions) {
       protocolFunction = function;
       implementedFunction = createImplementedFunction();
+      name = methodNameGenerator.getMethodName(getFunctionID(protocolFunction));
       addInvokedCheckExpression();
       addInvokedCountExpression();
       addInvokedParameterExpressions();
@@ -264,7 +267,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   private void addProtocolPropertiesToClass(List<SwiftVariableDeclaration> properties) {
     for (SwiftVariableDeclaration property : properties) {
         
-        String name = MySwiftPsiUtil.getUnescapedPropertyName(property);
+      name = MySwiftPsiUtil.getUnescapedPropertyName(property);
       String getterName = name + "Getter";
       String setterName = name + "Setter";
       SwiftVariableDeclaration invokedPropertySetterCheck = createInvocationCheckDeclaration(setterName);
@@ -380,12 +383,10 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   }
 
   private void addInvocationCheckVariable() {
-    String name = methodNameGenerator.getMethodName(getFunctionID(protocolFunction));
     appendInClass(createInvocationCheckDeclaration(name));
   }
 
   private void addInvocationCountVariable() {
-    String name = methodNameGenerator.getMethodName(getFunctionID(protocolFunction));
     appendInClass(createInvocationCountDeclaration(name));
   }
 
@@ -468,13 +469,11 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   }
 
   private void addInvokedCheckExpression() {
-    String name = methodNameGenerator.getMethodName(getFunctionID(protocolFunction));
     SwiftExpression expression = getElementFactory().createExpression(createInvocationCheckAssignment(name), protocolFunction);
     appendInImplementedFunction(expression);
   }
 
   private void addInvokedCountExpression() {
-    String name = methodNameGenerator.getMethodName(getFunctionID(protocolFunction));
     SwiftExpression expression = getElementFactory().createExpression(createInvocationCountIncrementExpression(name), protocolFunction);
     appendInImplementedFunction(expression);
   }
@@ -541,17 +540,14 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   }
 
   private String createStubbedVariableName() {
-    String name = methodNameGenerator.getMethodName(getFunctionID(protocolFunction));
     return stubMethodNameDecorator.process(name);
   }
 
   private String createInvokedParametersName() {
-    String name = methodNameGenerator.getMethodName(getFunctionID(protocolFunction));
     return methodParametersNameDecorator.process(name);
   }
 
   private String createInvokedParametersListName() {
-    String name = methodNameGenerator.getMethodName(getFunctionID(protocolFunction));
     return methodParametersListNameDecorator.process(name);
   }
 
