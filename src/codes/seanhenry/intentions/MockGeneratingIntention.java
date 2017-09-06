@@ -40,18 +40,15 @@ import java.util.stream.Stream;
 public class MockGeneratingIntention extends PsiElementBaseIntentionAction implements IntentionAction, ProjectComponent {
 
   private Editor editor;
-  private UniqueMethodNameGenerator methodNameGenerator;
   private final StringDecorator invokedPropertyNameDecorator = new PrependStringDecorator(null, "invoked");
   private final StringDecorator stubbedPropertyNameDecorator = new PrependStringDecorator(null, "stubbed");
   private SwiftClassDeclaration classDeclaration;
   private SwiftFunctionDeclaration implementedFunction;
   private SwiftFunctionDeclaration protocolFunction;
-  private final DefaultValueStore defaultValueStore = new DefaultValueStore();
-  private final KeywordsStore keywordsStore = new KeywordsStore();
-
+    private DefaultValueStore defaultValueStore = new DefaultValueStore();
+    private final KeywordsStore keywordsStore = new KeywordsStore();
+  private String name = "";
   private final StringDecorator stubMethodNameDecorator;
-  private String name;
-
   {
     StringDecorator prependDecorator = new PrependStringDecorator(null, "stubbed");
     stubMethodNameDecorator = new AppendStringDecorator(prependDecorator, "Result");
@@ -146,11 +143,11 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     return "";
   }
 
-  private List<SwiftProtocolDeclaration> removeNSObjectProtocol(List<SwiftProtocolDeclaration> protocols) {
-    return protocols.stream().filter(p -> !p.getName().equals("NSObjectProtocol")).collect(Collectors.toList());
+  private static List<SwiftProtocolDeclaration> removeNSObjectProtocol(List<SwiftProtocolDeclaration> protocols) {
+    return protocols.stream().filter(p -> !Objects.equals(p.getName(), "NSObjectProtocol")).collect(Collectors.toList());
   }
 
-  private <T> List<T> removeDuplicates(List<T> list) {
+  private static <T> List<T> removeDuplicates(List<T> list) {
     return new ArrayList<>(new LinkedHashSet<>(list));
   }
 
@@ -164,19 +161,19 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     }
   }
 
-  private List<SwiftFunctionDeclaration> getProtocolMethods(PsiElement protocol) {
+  private static List<SwiftFunctionDeclaration> getProtocolMethods(PsiElement protocol) {
     ElementGatheringVisitor<SwiftFunctionDeclaration> visitor = new ElementGatheringVisitor<>(SwiftFunctionDeclaration.class);
     protocol.accept(visitor);
     return visitor.getElements();
   }
 
-  private List<SwiftVariableDeclaration> getProtocolProperties(PsiElement protocol) {
+  private static List<SwiftVariableDeclaration> getProtocolProperties(PsiElement protocol) {
     ElementGatheringVisitor<SwiftVariableDeclaration> visitor = new ElementGatheringVisitor<>(SwiftVariableDeclaration.class);
     protocol.accept(visitor);
     return visitor.getElements();
   }
 
-  private List<SwiftAssociatedTypeDeclaration> getProtocolAssociatedTypes(PsiElement protocol) {
+  private static List<SwiftAssociatedTypeDeclaration> getProtocolAssociatedTypes(PsiElement protocol) {
     ElementGatheringVisitor<SwiftAssociatedTypeDeclaration> visitor = new ElementGatheringVisitor<>(SwiftAssociatedTypeDeclaration.class);
     protocol.accept(visitor);
     return visitor.getElements();
@@ -214,7 +211,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   }
 
   private void addProtocolFunctionsToClass(List<SwiftFunctionDeclaration> functions) {
-    methodNameGenerator = new UniqueMethodNameGenerator(getMethodModels(functions));
+    UniqueMethodNameGenerator methodNameGenerator = new UniqueMethodNameGenerator(getMethodModels(functions));
     methodNameGenerator.generateMethodNames();
     for (SwiftFunctionDeclaration function : functions) {
       protocolFunction = function;
@@ -253,15 +250,18 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     }
     return name;
   }
-
-  private String constructParameter(SwiftParameter parameter) {
+    
+  private static String constructParameter(SwiftParameter parameter) {
 
     List<String> labels = PsiTreeUtil.findChildrenOfAnyType(parameter, SwiftIdentifierPattern.class, SwiftWildcardPattern.class)
       .stream()
       .map(p -> p.getText())
       .collect(Collectors.toList());
     String labelString = String.join(" ", labels);
-    return labelString + ": " + parameter.getAttributes().getText() + " " + MySwiftPsiUtil.getResolvedTypeName(parameter, false);
+    if (parameter.getParameterTypeAnnotation() == null || parameter.getParameterTypeAnnotation().getAttributes() == null) {
+      return "";
+    }
+    return labelString + ": " + parameter.getParameterTypeAnnotation().getAttributes().getText() + " " + MySwiftPsiUtil.getResolvedTypeName(parameter, false);
   }
 
   private void addProtocolPropertiesToClass(List<SwiftVariableDeclaration> properties) {
@@ -283,7 +283,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
       SwiftTypeElement type = PsiTreeUtil.findChildOfType(property, SwiftTypeElement.class);
       SwiftVariableDeclaration stubbedProperty = buildStubbedVariable(stubbedName, type, MySwiftPsiUtil.getResolvedTypeName(property, true));
       boolean hasSetter = PsiTreeUtil.findChildOfType(property, SwiftSetterClause.class) != null;
-      String literal = buildConcreteProperty(property, setterName, getterName, invokedPropertySetterCount, invokedProperty, invokedPropertyList, invokedPropertyGetterCount, stubbedProperty, hasSetter);
+      String literal = buildConcreteProperty(property, setterName, getterName, invokedProperty, invokedPropertyList, stubbedProperty, hasSetter);
       SwiftVariableDeclaration concreteProperty = (SwiftVariableDeclaration)getElementFactory().createStatement(literal);
 
       appendInClass(invokedPropertySetterCheck, hasSetter);
@@ -309,12 +309,12 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     return (SwiftVariableDeclaration)getElementFactory().createStatement(scope + swiftString);
   }
 
-  private String createInvocationCheckAssignment(String name) {
+  private static String createInvocationCheckAssignment(String name) {
     BoolPropertyDeclaration invokedSetterCheck = new CreateInvocationCheck(true).transform(name);
     return new BoolPropertyAssignmentToSwift().transform(invokedSetterCheck);
   }
 
-  private String createInvocationCountIncrementExpression(String name) {
+  private static String createInvocationCountIncrementExpression(String name) {
     IntPropertyDeclaration incrementExpression = new CreateInvocationCount().transform(name);
     return new IntPropertyIncrementAssignmentToSwift().transform(incrementExpression);
   }
@@ -338,10 +338,8 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   private String buildConcreteProperty(SwiftVariableDeclaration property,
                                        String setterName,
                                        String getterName,
-                                       SwiftVariableDeclaration invokedPropertySetterCount,
                                        SwiftVariableDeclaration invokedProperty,
                                        SwiftVariableDeclaration invokedPropertyList,
-                                       SwiftVariableDeclaration invokedPropertyGetterCount,
                                        SwiftVariableDeclaration stubbedProperty, boolean hasSetter) {
     SwiftTypeAnnotatedPattern pattern = (SwiftTypeAnnotatedPattern) property.getPatternInitializerList().get(0).getPattern();
     String attributes = property.getAttributes().getText();
@@ -379,7 +377,10 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   }
 
   private void appendInImplementedFunction(PsiElement element) {
-    implementedFunction.getCodeBlock().addBefore(element, implementedFunction.getCodeBlock().getLastChild());
+    SwiftCodeBlock codeBlock = implementedFunction.getCodeBlock();
+    if (codeBlock != null && codeBlock.getLastChild() != null) {
+      implementedFunction.getCodeBlock().addBefore(element, codeBlock.getLastChild());
+    }
   }
 
   private void addInvocationCheckVariable() {
@@ -437,7 +438,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     return SwiftPsiElementFactory.getInstance(classDeclaration);
   }
 
-  private List<String> getClosureParameterTypes(SwiftParameter parameter) {
+  private static List<String> getClosureParameterTypes(SwiftParameter parameter) {
     SwiftFunctionTypeElement closure = MySwiftPsiUtil.findResolvedType(parameter, SwiftFunctionTypeElement.class);
     SwiftTupleTypeElement firstTuple = PsiTreeUtil.findChildOfType(closure, SwiftTupleTypeElement.class);
     return PsiTreeUtil.findChildrenOfType(firstTuple, SwiftTupleTypeItem.class).stream().map(t -> t.getTypeElement().getText())
@@ -516,7 +517,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     }
   }
 
-  private String getSuppressWarningString(SwiftParameter parameter) {
+  private static String getSuppressWarningString(SwiftParameter parameter) {
     SwiftFunctionTypeElement closure = MySwiftPsiUtil.findResolvedType(parameter, SwiftFunctionTypeElement.class);
     String suppressWarning = "";
     if (closure != null && closure.getTypeElementList().size() > 1) {
@@ -593,26 +594,26 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     return protocolFunction.getParameterClauseList().stream()
       .map(SwiftParameterClause::getParameterList)
       .flatMap(Collection::stream)
-      .filter(this::isClosure)
+      .filter(MockGeneratingIntention::isClosure)
       .collect(Collectors.toList());
   }
 
-  private boolean isClosure(PsiElement parameter) {
+  private static boolean isClosure(PsiElement parameter) {
     return getClosure(parameter) != null;
   }
 
-  private SwiftFunctionTypeElement getClosure(PsiElement element) {
+  private static SwiftFunctionTypeElement getClosure(PsiElement element) {
     return MySwiftPsiUtil.findResolvedType(element, SwiftFunctionTypeElement.class);
   }
 
-  private List<UniqueMethodNameGenerator.MethodModel> getMethodModels(List<SwiftFunctionDeclaration> functions) {
+  private static List<UniqueMethodNameGenerator.MethodModel> getMethodModels(List<SwiftFunctionDeclaration> functions) {
 
     return functions.stream()
-      .map(this::toMethodModel)
+      .map(MockGeneratingIntention::toMethodModel)
       .collect(Collectors.toList());
   }
 
-  private UniqueMethodNameGenerator.MethodModel toMethodModel(SwiftFunctionDeclaration function) {
+  private static UniqueMethodNameGenerator.MethodModel toMethodModel(SwiftFunctionDeclaration function) {
     return new UniqueMethodNameGenerator.MethodModel(
       getFunctionID(function),
       function.getName(),
@@ -620,11 +621,11 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     );
   }
 
-  private String toParameterLabel(SwiftParameter parameter) {
+  private static String toParameterLabel(SwiftParameter parameter) {
     return parameter.getText();
   }
 
-  private String getFunctionID(SwiftFunctionDeclaration function) {
+  private static String getFunctionID(SwiftFunctionDeclaration function) {
     return function.getName() + String.join(":", getParameterNames(function, p -> p.getText(), false));
   }
 
