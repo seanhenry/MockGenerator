@@ -9,24 +9,28 @@ class CreateInvocationCheckTest : TestCase() {
 
   override fun setUp() {
     super.setUp()
-    createCheck = CreateInvocationCheck("name")
+    createCheck = CreateInvocationCheck(false)
   }
 
   fun testTransformsName() {
-    Assert.assertEquals("invokedName", createCheck?.transform()?.name)
+    Assert.assertEquals("invokedName", createCheck?.transform("name")?.name)
   }
 
   fun testTransformsLongName() {
-    createCheck = CreateInvocationCheck("longName")
-    Assert.assertEquals("invokedLongName", createCheck?.transform()?.name)
+    Assert.assertEquals("invokedLongName", createCheck?.transform("longName")?.name)
   }
 
   fun testTransformsAlreadyCapitalized() {
-    createCheck = CreateInvocationCheck("URL")
-    Assert.assertEquals("invokedURL", createCheck?.transform()?.name)
+    Assert.assertEquals("invokedURL", createCheck?.transform("URL")?.name)
   }
 
-  fun testAddsInitializer() {
-    Assert.assertEquals(false, createCheck?.transform()?.initializer)
+  fun testAddsFalseInitializer() {
+    createCheck = CreateInvocationCheck(false)
+    Assert.assertEquals(false, createCheck?.transform("name")?.initializer)
+  }
+
+  fun testAddsTrueInitializer() {
+    createCheck = CreateInvocationCheck(true)
+    Assert.assertEquals(true, createCheck?.transform("name")?.initializer)
   }
 }
