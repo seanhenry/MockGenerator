@@ -12,7 +12,7 @@ class XcodeMockGeneratorTest: TestCase() {
 
   fun testShouldReturnMockedProtocol_whenSingleMethod() {
     val generator = XcodeMockGenerator()
-    val method = ProtocolMethod("methodName", "func methodName()")
+    val method = ProtocolMethod("methodName", null, "func methodName()")
     generator.add(method)
     val expected = """var invokedMethodName = false
 var invokedMethodNameCount = 0
@@ -25,8 +25,8 @@ invokedMethodNameCount += 1
 
   fun testShouldReturnMockedProtocol_whenMultipleMethods() {
     val generator = XcodeMockGenerator()
-    val method1 = ProtocolMethod("methodName1", "func methodName1()")
-    val method2 = ProtocolMethod("methodName2", "func methodName2()")
+    val method1 = ProtocolMethod("methodName1", null, "func methodName1()")
+    val method2 = ProtocolMethod("methodName2", null, "func methodName2()")
     generator.add(method1)
     generator.add(method2)
     val expected = """var invokedMethodName1 = false
@@ -46,13 +46,15 @@ invokedMethodName2Count += 1
 
   fun testShouldCopyMethodSignature() {
     val generator = XcodeMockGenerator()
-    val method = ProtocolMethod("methodName", "func methodName(label name: Type, _ name2: Type2) -> String")
+    val method = ProtocolMethod("methodName", "String", "func methodName(label name: Type, _ name2: Type2) -> String")
     generator.add(method)
     val expected = """var invokedMethodName = false
 var invokedMethodNameCount = 0
+var stubbedMethodNameResult: String!
 func methodName(label name: Type, _ name2: Type2) -> String {
 invokedMethodName = true
 invokedMethodNameCount += 1
+return stubbedMethodNameResult
 }"""
     assertEquals(expected, generator.generate())
   }
