@@ -6,6 +6,8 @@ An AppCode plugin to generate mock classes automatically.
 
 See my [original blog post](http://seanhenry.codes/ios/generate-swift-mock-appcode-plugin/) for more information.
 
+[Looking for the Xcode version?](https://github.com/seanhenry/SwiftMockGeneratorForXcode)
+
 ## Install Swift Mock Generator for AppCode
 
 - Open AppCode
@@ -172,3 +174,7 @@ func test_mockCanCallClosure_withStubbedValue() {
     XCTAssertFalse(object.animationDidComplete)
 }
 ```
+
+## Nomenclature
+
+Despite being called a Mock Generator, this plugin actually generates something closer to a spy and stub. The word 'mock', whilst not technically correct, has been used because test doubles such as spies, mocks, and stubs have become colloquially known as mocks.
