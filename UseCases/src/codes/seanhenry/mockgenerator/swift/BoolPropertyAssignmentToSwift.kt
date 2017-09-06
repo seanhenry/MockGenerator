@@ -4,7 +4,7 @@ import codes.seanhenry.mockgenerator.entities.BoolPropertyDeclaration
 
 class BoolPropertyAssignmentToSwift {
 
-  fun transform(property: BoolPropertyDeclaration): String {
-    return property.name + " = " + property.initializer.toString()
+  fun transform(property: BoolPropertyDeclaration, value: Boolean): String {
+    return property.name + " = " + value.toString()
   }
 }
