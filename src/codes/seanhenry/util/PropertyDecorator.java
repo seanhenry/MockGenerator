@@ -1,7 +1,7 @@
 package codes.seanhenry.util;
 
+import codes.seanhenry.mockgenerator.util.StringDecorator;
 import com.jetbrains.swift.psi.SwiftPsiElementFactory;
-import com.jetbrains.swift.psi.SwiftTypeAnnotatedPattern;
 import com.jetbrains.swift.psi.SwiftVariableDeclaration;
 
 public class PropertyDecorator {

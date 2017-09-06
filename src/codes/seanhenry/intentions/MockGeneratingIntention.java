@@ -1,15 +1,19 @@
 package codes.seanhenry.intentions;
 
-import codes.seanhenry.entities.BoolPropertyDeclaration;
-import codes.seanhenry.entities.IntPropertyDeclaration;
+import codes.seanhenry.mockgenerator.entities.BoolPropertyDeclaration;
+import codes.seanhenry.mockgenerator.entities.IntPropertyDeclaration;
 import codes.seanhenry.helpers.DefaultValueStore;
 import codes.seanhenry.helpers.KeywordsStore;
-import codes.seanhenry.swift.BoolPropertyAssignmentToSwift;
-import codes.seanhenry.swift.BoolPropertyDeclarationToSwift;
-import codes.seanhenry.swift.IntPropertyDeclarationToSwift;
-import codes.seanhenry.swift.IntPropertyIncrementAssignmentToSwift;
-import codes.seanhenry.usecases.CreateInvocationCheck;
-import codes.seanhenry.usecases.CreateInvocationCount;
+import codes.seanhenry.mockgenerator.swift.BoolPropertyAssignmentToSwift;
+import codes.seanhenry.mockgenerator.swift.BoolPropertyDeclarationToSwift;
+import codes.seanhenry.mockgenerator.swift.IntPropertyDeclarationToSwift;
+import codes.seanhenry.mockgenerator.swift.IntPropertyIncrementAssignmentToSwift;
+import codes.seanhenry.mockgenerator.usecases.CreateInvocationCheck;
+import codes.seanhenry.mockgenerator.usecases.CreateInvocationCount;
+import codes.seanhenry.mockgenerator.util.AppendStringDecorator;
+import codes.seanhenry.mockgenerator.util.PrependStringDecorator;
+import codes.seanhenry.mockgenerator.util.StringDecorator;
+import codes.seanhenry.mockgenerator.util.UniqueMethodNameGenerator;
 import codes.seanhenry.util.*;
 import com.intellij.codeInsight.hint.HintManager;
 import com.intellij.codeInsight.intention.IntentionAction;
