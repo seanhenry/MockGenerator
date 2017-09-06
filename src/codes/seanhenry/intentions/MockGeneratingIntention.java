@@ -256,16 +256,12 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   }
     
   private static String constructParameter(SwiftParameter parameter) {
-
     List<String> labels = PsiTreeUtil.findChildrenOfAnyType(parameter, SwiftIdentifierPattern.class, SwiftWildcardPattern.class)
       .stream()
       .map(p -> p.getText())
       .collect(Collectors.toList());
     String labelString = String.join(" ", labels);
-    if (parameter.getParameterTypeAnnotation() == null || parameter.getParameterTypeAnnotation().getAttributes() == null) {
-      return "";
-    }
-    return labelString + ": " + parameter.getParameterTypeAnnotation().getAttributes().getText() + " " + MySwiftPsiUtil.getResolvedTypeName(parameter, false);
+    return labelString + ": " + parameter.getAttributes().getText() + " " + MySwiftPsiUtil.getResolvedTypeName(parameter, false);
   }
 
   private void addProtocolPropertiesToClass(List<SwiftVariableDeclaration> properties) {
@@ -569,12 +565,16 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     return input;
   }
 
-  private List<String> getParameterNames(SwiftFunctionDeclaration function, Function<SwiftParameter, String> operation, boolean shouldRemoveClosures) {
+  private static List<String> getParameterNames(SwiftFunctionDeclaration function,
+                                                Function<SwiftParameter, String> operation,
+                                                boolean shouldRemoveClosures) {
     return streamParameterNames(function, operation, shouldRemoveClosures)
       .collect(Collectors.toList());
   }
 
-  private Stream<String> streamParameterNames(SwiftFunctionDeclaration function, Function<SwiftParameter, String> operation, boolean shouldRemoveClosures) {
+  private static Stream<String> streamParameterNames(SwiftFunctionDeclaration function,
+                                                     Function<SwiftParameter, String> operation,
+                                                     boolean shouldRemoveClosures) {
     Predicate<? super SwiftParameter> filter = p -> true;
     if (shouldRemoveClosures) {
       filter = p -> !isClosure(p);
