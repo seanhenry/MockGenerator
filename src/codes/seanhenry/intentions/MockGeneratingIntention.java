@@ -1,7 +1,10 @@
 package codes.seanhenry.intentions;
 
+import codes.seanhenry.entities.BoolPropertyDeclaration;
 import codes.seanhenry.helpers.DefaultValueStore;
 import codes.seanhenry.helpers.KeywordsStore;
+import codes.seanhenry.swift.BoolPropertyDeclarationToSwift;
+import codes.seanhenry.usecases.CreateInvocationCheck;
 import codes.seanhenry.util.*;
 import com.intellij.codeInsight.hint.HintManager;
 import com.intellij.codeInsight.intention.IntentionAction;
@@ -63,11 +66,8 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     StringDecorator prependDecorator = new PrependStringDecorator(null, "stubbed");
     stubbedClosureResultNameDecorator = new AppendStringDecorator(prependDecorator, "Result");
   }
-  private final StringDecorator
-    invokedPropertySetterDecorator = new PrependStringDecorator(new AppendStringDecorator(null, "Setter"), "invoked");
   private final StringDecorator invokedPropertySetterCountDecorator = new PrependStringDecorator(new AppendStringDecorator(null, "SetterCount"), "invoked");
   private final StringDecorator invokedPropertySetterListDecorator = new PrependStringDecorator(new AppendStringDecorator(null, "List"), "invoked");
-  private final StringDecorator invokedPropertyGetterDecorator = new PrependStringDecorator(new AppendStringDecorator(null, "Getter"), "invoked");
   private final StringDecorator invokedPropertyGetterCountDecorator = new PrependStringDecorator(new AppendStringDecorator(null, "GetterCount"), "invoked");
 
   private String scope = "";
@@ -263,9 +263,8 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   private void addProtocolPropertiesToClass(List<SwiftVariableDeclaration> properties) {
     for (SwiftVariableDeclaration property : properties) {
 
-      String name = MySwiftPsiUtil.getUnescapedPropertyName(property);
-      SwiftVariableDeclaration invokedPropertySetterCheck = (SwiftVariableDeclaration)getElementFactory().createStatement(scope + "var " + invokedPropertySetterDecorator.process(
-        name) + " = false");
+        String name = MySwiftPsiUtil.getUnescapedPropertyName(property);
+        SwiftVariableDeclaration invokedPropertySetterCheck = createInvocationCheckDeclaration(name + "Setter");
       SwiftVariableDeclaration invokedPropertySetterCount = (SwiftVariableDeclaration)getElementFactory().createStatement(scope + "var " + invokedPropertySetterCountDecorator.process(
         name) + " = 0");
       SwiftVariableDeclaration invokedProperty = new PropertyDecorator(invokedPropertyNameDecorator, PropertyDecorator.OPTIONAL, scope)
@@ -273,8 +272,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
       SwiftVariableDeclaration invokedPropertyList = (SwiftVariableDeclaration)getElementFactory().createStatement(scope + "var " + invokedPropertySetterListDecorator.process(
         name) + " = [" + MySwiftPsiUtil.getPropertyTypeAnnotation(property).getTypeElement().getText() + "]()");
 
-      SwiftVariableDeclaration invokedPropertyGetterCheck = (SwiftVariableDeclaration)getElementFactory().createStatement(scope + "var " + invokedPropertyGetterDecorator.process(
-        name) + " = false");
+      SwiftVariableDeclaration invokedPropertyGetterCheck = createInvocationCheckDeclaration(name + "Getter");
       SwiftVariableDeclaration invokedPropertyGetterCount = (SwiftVariableDeclaration)getElementFactory().createStatement(scope + "var " + invokedPropertyGetterCountDecorator.process(
         name) + " = 0");
       String stubbedName = stubbedPropertyNameDecorator.process(name);
@@ -293,6 +291,12 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
       appendInClass(stubbedProperty);
       appendInClass(concreteProperty);
     }
+  }
+
+  private SwiftVariableDeclaration createInvocationCheckDeclaration(String name) {
+    BoolPropertyDeclaration invokedSetterCheck = new CreateInvocationCheck(name).transform();
+    String swiftString = new BoolPropertyDeclarationToSwift().transform(invokedSetterCheck);
+    return (SwiftVariableDeclaration)getElementFactory().createStatement(scope + swiftString);
   }
 
   private void addGenericParametersToClass(List<SwiftAssociatedTypeDeclaration> associatedTypes) {
@@ -359,8 +363,8 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   }
 
   private void addInvocationCheckVariable() {
-    SwiftStatement variable = getElementFactory().createStatement(scope + "var " + createInvokedVariableName() + " = false");
-    appendInClass(variable);
+    String name = methodNameGenerator.getMethodName(getFunctionID(protocolFunction));
+    appendInClass(createInvocationCheckDeclaration(name));
   }
 
   private void addInvocationCountVariable() {
