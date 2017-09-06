@@ -9,7 +9,7 @@
       <ul>
         <li>Captures invocation status of methods and properties.</li>
         <li>Captures invoked method parameters.</li>
-        <li>Stub values for your mocks to return.</li>
+        <li>Stubs values for your mocks to return.</li>
         <li>Stubs a default value for return values where possible.</li>
         <li>Automatically calls closure parameters with stubbed values.</li>
         <li>Supports mocks conforming to one or or many protocols.</li>
@@ -20,6 +20,7 @@
         <li>Respects public and open mocks and makes queries publicly available.</li>
         <li>Records multiple invocations of methods and their parameters.</li>
         <li>Handles methods, properties and parameters named with keywords.</li>
+        <li>Generate mocks from protocols in 3rd party frameworks.</li>
       </ul>
     ]]></description>
 
