@@ -311,7 +311,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
 
   private static String createInvocationCheckAssignment(String name) {
     BoolPropertyDeclaration invokedSetterCheck = new CreateInvocationCheck(true).transform(name);
-    return new BoolPropertyAssignmentToSwift().transform(invokedSetterCheck, );
+    return new BoolPropertyAssignmentToSwift().transform(invokedSetterCheck, true);
   }
 
   private static String createInvocationCountIncrementExpression(String name) {
