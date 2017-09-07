@@ -32,18 +32,25 @@ To regenerate the mock, place the cursor anywhere inside the mock and select ‘
 
 ## Features
 
-- Captures invocation status of methods and properties.
-- Captures invoked method parameters.
-- Stub values for your mocks to return.
-- Stubs a default value for return values where possible.
-- Automatically calls closure parameters with stubbed values.
-- Supports mocks conforming to one or or many protocols.
-- Handles overloaded method declarations.
-- Regenerate your mock in one action.
-- Supports associated types.
-- Respects public and open mocks and makes queries publicly available.
-- Records multiple invocations of methods and their parameters.
-- Handles methods, properties and parameters named with keywords.
+| Feature | Supported |
+|---|---|
+| Swift 3 and 4.|✅|
+| Captures invocation status of methods.|✅|
+| Captures invocation status of properties.|✅|
+| Captures invoked method parameters.|✅|
+| Stubs values for your mocks to return.|✅|
+| Stubs a default value for return values where possible.|✅|
+| Automatically calls closure parameters with stubbed values.|✅|
+| Supports mocks conforming to one or many protocols.|✅|
+| Handles overloaded method declarations.|✅|
+| Regenerate your mock in one action.|✅|
+| Supports associated types.|✅|
+| Supports parameter type-annotation attributes and inout.|✅|
+| Respects public and open mocks and makes queries publicly available.|✅|
+| Records multiple invocations of methods.|✅|
+| Records multiple invocations of method parameters.|✅|
+| Generate mocks from protocols in 3rd party frameworks.|✅|
+| Generate mocks from classes||
 
 ## Usage example
 
