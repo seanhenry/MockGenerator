@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>codes.seanhenry.mockgenerator</id>
   <name>Swift Mock Generator for AppCode</name>
-  <version>6</version>
+  <version>7</version>
   <vendor email="hello@seanhenry.codes" url="http://seanhenry.codes">Sean Henry</vendor>
 
   <description><![CDATA[
@@ -33,7 +33,7 @@
   </change-notes>
 
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-  <idea-version since-build="172.3"/>
+  <idea-version since-build="172.4155"/>
 
   <actions>
   </actions>
