@@ -71,7 +71,7 @@ class XcodeMockGeneratorTest: TestCase() {
     assertMockEquals(expected)
   }
 
-  fun testShouldMockProperties() {
+  fun testShouldMockReadWriteProperties() {
     add(
         ProtocolProperty("readWrite", "String", true, "var readWrite: String { set get }")
     )
@@ -92,6 +92,23 @@ class XcodeMockGeneratorTest: TestCase() {
       return stubbedReadWrite
       }
       }
+    """.trimIndent()
+    assertMockEquals(expected)
+  }
+
+  fun testShouldMockReadOnlyProperties() {
+    add(
+        ProtocolProperty("readOnly", "Int", false, "var readOnly: Int { get }")
+    )
+    val expected = """
+    var invokedReadOnlyGetter = false
+    var invokedReadOnlyGetterCount = 0
+    var stubbedReadOnly: Int!
+    var readOnly: Int {
+    invokedReadOnlyGetter = true
+    invokedReadOnlyGetterCount += 1
+    return stubbedReadOnly
+    }
     """.trimIndent()
     assertMockEquals(expected)
   }

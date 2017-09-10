@@ -1,9 +1,6 @@
 package codes.seanhenry.mockgenerator.xcode
 
-import codes.seanhenry.mockgenerator.entities.PropertyDeclaration
-import codes.seanhenry.mockgenerator.entities.ProtocolMethod
-import codes.seanhenry.mockgenerator.entities.ProtocolProperty
-import codes.seanhenry.mockgenerator.entities.SwiftStringReturnProperty
+import codes.seanhenry.mockgenerator.entities.*
 import codes.seanhenry.mockgenerator.swift.*
 import codes.seanhenry.mockgenerator.usecases.CreateInvocationCheck
 import codes.seanhenry.mockgenerator.usecases.CreateInvocationCount
@@ -15,6 +12,14 @@ class XcodeMockGenerator {
 
   private val methods = ArrayList<ProtocolMethod>()
   private val properties = ArrayList<ProtocolProperty>()
+
+  fun add(method: ProtocolMethod) {
+    methods.add(method)
+  }
+
+  fun add(property: ProtocolProperty) {
+    properties.add(property)
+  }
 
   fun generate(): String {
     val lines = ArrayList<String>()
@@ -28,53 +33,96 @@ class XcodeMockGenerator {
       val setterName = property.name + "Setter"
       val setterInvocationCheck = CreateInvocationCheck(false).transform(setterName)
       val setterInvocationCount = CreateInvocationCount().transform(setterName)
-      lines.add(BoolPropertyDeclarationToSwift().transform(setterInvocationCheck))
-      lines.add(IntPropertyDeclarationToSwift().transform(setterInvocationCount))
       val getterName = property.name + "Getter"
       val getterInvocationCheck = CreateInvocationCheck(false).transform(getterName)
       val getterInvocationCount = CreateInvocationCount().transform(getterName)
       val returnStub = CreatePropertyGetterStub().transform(property.name, property.type)
-      lines.add(BoolPropertyDeclarationToSwift().transform(getterInvocationCheck))
-      lines.add(IntPropertyDeclarationToSwift().transform(getterInvocationCount))
-      lines.add(SwiftStringPropertyDeclaration().transform(returnStub))
-      lines.add(property.getTrimmedSignature() + " {")
-      lines.add("set {")
-      lines.add(BoolPropertyAssignmentToSwift().transform(setterInvocationCheck, true))
-      lines.add(IntPropertyIncrementAssignmentToSwift().transform(setterInvocationCount))
-      lines.add("}")
-      lines.add("get {")
-      lines.add(BoolPropertyAssignmentToSwift().transform(getterInvocationCheck, true))
-      lines.add(IntPropertyIncrementAssignmentToSwift().transform(getterInvocationCount))
-      lines.add(SwiftStringReturnProperty().transform(returnStub))
-      lines.add("}")
-      lines.add("}")
+      addSetterProperties(lines, setterInvocationCheck, setterInvocationCount, property.isWritable)
+      addGetterProperties(lines, getterInvocationCheck, getterInvocationCount, returnStub)
+      addPropertyDeclaration(lines, property)
+      addSetterBlock(lines, setterInvocationCheck, setterInvocationCount, property.isWritable)
+      addGetterBlock(lines, getterInvocationCheck, getterInvocationCount, returnStub, property.isWritable)
+      addClosingBrace(lines)
     }
+  }
+
+  private fun addGetterBlock(lines: ArrayList<String>, getterInvocationCheck: BoolPropertyDeclaration, getterInvocationCount: IntPropertyDeclaration, returnStub: PropertyDeclaration, isWritable: Boolean) {
+    if (isWritable) {
+      lines.add("get {")
+    }
+    addPropertyInvocationStatements(lines, getterInvocationCheck, getterInvocationCount)
+    lines.add(SwiftStringReturnProperty().transform(returnStub))
+    if (isWritable) {
+      addClosingBrace(lines)
+    }
+  }
+
+  private fun addSetterBlock(lines: ArrayList<String>, setterInvocationCheck: BoolPropertyDeclaration, setterInvocationCount: IntPropertyDeclaration, isWritable: Boolean) {
+    if (isWritable) {
+      lines.add("set {")
+      addPropertyInvocationStatements(lines, setterInvocationCheck, setterInvocationCount)
+      addClosingBrace(lines)
+    }
+  }
+
+  private fun addPropertyDeclaration(lines: ArrayList<String>, property: ProtocolProperty) {
+    lines.add(property.getTrimmedSignature() + " {")
+  }
+
+  private fun addSetterProperties(lines: ArrayList<String>, setterInvocationCheck: BoolPropertyDeclaration, setterInvocationCount: IntPropertyDeclaration, isWritable: Boolean) {
+    if (isWritable) {
+      lines.add(BoolPropertyDeclarationToSwift().transform(setterInvocationCheck))
+      lines.add(IntPropertyDeclarationToSwift().transform(setterInvocationCount))
+    }
+  }
+
+  private fun addGetterProperties(lines: ArrayList<String>, getterInvocationCheck: BoolPropertyDeclaration, getterInvocationCount: IntPropertyDeclaration, returnStub: PropertyDeclaration) {
+    lines.add(BoolPropertyDeclarationToSwift().transform(getterInvocationCheck))
+    lines.add(IntPropertyDeclarationToSwift().transform(getterInvocationCount))
+    lines.add(SwiftStringPropertyDeclaration().transform(returnStub))
+  }
+
+  private fun addClosingBrace(lines: ArrayList<String>) {
+    lines.add("}")
+  }
+
+  private fun addPropertyInvocationStatements(lines: ArrayList<String>, invocationCheck: BoolPropertyDeclaration, invocationCount: IntPropertyDeclaration) {
+    lines.add(BoolPropertyAssignmentToSwift().transform(invocationCheck, true))
+    lines.add(IntPropertyIncrementAssignmentToSwift().transform(invocationCount))
   }
 
   private fun appendMethodMocks(lines: ArrayList<String>) {
     for (method in methods) {
       val invocationCheck = CreateInvocationCheck(false).transform(method.name)
       val invocationCount = CreateInvocationCount().transform(method.name)
-      var returnStub: PropertyDeclaration? = null
-      if (method.returnType != null) {
-        returnStub = CreateMethodReturnStub().transform(method.name, method.returnType)
-      }
-      lines.add(BoolPropertyDeclarationToSwift().transform(invocationCheck))
-      lines.add(IntPropertyDeclarationToSwift().transform(invocationCount))
-      if (returnStub != null) lines.add(SwiftStringPropertyDeclaration().transform(returnStub))
-      lines.add(method.signature + " {")
-      lines.add(BoolPropertyAssignmentToSwift().transform(invocationCheck, true))
-      lines.add(IntPropertyIncrementAssignmentToSwift().transform(invocationCount))
-      if (returnStub != null) lines.add(SwiftStringReturnProperty().transform(returnStub))
-      lines.add("}")
+      var returnStub = createReturnStub(method)
+      addMethodProperties(lines, invocationCheck, invocationCount, returnStub)
+      addMethodDeclaration(lines, method)
+      addMethodStatements(lines, invocationCheck, invocationCount, returnStub)
+      addClosingBrace(lines)
     }
   }
 
-  fun add(method: ProtocolMethod) {
-    methods.add(method)
+  private fun createReturnStub(method: ProtocolMethod): PropertyDeclaration? {
+    if (method.returnType != null) {
+      return CreateMethodReturnStub().transform(method.name, method.returnType)
+    }
+    return null
   }
 
-  fun add(property: ProtocolProperty) {
-    properties.add(property)
+  private fun addMethodProperties(lines: ArrayList<String>, invocationCheck: BoolPropertyDeclaration, invocationCount: IntPropertyDeclaration, returnStub: PropertyDeclaration?) {
+    lines.add(BoolPropertyDeclarationToSwift().transform(invocationCheck))
+    lines.add(IntPropertyDeclarationToSwift().transform(invocationCount))
+    if (returnStub != null) lines.add(SwiftStringPropertyDeclaration().transform(returnStub))
+  }
+
+  private fun addMethodDeclaration(lines: ArrayList<String>, method: ProtocolMethod) {
+    lines.add(method.signature + " {")
+  }
+
+  private fun addMethodStatements(lines: ArrayList<String>, invocationCheck: BoolPropertyDeclaration, invocationCount: IntPropertyDeclaration, returnStub: PropertyDeclaration?) {
+    lines.add(BoolPropertyAssignmentToSwift().transform(invocationCheck, true))
+    lines.add(IntPropertyIncrementAssignmentToSwift().transform(invocationCount))
+    if (returnStub != null) lines.add(SwiftStringReturnProperty().transform(returnStub))
   }
 }
