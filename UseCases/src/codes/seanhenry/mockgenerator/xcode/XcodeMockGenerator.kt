@@ -2,10 +2,7 @@ package codes.seanhenry.mockgenerator.xcode
 
 import codes.seanhenry.mockgenerator.entities.*
 import codes.seanhenry.mockgenerator.swift.*
-import codes.seanhenry.mockgenerator.usecases.CreateInvocationCheck
-import codes.seanhenry.mockgenerator.usecases.CreateInvocationCount
-import codes.seanhenry.mockgenerator.usecases.CreateMethodReturnStub
-import codes.seanhenry.mockgenerator.usecases.CreatePropertyGetterStub
+import codes.seanhenry.mockgenerator.usecases.*
 import java.util.*
 
 class XcodeMockGenerator {
@@ -95,8 +92,9 @@ class XcodeMockGenerator {
     for (method in methods) {
       val invocationCheck = CreateInvocationCheck(false).transform(method.name)
       val invocationCount = CreateInvocationCount().transform(method.name)
-      var returnStub = createReturnStub(method)
-      addMethodProperties(lines, invocationCheck, invocationCount, returnStub)
+      val invokedParameters = CreateInvokedParameters().transform(method.name, method.parameters)
+      val returnStub = createReturnStub(method)
+      addMethodProperties(lines, invocationCheck, invocationCount, invokedParameters, returnStub)
       addMethodDeclaration(lines, method)
       addMethodStatements(lines, invocationCheck, invocationCount, returnStub)
       addClosingBrace(lines)
@@ -110,9 +108,10 @@ class XcodeMockGenerator {
     return null
   }
 
-  private fun addMethodProperties(lines: ArrayList<String>, invocationCheck: BoolPropertyDeclaration, invocationCount: IntPropertyDeclaration, returnStub: PropertyDeclaration?) {
+  private fun addMethodProperties(lines: ArrayList<String>, invocationCheck: BoolPropertyDeclaration, invocationCount: IntPropertyDeclaration, invokedParamters: PropertyDeclaration?, returnStub: PropertyDeclaration?) {
     lines.add(BoolPropertyDeclarationToSwift().transform(invocationCheck))
     lines.add(IntPropertyDeclarationToSwift().transform(invocationCount))
+    if (invokedParamters != null) lines.add(SwiftStringPropertyDeclaration().transform(invokedParamters) + "?")
     if (returnStub != null) lines.add(SwiftStringPropertyDeclaration().transform(returnStub))
   }
 
