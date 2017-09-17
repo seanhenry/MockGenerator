@@ -93,10 +93,11 @@ class XcodeMockGenerator {
       val invocationCheck = CreateInvocationCheck(false).transform(method.name)
       val invocationCount = CreateInvocationCount().transform(method.name)
       val invokedParameters = CreateInvokedParameters().transform(method.name, method.parameters)
+      val invokedParametersList = CreateInvokedParametersList().transform(method.name, method.parameters)
       val returnStub = createReturnStub(method)
-      addMethodProperties(lines, invocationCheck, invocationCount, invokedParameters, returnStub)
+      addMethodProperties(lines, invocationCheck, invocationCount, invokedParameters, invokedParametersList, returnStub)
       addMethodDeclaration(lines, method)
-      addMethodStatements(lines, invocationCheck, invocationCount, returnStub)
+      addMethodStatements(lines, invocationCheck, invocationCount, invokedParameters, invokedParametersList, returnStub)
       addClosingBrace(lines)
     }
   }
@@ -108,10 +109,11 @@ class XcodeMockGenerator {
     return null
   }
 
-  private fun addMethodProperties(lines: ArrayList<String>, invocationCheck: BoolPropertyDeclaration, invocationCount: IntPropertyDeclaration, invokedParamters: PropertyDeclaration?, returnStub: PropertyDeclaration?) {
+  private fun addMethodProperties(lines: ArrayList<String>, invocationCheck: BoolPropertyDeclaration, invocationCount: IntPropertyDeclaration, invokedParameters: TuplePropertyDeclaration?, invokedParametersList: TuplePropertyDeclaration?, returnStub: PropertyDeclaration?) {
     lines.add(BoolPropertyDeclarationToSwift().transform(invocationCheck))
     lines.add(IntPropertyDeclarationToSwift().transform(invocationCount))
-    if (invokedParamters != null) lines.add(SwiftStringPropertyDeclaration().transform(invokedParamters) + "?")
+    if (invokedParameters != null) lines.add(SwiftStringPropertyDeclaration().transform(invokedParameters) + "?")
+    if (invokedParametersList != null) lines.add(SwiftStringInitializedArrayPropertyDeclaration().transform(invokedParametersList))
     if (returnStub != null) lines.add(SwiftStringPropertyDeclaration().transform(returnStub))
   }
 
@@ -119,9 +121,11 @@ class XcodeMockGenerator {
     lines.add(method.signature + " {")
   }
 
-  private fun addMethodStatements(lines: ArrayList<String>, invocationCheck: BoolPropertyDeclaration, invocationCount: IntPropertyDeclaration, returnStub: PropertyDeclaration?) {
-    lines.add(BoolPropertyAssignmentToSwift().transform(invocationCheck, true))
-    lines.add(IntPropertyIncrementAssignmentToSwift().transform(invocationCount))
+  private fun addMethodStatements(lines: ArrayList<String>, invocationCheck: BoolPropertyDeclaration, invocationCount: IntPropertyDeclaration, invokedParameters: TuplePropertyDeclaration?, invokedParametersList: TuplePropertyDeclaration?, returnStub: PropertyDeclaration?) {
+    lines.add(BoolPropertyAssignmentToSwift().transform(invocationCheck, true)) // TODO: change this and remove bool prop
+    lines.add(IntPropertyIncrementAssignmentToSwift().transform(invocationCount)) // TODO: change this and remove Int prop
+    if (invokedParameters != null) lines.add(SwiftStringTupleAssignment().transform(invokedParameters))
+    if (invokedParametersList != null) lines.add(SwiftStringTupleArrayAppender().transform(invokedParametersList))
     if (returnStub != null) lines.add(SwiftStringReturnProperty().transform(returnStub))
   }
 }

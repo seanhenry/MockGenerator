@@ -4,10 +4,10 @@ import codes.seanhenry.mockgenerator.util.AppendStringDecorator
 import codes.seanhenry.mockgenerator.util.PrependStringDecorator
 import codes.seanhenry.mockgenerator.util.StringDecorator
 
-class CreateInvokedParameters: CreateParameterTuple() {
+class CreateInvokedParametersList: CreateParameterTuple() {
 
   override fun getStringDecorator(): StringDecorator {
     val invoked = PrependStringDecorator(null, "invoked")
-    return AppendStringDecorator(invoked, "Parameters")
+    return AppendStringDecorator(invoked, "ParametersList")
   }
 }
