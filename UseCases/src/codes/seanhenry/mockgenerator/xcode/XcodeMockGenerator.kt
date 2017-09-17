@@ -43,7 +43,7 @@ class XcodeMockGenerator {
     }
   }
 
-  private fun addGetterBlock(lines: ArrayList<String>, getterInvocationCheck: PropertyDeclaration, getterInvocationCount: IntPropertyDeclaration, returnStub: PropertyDeclaration, isWritable: Boolean) {
+  private fun addGetterBlock(lines: ArrayList<String>, getterInvocationCheck: PropertyDeclaration, getterInvocationCount: PropertyDeclaration, returnStub: PropertyDeclaration, isWritable: Boolean) {
     if (isWritable) {
       lines.add("get {")
     }
@@ -54,7 +54,7 @@ class XcodeMockGenerator {
     }
   }
 
-  private fun addSetterBlock(lines: ArrayList<String>, setterInvocationCheck: PropertyDeclaration, setterInvocationCount: IntPropertyDeclaration, isWritable: Boolean) {
+  private fun addSetterBlock(lines: ArrayList<String>, setterInvocationCheck: PropertyDeclaration, setterInvocationCount: PropertyDeclaration, isWritable: Boolean) {
     if (isWritable) {
       lines.add("set {")
       addPropertyInvocationStatements(lines, setterInvocationCheck, setterInvocationCount)
@@ -66,16 +66,16 @@ class XcodeMockGenerator {
     lines.add(property.getTrimmedSignature() + " {")
   }
 
-  private fun addSetterProperties(lines: ArrayList<String>, setterInvocationCheck: PropertyDeclaration, setterInvocationCount: IntPropertyDeclaration, isWritable: Boolean) {
+  private fun addSetterProperties(lines: ArrayList<String>, setterInvocationCheck: PropertyDeclaration, setterInvocationCount: PropertyDeclaration, isWritable: Boolean) {
     if (isWritable) {
       lines.add(SwiftStringImplicitValuePropertyDeclaration().transform(setterInvocationCheck, "false"))
-      lines.add(IntPropertyDeclarationToSwift().transform(setterInvocationCount))
+      lines.add(SwiftStringImplicitValuePropertyDeclaration().transform(setterInvocationCount, "0"))
     }
   }
 
-  private fun addGetterProperties(lines: ArrayList<String>, getterInvocationCheck: PropertyDeclaration, getterInvocationCount: IntPropertyDeclaration, returnStub: PropertyDeclaration) {
+  private fun addGetterProperties(lines: ArrayList<String>, getterInvocationCheck: PropertyDeclaration, getterInvocationCount: PropertyDeclaration, returnStub: PropertyDeclaration) {
     lines.add(SwiftStringImplicitValuePropertyDeclaration().transform(getterInvocationCheck, "false"))
-    lines.add(IntPropertyDeclarationToSwift().transform(getterInvocationCount))
+    lines.add(SwiftStringImplicitValuePropertyDeclaration().transform(getterInvocationCount, "0"))
     lines.add(SwiftStringPropertyDeclaration().transform(returnStub))
   }
 
@@ -83,9 +83,9 @@ class XcodeMockGenerator {
     lines.add("}")
   }
 
-  private fun addPropertyInvocationStatements(lines: ArrayList<String>, invocationCheck: PropertyDeclaration, invocationCount: IntPropertyDeclaration) {
+  private fun addPropertyInvocationStatements(lines: ArrayList<String>, invocationCheck: PropertyDeclaration, invocationCount: PropertyDeclaration) {
     lines.add(SwiftStringPropertyAssignment().transform(invocationCheck, "true"))
-    lines.add(IntPropertyIncrementAssignmentToSwift().transform(invocationCount))
+    lines.add(SwiftStringIncrementAssignment().transform(invocationCount))
   }
 
   private fun appendMethodMocks(lines: ArrayList<String>) {
@@ -109,9 +109,9 @@ class XcodeMockGenerator {
     return null
   }
 
-  private fun addMethodProperties(lines: ArrayList<String>, invocationCheck: PropertyDeclaration, invocationCount: IntPropertyDeclaration, invokedParameters: TuplePropertyDeclaration?, invokedParametersList: TuplePropertyDeclaration?, returnStub: PropertyDeclaration?) {
+  private fun addMethodProperties(lines: ArrayList<String>, invocationCheck: PropertyDeclaration, invocationCount: PropertyDeclaration, invokedParameters: TuplePropertyDeclaration?, invokedParametersList: TuplePropertyDeclaration?, returnStub: PropertyDeclaration?) {
     lines.add(SwiftStringImplicitValuePropertyDeclaration().transform(invocationCheck, "false"))
-    lines.add(IntPropertyDeclarationToSwift().transform(invocationCount))
+    lines.add(SwiftStringImplicitValuePropertyDeclaration().transform(invocationCount, "0"))
     if (invokedParameters != null) lines.add(SwiftStringPropertyDeclaration().transform(invokedParameters) + "?")
     if (invokedParametersList != null) lines.add(SwiftStringInitializedArrayPropertyDeclaration().transform(invokedParametersList))
     if (returnStub != null) lines.add(SwiftStringPropertyDeclaration().transform(returnStub))
@@ -121,9 +121,9 @@ class XcodeMockGenerator {
     lines.add(method.signature + " {")
   }
 
-  private fun addMethodStatements(lines: ArrayList<String>, invocationCheck: PropertyDeclaration, invocationCount: IntPropertyDeclaration, invokedParameters: TuplePropertyDeclaration?, invokedParametersList: TuplePropertyDeclaration?, returnStub: PropertyDeclaration?) {
+  private fun addMethodStatements(lines: ArrayList<String>, invocationCheck: PropertyDeclaration, invocationCount: PropertyDeclaration, invokedParameters: TuplePropertyDeclaration?, invokedParametersList: TuplePropertyDeclaration?, returnStub: PropertyDeclaration?) {
     lines.add(SwiftStringPropertyAssignment().transform(invocationCheck, "true"))
-    lines.add(IntPropertyIncrementAssignmentToSwift().transform(invocationCount)) // TODO: change this and remove Int prop
+    lines.add(SwiftStringIncrementAssignment().transform(invocationCount)) // TODO: change this and remove Int prop
     if (invokedParameters != null) lines.add(SwiftStringPropertyAssignment().transform(invokedParameters, SwiftStringTupleForwardCall().transform(invokedParameters)))
     if (invokedParametersList != null) lines.add(SwiftStringTupleArrayAppender().transform(invokedParametersList, SwiftStringTupleForwardCall().transform(invokedParametersList)))
     if (returnStub != null) lines.add(SwiftStringReturnProperty().transform(returnStub))

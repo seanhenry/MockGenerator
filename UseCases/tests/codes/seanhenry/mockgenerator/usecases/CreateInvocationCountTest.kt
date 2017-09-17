@@ -9,7 +9,7 @@ class CreateInvocationCountTest: TestCase() {
     val createCount = CreateInvocationCount()
     val property = createCount.transform("name")
     Assert.assertEquals("invokedNameCount", property.name)
-    Assert.assertEquals(0, property.initializer)
+    Assert.assertEquals("Int", property.type)
   }
 
   fun testTransformsToPropertyWithLongName() {
