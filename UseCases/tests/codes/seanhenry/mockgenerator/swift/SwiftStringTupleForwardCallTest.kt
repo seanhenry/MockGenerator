@@ -1,17 +1,16 @@
 package codes.seanhenry.mockgenerator.swift
 
-import codes.seanhenry.mockgenerator.entities.PropertyDeclaration
 import codes.seanhenry.mockgenerator.entities.TuplePropertyDeclaration
 import junit.framework.TestCase
 
-class SwiftStringTupleAssignmentTest: TestCase() {
+class SwiftStringTupleForwardCallTest: TestCase() {
 
-  fun testTransformsToPropertyStatement() {
+  fun testTransformsToTuple() {
     val property = TuplePropertyDeclaration("name", listOf(
         TuplePropertyDeclaration.TupleParameter("param1", "Type1"),
         TuplePropertyDeclaration.TupleParameter("param2", "Type2")
     ))
-    assertEquals("name = (param1, param2)", SwiftStringTupleAssignment().transform(property))
+    assertEquals("(param1, param2)", SwiftStringTupleForwardCall().transform(property))
   }
 
   fun testTransformsVoidIntoShorthand() {
@@ -19,7 +18,7 @@ class SwiftStringTupleAssignmentTest: TestCase() {
         TuplePropertyDeclaration.TupleParameter("param1", "Type1"),
         TuplePropertyDeclaration.TupleParameter("param2", "Void")
     ))
-    assertEquals("name = (param1, ())", SwiftStringTupleAssignment().transform(property))
+    assertEquals("(param1, ())", SwiftStringTupleForwardCall().transform(property))
   }
 
   fun testTransformsVoidShorthandIntoShorthandParameter() {
@@ -27,11 +26,11 @@ class SwiftStringTupleAssignmentTest: TestCase() {
         TuplePropertyDeclaration.TupleParameter("param1", "Type1"),
         TuplePropertyDeclaration.TupleParameter("param2", "()")
     ))
-    assertEquals("name = (param1, ())", SwiftStringTupleAssignment().transform(property))
+    assertEquals("(param1, ())", SwiftStringTupleForwardCall().transform(property))
   }
 
   fun testTransformsEmptyTuple() {
     val property = TuplePropertyDeclaration("name", emptyList())
-    assertEquals("name = ()", SwiftStringTupleAssignment().transform(property))
+    assertEquals("()", SwiftStringTupleForwardCall().transform(property))
   }
 }

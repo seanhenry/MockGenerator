@@ -124,8 +124,8 @@ class XcodeMockGenerator {
   private fun addMethodStatements(lines: ArrayList<String>, invocationCheck: BoolPropertyDeclaration, invocationCount: IntPropertyDeclaration, invokedParameters: TuplePropertyDeclaration?, invokedParametersList: TuplePropertyDeclaration?, returnStub: PropertyDeclaration?) {
     lines.add(BoolPropertyAssignmentToSwift().transform(invocationCheck, true)) // TODO: change this and remove bool prop
     lines.add(IntPropertyIncrementAssignmentToSwift().transform(invocationCount)) // TODO: change this and remove Int prop
-    if (invokedParameters != null) lines.add(SwiftStringTupleAssignment().transform(invokedParameters))
-    if (invokedParametersList != null) lines.add(SwiftStringTupleArrayAppender().transform(invokedParametersList))
+    if (invokedParameters != null) lines.add(SwiftStringPropertyAssignment().transform(invokedParameters, SwiftStringTupleForwardCall().transform(invokedParameters)))
+    if (invokedParametersList != null) lines.add(SwiftStringTupleArrayAppender().transform(invokedParametersList, SwiftStringTupleForwardCall().transform(invokedParametersList)))
     if (returnStub != null) lines.add(SwiftStringReturnProperty().transform(returnStub))
   }
 }

@@ -2,10 +2,10 @@ package codes.seanhenry.mockgenerator.swift
 
 import codes.seanhenry.mockgenerator.entities.TuplePropertyDeclaration
 
-class SwiftStringTupleAssignment {
+class SwiftStringTupleForwardCall {
 
   fun transform(property: TuplePropertyDeclaration): String {
-    return property.name + " = (" + property.parameters.map { buildParameter(it) }.joinToString(", ") + ")"
+    return "(" + property.parameters.map { buildParameter(it) }.joinToString(", ") + ")"
   }
 
   private fun buildParameter(parameter: TuplePropertyDeclaration.TupleParameter): String {
