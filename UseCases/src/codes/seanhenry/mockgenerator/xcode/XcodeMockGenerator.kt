@@ -1,6 +1,7 @@
 package codes.seanhenry.mockgenerator.xcode
 
 import codes.seanhenry.mockgenerator.entities.*
+import codes.seanhenry.mockgenerator.swift.SwiftStringReturnProperty
 import codes.seanhenry.mockgenerator.swift.*
 import codes.seanhenry.mockgenerator.usecases.*
 import java.util.*

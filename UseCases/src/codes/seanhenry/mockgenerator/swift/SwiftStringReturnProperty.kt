@@ -1,4 +1,6 @@
-package codes.seanhenry.mockgenerator.entities
+package codes.seanhenry.mockgenerator.swift
+
+import codes.seanhenry.mockgenerator.entities.PropertyDeclaration
 
 class SwiftStringReturnProperty {
 

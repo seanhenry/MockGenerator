@@ -1,7 +1,6 @@
 package codes.seanhenry.mockgenerator.swift
 
 import codes.seanhenry.mockgenerator.entities.PropertyDeclaration
-import codes.seanhenry.mockgenerator.entities.SwiftStringReturnProperty
 import junit.framework.TestCase
 
 class SwiftStringReturnPropertyTest: TestCase() {
