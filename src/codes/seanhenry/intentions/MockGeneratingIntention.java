@@ -1,18 +1,15 @@
 package codes.seanhenry.intentions;
 
-import codes.seanhenry.mockgenerator.entities.BoolPropertyDeclaration;
-import codes.seanhenry.mockgenerator.entities.IntPropertyDeclaration;
 import codes.seanhenry.helpers.DefaultValueStore;
 import codes.seanhenry.helpers.KeywordsStore;
 import codes.seanhenry.mockgenerator.entities.PropertyDeclaration;
 import codes.seanhenry.mockgenerator.entities.ProtocolProperty;
-import codes.seanhenry.mockgenerator.swift.BoolPropertyAssignmentToSwift;
-import codes.seanhenry.mockgenerator.swift.BoolPropertyDeclarationToSwift;
-import codes.seanhenry.mockgenerator.swift.IntPropertyDeclarationToSwift;
-import codes.seanhenry.mockgenerator.swift.IntPropertyIncrementAssignmentToSwift;
+import codes.seanhenry.mockgenerator.swift.SwiftStringImplicitValuePropertyDeclaration;
+import codes.seanhenry.mockgenerator.swift.SwiftStringIncrementAssignment;
+import codes.seanhenry.mockgenerator.swift.SwiftStringPropertyAssignment;
+import codes.seanhenry.mockgenerator.swift.SwiftStringPropertyDeclaration;
 import codes.seanhenry.mockgenerator.usecases.CreateInvocationCheck;
 import codes.seanhenry.mockgenerator.usecases.CreateInvocationCount;
-import codes.seanhenry.mockgenerator.usecases.CreatePropertyGetterStub;
 import codes.seanhenry.mockgenerator.util.AppendStringDecorator;
 import codes.seanhenry.mockgenerator.util.PrependStringDecorator;
 import codes.seanhenry.mockgenerator.util.StringDecorator;
@@ -22,21 +19,18 @@ import codes.seanhenry.util.*;
 import com.intellij.codeInsight.hint.HintManager;
 import com.intellij.codeInsight.intention.IntentionAction;
 import com.intellij.codeInsight.intention.PsiElementBaseIntentionAction;
-import com.intellij.lang.Language;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 import com.intellij.psi.codeStyle.CodeStyleManager;
-import com.intellij.psi.impl.file.PsiFileImplUtil;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
 import com.jetbrains.cidr.xcode.model.PBXProjectFile;
 import com.jetbrains.cidr.xcode.model.PBXTarget;
 import com.jetbrains.cidr.xcode.model.XcodeMetaData;
 import com.jetbrains.swift.SwiftLanguage;
-import com.jetbrains.swift.lang.parser.SwiftElementType;
 import com.jetbrains.swift.psi.*;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
@@ -289,25 +283,25 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   }
 
   private SwiftVariableDeclaration createInvocationCheckDeclaration(String name) {
-    BoolPropertyDeclaration invokedSetterCheck = new CreateInvocationCheck(false).transform(name);
-    String swiftString = new BoolPropertyDeclarationToSwift().transform(invokedSetterCheck);
+    PropertyDeclaration invokedSetterCheck = new CreateInvocationCheck().transform(name);
+    String swiftString = new SwiftStringImplicitValuePropertyDeclaration().transform(invokedSetterCheck, "false");
     return (SwiftVariableDeclaration)getElementFactory().createStatement(scope + swiftString);
   }
 
   private SwiftVariableDeclaration createInvocationCountDeclaration(String name) {
-    IntPropertyDeclaration declaration = new CreateInvocationCount().transform(name);
-    String swiftString = new IntPropertyDeclarationToSwift().transform(declaration);
+    PropertyDeclaration declaration = new CreateInvocationCount().transform(name);
+    String swiftString = new SwiftStringImplicitValuePropertyDeclaration().transform(declaration, "0");
     return (SwiftVariableDeclaration)getElementFactory().createStatement(scope + swiftString);
   }
 
   private static String createInvocationCheckAssignment(String name) {
-    BoolPropertyDeclaration invokedSetterCheck = new CreateInvocationCheck(true).transform(name);
-    return new BoolPropertyAssignmentToSwift().transform(invokedSetterCheck, true);
+    PropertyDeclaration invokedSetterCheck = new CreateInvocationCheck().transform(name);
+    return new SwiftStringPropertyAssignment().transform(invokedSetterCheck, "true");
   }
 
   private static String createInvocationCountIncrementExpression(String name) {
-    IntPropertyDeclaration incrementExpression = new CreateInvocationCount().transform(name);
-    return new IntPropertyIncrementAssignmentToSwift().transform(incrementExpression);
+    PropertyDeclaration incrementExpression = new CreateInvocationCount().transform(name);
+    return new SwiftStringIncrementAssignment().transform(incrementExpression);
   }
 
   private void addGenericParametersToClass(List<SwiftAssociatedTypeDeclaration> associatedTypes) {
