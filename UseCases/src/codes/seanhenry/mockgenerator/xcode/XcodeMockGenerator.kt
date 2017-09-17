@@ -28,10 +28,10 @@ class XcodeMockGenerator {
   private fun appendPropertyMocks(lines: ArrayList<String>) {
     for (property in properties) {
       val setterName = property.name + "Setter"
-      val setterInvocationCheck = CreateInvocationCheck(false).transform(setterName)
+      val setterInvocationCheck = CreateInvocationCheck().transform(setterName)
       val setterInvocationCount = CreateInvocationCount().transform(setterName)
       val getterName = property.name + "Getter"
-      val getterInvocationCheck = CreateInvocationCheck(false).transform(getterName)
+      val getterInvocationCheck = CreateInvocationCheck().transform(getterName)
       val getterInvocationCount = CreateInvocationCount().transform(getterName)
       val returnStub = CreatePropertyGetterStub().transform(property.name, property.type)
       addSetterProperties(lines, setterInvocationCheck, setterInvocationCount, property.isWritable)
@@ -43,7 +43,7 @@ class XcodeMockGenerator {
     }
   }
 
-  private fun addGetterBlock(lines: ArrayList<String>, getterInvocationCheck: BoolPropertyDeclaration, getterInvocationCount: IntPropertyDeclaration, returnStub: PropertyDeclaration, isWritable: Boolean) {
+  private fun addGetterBlock(lines: ArrayList<String>, getterInvocationCheck: PropertyDeclaration, getterInvocationCount: IntPropertyDeclaration, returnStub: PropertyDeclaration, isWritable: Boolean) {
     if (isWritable) {
       lines.add("get {")
     }
@@ -54,7 +54,7 @@ class XcodeMockGenerator {
     }
   }
 
-  private fun addSetterBlock(lines: ArrayList<String>, setterInvocationCheck: BoolPropertyDeclaration, setterInvocationCount: IntPropertyDeclaration, isWritable: Boolean) {
+  private fun addSetterBlock(lines: ArrayList<String>, setterInvocationCheck: PropertyDeclaration, setterInvocationCount: IntPropertyDeclaration, isWritable: Boolean) {
     if (isWritable) {
       lines.add("set {")
       addPropertyInvocationStatements(lines, setterInvocationCheck, setterInvocationCount)
@@ -66,15 +66,15 @@ class XcodeMockGenerator {
     lines.add(property.getTrimmedSignature() + " {")
   }
 
-  private fun addSetterProperties(lines: ArrayList<String>, setterInvocationCheck: BoolPropertyDeclaration, setterInvocationCount: IntPropertyDeclaration, isWritable: Boolean) {
+  private fun addSetterProperties(lines: ArrayList<String>, setterInvocationCheck: PropertyDeclaration, setterInvocationCount: IntPropertyDeclaration, isWritable: Boolean) {
     if (isWritable) {
-      lines.add(BoolPropertyDeclarationToSwift().transform(setterInvocationCheck))
+      lines.add(SwiftStringImplicitValuePropertyDeclaration().transform(setterInvocationCheck, "false"))
       lines.add(IntPropertyDeclarationToSwift().transform(setterInvocationCount))
     }
   }
 
-  private fun addGetterProperties(lines: ArrayList<String>, getterInvocationCheck: BoolPropertyDeclaration, getterInvocationCount: IntPropertyDeclaration, returnStub: PropertyDeclaration) {
-    lines.add(BoolPropertyDeclarationToSwift().transform(getterInvocationCheck))
+  private fun addGetterProperties(lines: ArrayList<String>, getterInvocationCheck: PropertyDeclaration, getterInvocationCount: IntPropertyDeclaration, returnStub: PropertyDeclaration) {
+    lines.add(SwiftStringImplicitValuePropertyDeclaration().transform(getterInvocationCheck, "false"))
     lines.add(IntPropertyDeclarationToSwift().transform(getterInvocationCount))
     lines.add(SwiftStringPropertyDeclaration().transform(returnStub))
   }
@@ -83,14 +83,14 @@ class XcodeMockGenerator {
     lines.add("}")
   }
 
-  private fun addPropertyInvocationStatements(lines: ArrayList<String>, invocationCheck: BoolPropertyDeclaration, invocationCount: IntPropertyDeclaration) {
-    lines.add(BoolPropertyAssignmentToSwift().transform(invocationCheck, true))
+  private fun addPropertyInvocationStatements(lines: ArrayList<String>, invocationCheck: PropertyDeclaration, invocationCount: IntPropertyDeclaration) {
+    lines.add(SwiftStringPropertyAssignment().transform(invocationCheck, "true"))
     lines.add(IntPropertyIncrementAssignmentToSwift().transform(invocationCount))
   }
 
   private fun appendMethodMocks(lines: ArrayList<String>) {
     for (method in methods) {
-      val invocationCheck = CreateInvocationCheck(false).transform(method.name)
+      val invocationCheck = CreateInvocationCheck().transform(method.name)
       val invocationCount = CreateInvocationCount().transform(method.name)
       val invokedParameters = CreateInvokedParameters().transform(method.name, method.parameters)
       val invokedParametersList = CreateInvokedParametersList().transform(method.name, method.parameters)
@@ -109,8 +109,8 @@ class XcodeMockGenerator {
     return null
   }
 
-  private fun addMethodProperties(lines: ArrayList<String>, invocationCheck: BoolPropertyDeclaration, invocationCount: IntPropertyDeclaration, invokedParameters: TuplePropertyDeclaration?, invokedParametersList: TuplePropertyDeclaration?, returnStub: PropertyDeclaration?) {
-    lines.add(BoolPropertyDeclarationToSwift().transform(invocationCheck))
+  private fun addMethodProperties(lines: ArrayList<String>, invocationCheck: PropertyDeclaration, invocationCount: IntPropertyDeclaration, invokedParameters: TuplePropertyDeclaration?, invokedParametersList: TuplePropertyDeclaration?, returnStub: PropertyDeclaration?) {
+    lines.add(SwiftStringImplicitValuePropertyDeclaration().transform(invocationCheck, "false"))
     lines.add(IntPropertyDeclarationToSwift().transform(invocationCount))
     if (invokedParameters != null) lines.add(SwiftStringPropertyDeclaration().transform(invokedParameters) + "?")
     if (invokedParametersList != null) lines.add(SwiftStringInitializedArrayPropertyDeclaration().transform(invokedParametersList))
@@ -121,8 +121,8 @@ class XcodeMockGenerator {
     lines.add(method.signature + " {")
   }
 
-  private fun addMethodStatements(lines: ArrayList<String>, invocationCheck: BoolPropertyDeclaration, invocationCount: IntPropertyDeclaration, invokedParameters: TuplePropertyDeclaration?, invokedParametersList: TuplePropertyDeclaration?, returnStub: PropertyDeclaration?) {
-    lines.add(BoolPropertyAssignmentToSwift().transform(invocationCheck, true)) // TODO: change this and remove bool prop
+  private fun addMethodStatements(lines: ArrayList<String>, invocationCheck: PropertyDeclaration, invocationCount: IntPropertyDeclaration, invokedParameters: TuplePropertyDeclaration?, invokedParametersList: TuplePropertyDeclaration?, returnStub: PropertyDeclaration?) {
+    lines.add(SwiftStringPropertyAssignment().transform(invocationCheck, "true"))
     lines.add(IntPropertyIncrementAssignmentToSwift().transform(invocationCount)) // TODO: change this and remove Int prop
     if (invokedParameters != null) lines.add(SwiftStringPropertyAssignment().transform(invokedParameters, SwiftStringTupleForwardCall().transform(invokedParameters)))
     if (invokedParametersList != null) lines.add(SwiftStringTupleArrayAppender().transform(invokedParametersList, SwiftStringTupleForwardCall().transform(invokedParametersList)))

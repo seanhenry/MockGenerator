@@ -1,12 +1,12 @@
 package codes.seanhenry.mockgenerator.usecases
 
-import codes.seanhenry.mockgenerator.entities.BoolPropertyDeclaration
+import codes.seanhenry.mockgenerator.entities.PropertyDeclaration
 import codes.seanhenry.mockgenerator.util.PrependStringDecorator
 
-class CreateInvocationCheck(val initializer: Boolean) {
+class CreateInvocationCheck {
 
-  fun transform(name: String) : BoolPropertyDeclaration {
+  fun transform(name: String) : PropertyDeclaration {
     val decorator = PrependStringDecorator(null, "invoked")
-    return BoolPropertyDeclaration(decorator.process(name), initializer)
+    return PropertyDeclaration(decorator.process(name), "Bool")
   }
 }
