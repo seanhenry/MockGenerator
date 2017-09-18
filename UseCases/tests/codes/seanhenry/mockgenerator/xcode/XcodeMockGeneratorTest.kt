@@ -82,6 +82,8 @@ class XcodeMockGeneratorTest: TestCase() {
     val expected = """
       var invokedReadWriteSetter = false
       var invokedReadWriteSetterCount = 0
+      var invokedReadWrite: String?
+      var invokedReadWriteList = [String]()
       var invokedReadWriteGetter = false
       var invokedReadWriteGetterCount = 0
       var stubbedReadWrite: String!
@@ -89,6 +91,8 @@ class XcodeMockGeneratorTest: TestCase() {
       set {
       invokedReadWriteSetter = true
       invokedReadWriteSetterCount += 1
+      invokedReadWrite = newValue
+      invokedReadWriteList.append(newValue)
       }
       get {
       invokedReadWriteGetter = true
@@ -113,6 +117,48 @@ class XcodeMockGeneratorTest: TestCase() {
     invokedReadOnlyGetterCount += 1
     return stubbedReadOnly
     }
+    """.trimIndent()
+    assertMockEquals(expected)
+  }
+
+  fun testShouldMockOptionalProperties() {
+    add(
+        ProtocolProperty("opt", "String?", true, "var opt: String? { set get }")
+    )
+    add(
+        ProtocolMethod("getOptional", null, "opt: Int?", "func getOptional(opt: Int?)")
+    )
+    val expected = """
+      var invokedOptSetter = false
+      var invokedOptSetterCount = 0
+      var invokedOpt: String?
+      var invokedOptList = [String?]()
+      var invokedOptGetter = false
+      var invokedOptGetterCount = 0
+      var stubbedOpt: String!
+      var opt: String? {
+      set {
+      invokedOptSetter = true
+      invokedOptSetterCount += 1
+      invokedOpt = newValue
+      invokedOptList.append(newValue)
+      }
+      get {
+      invokedOptGetter = true
+      invokedOptGetterCount += 1
+      return stubbedOpt
+      }
+      }
+      var invokedGetOptional = false
+      var invokedGetOptionalCount = 0
+      var invokedGetOptionalParameters: (opt: Int?, Void)?
+      var invokedGetOptionalParametersList = [(opt: Int?, Void)]()
+      func getOptional(opt: Int?) {
+      invokedGetOptional = true
+      invokedGetOptionalCount += 1
+      invokedGetOptionalParameters = (opt, ())
+      invokedGetOptionalParametersList.append((opt, ()))
+      }
     """.trimIndent()
     assertMockEquals(expected)
   }

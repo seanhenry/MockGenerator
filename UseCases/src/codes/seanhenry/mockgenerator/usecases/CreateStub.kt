@@ -10,10 +10,7 @@ abstract class CreateStub {
   fun transform(name: String, type: String): PropertyDeclaration {
     val transformedName = getStringDecorator().process(name)
     var transformedType = surroundClosure(type)
-    while (transformedType.endsWith("?") || transformedType.endsWith("!")) {
-      transformedType = transformedType.removeRange(transformedType.length - 1, transformedType.length)
-    }
-    transformedType += "!"
+    transformedType = RemoveOptional.removeOptional(transformedType) + "!"
     return PropertyDeclaration(transformedName, transformedType)
   }
 
