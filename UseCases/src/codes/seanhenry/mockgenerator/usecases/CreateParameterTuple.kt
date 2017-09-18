@@ -52,7 +52,8 @@ abstract class CreateParameterTuple {
 
   private fun getTupleParameterName(parameterLabels: List<String>): String? {
     return parameterLabels[0]
-        .split(" ", "\n", "\t")
+        .replace(Regex("\\s"), " ")
+        .split(" ")
         .filter { it.isNotBlank() }
         .lastOrNull()
   }
