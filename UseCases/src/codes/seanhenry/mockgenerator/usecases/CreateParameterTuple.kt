@@ -8,9 +8,6 @@ abstract class CreateParameterTuple {
   abstract fun getStringDecorator(): StringDecorator
 
   fun transform(name: String, parameters: String): TuplePropertyDeclaration? {
-    if (parameters.isEmpty()) {
-      return null
-    }
     val parameterList = parameters.split(",")
     val tupleParameters = parameterList
         .mapNotNull { transformParameter(it) }
@@ -27,8 +24,10 @@ abstract class CreateParameterTuple {
   private fun validateParameters(parameterList: List<Any>, tupleParameters: List<Any>) =
       parameterList.size == tupleParameters.size
 
-  private fun createProperty(name: String, tupleParameters: List<TuplePropertyDeclaration.TupleParameter>): TuplePropertyDeclaration {
-    if (tupleParameters.size == 1) {
+  private fun createProperty(name: String, tupleParameters: List<TuplePropertyDeclaration.TupleParameter>): TuplePropertyDeclaration? {
+    if (tupleParameters.isEmpty()) {
+      return null
+    } else if (tupleParameters.size == 1) {
       val mutable = tupleParameters.toMutableList()
       mutable.add(TuplePropertyDeclaration.TupleParameter("", "Void"))
       return TuplePropertyDeclaration(name, mutable.toList())

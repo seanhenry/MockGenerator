@@ -9,6 +9,10 @@ class CreateParameterTupleTest: TestCase() {
     assertNull(transformParameters(""))
   }
 
+  fun testShouldReturnNil_whenOnlyWhitespace() {
+    assertNull(transformParameters("     \n  \t   "))
+  }
+
   fun testShouldReturnTupleWithVoid_whenOneParameter() {
     val parameters = arrayOf(
         TuplePropertyDeclaration.TupleParameter("param1", "Int"),
@@ -86,11 +90,15 @@ class CreateParameterTupleTest: TestCase() {
   }
 
   fun testShouldHandleTabs() {
+    assertNull(transformParameters("closure: () -> ()"))
+  }
+
+  fun testShouldIgnoreClosureOnlyParameter() {
     val parameters = arrayOf(
-        TuplePropertyDeclaration.TupleParameter("name1", "Int"),
+        TuplePropertyDeclaration.TupleParameter("param2", "String"),
         TuplePropertyDeclaration.TupleParameter("", "Void")
     )
-    assertTuple("(name1: Int, Void)", parameters, "\n\tlabel1\n\tname1\n\t:\tInt")
+    assertTuple("(param2: String, Void)", parameters, "param1: (arg: String) -> Void, param2: String")
   }
 
   fun testShouldIgnoreClosureParameter() {
