@@ -101,6 +101,14 @@ class CreateParameterTupleTest: TestCase() {
     assertTuple("(param2: String, Void)", parameters, "param1: (arg: String) -> Void, param2: String")
   }
 
+  fun testShouldReplaceIUOWithOptional() {
+    val parameters = arrayOf(
+        TuplePropertyDeclaration.TupleParameter("param0", "String?"),
+        TuplePropertyDeclaration.TupleParameter("", "Void")
+    )
+    assertTuple("(param0: String?, Void)", parameters, "param0: String!")
+  }
+
   private fun transformParameters(parameters: String) = CreateInvokedParameters().transform("name", parameters)
 
   private fun assertTuple(expectedType: String, expectedParameters: Array<TuplePropertyDeclaration.TupleParameter>, methodParameters: String) {
