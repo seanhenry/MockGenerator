@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="jayatana">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/community/lib/jayatana-1.2.4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/community/lib/src/jayatana-1.2.4-src.zip!/" />
+    </SOURCES>
+  </library>
+</component>
