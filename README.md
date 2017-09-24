@@ -105,7 +105,7 @@ func test_mockCanVerifyInvokedMethod() {
     XCTAssertTrue(mockAnimator.invokedAnimate)
 }
 ```
-Test the correct parameter was passed to animate:
+Test the correct parameter was passed to the animate method:
 
 ```
 func test_mockCanVerifyInvokedParameters() {
