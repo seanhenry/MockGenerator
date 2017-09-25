@@ -154,3 +154,10 @@ func test_mockCanCallClosure_withStubbedValue() {
 ## Nomenclature
 
 Despite being called a Mock Generator, this plugin actually generates something closer to a spy and stub. The word 'mock', whilst not technically correct, has been used because test doubles such as spies, mocks, and stubs have become colloquially known as mocks.
+
+## Build
+
+If you would like to try building the plugin yourself:
+```
+make
+```
