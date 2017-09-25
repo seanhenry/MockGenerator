@@ -26,14 +26,13 @@
 
   <change-notes><![CDATA[
       <ul>
-        <li>Adds support for 2017.2.3</li>
-        <li>Adds support for parameter inout types.</li>
+        <li>Supports 2017.3</li>
       </ul>
     ]]>
   </change-notes>
 
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-  <idea-version since-build="172.4155"/>
+  <idea-version since-build="173.2463"/>
 
   <actions>
   </actions>
