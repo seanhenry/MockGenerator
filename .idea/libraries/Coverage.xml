@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Coverage">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/community/lib/coverage-agent.jar!/" />
+      <root url="jar://$PROJECT_DIR$/community/lib/coverage-instrumenter.jar!/" />
+      <root url="jar://$PROJECT_DIR$/community/lib/coverage-util.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/community/lib/src/coverage-src.zip!/" />
+    </SOURCES>
+  </library>
+</component>

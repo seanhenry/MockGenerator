@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Xerces">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/community/lib/xercesImpl.jar!/" />
+      <root url="jar://$PROJECT_DIR$/community/lib/xml-apis.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/community/lib/src/Xerces-J-src.2.11.0.zip!/xerces-2_11_0/src" />
+    </SOURCES>
+  </library>
+</component>

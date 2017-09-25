@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="winp">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/community/lib/winp-1.23.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/community/lib/src/winp-1.23-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
