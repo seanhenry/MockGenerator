@@ -157,7 +157,11 @@ Despite being called a Mock Generator, this plugin actually generates something 
 
 ## Build
 
-If you would like to try building the plugin yourself:
+If you would like to try building the plugin yourself run make.
 ```
 make
 ```
+### Run
+Run the MockGenerator configuration.
+### Test
+Run the MockGeneratorTest configuration. 
