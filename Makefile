@@ -1,9 +1,9 @@
 APPCODE_BUILD=173.2463
 IDEA_PATH=community
 
-.PHONY: bootstrap downloadcommunity cplibs cpmodules cpcompiler xmlstarlet
+.PHONY: bootstrap downloadcommunity cpall cplibs cpmodules cpcompiler xmlstarlet
 
-bootstrap: downloadcommunity cpmodules cplibs cpcompiler
+bootstrap: downloadcommunity cpall
 
 downloadcommunity:
 	if [ -d "$(IDEA_PATH)/.git" ]; then \
@@ -13,6 +13,8 @@ downloadcommunity:
 	else \
 	  git clone --depth 1 https://github.com/JetBrains/intellij-community.git $(IDEA_PATH) -b $(APPCODE_BUILD); \
 	fi;
+
+cpall: cpmodules cplibs cpcompiler
 
 cpmodules: xmlstarlet
 	cp -f $(IDEA_PATH)/.idea/modules.xml modules.xml
