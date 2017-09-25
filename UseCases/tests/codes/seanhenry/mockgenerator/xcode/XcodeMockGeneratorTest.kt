@@ -63,7 +63,7 @@ class XcodeMockGeneratorTest: TestCase() {
       var invokedMethodNameCount = 0
       var invokedMethodNameParameters: (name: Type, name2: Type2)?
       var invokedMethodNameParametersList = [(name: Type, name2: Type2)]()
-      var stubbedMethodNameResult: String!
+      var stubbedMethodNameResult: String! = ""
       func methodName(label name: Type, _ name2: Type2) -> String {
       invokedMethodName = true
       invokedMethodNameCount += 1
@@ -86,7 +86,7 @@ class XcodeMockGeneratorTest: TestCase() {
       var invokedReadWriteList = [String]()
       var invokedReadWriteGetter = false
       var invokedReadWriteGetterCount = 0
-      var stubbedReadWrite: String!
+      var stubbedReadWrite: String! = ""
       var readWrite: String {
       set {
       invokedReadWriteSetter = true
@@ -111,7 +111,7 @@ class XcodeMockGeneratorTest: TestCase() {
     val expected = """
     var invokedReadOnlyGetter = false
     var invokedReadOnlyGetterCount = 0
-    var stubbedReadOnly: Int!
+    var stubbedReadOnly: Int! = 0
     var readOnly: Int {
     invokedReadOnlyGetter = true
     invokedReadOnlyGetterCount += 1
@@ -135,7 +135,7 @@ class XcodeMockGeneratorTest: TestCase() {
       var invokedOptList = [String?]()
       var invokedOptGetter = false
       var invokedOptGetterCount = 0
-      var stubbedOpt: String!
+      var stubbedOpt: String! = nil
       var opt: String? {
       set {
       invokedOptSetter = true

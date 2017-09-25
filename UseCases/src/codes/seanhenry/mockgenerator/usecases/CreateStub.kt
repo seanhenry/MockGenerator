@@ -1,6 +1,7 @@
 package codes.seanhenry.mockgenerator.usecases
 
 import codes.seanhenry.mockgenerator.entities.PropertyDeclaration
+import codes.seanhenry.mockgenerator.util.OptionalUtil
 import codes.seanhenry.mockgenerator.util.StringDecorator
 
 abstract class CreateStub {
@@ -10,7 +11,7 @@ abstract class CreateStub {
   fun transform(name: String, type: String): PropertyDeclaration {
     val transformedName = getStringDecorator().process(name)
     var transformedType = surroundClosure(type)
-    transformedType = RemoveOptional.removeOptional(transformedType) + "!"
+    transformedType = OptionalUtil.removeOptional(transformedType) + "!"
     return PropertyDeclaration(transformedName, transformedType)
   }
 

@@ -4,6 +4,7 @@ import codes.seanhenry.mockgenerator.entities.*
 import codes.seanhenry.mockgenerator.swift.SwiftStringReturnProperty
 import codes.seanhenry.mockgenerator.swift.*
 import codes.seanhenry.mockgenerator.usecases.*
+import codes.seanhenry.mockgenerator.util.DefaultValueStore
 import java.util.*
 
 class XcodeMockGenerator {
@@ -38,7 +39,7 @@ class XcodeMockGenerator {
       val getterInvocationCount = CreateInvocationCount().transform(getterName)
       val returnStub = CreatePropertyGetterStub().transform(property.name, property.type)
       addSetterProperties(lines, setterInvocationCheck, setterInvocationCount, invokedProperty, invokedPropertyList, property.isWritable)
-      addGetterProperties(lines, getterInvocationCheck, getterInvocationCount, returnStub)
+      addGetterProperties(lines, property, getterInvocationCheck, getterInvocationCount, returnStub)
       addPropertyDeclaration(lines, property)
       addSetterBlock(lines, setterInvocationCheck, setterInvocationCount, invokedProperty, invokedPropertyList, property.isWritable)
       addGetterBlock(lines, getterInvocationCheck, getterInvocationCount, returnStub, property.isWritable)
@@ -79,10 +80,11 @@ class XcodeMockGenerator {
     }
   }
 
-  private fun addGetterProperties(lines: ArrayList<String>, getterInvocationCheck: PropertyDeclaration, getterInvocationCount: PropertyDeclaration, returnStub: PropertyDeclaration) {
+  private fun addGetterProperties(lines: ArrayList<String>, property: ProtocolProperty, getterInvocationCheck: PropertyDeclaration, getterInvocationCount: PropertyDeclaration, returnStub: PropertyDeclaration) {
     lines.add(SwiftStringImplicitValuePropertyDeclaration().transform(getterInvocationCheck, "false"))
     lines.add(SwiftStringImplicitValuePropertyDeclaration().transform(getterInvocationCount, "0"))
-    lines.add(SwiftStringPropertyDeclaration().transform(returnStub))
+    val defaultValue = DefaultValueStore().getDefaultValue(property.type)
+    lines.add(SwiftStringDefaultValuePropertyDeclaration().transform(returnStub, defaultValue))
   }
 
   private fun addClosingBrace(lines: ArrayList<String>) {
@@ -106,7 +108,7 @@ class XcodeMockGenerator {
       val invokedParameters = CreateInvokedParameters().transform(method.name, method.parameters)
       val invokedParametersList = CreateInvokedParametersList().transform(method.name, method.parameters)
       val returnStub = createReturnStub(method)
-      addMethodProperties(lines, invocationCheck, invocationCount, invokedParameters, invokedParametersList, returnStub)
+      addMethodProperties(lines, method, invocationCheck, invocationCount, invokedParameters, invokedParametersList, returnStub)
       addMethodDeclaration(lines, method)
       addMethodAssignments(lines, invocationCheck, invocationCount, invokedParameters, invokedParametersList, returnStub)
       addClosingBrace(lines)
@@ -120,12 +122,19 @@ class XcodeMockGenerator {
     return null
   }
 
-  private fun addMethodProperties(lines: ArrayList<String>, invocationCheck: PropertyDeclaration, invocationCount: PropertyDeclaration, invokedParameters: TuplePropertyDeclaration?, invokedParametersList: TuplePropertyDeclaration?, returnStub: PropertyDeclaration?) {
+  private fun addMethodProperties(lines: ArrayList<String>, method: ProtocolMethod, invocationCheck: PropertyDeclaration, invocationCount: PropertyDeclaration, invokedParameters: TuplePropertyDeclaration?, invokedParametersList: TuplePropertyDeclaration?, returnStub: PropertyDeclaration?) {
     lines.add(SwiftStringImplicitValuePropertyDeclaration().transform(invocationCheck, "false"))
     lines.add(SwiftStringImplicitValuePropertyDeclaration().transform(invocationCount, "0"))
     if (invokedParameters != null) lines.add(SwiftStringPropertyDeclaration().transform(invokedParameters) + "?")
     if (invokedParametersList != null) lines.add(SwiftStringInitializedArrayPropertyDeclaration().transform(invokedParametersList))
-    if (returnStub != null) lines.add(SwiftStringPropertyDeclaration().transform(returnStub))
+    addStubbedResult(returnStub, method, lines)
+  }
+
+  private fun addStubbedResult(returnStub: PropertyDeclaration?, method: ProtocolMethod, lines: ArrayList<String>) {
+    if (returnStub != null) {
+      val defaultValue = DefaultValueStore().getDefaultValue(method.returnType)
+      lines.add(SwiftStringDefaultValuePropertyDeclaration().transform(returnStub, defaultValue))
+    }
   }
 
   private fun addMethodDeclaration(lines: ArrayList<String>, method: ProtocolMethod) {
@@ -134,7 +143,7 @@ class XcodeMockGenerator {
 
   private fun addMethodAssignments(lines: ArrayList<String>, invocationCheck: PropertyDeclaration, invocationCount: PropertyDeclaration, invokedParameters: TuplePropertyDeclaration?, invokedParametersList: TuplePropertyDeclaration?, returnStub: PropertyDeclaration?) {
     lines.add(SwiftStringPropertyAssignment().transform(invocationCheck, "true"))
-    lines.add(SwiftStringIncrementAssignment().transform(invocationCount)) // TODO: change this and remove Int prop
+    lines.add(SwiftStringIncrementAssignment().transform(invocationCount))
     if (invokedParameters != null) lines.add(SwiftStringPropertyAssignment().transform(invokedParameters, SwiftStringTupleForwardCall().transform(invokedParameters)))
     if (invokedParametersList != null) lines.add(SwiftStringArrayAppender().transform(invokedParametersList, SwiftStringTupleForwardCall().transform(invokedParametersList)))
     if (returnStub != null) lines.add(SwiftStringReturnProperty().transform(returnStub))
