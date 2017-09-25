@@ -1,21 +1,23 @@
 APPCODE_BUILD=173.2463
+IDEA_PATH=community
 
-.PHONY: update cplibs cpmodules cpcompiler xmlstarlet
+.PHONY: bootstrap downloadcommunity cplibs cpmodules cpcompiler xmlstarlet
 
-update: cpmodules cplibs cpcompiler
-	cd community; \
-	git fetch --depth 1 origin $(APPCODE_BUILD); \
-	git checkout -b $(APPCODE_BUILD) FETCH_HEAD;
+bootstrap: downloadcommunity cpmodules cplibs cpcompiler
 
-cpcompiler:
-	cp -f community/.idea/compiler.xml .idea/compiler.xml
-	# making project dir relative to this project
-	sed -i '' 's\$PROJECT_DIR\$/\$PROJECT_DIR\$\/community/g' .idea/compiler.xml
+downloadcommunity:
+	if [ -d "$(IDEA_PATH)/.git" ]; then \
+	  cd $(IDEA_PATH); \
+	  git fetch --depth 1 origin $(APPCODE_BUILD); \
+	  git checkout -b $(APPCODE_BUILD) FETCH_HEAD; \
+	else \
+	  git clone --depth 1 https://github.com/JetBrains/intellij-community.git $(IDEA_PATH) -b $(APPCODE_BUILD); \
+	fi;
 
 cpmodules: xmlstarlet
-	cp -f community/.idea/modules.xml modules.xml
+	cp -f $(IDEA_PATH)/.idea/modules.xml modules.xml
 	# making project dir relative to this project
-	sed -i '' 's/\$$PROJECT_DIR\$$/\$$PROJECT_DIR\$$\/community/g' modules.xml
+	sed -i '' 's/\$$PROJECT_DIR\$$/\$$PROJECT_DIR\$$\/$(IDEA_PATH)/g' modules.xml
 	xml ed \
 	 -a '/project/component/modules/module[last()]' -t elem -name 'module' -v '' \
 	 -i '/project/component/modules/module[last()]' -t attr -name 'fileurl' -v 'file://$$PROJECT_DIR$$/MockGenerator/MockGenerator.iml' \
@@ -26,16 +28,20 @@ cpmodules: xmlstarlet
 	modules.xml > .idea/modules.xml
 	rm modules.xml
 
-cplibs:
-	rm -r .idea/libraries || true
-	cp -rf community/.idea/libraries .idea
-	# making project dir relative to this project
-	find .idea/libraries -type f | xargs sed -i '' 's/\$$PROJECT_DIR\$$/\$$PROJECT_DIR\$$\/community/g'
-
 xmlstarlet:
-	brew update
 	if hash xml 2>/dev/null; then \
         brew upgrade xmlstarlet || true; \
     else \
         brew install xmlstarlet; \
     fi
+
+cplibs:
+	rm -r .idea/libraries || true
+	cp -rf $(IDEA_PATH)/.idea/libraries .idea
+	# making project dir relative to this project
+	find .idea/libraries -type f | xargs sed -i '' 's/\$$PROJECT_DIR\$$/\$$PROJECT_DIR\$$\/$(IDEA_PATH)/g'
+
+cpcompiler:
+	cp -f $(IDEA_PATH)/.idea/compiler.xml .idea/compiler.xml
+	# making project dir relative to this project
+	sed -i '' 's/\$$PROJECT_DIR\$$/\$$PROJECT_DIR\$$\/$(IDEA_PATH)/g' .idea/compiler.xml
