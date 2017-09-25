@@ -4,7 +4,7 @@ An AppCode plugin to generate mock classes automatically.
 
 ![AppCode plugin generates Swift mock](readme/MockGenerator.gif "AppCode plugin generates Swift mock")
 
-See my [original blog post](http://seanhenry.codes/ios/generate-swift-mock-appcode-plugin/) for more information.
+Using an AppCode EAP? Check [releases](https://github.com/seanhenry/MockGenerator/releases) for a beta build. Or, if this doesn't fix your problem, raise an issue.
 
 [Looking for the Xcode version?](https://github.com/seanhenry/SwiftMockGeneratorForXcode)
 
