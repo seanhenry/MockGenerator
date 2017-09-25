@@ -161,6 +161,10 @@ If you would like to try building the plugin yourself run make.
 ```
 make
 ```
+- Open the project directory in IntelliJ.
+- Configure a JDK named "IDEA jdk" (case sensitive), pointing to an installation of JDK 1.6.
+- Configure a JDK named "1.8", pointing to an installation of JDK 1.8.
+
 ### Run
 Run the MockGenerator configuration.
 ### Test
