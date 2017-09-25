@@ -11,7 +11,7 @@ public class MockGeneratingIntentionTest extends ImportProjectTestCase {
 
   @Override
   protected String getDataPath() {
-    return "/Users/sean/source/plugins/community/MockGenerator/testData/TestProject";
+    return "testData/TestProject";
   }
 
   @Override
@@ -32,7 +32,7 @@ public class MockGeneratingIntentionTest extends ImportProjectTestCase {
       "DiamondInheritanceProtocol",
       "AssociatedTypeProtocol",
       "MultiAssociatedTypeProtocol",
-      //"UIKitProtocol",
+//      "UIKitProtocol",
       "PublicProtocol",
       "OpenProtocol",
       "DefaultValues",

@@ -3,6 +3,7 @@ package codes.seanhenry.testhelpers;
 import com.intellij.codeInsight.intention.IntentionAction;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.impl.VirtualFilePointerTracker;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
@@ -24,6 +25,13 @@ public abstract class ImportProjectTestCase extends PlatformTestCase {
         super.tearDown();
       } catch (Throwable ignored) {}
     }
+  }
+
+  @Override
+  protected void setUp() throws Exception {
+    try {
+      super.setUp();
+    } catch (IllegalStateException ignored) { } 
   }
 
   @Override

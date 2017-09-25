@@ -110,14 +110,14 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
       return;
     }
     List<SwiftProtocolDeclaration> protocols = getResolvedProtocols(classDeclaration);
+    protocols = removeDuplicates(protocols);
+    protocols = removeNSObjectProtocol(protocols);
     if (protocols.isEmpty()) {
       showErrorMessage("Could not find a protocol reference.");
       return;
     }
     deleteClassStatements();
     scope = getMockScope();
-    protocols = removeDuplicates(protocols);
-    protocols = removeNSObjectProtocol(protocols);
     List<SwiftVariableDeclaration> properties = protocols
       .stream()
       .flatMap(p -> getProtocolProperties(p).stream())
@@ -208,6 +208,9 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     }
     if (element instanceof SwiftProtocolDeclaration) {
       return (SwiftProtocolDeclaration) element;
+    } else if (element instanceof SwiftClassDeclaration
+        && "NSObject".equals(((SwiftClassDeclaration)element).getName())) {
+      // ignore NSObject
     } else {
       showErrorMessage("This plugin currently only supports protocols.");
     }
@@ -261,7 +264,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
       .map(p -> p.getText())
       .collect(Collectors.toList());
     String labelString = String.join(" ", labels);
-    return labelString + ": " + parameter.getAttributes().getText() + " " + MySwiftPsiUtil.getResolvedTypeName(parameter, false);
+    return labelString + ": " + MySwiftPsiUtil.getResolvedTypeName(parameter, false);
   }
 
   private void addProtocolPropertiesToClass(List<SwiftVariableDeclaration> properties) {
@@ -579,11 +582,11 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     if (shouldRemoveClosures) {
       filter = p -> !isClosure(p);
     }
-    return function.getParameterClauseList().stream()
-      .map(SwiftParameterClause::getParameterList)
-      .flatMap(Collection::stream)
-      .filter(filter)
-      .map(operation);
+    return function.getParameterClause()
+        .getParameterList()
+        .stream()
+        .filter(filter)
+        .map(operation);
   }
 
   private String getUnescapedParameterName(SwiftParameter parameter) {
@@ -595,11 +598,11 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   }
 
   private List<SwiftParameter> getClosureParameters() {
-    return protocolFunction.getParameterClauseList().stream()
-      .map(SwiftParameterClause::getParameterList)
-      .flatMap(Collection::stream)
-      .filter(MockGeneratingIntention::isClosure)
-      .collect(Collectors.toList());
+    return protocolFunction.getParameterClause()
+        .getParameterList()
+        .stream()
+        .filter(MockGeneratingIntention::isClosure)
+        .collect(Collectors.toList());
   }
 
   private static boolean isClosure(PsiElement parameter) {
