@@ -11,6 +11,11 @@ class XcodeMockGenerator {
 
   private val methods = ArrayList<ProtocolMethod>()
   private val properties = ArrayList<ProtocolProperty>()
+  private var scope = ""
+
+  fun setScope(scope: String) {
+    this.scope = scope.trim() + " "
+  }
 
   fun add(method: ProtocolMethod) {
     methods.add(method)
@@ -68,23 +73,23 @@ class XcodeMockGenerator {
   }
 
   private fun addPropertyDeclaration(lines: ArrayList<String>, property: ProtocolProperty) {
-    lines.add(property.getTrimmedSignature() + " {")
+    lines.add(scope + property.getTrimmedSignature() + " {")
   }
 
   private fun addSetterProperties(lines: ArrayList<String>, setterInvocationCheck: PropertyDeclaration, setterInvocationCount: PropertyDeclaration, invokedProperty: PropertyDeclaration, invokedPropertyList: PropertyDeclaration, isWritable: Boolean) {
     if (isWritable) {
-      lines.add(SwiftStringImplicitValuePropertyDeclaration().transform(setterInvocationCheck, "false"))
-      lines.add(SwiftStringImplicitValuePropertyDeclaration().transform(setterInvocationCount, "0"))
-      lines.add(SwiftStringPropertyDeclaration().transform(invokedProperty))
-      lines.add(SwiftStringInitializedArrayPropertyDeclaration().transform(invokedPropertyList))
+      lines.add(scope + SwiftStringImplicitValuePropertyDeclaration().transform(setterInvocationCheck, "false"))
+      lines.add(scope + SwiftStringImplicitValuePropertyDeclaration().transform(setterInvocationCount, "0"))
+      lines.add(scope + SwiftStringPropertyDeclaration().transform(invokedProperty))
+      lines.add(scope + SwiftStringInitializedArrayPropertyDeclaration().transform(invokedPropertyList))
     }
   }
 
   private fun addGetterProperties(lines: ArrayList<String>, property: ProtocolProperty, getterInvocationCheck: PropertyDeclaration, getterInvocationCount: PropertyDeclaration, returnStub: PropertyDeclaration) {
-    lines.add(SwiftStringImplicitValuePropertyDeclaration().transform(getterInvocationCheck, "false"))
-    lines.add(SwiftStringImplicitValuePropertyDeclaration().transform(getterInvocationCount, "0"))
+    lines.add(scope + SwiftStringImplicitValuePropertyDeclaration().transform(getterInvocationCheck, "false"))
+    lines.add(scope + SwiftStringImplicitValuePropertyDeclaration().transform(getterInvocationCount, "0"))
     val defaultValue = DefaultValueStore().getDefaultValue(property.type)
-    lines.add(SwiftStringDefaultValuePropertyDeclaration().transform(returnStub, defaultValue))
+    lines.add(scope + SwiftStringDefaultValuePropertyDeclaration().transform(returnStub, defaultValue))
   }
 
   private fun addClosingBrace(lines: ArrayList<String>) {
@@ -123,22 +128,22 @@ class XcodeMockGenerator {
   }
 
   private fun addMethodProperties(lines: ArrayList<String>, method: ProtocolMethod, invocationCheck: PropertyDeclaration, invocationCount: PropertyDeclaration, invokedParameters: TuplePropertyDeclaration?, invokedParametersList: TuplePropertyDeclaration?, returnStub: PropertyDeclaration?) {
-    lines.add(SwiftStringImplicitValuePropertyDeclaration().transform(invocationCheck, "false"))
-    lines.add(SwiftStringImplicitValuePropertyDeclaration().transform(invocationCount, "0"))
-    if (invokedParameters != null) lines.add(SwiftStringPropertyDeclaration().transform(invokedParameters) + "?")
-    if (invokedParametersList != null) lines.add(SwiftStringInitializedArrayPropertyDeclaration().transform(invokedParametersList))
+    lines.add(scope + SwiftStringImplicitValuePropertyDeclaration().transform(invocationCheck, "false"))
+    lines.add(scope + SwiftStringImplicitValuePropertyDeclaration().transform(invocationCount, "0"))
+    if (invokedParameters != null) lines.add(scope + SwiftStringPropertyDeclaration().transform(invokedParameters) + "?")
+    if (invokedParametersList != null) lines.add(scope + SwiftStringInitializedArrayPropertyDeclaration().transform(invokedParametersList))
     addStubbedResult(returnStub, method, lines)
   }
 
   private fun addStubbedResult(returnStub: PropertyDeclaration?, method: ProtocolMethod, lines: ArrayList<String>) {
     if (returnStub != null) {
       val defaultValue = DefaultValueStore().getDefaultValue(method.returnType)
-      lines.add(SwiftStringDefaultValuePropertyDeclaration().transform(returnStub, defaultValue))
+      lines.add(scope + SwiftStringDefaultValuePropertyDeclaration().transform(returnStub, defaultValue))
     }
   }
 
   private fun addMethodDeclaration(lines: ArrayList<String>, method: ProtocolMethod) {
-    lines.add(method.signature + " {")
+    lines.add(scope + method.signature + " {")
   }
 
   private fun addMethodAssignments(lines: ArrayList<String>, invocationCheck: PropertyDeclaration, invocationCount: PropertyDeclaration, invokedParameters: TuplePropertyDeclaration?, invokedParametersList: TuplePropertyDeclaration?, returnStub: PropertyDeclaration?) {

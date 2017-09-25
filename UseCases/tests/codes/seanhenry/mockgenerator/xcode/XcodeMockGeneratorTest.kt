@@ -135,7 +135,7 @@ class XcodeMockGeneratorTest: TestCase() {
       var invokedOptList = [String?]()
       var invokedOptGetter = false
       var invokedOptGetterCount = 0
-      var stubbedOpt: String! = nil
+      var stubbedOpt: String!
       var opt: String? {
       set {
       invokedOptSetter = true
@@ -158,6 +158,51 @@ class XcodeMockGeneratorTest: TestCase() {
       invokedGetOptionalCount += 1
       invokedGetOptionalParameters = (opt, ())
       invokedGetOptionalParametersList.append((opt, ()))
+      }
+    """.trimIndent()
+    assertMockEquals(expected)
+  }
+
+  fun testShouldAssignTheScopeToAllItems() {
+    add(
+        ProtocolProperty("opt", "String?", true, "var opt: String? { set get }")
+    )
+    add(
+        ProtocolMethod("getOptional", "String?", "opt: Int?", "func getOptional(opt: Int?) -> String?")
+    )
+    generator.setScope("public")
+    val expected = """
+      public var invokedOptSetter = false
+      public var invokedOptSetterCount = 0
+      public var invokedOpt: String?
+      public var invokedOptList = [String?]()
+      public var invokedOptGetter = false
+      public var invokedOptGetterCount = 0
+      public var stubbedOpt: String!
+      public var opt: String? {
+      set {
+      invokedOptSetter = true
+      invokedOptSetterCount += 1
+      invokedOpt = newValue
+      invokedOptList.append(newValue)
+      }
+      get {
+      invokedOptGetter = true
+      invokedOptGetterCount += 1
+      return stubbedOpt
+      }
+      }
+      public var invokedGetOptional = false
+      public var invokedGetOptionalCount = 0
+      public var invokedGetOptionalParameters: (opt: Int?, Void)?
+      public var invokedGetOptionalParametersList = [(opt: Int?, Void)]()
+      public var stubbedGetOptionalResult: String!
+      public func getOptional(opt: Int?) -> String? {
+      invokedGetOptional = true
+      invokedGetOptionalCount += 1
+      invokedGetOptionalParameters = (opt, ())
+      invokedGetOptionalParametersList.append((opt, ()))
+      return stubbedGetOptionalResult
       }
     """.trimIndent()
     assertMockEquals(expected)

@@ -267,6 +267,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
 
   private void addProtocolPropertiesToClass(List<SwiftVariableDeclaration> properties) {
     XcodeMockGenerator generator = new XcodeMockGenerator();
+    generator.setScope(scope);
     for (SwiftVariableDeclaration property : properties) {
       name = MySwiftPsiUtil.getUnescapedPropertyName(property);
       String type = PsiTreeUtil.findChildOfType(property, SwiftTypeElement.class).getText();
