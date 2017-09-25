@@ -1,4 +1,8 @@
+/community
 testData/TestProject/.idea
+/.idea/workspace.xml
+MockGenerator/testData/TestProject/.idea/workspace.xml
+/build
 
 ## Various settings
 *.pbxuser
