@@ -50,7 +50,7 @@ To regenerate the mock, place the cursor anywhere inside the mock and select ‘
 | Records multiple invocations of methods.|✅|
 | Records multiple invocations of method parameters.|✅|
 | Generate mocks from protocols in 3rd party frameworks.|✅|
-| Generate mocks from classes||
+| Generate mocks from classes|[Vote](https://github.com/seanhenry/MockGenerator/issues/11)|
 
 ## Usage example
 
