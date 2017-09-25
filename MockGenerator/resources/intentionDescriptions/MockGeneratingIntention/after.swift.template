@@ -1,50 +1,16 @@
-class MockBotDataStore: BotDataStore {
-
-    var invokedLoad = false
-    var invokedLoadCount = 0
-    var stubbedLoadResult: [Bot]! = []
-
-    func load() -> [Bot] {
-        invokedLoad = true
-        invokedLoadCount += 1
-        return stubbedLoadResult
-    }
-
-    var invokedLoadFromBranchName = false
-    var invokedLoadFromBranchNameCount = 0
-    var invokedLoadFromBranchNameParameters: (name: String, Void)?
-    var invokedLoadFromBranchNameParametersList = [(name: String, Void)]()
-    var stubbedLoadFromBranchNameResult: Bot!
-
-    func load(fromBranchName name: String) -> Bot? {
-        invokedLoadFromBranchName = true
-        invokedLoadFromBranchNameCount += 1
-        invokedLoadFromBranchNameParameters = (name, ())
-        invokedLoadFromBranchNameParametersList.append((name, ()))
-        return stubbedLoadFromBranchNameResult
-    }
+class MockDataStore: DataStore {
 
     var invokedSave = false
     var invokedSaveCount = 0
-    var invokedSaveParameters: (branch: Bot, Void)?
-    var invokedSaveParametersList = [(branch: Bot, Void)]()
+    var invokedSaveParameters: (data: Data, file: URL)?
+    var invokedSaveParametersList = [(data: Data, file: URL)]()
+    var stubbedSaveResult: Bool! = false
 
-    func save(_ branch: Bot) {
+    func save(_ data: Data, to file: URL) -> Bool {
         invokedSave = true
         invokedSaveCount += 1
-        invokedSaveParameters = (branch, ())
-        invokedSaveParametersList.append((branch, ()))
-    }
-
-    var invokedDelete = false
-    var invokedDeleteCount = 0
-    var invokedDeleteParameters: (branch: Bot, Void)?
-    var invokedDeleteParametersList = [(branch: Bot, Void)]()
-
-    func delete(_ branch: Bot) {
-        invokedDelete = true
-        invokedDeleteCount += 1
-        invokedDeleteParameters = (branch, ())
-        invokedDeleteParametersList.append((branch, ()))
+        invokedSaveParameters = (data, file)
+        invokedSaveParametersList.append((data, file))
+        return stubbedSaveResult
     }
 }

@@ -2,7 +2,7 @@
   <id>codes.seanhenry.mockgenerator</id>
   <name>Swift Mock Generator for AppCode</name>
   <version>7</version>
-  <vendor email="hello@seanhenry.codes" url="http://seanhenry.codes">Sean Henry</vendor>
+  <vendor email="hello@seanhenry.codes" url="https://github.com/seanhenry/MockGenerator">Sean Henry</vendor>
 
   <description><![CDATA[
       Automatically generate your mocks in one action.
@@ -22,6 +22,31 @@
         <li>Handles methods, properties and parameters named with keywords.</li>
         <li>Generate mocks from protocols in 3rd party frameworks.</li>
       </ul>
+      <h3>Before:</h3>
+      <pre>
+class MockDataStore: DataStore {
+  
+}
+      </pre>
+      <h3>After:</h3>
+      <pre>
+class MockDataStore: DataStore {
+
+    var invokedSave = false
+    var invokedSaveCount = 0
+    var invokedSaveParameters: (data: Data, file: URL)?
+    var invokedSaveParametersList = [(data: Data, file: URL)]()
+    var stubbedSaveResult: Bool! = false
+
+    func save(_ data: Data, to file: URL) -> Bool {
+        invokedSave = true
+        invokedSaveCount += 1
+        invokedSaveParameters = (data, file)
+        invokedSaveParametersList.append((data, file))
+        return stubbedSaveResult
+    }
+}
+      </pre>
     ]]></description>
 
   <change-notes><![CDATA[
