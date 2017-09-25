@@ -157,13 +157,18 @@ Despite being called a Mock Generator, this plugin actually generates something 
 
 ## Build
 
-If you would like to try building the plugin yourself run make.
+If you would like to try building the plugin yourself follow these steps.
 ```
-make
+$ make
 ```
+- Run the above command in Terminal.
 - Open the project directory in IntelliJ.
+- Go to `File -> Project Structure` (`⌘;`)
 - Configure a JDK named "IDEA jdk" (case sensitive), pointing to an installation of JDK 1.6.
 - Configure a JDK named "1.8", pointing to an installation of JDK 1.8.
+- Configure an IntelliJ platform plugin SDK named "OC-<AppCode build number>", pointing to the version of AppCode*. Example: OC-173.2463
+
+\* See `APPCODE_BUILD` in the [Makefile](Makefile) for the intended build number.
 
 ### Run
 Run the MockGenerator configuration.
