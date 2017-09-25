@@ -163,6 +163,35 @@ class XcodeMockGeneratorTest: TestCase() {
     assertMockEquals(expected)
   }
 
+  fun testShouldStubWithDefaultValues() {
+    add(
+        ProtocolProperty("string", "String", false, "var string: String { get }")
+    )
+    add(
+        ProtocolMethod("getInt", "Int", "", "func getInt() -> Int")
+    )
+    generator.setScope("public")
+    val expected = """
+      public var invokedStringGetter = false
+      public var invokedStringGetterCount = 0
+      public var stubbedString: String! = ""
+      public var string: String {
+      invokedStringGetter = true
+      invokedStringGetterCount += 1
+      return stubbedString
+      }
+      public var invokedGetInt = false
+      public var invokedGetIntCount = 0
+      public var stubbedGetIntResult: Int! = 0
+      public func getInt() -> Int {
+      invokedGetInt = true
+      invokedGetIntCount += 1
+      return stubbedGetIntResult
+      }
+    """.trimIndent()
+    assertMockEquals(expected)
+  }
+
   fun testShouldAssignTheScopeToAllItems() {
     add(
         ProtocolProperty("opt", "String?", true, "var opt: String? { set get }")
