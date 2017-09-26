@@ -15,11 +15,11 @@ public class DefaultValueStore extends Store {
   }
 
   private boolean isArray(String typeName) {
-    return typeName.matches("\\[[\\w0-9]+]");
+    return typeName.matches("\\[[\\w0-9]+\\]");
   }
 
   private boolean isDictionary(String typeName) {
-    return typeName.matches("\\[[\\w0-9]+:[\\w0-9]+]");
+    return typeName.matches("\\[[\\w0-9]+:[\\w0-9]+\\]");
   }
 
   @Override
