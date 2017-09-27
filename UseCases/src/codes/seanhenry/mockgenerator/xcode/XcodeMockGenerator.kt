@@ -5,6 +5,8 @@ import codes.seanhenry.mockgenerator.swift.SwiftStringReturnProperty
 import codes.seanhenry.mockgenerator.swift.*
 import codes.seanhenry.mockgenerator.usecases.*
 import codes.seanhenry.mockgenerator.util.DefaultValueStore
+import codes.seanhenry.mockgenerator.util.MethodModel
+import codes.seanhenry.mockgenerator.util.UniqueMethodNameGenerator
 import java.util.*
 
 class XcodeMockGenerator {
@@ -12,6 +14,7 @@ class XcodeMockGenerator {
   private val methods = ArrayList<ProtocolMethod>()
   private val properties = ArrayList<ProtocolProperty>()
   private var scope = ""
+  private lateinit var nameGenerator: UniqueMethodNameGenerator
 
   fun setScope(scope: String) {
     this.scope = scope.trim() + " "
@@ -26,23 +29,40 @@ class XcodeMockGenerator {
   }
 
   fun generate(): String {
+    generateOverloadedNames()
     val lines = ArrayList<String>()
-    appendPropertyMocks(lines)
-    appendMethodMocks(lines)
+    appendPropertyMocks(lines, properties)
+    appendMethodMocks(lines, methods)
     return lines.joinToString("\n")
   }
 
-  private fun appendPropertyMocks(lines: ArrayList<String>) {
+  private fun generateOverloadedNames() {
+    val models = properties.map { toMethodModel(it) }.toMutableList()
+    val others = methods.map { toMethodModel(it) }
+    nameGenerator = UniqueMethodNameGenerator(models + others)
+    nameGenerator.generateMethodNames()
+  }
+
+  private fun toMethodModel(method: ProtocolMethod): MethodModel {
+    return MethodModel(method.name, method.parameters.split(','))
+  }
+
+  private fun toMethodModel(property: ProtocolProperty): MethodModel {
+    return MethodModel(property.name, "")
+  }
+
+  private fun appendPropertyMocks(lines: ArrayList<String>, properties: List<ProtocolProperty>) {
     for (property in properties) {
-      val setterName = property.name + "Setter"
+      val name = nameGenerator.getMethodName(toMethodModel(property).id)
+      val setterName = name + "Setter"
       val setterInvocationCheck = CreateInvocationCheck().transform(setterName)
       val setterInvocationCount = CreateInvocationCount().transform(setterName)
-      val invokedProperty = CreateInvokedProperty().transform(property.name, TransformToOptional().transform(property.type))
-      val invokedPropertyList = CreateInvokedPropertyList().transform(property.name, property.type)
-      val getterName = property.name + "Getter"
+      val invokedProperty = CreateInvokedProperty().transform(name, TransformToOptional().transform(property.type))
+      val invokedPropertyList = CreateInvokedPropertyList().transform(name, property.type)
+      val getterName = name + "Getter"
       val getterInvocationCheck = CreateInvocationCheck().transform(getterName)
       val getterInvocationCount = CreateInvocationCount().transform(getterName)
-      val returnStub = CreatePropertyGetterStub().transform(property.name, property.type)
+      val returnStub = CreatePropertyGetterStub().transform(name, property.type)
       addSetterProperties(lines, setterInvocationCheck, setterInvocationCount, invokedProperty, invokedPropertyList, property.isWritable)
       addGetterProperties(lines, property, getterInvocationCheck, getterInvocationCount, returnStub)
       addPropertyDeclaration(lines, property)
@@ -106,13 +126,14 @@ class XcodeMockGenerator {
     lines.add(SwiftStringArrayAppender().transform(invokedPropertyList, "newValue"))
   }
 
-  private fun appendMethodMocks(lines: ArrayList<String>) {
+  private fun appendMethodMocks(lines: ArrayList<String>, methods: List<ProtocolMethod>) {
     for (method in methods) {
-      val invocationCheck = CreateInvocationCheck().transform(method.name)
-      val invocationCount = CreateInvocationCount().transform(method.name)
-      val invokedParameters = CreateInvokedParameters().transform(method.name, method.parameters)
-      val invokedParametersList = CreateInvokedParametersList().transform(method.name, method.parameters)
-      val returnStub = createReturnStub(method)
+      val name = nameGenerator.getMethodName(toMethodModel(method).id)
+      val invocationCheck = CreateInvocationCheck().transform(name)
+      val invocationCount = CreateInvocationCount().transform(name)
+      val invokedParameters = CreateInvokedParameters().transform(name, method.parameters)
+      val invokedParametersList = CreateInvokedParametersList().transform(name, method.parameters)
+      val returnStub = createReturnStub(method, name)
       addMethodProperties(lines, method, invocationCheck, invocationCount, invokedParameters, invokedParametersList, returnStub)
       addMethodDeclaration(lines, method)
       addMethodAssignments(lines, invocationCheck, invocationCount, invokedParameters, invokedParametersList, returnStub)
@@ -120,9 +141,9 @@ class XcodeMockGenerator {
     }
   }
 
-  private fun createReturnStub(method: ProtocolMethod): PropertyDeclaration? {
+  private fun createReturnStub(method: ProtocolMethod, name: String): PropertyDeclaration? {
     if (method.returnType != null) {
-      return CreateMethodReturnStub().transform(method.name, method.returnType)
+      return CreateMethodReturnStub().transform(name, method.returnType)
     }
     return null
   }

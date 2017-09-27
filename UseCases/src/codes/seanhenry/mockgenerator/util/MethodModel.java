@@ -1,6 +1,7 @@
 package codes.seanhenry.mockgenerator.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,12 +22,16 @@ public class MethodModel {
   private final List<NameTypeTuple> namesAndTypes;
   private int index = -2;
 
-  public MethodModel(String methodName, String... paramLabels) {
+  public MethodModel(String methodName, List<String> paramLabels) {
     this.methodName = methodName;
     namesAndTypes = new ArrayList<>();
     for (String param : paramLabels) {
       namesAndTypes.add(new NameTypeTuple(getLabel(param), getType(param)));
     }
+  }
+
+  public MethodModel(String methodName, String... paramLabels) {
+    this(methodName, Arrays.asList(paramLabels));
   }
 
   public String getID() {

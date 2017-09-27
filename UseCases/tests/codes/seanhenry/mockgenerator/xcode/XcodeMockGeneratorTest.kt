@@ -237,6 +237,50 @@ class XcodeMockGeneratorTest: TestCase() {
     assertMockEquals(expected)
   }
 
+  fun testShouldHandleOverloadedItems() {
+    add(
+        ProtocolProperty("int", "Int", true, "var int: Int { get set }")
+    )
+    add(
+        ProtocolMethod("int", "Int", "adding: Int", "func int(adding: Int) -> Int")
+    )
+    val expected = """
+      var invokedIntSetter = false
+      var invokedIntSetterCount = 0
+      var invokedInt: Int?
+      var invokedIntList = [Int]()
+      var invokedIntGetter = false
+      var invokedIntGetterCount = 0
+      var stubbedInt: Int! = 0
+      var int: Int {
+      set {
+      invokedIntSetter = true
+      invokedIntSetterCount += 1
+      invokedInt = newValue
+      invokedIntList.append(newValue)
+      }
+      get {
+      invokedIntGetter = true
+      invokedIntGetterCount += 1
+      return stubbedInt
+      }
+      }
+      var invokedIntAdding = false
+      var invokedIntAddingCount = 0
+      var invokedIntAddingParameters: (adding: Int, Void)?
+      var invokedIntAddingParametersList = [(adding: Int, Void)]()
+      var stubbedIntAddingResult: Int! = 0
+      func int(adding: Int) -> Int {
+      invokedIntAdding = true
+      invokedIntAddingCount += 1
+      invokedIntAddingParameters = (adding, ())
+      invokedIntAddingParametersList.append((adding, ()))
+      return stubbedIntAddingResult
+      }
+    """.trimIndent()
+    assertMockEquals(expected)
+  }
+
   private fun add(vararg methods: ProtocolMethod) {
     methods.forEach { generator.add(it) }
   }
