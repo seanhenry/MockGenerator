@@ -1,7 +1,6 @@
 package codes.seanhenry.mockgenerator.util;
 
 import java.util.*;
-import java.util.stream.Stream;
 
 public class UniqueMethodNameGenerator {
 
@@ -26,28 +25,29 @@ public class UniqueMethodNameGenerator {
     HashMap<String, List<MethodModel>> nameBuckets = moveDuplicatesToNameBuckets();
     for (String name : new HashSet<>(nameBuckets.keySet())) {
       List<MethodModel> models = nameBuckets.get(name);
-      stripUniqueModels(name, models);
+      commitUniqueModels(name, models);
     }
   }
 
-  private void stripUniqueModels(String name, List<MethodModel> models) {
+  private void commitUniqueModels(String name, List<MethodModel> models) {
     if (models.size() == 1) {
-      confirmModelIsUnique(name, models.get(0));
+      commitModel(name, models.get(0));
     } else {
       sortBySimplest(models);
       MethodModel simplestModel = models.get(0);
       if (isUniquelySimple(models)) {
-        confirmModelIsUnique(name, simplestModel);
+        commitModel(name, simplestModel);
       }
-      streamMaximumComplexityModels(models)
-        .forEach(m -> confirmModelIsUnique(name, m));
+      commitModelsThatCannotGetMoreComplex(models, name);
     }
   }
 
-  private static Stream<MethodModel> streamMaximumComplexityModels(List<MethodModel> models) {
-    return models
-      .stream()
-      .filter(UniqueMethodNameGenerator::canModelGetMoreComplex);
+  private void commitModelsThatCannotGetMoreComplex(List<MethodModel> models, String name) {
+    for (MethodModel model : models) {
+      if (canModelGetMoreComplex(model)) {
+        commitModel(name, model);
+      }
+    }
   }
 
   private static boolean canModelGetMoreComplex(MethodModel model) {
@@ -60,7 +60,7 @@ public class UniqueMethodNameGenerator {
     return simplestParamCount < nextSimplestParamCount;
   }
 
-  private void confirmModelIsUnique(String name, MethodModel simplestModel) {
+  private void commitModel(String name, MethodModel simplestModel) {
     duplicateMethodModels.remove(simplestModel);
     uniqueMethodName.put(simplestModel.getID(), name);
   }
