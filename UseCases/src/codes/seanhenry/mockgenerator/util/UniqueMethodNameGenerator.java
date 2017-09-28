@@ -66,7 +66,18 @@ public class UniqueMethodNameGenerator {
   }
 
   private static void sortBySimplest(List<MethodModel> models) {
-    models.sort((Comparator<MethodModel>) (o1, o2) -> o1.getParameterCount() - o2.getParameterCount());
+    boolean swapped;
+    do {
+      swapped = false;
+      for (int i = 1; i < models.size(); i++) {
+        if (models.get(i).getParameterCount() < models.get(i - 1).getParameterCount()) {
+          MethodModel m = models.get(i - 1);
+          models.set(i - 1, models.get(i));
+          models.set(i, m);
+          swapped = true;
+        }
+      }
+    } while (swapped);
   }
 
   private HashMap<String, List<MethodModel>> moveDuplicatesToNameBuckets() {
