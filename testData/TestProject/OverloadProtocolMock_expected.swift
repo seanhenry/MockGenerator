@@ -3,40 +3,6 @@ import UIKit
 @testable import MockableTypes
 
 class MockOverloadProtocol: OverloadProtocol {
-    
-    var invokedIntSetter = false
-    var invokedIntSetterCount = 0
-    var invokedInt: Int?
-    var invokedIntList = [Int]()
-    var invokedIntGetter = false
-    var invokedIntGetterCount = 0
-    var stubbedInt: Int! = 0
-    var int: Int {
-        set {
-            invokedIntSetter = true
-            invokedIntSetterCount += 1
-            invokedInt = newValue
-            invokedIntList.append(newValue)
-        }
-        get {
-            invokedIntGetter = true
-            invokedIntGetterCount += 1
-            return stubbedInt
-        }
-    }
-    var invokedIntAdding = false
-    var invokedIntAddingCount = 0
-    var invokedIntAddingParameters: (adding: Int, Void)?
-    var invokedIntAddingParametersList = [(adding: Int, Void)]()
-    var stubbedIntAddingResult: Int! = 0
-    
-    func int(adding: Int) -> Int {
-        invokedIntAdding = true
-        invokedIntAddingCount += 1
-        invokedIntAddingParameters = (adding, ())
-        invokedIntAddingParametersList.append((adding, ()))
-        return stubbedIntAddingResult
-    }
 
     var invokedSetValueStringForKey = false
     var invokedSetValueStringForKeyCount = 0
@@ -118,5 +84,29 @@ class MockOverloadProtocol: OverloadProtocol {
         invokedAnimateWithDurationDelayCount += 1
         invokedAnimateWithDurationDelayParameters = (duration, delay)
         invokedAnimateWithDurationDelayParametersList.append((duration, delay))
+    }
+
+    var invokedSpecialCharactersStringInt = false
+    var invokedSpecialCharactersStringIntCount = 0
+    var invokedSpecialCharactersStringIntParameters: (tuple: (String, Int), Void)?
+    var invokedSpecialCharactersStringIntParametersList = [(tuple: (String, Int), Void)]()
+
+    func specialCharacters(_ tuple: (String, Int)) {
+        invokedSpecialCharactersStringInt = true
+        invokedSpecialCharactersStringIntCount += 1
+        invokedSpecialCharactersStringIntParameters = (tuple, ())
+        invokedSpecialCharactersStringIntParametersList.append((tuple, ()))
+    }
+
+    var invokedSpecialCharactersUIntFloat = false
+    var invokedSpecialCharactersUIntFloatCount = 0
+    var invokedSpecialCharactersUIntFloatParameters: (tuple: (UInt, Float), Void)?
+    var invokedSpecialCharactersUIntFloatParametersList = [(tuple: (UInt, Float), Void)]()
+
+    func specialCharacters(_ tuple: (UInt, Float)) {
+        invokedSpecialCharactersUIntFloat = true
+        invokedSpecialCharactersUIntFloatCount += 1
+        invokedSpecialCharactersUIntFloatParameters = (tuple, ())
+        invokedSpecialCharactersUIntFloatParametersList.append((tuple, ()))
     }
 }
