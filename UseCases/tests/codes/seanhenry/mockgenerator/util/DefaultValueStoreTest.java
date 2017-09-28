@@ -55,6 +55,7 @@ public class DefaultValueStoreTest extends TestCase {
     assertDefaultValue("[]", "Set<>");
     assertDefaultValue("[:]", "Dictionary <Int, (String, Int)>");
     assertDefaultValue("[:]", "DictionaryLiteral<String>");
+    assertDefaultValue("[]", "Array<Array<String>>");
   }
 
   public void testIsEmptyStringWhenTypeIsAString() throws Exception {
