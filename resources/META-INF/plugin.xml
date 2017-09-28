@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>codes.seanhenry.mockgenerator</id>
   <name>Swift Mock Generator for AppCode</name>
-  <version>7</version>
+  <version>7.1</version>
   <vendor email="hello@seanhenry.codes" url="http://seanhenry.codes">Sean Henry</vendor>
 
   <description><![CDATA[
@@ -26,8 +26,7 @@
 
   <change-notes><![CDATA[
       <ul>
-        <li>Adds support for 2017.2.3</li>
-        <li>Adds support for parameter inout types.</li>
+        <li>Fixes illegal names when overloaded methods contained tuples or closure syntax.</li>
       </ul>
     ]]>
   </change-notes>
