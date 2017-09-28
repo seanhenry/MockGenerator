@@ -147,6 +147,20 @@ public class UniqueMethodNameGeneratorTests extends TestCase {
     });
   }
 
+  public void test_shouldIgnoreSpecialCharactersInTuplesAndClosures() throws Exception {
+    assertEquals(new MethodModel[]{
+      new MethodModel("method", "_ tuple: (String, Int)"),
+      new MethodModel("method", "_ tuple: (UInt, Float)"),
+      new MethodModel("anotherMethod", "_ closure: (Int) -> ()"),
+      new MethodModel("anotherMethod", "_ closure: () -> String "),
+    }, new String[]{
+      "methodStringInt",
+      "methodUIntFloat",
+      "anotherMethodInt",
+      "anotherMethodString",
+    });
+  }
+
   private UniqueMethodNameGenerator createGenerator(MethodModel... models) {
     generator = new UniqueMethodNameGenerator(models);
     generator.generateMethodNames();

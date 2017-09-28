@@ -62,7 +62,11 @@ public class UniqueMethodNameGenerator {
 
   private void commitModel(String name, MethodModel simplestModel) {
     duplicateMethodModels.remove(simplestModel);
-    uniqueMethodName.put(simplestModel.getId(), name);
+    uniqueMethodName.put(simplestModel.getId(), strip(name));
+  }
+
+  private String strip(String name) {
+    return name.replaceAll("\\W", "");
   }
 
   private static void sortBySimplest(List<MethodModel> models) {
