@@ -4,6 +4,7 @@ public class DefaultValueStore extends Store {
 
   public String getDefaultValue(String typeName) {
     String trimmed = typeName.replaceAll("\\s", "");
+    trimmed = trimmed.replaceAll("<.*>", "");
     if (OptionalUtil.isOptional(trimmed)) {
       return null;
     } else if (isArray(trimmed)) {

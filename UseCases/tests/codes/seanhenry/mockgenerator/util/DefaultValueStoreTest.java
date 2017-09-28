@@ -48,6 +48,15 @@ public class DefaultValueStoreTest extends TestCase {
     assertDefaultValue(null, "([Type : Type], Void)");
   }
 
+  public void testStripsGenericFromType() throws Exception {
+    assertDefaultValue("[]", "Array<String>");
+    assertDefaultValue("[]", "ArraySlice <Int>");
+    assertDefaultValue("[]", "ContiguousArray   <(String, Int)>");
+    assertDefaultValue("[]", "Set<>");
+    assertDefaultValue("[:]", "Dictionary <Int, (String, Int)>");
+    assertDefaultValue("[:]", "DictionaryLiteral<String>");
+  }
+
   public void testIsEmptyStringWhenTypeIsAString() throws Exception {
     assertDefaultValue("\"\"", "String");
     assertDefaultValue("\"\"", "StaticString");
