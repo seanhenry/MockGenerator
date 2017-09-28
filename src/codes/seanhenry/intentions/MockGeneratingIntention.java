@@ -2,6 +2,8 @@ package codes.seanhenry.intentions;
 
 import codes.seanhenry.helpers.DefaultValueStore;
 import codes.seanhenry.helpers.KeywordsStore;
+import codes.seanhenry.mockgenerator.util.MethodModel;
+import codes.seanhenry.mockgenerator.util.UniqueMethodNameGenerator;
 import codes.seanhenry.util.*;
 import com.intellij.codeInsight.hint.HintManager;
 import com.intellij.codeInsight.intention.IntentionAction;
@@ -596,16 +598,15 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     return MySwiftPsiUtil.findResolvedType(element, SwiftFunctionTypeElement.class);
   }
 
-  private List<UniqueMethodNameGenerator.MethodModel> getMethodModels(List<SwiftFunctionDeclaration> functions) {
+  private List<MethodModel> getMethodModels(List<SwiftFunctionDeclaration> functions) {
 
     return functions.stream()
       .map(this::toMethodModel)
       .collect(Collectors.toList());
   }
 
-  private UniqueMethodNameGenerator.MethodModel toMethodModel(SwiftFunctionDeclaration function) {
-    return new UniqueMethodNameGenerator.MethodModel(
-      getFunctionID(function),
+  private MethodModel toMethodModel(SwiftFunctionDeclaration function) {
+    return new MethodModel(
       function.getName(),
       getParameterNames(function, p -> toParameterLabel(p), false).toArray(new String[]{})
     );
@@ -616,7 +617,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   }
 
   private String getFunctionID(SwiftFunctionDeclaration function) {
-    return function.getName() + String.join(":", getParameterNames(function, p -> p.getText(), false));
+    return toMethodModel(function).getId();
   }
 
   @Nls

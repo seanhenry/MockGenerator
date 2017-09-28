@@ -1,4 +1,4 @@
-package codes.seanhenry.util;
+package codes.seanhenry.mockgenerator.util;
 
 import junit.framework.TestCase;
 
@@ -7,10 +7,11 @@ public class UniqueMethodNameGeneratorTests extends TestCase {
   private UniqueMethodNameGenerator generator;
 
   public void test_uniqueMethodName_shouldReturnMethodName() throws Exception {
-    generator = createGenerator(
-      new UniqueMethodNameGenerator.MethodModel("1","methodName")
-    );
-    assertEquals("methodName", generator.getMethodName("1"));
+    assertEquals(new MethodModel[]{
+      new MethodModel("methodName")
+    }, new String[]{
+      "methodName"
+    });
   }
 
   public void test_shouldReturnNull_whenIDDoesNotExist() throws Exception {
@@ -19,130 +20,144 @@ public class UniqueMethodNameGeneratorTests extends TestCase {
   }
 
   public void test_uniqueMethodName_shouldReturnMethodName_whenNoOverloadedMethods() throws Exception {
-    generator = createGenerator(
-      new UniqueMethodNameGenerator.MethodModel("1", "methodName", "param", "param2")
-    );
-    // should not add labels when method name is unique
-    assertEquals("methodName", generator.getMethodName("1"));
+    assertEquals(new MethodModel[]{
+      new MethodModel("methodName", "param", "param2")
+    }, new String[]{
+      "methodName" // should not add labels when method name is unique
+    });
   }
 
   public void test_duplicateMethodName_shouldAppendFirstParameterLabel_toMethodName() throws Exception {
-    generator = createGenerator(
-      new UniqueMethodNameGenerator.MethodModel("1", "methodName"),
-      new UniqueMethodNameGenerator.MethodModel("2", "anotherMethod"),
-      new UniqueMethodNameGenerator.MethodModel("3", "methodName", "param: Type")
-    );
-    assertEquals("methodName", generator.getMethodName("1"));
-    assertEquals("anotherMethod", generator.getMethodName("2"));
-    // should add label when method name is overloaded
-    // should not use type when label is unique
-    assertEquals("methodNameParam", generator.getMethodName("3"));
+    assertEquals(new MethodModel[]{
+      new MethodModel("methodName"),
+      new MethodModel("anotherMethod"),
+      new MethodModel("methodName", "param: Type")
+    }, new String[]{
+      "methodName",
+      "anotherMethod",
+      // should add label when method name is overloaded
+      // should not use type when label is unique
+      "methodNameParam"
+    });
   }
 
   public void test_duplicateMethodName_shouldAppendFirstParameterLabel_toMethodName_whenGivenMethod_hasMultipleParamLabels() throws Exception {
-    generator = createGenerator(
-      new UniqueMethodNameGenerator.MethodModel("1", "animate"),
-      new UniqueMethodNameGenerator.MethodModel("2", "animate", "withDuration duration: Type"),
-      new UniqueMethodNameGenerator.MethodModel("3", "animate", "withDuration duration: Type", "delay: Type"),
-      new UniqueMethodNameGenerator.MethodModel("4", "animate", "withDuration duration: Type", "delay: Type", "easing: Ease")
-    );
-    // should not add anything when there is nothing to add
-    assertEquals("animate", generator.getMethodName("1"));
-    // should only use label unless all other labels are identical
-    assertEquals("animateWithDuration", generator.getMethodName("2"));
-    // should only use labels when last label is unique
-    assertEquals("animateWithDurationDelay", generator.getMethodName("3"));
-    assertEquals("animateWithDurationDelayEasing", generator.getMethodName("4"));
+    assertEquals(new MethodModel[]{
+      new MethodModel("animate"),
+      new MethodModel("animate", "withDuration duration: Type"),
+      new MethodModel("animate", "withDuration duration: Type", "delay: Type"),
+      new MethodModel("animate", "withDuration duration: Type", "delay: Type", "easing: Ease")
+    }, new String[]{
+      "animate", // should not add anything when there is nothing to add
+      "animateWithDuration", // should only use label unless all other labels are identical
+      "animateWithDurationDelay", // should only use labels when last label is unique
+      "animateWithDurationDelayEasing"
+    });
   }
 
   public void test_duplicateMethodName_shouldUseTypes_whenLabelsMatch() throws Exception {
-    generator = createGenerator(
-      new UniqueMethodNameGenerator.MethodModel("1", "setValue", "_ value: String"),
-      new UniqueMethodNameGenerator.MethodModel("2", "setValue", "_ value: Int"),
-      new UniqueMethodNameGenerator.MethodModel("3", "set", "object: String", "forKey key: String"),
-      new UniqueMethodNameGenerator.MethodModel("4", "set", "object: Int", "forKey key: String"),
-      new UniqueMethodNameGenerator.MethodModel("5", "setNumber", "_ number: Float", "at index: Int"),
-      new UniqueMethodNameGenerator.MethodModel("6", "setNumber", "_ number: Int", "forKey key: String"),
-      new UniqueMethodNameGenerator.MethodModel("7", "setMultiple", "_ number: Int", "for key: Int"),
-      new UniqueMethodNameGenerator.MethodModel("8", "setMultiple", "_ number: Int", "for key: String")
-    );
-    // should use type when method name and parameters are overloaded
-    assertEquals("setValueString", generator.getMethodName("1"));
-    assertEquals("setValueInt", generator.getMethodName("2"));
-    assertEquals("setObjectStringForKey", generator.getMethodName("3"));
-    assertEquals("setObjectIntForKey", generator.getMethodName("4"));
-    assertEquals("setNumberAt", generator.getMethodName("5"));
-    assertEquals("setNumberForKey", generator.getMethodName("6"));
-    assertEquals("setMultipleIntForInt", generator.getMethodName("7"));
-    assertEquals("setMultipleIntForString", generator.getMethodName("8"));
+    assertEquals(new MethodModel[]{
+      new MethodModel("setValue", "_ value: String"),
+      new MethodModel("setValue", "_ value: Int"),
+      new MethodModel("set", "object: String", "forKey key: String"),
+      new MethodModel("set", "object: Int", "forKey key: String"),
+      new MethodModel("setNumber", "_ number: Float", "at index: Int"),
+      new MethodModel("setNumber", "_ number: Int", "forKey key: String"),
+      new MethodModel("setMultiple", "_ number: Int", "for key: Int"),
+      new MethodModel("setMultiple", "_ number: Int", "for key: String")
+    }, new String[]{
+      // should use type when method name and parameters are overloaded
+      "setValueString",
+      "setValueInt",
+      "setObjectStringForKey",
+      "setObjectIntForKey",
+      "setNumberAt",
+      "setNumberForKey",
+      "setMultipleIntForInt",
+      "setMultipleIntForString",
+    });
   }
 
   public void test_duplicateMethodName_shouldUseTypes_whenLabelsMatch_andNextParamsMatch() throws Exception {
-    generator = createGenerator(
-      new UniqueMethodNameGenerator.MethodModel("1", "setValue", "_ value: String"),
-      new UniqueMethodNameGenerator.MethodModel("2", "setValue", "_ value: Int"),
-      new UniqueMethodNameGenerator.MethodModel("3", "setValue", "_ value: String", "forKey key: String"),
-      new UniqueMethodNameGenerator.MethodModel("4", "setValue", "_ value: Int", "forKey key: String")
-    );
-    // should use type when labels match and there is another identical method except its type
-    assertEquals("setValueString", generator.getMethodName("1"));
-    assertEquals("setValueInt", generator.getMethodName("2"));
-    assertEquals("setValueStringForKey", generator.getMethodName("3"));
-    assertEquals("setValueIntForKey", generator.getMethodName("4"));
+    assertEquals(new MethodModel[]{
+      new MethodModel("setValue", "_ value: String"),
+      new MethodModel("setValue", "_ value: Int"),
+      new MethodModel("setValue", "_ value: String", "forKey key: String"),
+      new MethodModel("setValue", "_ value: Int", "forKey key: String")
+    }, new String[]{
+      // should use type when labels match and there is another identical method except its type
+      "setValueString",
+      "setValueInt",
+      "setValueStringForKey",
+      "setValueIntForKey",
+    });
   }
 
   public void test_shouldIgnoreDefaultArguments() throws Exception {
-    generator = createGenerator(
-      new UniqueMethodNameGenerator.MethodModel("1", "method", "param: String = \"\""),
-      new UniqueMethodNameGenerator.MethodModel("2", "method", "param: Int = 345")
-    );
-    assertEquals("methodParamString", generator.getMethodName("1"));
-    assertEquals("methodParamInt", generator.getMethodName("2"));
+    assertEquals(new MethodModel[]{
+      new MethodModel("method", "param: String = \"\""),
+      new MethodModel("method", "param: Int = 345")
+    }, new String[]{
+      "methodParamString",
+      "methodParamInt",
+    });
   }
 
   public void test_shouldProcessOneLetterMethodNames() throws Exception {
-    generator = createGenerator(
-      new UniqueMethodNameGenerator.MethodModel("1", "a", ""),
-      new UniqueMethodNameGenerator.MethodModel("2", "a", "b")
-    );
-    assertEquals("a", generator.getMethodName("1"));
-    assertEquals("aB", generator.getMethodName("2"));
+    assertEquals(new MethodModel[]{
+      new MethodModel("a", ""),
+      new MethodModel("a", "b")
+    }, new String[]{
+      "a",
+      "aB",
+    });
   }
 
   public void test_shouldAllowDuplicateMethods() throws Exception {
-    generator = createGenerator(
-      new UniqueMethodNameGenerator.MethodModel("1", "method"),
-      new UniqueMethodNameGenerator.MethodModel("2", "method")
-    );
-    assertEquals("method", generator.getMethodName("1"));
-    assertEquals("method", generator.getMethodName("2"));
+    assertEquals(new MethodModel[]{
+      new MethodModel("method"),
+      new MethodModel("method")
+    }, new String[]{
+      "method",
+      "method"
+    });
   }
 
   public void test_shouldProcessStrangeWhitespace() throws Exception {
-    generator = createGenerator(
-      new UniqueMethodNameGenerator.MethodModel("1", "method", "    param1     :     String   ", " param3   label    : Int  "),
-      new UniqueMethodNameGenerator.MethodModel("2", "method", "param1:String", "param2:Int")
-    );
-    assertEquals("methodParam1Param3", generator.getMethodName("1"));
-    assertEquals("methodParam1Param2", generator.getMethodName("2"));
+    assertEquals(new MethodModel[]{
+      new MethodModel("method", "    param1     :     String   ", " param3   label    : Int  "),
+      new MethodModel("method", "param1:String", "param2:Int")
+    }, new String[]{
+      "methodParam1Param3",
+      "methodParam1Param2"
+    });
   }
 
   public void test_shouldProcessIncompleteParameters() throws Exception {
-    generator = createGenerator(
-      new UniqueMethodNameGenerator.MethodModel("1", "method", "_"),
-      new UniqueMethodNameGenerator.MethodModel("2", "method", "param1"),
-      new UniqueMethodNameGenerator.MethodModel("3", "method", ":String"),
-      new UniqueMethodNameGenerator.MethodModel("4", "method", ":Int")
-    );
-    assertEquals("method", generator.getMethodName("1"));
-    assertEquals("methodParam1", generator.getMethodName("2"));
-    assertEquals("methodString", generator.getMethodName("3"));
-    assertEquals("methodInt", generator.getMethodName("4"));
+    assertEquals(new MethodModel[]{
+      new MethodModel("method", "_"),
+      new MethodModel("method", "param1"),
+      new MethodModel("method", ":String"),
+      new MethodModel("method", ":Int")
+    }, new String[]{
+      "method",
+      "methodParam1",
+      "methodString",
+      "methodInt"
+    });
   }
 
-  private UniqueMethodNameGenerator createGenerator(UniqueMethodNameGenerator.MethodModel... models) {
+  private UniqueMethodNameGenerator createGenerator(MethodModel... models) {
     generator = new UniqueMethodNameGenerator(models);
     generator.generateMethodNames();
     return generator;
   }
+
+  private void assertEquals(MethodModel[] models, String[] expected) {
+    createGenerator(models);
+    for (int i = 0; i < models.length; i++) {
+      assertEquals(expected[i], generator.getMethodName(models[i].getId()));
+    }
+  }
 }
+

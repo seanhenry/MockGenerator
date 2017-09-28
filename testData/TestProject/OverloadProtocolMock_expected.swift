@@ -3,6 +3,40 @@ import UIKit
 @testable import MockableTypes
 
 class MockOverloadProtocol: OverloadProtocol {
+    
+    var invokedIntSetter = false
+    var invokedIntSetterCount = 0
+    var invokedInt: Int?
+    var invokedIntList = [Int]()
+    var invokedIntGetter = false
+    var invokedIntGetterCount = 0
+    var stubbedInt: Int! = 0
+    var int: Int {
+        set {
+            invokedIntSetter = true
+            invokedIntSetterCount += 1
+            invokedInt = newValue
+            invokedIntList.append(newValue)
+        }
+        get {
+            invokedIntGetter = true
+            invokedIntGetterCount += 1
+            return stubbedInt
+        }
+    }
+    var invokedIntAdding = false
+    var invokedIntAddingCount = 0
+    var invokedIntAddingParameters: (adding: Int, Void)?
+    var invokedIntAddingParametersList = [(adding: Int, Void)]()
+    var stubbedIntAddingResult: Int! = 0
+    
+    func int(adding: Int) -> Int {
+        invokedIntAdding = true
+        invokedIntAddingCount += 1
+        invokedIntAddingParameters = (adding, ())
+        invokedIntAddingParametersList.append((adding, ()))
+        return stubbedIntAddingResult
+    }
 
     var invokedSetValueStringForKey = false
     var invokedSetValueStringForKeyCount = 0
@@ -84,53 +118,5 @@ class MockOverloadProtocol: OverloadProtocol {
         invokedAnimateWithDurationDelayCount += 1
         invokedAnimateWithDurationDelayParameters = (duration, delay)
         invokedAnimateWithDurationDelayParametersList.append((duration, delay))
-    }
-
-    var invokedPresent = false
-    var invokedPresentCount = 0
-    var invokedPresentParameters: (viewControllerToPresent: UIViewController, Void)?
-    var invokedPresentParametersList = [(viewControllerToPresent: UIViewController, Void)]()
-
-    func present(_ viewControllerToPresent: UIViewController) {
-        invokedPresent = true
-        invokedPresentCount += 1
-        invokedPresentParameters = (viewControllerToPresent, ())
-        invokedPresentParametersList.append((viewControllerToPresent, ()))
-    }
-
-    var invokedPresentAnimated = false
-    var invokedPresentAnimatedCount = 0
-    var invokedPresentAnimatedParameters: (viewControllerToPresent: UIViewController, animated: Bool)?
-    var invokedPresentAnimatedParametersList = [(viewControllerToPresent: UIViewController, animated: Bool)]()
-
-    func present(_ viewControllerToPresent: UIViewController, animated: Bool) {
-        invokedPresentAnimated = true
-        invokedPresentAnimatedCount += 1
-        invokedPresentAnimatedParameters = (viewControllerToPresent, animated)
-        invokedPresentAnimatedParametersList.append((viewControllerToPresent, animated))
-    }
-
-    var invokedPresentFromUIViewController = false
-    var invokedPresentFromUIViewControllerCount = 0
-    var invokedPresentFromUIViewControllerParameters: (viewControllerToPresent: UIViewController, Void)?
-    var invokedPresentFromUIViewControllerParametersList = [(viewControllerToPresent: UIViewController, Void)]()
-
-    func present(from viewControllerToPresent: UIViewController) {
-        invokedPresentFromUIViewController = true
-        invokedPresentFromUIViewControllerCount += 1
-        invokedPresentFromUIViewControllerParameters = (viewControllerToPresent, ())
-        invokedPresentFromUIViewControllerParametersList.append((viewControllerToPresent, ()))
-    }
-
-    var invokedPresentFromUINavigationController = false
-    var invokedPresentFromUINavigationControllerCount = 0
-    var invokedPresentFromUINavigationControllerParameters: (viewControllerToPresent: UINavigationController, Void)?
-    var invokedPresentFromUINavigationControllerParametersList = [(viewControllerToPresent: UINavigationController, Void)]()
-
-    func present(from viewControllerToPresent: UINavigationController) {
-        invokedPresentFromUINavigationController = true
-        invokedPresentFromUINavigationControllerCount += 1
-        invokedPresentFromUINavigationControllerParameters = (viewControllerToPresent, ())
-        invokedPresentFromUINavigationControllerParametersList.append((viewControllerToPresent, ()))
     }
 }
