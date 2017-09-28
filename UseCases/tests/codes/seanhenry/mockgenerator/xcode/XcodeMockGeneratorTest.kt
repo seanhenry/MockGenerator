@@ -281,6 +281,35 @@ class XcodeMockGeneratorTest: TestCase() {
     assertMockEquals(expected)
   }
 
+  fun testShouldPreserverDoubleOptional() {
+    add(
+        ProtocolProperty("int", "Int??", true, "var int: Int?? { get set }")
+    )
+    val expected = """
+      var invokedIntSetter = false
+      var invokedIntSetterCount = 0
+      var invokedInt: Int??
+      var invokedIntList = [Int??]()
+      var invokedIntGetter = false
+      var invokedIntGetterCount = 0
+      var stubbedInt: Int!
+      var int: Int?? {
+      set {
+      invokedIntSetter = true
+      invokedIntSetterCount += 1
+      invokedInt = newValue
+      invokedIntList.append(newValue)
+      }
+      get {
+      invokedIntGetter = true
+      invokedIntGetterCount += 1
+      return stubbedInt
+      }
+      }
+    """.trimIndent()
+    assertMockEquals(expected)
+  }
+
   private fun add(vararg methods: ProtocolMethod) {
     methods.forEach { generator.add(it) }
   }

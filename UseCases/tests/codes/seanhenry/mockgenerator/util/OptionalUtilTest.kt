@@ -28,7 +28,34 @@ class OptionalUtilTest: TestCase() {
         assertIsOptional(false, "Type ")
     }
 
+    fun testShouldRemoveLastOptional() {
+        assertRemoveOptional("Type", "Type?")
+        assertRemoveOptional("Type", "Type!")
+    }
+
+    fun testShouldOnlyRemoveLastOptional() {
+        assertRemoveOptional("Type?", "Type??")
+        assertRemoveOptional("Type?", "Type?!")
+        assertRemoveOptional("Type!", "Type!!")
+        assertRemoveOptional("Type!", "Type!?")
+    }
+
+    fun testShouldRemoveAllOptionals() {
+        assertRemoveOptionalRecursively("Type", "Type??")
+        assertRemoveOptionalRecursively("Type", "Type?!")
+        assertRemoveOptionalRecursively("Type", "Type!!")
+        assertRemoveOptionalRecursively("Type", "Type!?")
+    }
+
     private fun assertIsOptional(expected: Boolean, type: String) {
         assertEquals(expected, OptionalUtil.isOptional(type))
+    }
+
+    private fun assertRemoveOptional(expected: String, type: String) {
+        assertEquals(expected, OptionalUtil.removeOptional(type))
+    }
+
+    private fun assertRemoveOptionalRecursively(expected: String, type: String) {
+        assertEquals(expected, OptionalUtil.removeOptionalRecursively(type))
     }
 }

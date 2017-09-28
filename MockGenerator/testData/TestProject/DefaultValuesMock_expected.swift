@@ -2,6 +2,106 @@
 
 class DefaultValuesMock: DefaultValues {
 
+    var invokedIntSetter = false
+    var invokedIntSetterCount = 0
+    var invokedInt: Int?
+    var invokedIntList = [Int]()
+    var invokedIntGetter = false
+    var invokedIntGetterCount = 0
+    var stubbedInt: Int! = 0
+    var int: Int {
+        set {
+            invokedIntSetter = true
+            invokedIntSetterCount += 1
+            invokedInt = newValue
+            invokedIntList.append(newValue)
+        }
+        get {
+            invokedIntGetter = true
+            invokedIntGetterCount += 1
+            return stubbedInt
+        }
+    }
+    var invokedOptSetter = false
+    var invokedOptSetterCount = 0
+    var invokedOpt: Optional<Int>?
+    var invokedOptList = [Optional<Int>]()
+    var invokedOptGetter = false
+    var invokedOptGetterCount = 0
+    var stubbedOpt: Optional<Int>!
+    var opt: Optional<Int> {
+        set {
+            invokedOptSetter = true
+            invokedOptSetterCount += 1
+            invokedOpt = newValue
+            invokedOptList.append(newValue)
+        }
+        get {
+            invokedOptGetter = true
+            invokedOptGetterCount += 1
+            return stubbedOpt
+        }
+    }
+    var invokedShortOptionalSetter = false
+    var invokedShortOptionalSetterCount = 0
+    var invokedShortOptional: Int?
+    var invokedShortOptionalList = [Int?]()
+    var invokedShortOptionalGetter = false
+    var invokedShortOptionalGetterCount = 0
+    var stubbedShortOptional: Int!
+    var shortOptional: Int? {
+        set {
+            invokedShortOptionalSetter = true
+            invokedShortOptionalSetterCount += 1
+            invokedShortOptional = newValue
+            invokedShortOptionalList.append(newValue)
+        }
+        get {
+            invokedShortOptionalGetter = true
+            invokedShortOptionalGetterCount += 1
+            return stubbedShortOptional
+        }
+    }
+    var invokedDoubleOptionalSetter = false
+    var invokedDoubleOptionalSetterCount = 0
+    var invokedDoubleOptional: Int??
+    var invokedDoubleOptionalList = [Int??]()
+    var invokedDoubleOptionalGetter = false
+    var invokedDoubleOptionalGetterCount = 0
+    var stubbedDoubleOptional: Int!
+    var doubleOptional: Int?? {
+        set {
+            invokedDoubleOptionalSetter = true
+            invokedDoubleOptionalSetterCount += 1
+            invokedDoubleOptional = newValue
+            invokedDoubleOptionalList.append(newValue)
+        }
+        get {
+            invokedDoubleOptionalGetter = true
+            invokedDoubleOptionalGetterCount += 1
+            return stubbedDoubleOptional
+        }
+    }
+    var invokedIuoSetter = false
+    var invokedIuoSetterCount = 0
+    var invokedIuo: Int?
+    var invokedIuoList = [Int!]()
+    var invokedIuoGetter = false
+    var invokedIuoGetterCount = 0
+    var stubbedIuo: Int!
+    var iuo: Int! {
+        set {
+            invokedIuoSetter = true
+            invokedIuoSetterCount += 1
+            invokedIuo = newValue
+            invokedIuoList.append(newValue)
+        }
+        get {
+            invokedIuoGetter = true
+            invokedIuoGetterCount += 1
+            return stubbedIuo
+        }
+    }
     var invokedOptionalInt = false
     var invokedOptionalIntCount = 0
     var stubbedOptionalIntResult: Int!
@@ -40,16 +140,6 @@ class DefaultValuesMock: DefaultValues {
         invokedFloat = true
         invokedFloatCount += 1
         return stubbedFloatResult
-    }
-
-    var invokedInt = false
-    var invokedIntCount = 0
-    var stubbedIntResult: Int! = 0
-
-    func int() -> Int {
-        invokedInt = true
-        invokedIntCount += 1
-        return stubbedIntResult
     }
 
     var invokedInt16 = false
@@ -192,6 +282,26 @@ class DefaultValuesMock: DefaultValues {
         return stubbedSetResult
     }
 
+    var invokedOptionalArray = false
+    var invokedOptionalArrayCount = 0
+    var stubbedOptionalArrayResult: Optional<Array<String>>!
+
+    func optionalArray() -> Optional<Array<String>> {
+        invokedOptionalArray = true
+        invokedOptionalArrayCount += 1
+        return stubbedOptionalArrayResult
+    }
+
+    var invokedShortOptionalArray = false
+    var invokedShortOptionalArrayCount = 0
+    var stubbedShortOptionalArrayResult: [String]!
+
+    func shortOptionalArray() -> [String]? {
+        invokedShortOptionalArray = true
+        invokedShortOptionalArrayCount += 1
+        return stubbedShortOptionalArrayResult
+    }
+
     var invokedDictionary = false
     var invokedDictionaryCount = 0
     var stubbedDictionaryResult: Dictionary<String, String>! = [:]
@@ -220,6 +330,26 @@ class DefaultValuesMock: DefaultValues {
         invokedDictionaryShorthand = true
         invokedDictionaryShorthandCount += 1
         return stubbedDictionaryShorthandResult
+    }
+
+    var invokedOptionalDict = false
+    var invokedOptionalDictCount = 0
+    var stubbedOptionalDictResult: Optional<Dictionary<String, String>>!
+
+    func optionalDict() -> Optional<Dictionary<String, String>> {
+        invokedOptionalDict = true
+        invokedOptionalDictCount += 1
+        return stubbedOptionalDictResult
+    }
+
+    var invokedShortOptionalDict = false
+    var invokedShortOptionalDictCount = 0
+    var stubbedShortOptionalDictResult: [String: String]!
+
+    func shortOptionalDict() -> [String: String]? {
+        invokedShortOptionalDict = true
+        invokedShortOptionalDictCount += 1
+        return stubbedShortOptionalDictResult
     }
 
     var invokedBool = false

@@ -11,7 +11,7 @@ abstract class CreateStub {
   fun transform(name: String, type: String): PropertyDeclaration {
     val transformedName = getStringDecorator().process(name)
     var transformedType = surroundClosure(type)
-    transformedType = OptionalUtil.removeOptional(transformedType) + "!"
+    transformedType = OptionalUtil.removeOptionalRecursively(transformedType) + "!"
     return PropertyDeclaration(transformedName, transformedType)
   }
 

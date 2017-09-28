@@ -16,24 +16,24 @@ class TransformToOptionalTest : TestCase() {
     assertTransformedEquals("Type?", "Type?")
   }
 
-  fun testStripsDoubleOptional() {
-    assertTransformedEquals("Type?", "Type??")
+  fun testPreservesDoubleOptional() {
+    assertTransformedEquals("Type??", "Type??")
   }
 
   fun testReplacesIUOWithOptional() {
     assertTransformedEquals("Type?", "Type!")
   }
 
-  fun testReplacesDoubleIUOWithOptional() {
-    assertTransformedEquals("Type?", "Type!!")
+  fun testReplacesLastInDoubleIUOWithOptional() {
+    assertTransformedEquals("Type!?", "Type!!")
   }
 
-  fun testReplacesOptionalIUOWithOptional() {
-    assertTransformedEquals("Type?", "Type?!")
+  fun testReplacesLastInOptionalIUOWithOptional() {
+    assertTransformedEquals("Type??", "Type?!")
   }
 
-  fun testReplacesIUOOptionalWithOptional() {
-    assertTransformedEquals("Type?", "Type!?")
+  fun testReplacesLastInIUOOptionalWithOptional() {
+    assertTransformedEquals("Type!?", "Type!?")
   }
 
   private fun assertTransformedEquals(expected: String, input: String) {
