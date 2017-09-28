@@ -156,7 +156,7 @@ public class UniqueMethodNameGeneratorTests extends TestCase {
   private void assertEquals(MethodModel[] models, String[] expected) {
     createGenerator(models);
     for (int i = 0; i < models.length; i++) {
-      assertEquals(expected[i], generator.getMethodName(models[i].getID()));
+      assertEquals(expected[i], generator.getMethodName(models[i].getId()));
     }
   }
 }

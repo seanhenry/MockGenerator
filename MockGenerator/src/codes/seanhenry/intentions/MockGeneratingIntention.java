@@ -601,11 +601,11 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   }
 
   private static String getFunctionID(SwiftFunctionDeclaration function) {
-    return toMethodModel(function).getID();
+    return toMethodModel(function).getId();
   }
 
   private static String getPropertyID(SwiftVariableDeclaration property) {
-    return toMethodModel(property).getID();
+    return toMethodModel(property).getId();
   }
 
   @Nls
