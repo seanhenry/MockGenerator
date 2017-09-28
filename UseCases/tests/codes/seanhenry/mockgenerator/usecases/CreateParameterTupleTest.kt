@@ -1,5 +1,6 @@
 package codes.seanhenry.mockgenerator.usecases
 
+import codes.seanhenry.mockgenerator.entities.ProtocolMethod
 import codes.seanhenry.mockgenerator.entities.TuplePropertyDeclaration
 import junit.framework.TestCase
 
@@ -117,7 +118,7 @@ class CreateParameterTupleTest: TestCase() {
     assertTuple("(param0: String?, Void)", parameters, "param0: String!")
   }
 
-  private fun transformParameters(parameters: String) = CreateInvokedParameters().transform("name", parameters)
+  private fun transformParameters(parameters: String) = CreateInvokedParameters().transform("name", ProtocolMethod("", null, parameters, "").parameterList)
 
   private fun assertTuple(expectedType: String, expectedParameters: Array<TuplePropertyDeclaration.TupleParameter>, methodParameters: String) {
     val property = transformParameters(methodParameters)

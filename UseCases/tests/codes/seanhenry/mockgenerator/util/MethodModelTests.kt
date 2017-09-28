@@ -99,6 +99,13 @@ class MethodModelTests : TestCase() {
     assertEquals("method()", model.id)
   }
 
+  fun testShouldPreserveTuples() {
+    model = MethodModel("tuple", "_ tuple: (String, Int)")
+    assertEquals("tuple", model.nextPreferredName())
+    assertEquals("tupleStringInt", model.nextPreferredName())
+    assertNull(model.nextPreferredName())
+  }
+
   fun testPeekNextShouldBeEqualToNextPreferredName() {
     createModel(1)
     var peeked = model.peekNextPreferredName() // method

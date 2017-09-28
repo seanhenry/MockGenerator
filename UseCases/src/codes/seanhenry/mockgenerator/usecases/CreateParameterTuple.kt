@@ -7,8 +7,7 @@ abstract class CreateParameterTuple {
 
   abstract fun getStringDecorator(): StringDecorator
 
-  fun transform(name: String, parameters: String): TuplePropertyDeclaration? {
-    val parameterList = parameters.split(",")
+  fun transform(name: String, parameterList: List<String>): TuplePropertyDeclaration? {
     val tupleParameters = parameterList
         .mapNotNull { transformParameter(it) }
     if (validateParameters(parameterList, tupleParameters)) {

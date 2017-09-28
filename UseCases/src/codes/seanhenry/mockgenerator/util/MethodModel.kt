@@ -23,12 +23,12 @@ class MethodModel(private val methodName: String, paramLabels: List<String>) {
 
   private val filteredNames: List<String>
     get() = namesAndTypes
-        .map { nameAndType -> nameAndType.name }
+        .map { it.name }
         .filter { isNameValid(it) }
 
   private val filteredTypes: List<String>
     get() = namesAndTypes
-        .map { nameAndType -> nameAndType.type }
+        .map { it.type }
         .filter { isTypeValid(it) }
 
   init {
@@ -97,6 +97,7 @@ class MethodModel(private val methodName: String, paramLabels: List<String>) {
         .split(":")
     if (components.size > 1) {
       return components[1].split("=")[0]
+          .replace(Regex("\\W"), "")
     }
     return ""
   }

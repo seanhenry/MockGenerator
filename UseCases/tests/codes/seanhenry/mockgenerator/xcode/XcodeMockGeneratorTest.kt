@@ -281,7 +281,37 @@ class XcodeMockGeneratorTest: TestCase() {
     assertMockEquals(expected)
   }
 
-  fun testShouldPreserverDoubleOptional() {
+  fun testShouldHandleOverloadedTuples() {
+    add(
+        ProtocolMethod("tuple", null, "_ tuple: (String, Int)", "func tuple(_ tuple: (String, Int))"),
+        ProtocolMethod("tuple", null, "_ tuple: (Int, String)", "func tuple(_ tuple: (Int, String))")
+    )
+    val expected = """
+      var invokedTupleStringInt = false
+      var invokedTupleStringIntCount = 0
+      var invokedTupleStringIntParameters: (tuple: (String, Int), Void)?
+      var invokedTupleStringIntParametersList = [(tuple: (String, Int), Void)]()
+      func tuple(_ tuple: (String, Int)) {
+      invokedTupleStringInt = true
+      invokedTupleStringIntCount += 1
+      invokedTupleStringIntParameters = (tuple, ())
+      invokedTupleStringIntParametersList.append((tuple, ()))
+      }
+      var invokedTupleIntString = false
+      var invokedTupleIntStringCount = 0
+      var invokedTupleIntStringParameters: (tuple: (Int, String), Void)?
+      var invokedTupleIntStringParametersList = [(tuple: (Int, String), Void)]()
+      func tuple(_ tuple: (Int, String)) {
+      invokedTupleIntString = true
+      invokedTupleIntStringCount += 1
+      invokedTupleIntStringParameters = (tuple, ())
+      invokedTupleIntStringParametersList.append((tuple, ()))
+      }
+    """.trimIndent()
+    assertMockEquals(expected)
+  }
+
+  fun testShouldPreserveDoubleOptional() {
     add(
         ProtocolProperty("int", "Int??", true, "var int: Int?? { get set }")
     )
