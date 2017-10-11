@@ -28,6 +28,18 @@ class XcodeMockGenerator {
     properties.add(property)
   }
 
+  fun add(vararg methods: ProtocolMethod) {
+    for (method in methods) {
+      this.methods.add(method)
+    }
+  }
+
+  fun add(vararg properties: ProtocolProperty) {
+    for (property in properties) {
+      this.properties.add(property)
+    }
+  }
+
   fun generate(): String {
     generateOverloadedNames()
     val lines = ArrayList<String>()

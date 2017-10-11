@@ -2,7 +2,9 @@ package codes.seanhenry.mockgenerator.xcode
 
 import codes.seanhenry.mockgenerator.entities.ProtocolMethod
 import codes.seanhenry.mockgenerator.entities.ProtocolProperty
+import codes.seanhenry.mockgenerator.xcode.templates.*
 import junit.framework.TestCase
+import kotlin.test.assertEquals
 
 class XcodeMockGeneratorTest: TestCase() {
 
@@ -14,339 +16,39 @@ class XcodeMockGeneratorTest: TestCase() {
   }
 
   fun testShouldReturnEmptyString_whenNothingToMock() {
-    assertMockEquals("")
+    assert(generator.generate().isEmpty())
   }
 
-  fun testShouldReturnMockedProtocol_whenSingleMethod() {
-    add(
-        ProtocolMethod("methodName", null, "", "func methodName()")
-    )
-    val expected = """
-      var invokedMethodName = false
-      var invokedMethodNameCount = 0
-      func methodName() {
-      invokedMethodName = true
-      invokedMethodNameCount += 1
-      }
-      """.trimIndent()
-    assertMockEquals(expected)
+  fun testSimpleProtocol() {
+    runTest(SimpleProtocolTest())
   }
 
-  fun testShouldReturnMockedProtocol_whenMultipleMethods() {
-    add(
-        ProtocolMethod("methodName1", null, "", "func methodName1()"),
-        ProtocolMethod("methodName2", null, "", "func methodName2()")
-    )
-    val expected = """
-      var invokedMethodName1 = false
-      var invokedMethodName1Count = 0
-      func methodName1() {
-      invokedMethodName1 = true
-      invokedMethodName1Count += 1
-      }
-      var invokedMethodName2 = false
-      var invokedMethodName2Count = 0
-      func methodName2() {
-      invokedMethodName2 = true
-      invokedMethodName2Count += 1
-      }
-      """.trimIndent()
-    assertMockEquals(expected)
+  fun testMethodParameter() {
+    runTest(MethodParameterTest())
   }
 
-  fun testShouldCatchInvokedParameters() {
-    add(
-        ProtocolMethod("methodName", "String", "label name: Type, _ name2: Type2", "func methodName(label name: Type, _ name2: Type2) -> String")
-    )
-    val expected = """
-      var invokedMethodName = false
-      var invokedMethodNameCount = 0
-      var invokedMethodNameParameters: (name: Type, name2: Type2)?
-      var invokedMethodNameParametersList = [(name: Type, name2: Type2)]()
-      var stubbedMethodNameResult: String! = ""
-      func methodName(label name: Type, _ name2: Type2) -> String {
-      invokedMethodName = true
-      invokedMethodNameCount += 1
-      invokedMethodNameParameters = (name, name2)
-      invokedMethodNameParametersList.append((name, name2))
-      return stubbedMethodNameResult
-      }
-      """.trimIndent()
-    assertMockEquals(expected)
+  fun testDefaultValues() {
+    runTest(DefaultValuesTest())
   }
 
-  fun testShouldMockReadWriteProperties() {
-    add(
-        ProtocolProperty("readWrite", "String", true, "var readWrite: String { set get }")
-    )
-    val expected = """
-      var invokedReadWriteSetter = false
-      var invokedReadWriteSetterCount = 0
-      var invokedReadWrite: String?
-      var invokedReadWriteList = [String]()
-      var invokedReadWriteGetter = false
-      var invokedReadWriteGetterCount = 0
-      var stubbedReadWrite: String! = ""
-      var readWrite: String {
-      set {
-      invokedReadWriteSetter = true
-      invokedReadWriteSetterCount += 1
-      invokedReadWrite = newValue
-      invokedReadWriteList.append(newValue)
-      }
-      get {
-      invokedReadWriteGetter = true
-      invokedReadWriteGetterCount += 1
-      return stubbedReadWrite
-      }
-      }
-    """.trimIndent()
-    assertMockEquals(expected)
+  fun testOverloadProtocol() {
+    runTest(OverloadProtocolTest())
   }
 
-  fun testShouldMockReadOnlyProperties() {
-    add(
-        ProtocolProperty("readOnly", "Int", false, "var readOnly: Int { get }")
-    )
-    val expected = """
-    var invokedReadOnlyGetter = false
-    var invokedReadOnlyGetterCount = 0
-    var stubbedReadOnly: Int! = 0
-    var readOnly: Int {
-    invokedReadOnlyGetter = true
-    invokedReadOnlyGetterCount += 1
-    return stubbedReadOnly
-    }
-    """.trimIndent()
-    assertMockEquals(expected)
+  fun testPropertyProtocol() {
+    runTest(PropertyProtocolTest())
   }
 
-  fun testShouldMockOptionalProperties() {
-    add(
-        ProtocolProperty("opt", "String?", true, "var opt: String? { set get }")
-    )
-    add(
-        ProtocolMethod("getOptional", null, "opt: Int?", "func getOptional(opt: Int?)")
-    )
-    val expected = """
-      var invokedOptSetter = false
-      var invokedOptSetterCount = 0
-      var invokedOpt: String?
-      var invokedOptList = [String?]()
-      var invokedOptGetter = false
-      var invokedOptGetterCount = 0
-      var stubbedOpt: String!
-      var opt: String? {
-      set {
-      invokedOptSetter = true
-      invokedOptSetterCount += 1
-      invokedOpt = newValue
-      invokedOptList.append(newValue)
-      }
-      get {
-      invokedOptGetter = true
-      invokedOptGetterCount += 1
-      return stubbedOpt
-      }
-      }
-      var invokedGetOptional = false
-      var invokedGetOptionalCount = 0
-      var invokedGetOptionalParameters: (opt: Int?, Void)?
-      var invokedGetOptionalParametersList = [(opt: Int?, Void)]()
-      func getOptional(opt: Int?) {
-      invokedGetOptional = true
-      invokedGetOptionalCount += 1
-      invokedGetOptionalParameters = (opt, ())
-      invokedGetOptionalParametersList.append((opt, ()))
-      }
-    """.trimIndent()
-    assertMockEquals(expected)
+  fun testReturnProtocol() {
+    runTest(ReturnProtocolTest())
   }
 
-  fun testShouldStubWithDefaultValues() {
-    add(
-        ProtocolProperty("string", "String", false, "var string: String { get }")
-    )
-    add(
-        ProtocolMethod("getInt", "Int", "", "func getInt() -> Int")
-    )
-    generator.setScope("public")
-    val expected = """
-      public var invokedStringGetter = false
-      public var invokedStringGetterCount = 0
-      public var stubbedString: String! = ""
-      public var string: String {
-      invokedStringGetter = true
-      invokedStringGetterCount += 1
-      return stubbedString
-      }
-      public var invokedGetInt = false
-      public var invokedGetIntCount = 0
-      public var stubbedGetIntResult: Int! = 0
-      public func getInt() -> Int {
-      invokedGetInt = true
-      invokedGetIntCount += 1
-      return stubbedGetIntResult
-      }
-    """.trimIndent()
-    assertMockEquals(expected)
+  fun testScopeProtocol() {
+    runTest(ScopeProtocolTest())
   }
 
-  fun testShouldAssignTheScopeToAllItems() {
-    add(
-        ProtocolProperty("opt", "String?", true, "var opt: String? { set get }")
-    )
-    add(
-        ProtocolMethod("getOptional", "String?", "opt: Int?", "func getOptional(opt: Int?) -> String?")
-    )
-    generator.setScope("public")
-    val expected = """
-      public var invokedOptSetter = false
-      public var invokedOptSetterCount = 0
-      public var invokedOpt: String?
-      public var invokedOptList = [String?]()
-      public var invokedOptGetter = false
-      public var invokedOptGetterCount = 0
-      public var stubbedOpt: String!
-      public var opt: String? {
-      set {
-      invokedOptSetter = true
-      invokedOptSetterCount += 1
-      invokedOpt = newValue
-      invokedOptList.append(newValue)
-      }
-      get {
-      invokedOptGetter = true
-      invokedOptGetterCount += 1
-      return stubbedOpt
-      }
-      }
-      public var invokedGetOptional = false
-      public var invokedGetOptionalCount = 0
-      public var invokedGetOptionalParameters: (opt: Int?, Void)?
-      public var invokedGetOptionalParametersList = [(opt: Int?, Void)]()
-      public var stubbedGetOptionalResult: String!
-      public func getOptional(opt: Int?) -> String? {
-      invokedGetOptional = true
-      invokedGetOptionalCount += 1
-      invokedGetOptionalParameters = (opt, ())
-      invokedGetOptionalParametersList.append((opt, ()))
-      return stubbedGetOptionalResult
-      }
-    """.trimIndent()
-    assertMockEquals(expected)
+  private fun runTest(template: MockGeneratorTestTemplate) {
+    template.build(generator)
+    assertEquals(template.getExpected(), generator.generate())
   }
-
-  fun testShouldHandleOverloadedItems() {
-    add(
-        ProtocolProperty("int", "Int", true, "var int: Int { get set }")
-    )
-    add(
-        ProtocolMethod("int", "Int", "adding: Int", "func int(adding: Int) -> Int")
-    )
-    val expected = """
-      var invokedIntSetter = false
-      var invokedIntSetterCount = 0
-      var invokedInt: Int?
-      var invokedIntList = [Int]()
-      var invokedIntGetter = false
-      var invokedIntGetterCount = 0
-      var stubbedInt: Int! = 0
-      var int: Int {
-      set {
-      invokedIntSetter = true
-      invokedIntSetterCount += 1
-      invokedInt = newValue
-      invokedIntList.append(newValue)
-      }
-      get {
-      invokedIntGetter = true
-      invokedIntGetterCount += 1
-      return stubbedInt
-      }
-      }
-      var invokedIntAdding = false
-      var invokedIntAddingCount = 0
-      var invokedIntAddingParameters: (adding: Int, Void)?
-      var invokedIntAddingParametersList = [(adding: Int, Void)]()
-      var stubbedIntAddingResult: Int! = 0
-      func int(adding: Int) -> Int {
-      invokedIntAdding = true
-      invokedIntAddingCount += 1
-      invokedIntAddingParameters = (adding, ())
-      invokedIntAddingParametersList.append((adding, ()))
-      return stubbedIntAddingResult
-      }
-    """.trimIndent()
-    assertMockEquals(expected)
-  }
-
-  fun testShouldHandleOverloadedTuples() {
-    add(
-        ProtocolMethod("tuple", null, "_ tuple: (String, Int)", "func tuple(_ tuple: (String, Int))"),
-        ProtocolMethod("tuple", null, "_ tuple: (Int, String)", "func tuple(_ tuple: (Int, String))")
-    )
-    val expected = """
-      var invokedTupleStringInt = false
-      var invokedTupleStringIntCount = 0
-      var invokedTupleStringIntParameters: (tuple: (String, Int), Void)?
-      var invokedTupleStringIntParametersList = [(tuple: (String, Int), Void)]()
-      func tuple(_ tuple: (String, Int)) {
-      invokedTupleStringInt = true
-      invokedTupleStringIntCount += 1
-      invokedTupleStringIntParameters = (tuple, ())
-      invokedTupleStringIntParametersList.append((tuple, ()))
-      }
-      var invokedTupleIntString = false
-      var invokedTupleIntStringCount = 0
-      var invokedTupleIntStringParameters: (tuple: (Int, String), Void)?
-      var invokedTupleIntStringParametersList = [(tuple: (Int, String), Void)]()
-      func tuple(_ tuple: (Int, String)) {
-      invokedTupleIntString = true
-      invokedTupleIntStringCount += 1
-      invokedTupleIntStringParameters = (tuple, ())
-      invokedTupleIntStringParametersList.append((tuple, ()))
-      }
-    """.trimIndent()
-    assertMockEquals(expected)
-  }
-
-  fun testShouldPreserveDoubleOptional() {
-    add(
-        ProtocolProperty("int", "Int??", true, "var int: Int?? { get set }")
-    )
-    val expected = """
-      var invokedIntSetter = false
-      var invokedIntSetterCount = 0
-      var invokedInt: Int??
-      var invokedIntList = [Int??]()
-      var invokedIntGetter = false
-      var invokedIntGetterCount = 0
-      var stubbedInt: Int!
-      var int: Int?? {
-      set {
-      invokedIntSetter = true
-      invokedIntSetterCount += 1
-      invokedInt = newValue
-      invokedIntList.append(newValue)
-      }
-      get {
-      invokedIntGetter = true
-      invokedIntGetterCount += 1
-      return stubbedInt
-      }
-      }
-    """.trimIndent()
-    assertMockEquals(expected)
-  }
-
-  private fun add(vararg methods: ProtocolMethod) {
-    methods.forEach { generator.add(it) }
-  }
-
-  private fun add(vararg properties: ProtocolProperty) {
-    properties.forEach { generator.add(it) }
-  }
-
-  private fun assertMockEquals(expected: String) = assertEquals(expected, generator.generate())
 }
