@@ -1,49 +1,40 @@
-APPCODE_BUILD=173.2463
-IDEA_PATH=community
+APPCODE_BUILD=173.3188
 
-.PHONY: bootstrap downloadcommunity cpall cplibs cpmodules cpcompiler xmlstarlet
+.PHONY: bootstrap downloadcommunity updateandroid updateandroidtools buildcommunity ant
 
-bootstrap: downloadcommunity cpall
+bootstrap: downloadcommunity updateandroid updateandroidtools buildcommunity
 
-downloadcommunity:
-	if [ -d "$(IDEA_PATH)/.git" ]; then \
-	  cd $(IDEA_PATH); \
+# 1 - path to repo
+# 2 - remote url
+define update_repo
+	if [ -d "$(1)/.git" ]; then \
+	  cd $(1); \
 	  git fetch --depth 1 origin $(APPCODE_BUILD); \
 	  git checkout -b $(APPCODE_BUILD) FETCH_HEAD; \
 	else \
-	  git clone --depth 1 https://github.com/JetBrains/intellij-community.git $(IDEA_PATH) -b $(APPCODE_BUILD); \
+	  git clone --depth 1 $(2) $(1) -b $(APPCODE_BUILD); \
 	fi;
+endef
 
-cpall: cpmodules cplibs cpcompiler
+downloadcommunity:
+	$(call update_repo,community,https://github.com/JetBrains/intellij-community.git)
 
-cpmodules: xmlstarlet
-	cp -f $(IDEA_PATH)/.idea/modules.xml modules.xml
-	# making project dir relative to this project
-	sed -i '' 's/\$$PROJECT_DIR\$$/\$$PROJECT_DIR\$$\/$(IDEA_PATH)/g' modules.xml
-	xml ed \
-	 -a '/project/component/modules/module[last()]' -t elem -name 'module' -v '' \
-	 -i '/project/component/modules/module[last()]' -t attr -name 'fileurl' -v 'file://$$PROJECT_DIR$$/MockGenerator/MockGenerator.iml' \
-	 -i '/project/component/modules/module[last()]' -t attr -name 'filepath' -v '$$PROJECT_DIR$$/MockGenerator/MockGenerator.iml' \
-	 -a '/project/component/modules/module[last()]' -t elem -name 'module' -v '' \
-	 -i '/project/component/modules/module[last()]' -t attr -name 'fileurl' -v 'file://$$PROJECT_DIR$$/UseCases/MockGeneratorUseCases.iml' \
-	 -i '/project/component/modules/module[last()]' -t attr -name 'filepath' -v '$$PROJECT_DIR$$/UseCases/MockGeneratorUseCases.iml' \
-	modules.xml > .idea/modules.xml
-	rm modules.xml
+updateandroid:
+	cd community; \
+	$(call update_repo,android,git://git.jetbrains.org/idea/android.git)
 
-xmlstarlet:
-	if hash xml 2>/dev/null; then \
-        brew upgrade xmlstarlet || true; \
-    else \
-        brew install xmlstarlet; \
+updateandroidtools:
+	cd community/android; \
+	$(call update_repo,tools-base,git://git.jetbrains.org/idea/adt-tools-base.git)
+
+buildcommunity: ant
+	cd community; \
+	ant
+
+ant:
+	if hash ant 2>/dev/null; then \
+		brew upgrade ant || true; \
+	else \
+        brew install ant; \
     fi
 
-cplibs:
-	rm -r .idea/libraries || true
-	cp -rf $(IDEA_PATH)/.idea/libraries .idea
-	# making project dir relative to this project
-	find .idea/libraries -type f | xargs sed -i '' 's/\$$PROJECT_DIR\$$/\$$PROJECT_DIR\$$\/$(IDEA_PATH)/g'
-
-cpcompiler:
-	cp -f $(IDEA_PATH)/.idea/compiler.xml .idea/compiler.xml
-	# making project dir relative to this project
-	sed -i '' 's/\$$PROJECT_DIR\$$/\$$PROJECT_DIR\$$\/$(IDEA_PATH)/g' .idea/compiler.xml
