@@ -47,6 +47,10 @@ class XcodeMockGeneratorTest: TestCase() {
     runTest(ScopeProtocolTest())
   }
 
+  fun testClosureProtocol() {
+    runTest(ClosureProtocolTest())
+  }
+
   private fun runTest(template: MockGeneratorTestTemplate) {
     template.build(generator)
     assertEquals(template.getExpected(), generator.generate())
