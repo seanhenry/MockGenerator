@@ -1,6 +1,7 @@
 package codes.seanhenry.mockgenerator.usecases
 
 import codes.seanhenry.mockgenerator.entities.TuplePropertyDeclaration
+import codes.seanhenry.mockgenerator.util.ClosureUtil
 import codes.seanhenry.mockgenerator.util.StringDecorator
 
 abstract class CreateParameterTuple {
@@ -35,7 +36,7 @@ abstract class CreateParameterTuple {
   }
 
   private fun isClosure(parameter: TuplePropertyDeclaration.TupleParameter): Boolean {
-    return parameter.type.contains("->")
+    return ClosureUtil.isClosure(parameter.type)
   }
 
   private fun transformParameter(parameter: String): TuplePropertyDeclaration.TupleParameter? {

@@ -48,6 +48,7 @@ class ScopeProtocolTest : MockGeneratorTestTemplate {
     invokedMethodCount += 1
     invokedMethodParameters = (param, ())
     invokedMethodParametersList.append((param, ()))
+    closure()
     return stubbedMethodResult
     }
       """.trimIndent()

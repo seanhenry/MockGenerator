@@ -84,6 +84,7 @@ class MethodParameterTest : MockGeneratorTestTemplate {
     func closureParam(param0: () -> ()) {
     invokedClosureParam = true
     invokedClosureParamCount += 1
+    param0()
     }
       """.trimIndent()
   }

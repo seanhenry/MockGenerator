@@ -1,8 +1,9 @@
-package codes.seanhenry.mockgenerator.entities
+package codes.seanhenry.mockgenerator.util
 
 import junit.framework.TestCase
+import kotlin.test.assertEquals
 
-class ProtocolMethodTest: TestCase() {
+class ParameterUtilTest: TestCase() {
 
   fun testShouldSeparateParameters() {
     assertParameterList(listOf("p: String", "p: Int"), "p: String, p: Int")
@@ -28,11 +29,11 @@ class ProtocolMethodTest: TestCase() {
   private fun assertParameterList(expected: List<String>, parameters: String) {
     assertEquals(
         expected,
-        ProtocolMethod("", null, parameters, "").parameterList
+        ParameterUtil.getParameterList(parameters)
     )
   }
 
   private fun assertEmptyParameterList(parameters: String) {
-    assertTrue(ProtocolMethod("", null, parameters, "").parameterList.isEmpty())
+    assertTrue(ParameterUtil.getParameterList(parameters).isEmpty())
   }
 }

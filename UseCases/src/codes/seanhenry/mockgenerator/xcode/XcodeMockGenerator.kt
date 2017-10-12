@@ -146,9 +146,10 @@ class XcodeMockGenerator {
       val invokedParameters = CreateInvokedParameters().transform(name, method.parameterList)
       val invokedParametersList = CreateInvokedParametersList().transform(name, method.parameterList)
       val returnStub = createReturnStub(method, name)
+      val closures = CreateClosureCall().transform(method.parameterList)
       addMethodProperties(lines, method, invocationCheck, invocationCount, invokedParameters, invokedParametersList, returnStub)
       addMethodDeclaration(lines, method)
-      addMethodAssignments(lines, invocationCheck, invocationCount, invokedParameters, invokedParametersList, returnStub)
+      addMethodAssignments(lines, invocationCheck, invocationCount, invokedParameters, invokedParametersList, closures, returnStub)
       addClosingBrace(lines)
     }
   }
@@ -179,11 +180,12 @@ class XcodeMockGenerator {
     lines.add(scope + method.signature + " {")
   }
 
-  private fun addMethodAssignments(lines: ArrayList<String>, invocationCheck: PropertyDeclaration, invocationCount: PropertyDeclaration, invokedParameters: TuplePropertyDeclaration?, invokedParametersList: TuplePropertyDeclaration?, returnStub: PropertyDeclaration?) {
+  private fun addMethodAssignments(lines: ArrayList<String>, invocationCheck: PropertyDeclaration, invocationCount: PropertyDeclaration, invokedParameters: TuplePropertyDeclaration?, invokedParametersList: TuplePropertyDeclaration?, closures: List<Closure>, returnStub: PropertyDeclaration?) {
     lines.add(SwiftStringPropertyAssignment().transform(invocationCheck, "true"))
     lines.add(SwiftStringIncrementAssignment().transform(invocationCount))
     if (invokedParameters != null) lines.add(SwiftStringPropertyAssignment().transform(invokedParameters, SwiftStringTupleForwardCall().transform(invokedParameters)))
     if (invokedParametersList != null) lines.add(SwiftStringArrayAppender().transform(invokedParametersList, SwiftStringTupleForwardCall().transform(invokedParametersList)))
+    closures.forEach { lines.add(it.name + "()") }
     if (returnStub != null) lines.add(SwiftStringReturnProperty().transform(returnStub))
   }
 }
