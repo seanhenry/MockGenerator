@@ -9,10 +9,10 @@ class ClosureProtocolTest : MockGeneratorTestTemplate {
     generator.add(
         ProtocolMethod("map", null, "closure: () -> ()", "func map(closure: () -> ())"),
         ProtocolMethod("flatMap", null, "closure: () -> Void", "func flatMap(closure: () -> Void)"),
-        ProtocolMethod("filter", null, "closure: (String) -> Bool", "func filter(closure: (String) -> Bool)")
+        ProtocolMethod("filter", null, "closure: (String) -> Bool", "func filter(closure: (String) -> Bool)"),
 //        ProtocolMethod("typealiasClosure", null, "closure: Completion", "func typealiasClosure(closure: Completion)"),
 //        ProtocolMethod("internalTypealiasClosure", null, "closure: T", "func internalTypealiasClosure(closure: T)"),
-//        ProtocolMethod("multi", null, "animations: (Int) -> (), completion: (Bool) -> ()", "func multi(animations: (Int) -> (), completion: (Bool) -> ())"),
+        ProtocolMethod("multi", null, "animations: (Int) -> (), completion: (Bool) -> ()", "func multi(animations: (Int) -> (), completion: (Bool) -> ())")
 //        ProtocolMethod("optional", null, "animations: ((Int) -> ())?, completion: ((Bool) -> ())?", "func optional(animations: ((Int) -> ())?, completion: ((Bool) -> ())?)"),
 //        ProtocolMethod("escaping", null, "closure: @escaping () -> ()", "func escaping(closure: @escaping () -> ())"),
 //        ProtocolMethod("inOut", null, "var1: inout Int", "func inOut(var1: inout Int)"),
@@ -60,41 +60,21 @@ class ClosureProtocolTest : MockGeneratorTestTemplate {
     _ = closure(result.0)
     }
     }
+    var invokedMulti = false
+    var invokedMultiCount = 0
+    var stubbedMultiAnimationsResult: (Int, Void)?
+    var stubbedMultiCompletionResult: (Bool, Void)?
+    func multi(animations: (Int) -> (), completion: (Bool) -> ()) {
+    invokedMulti = true
+    invokedMultiCount += 1
+    if let result = stubbedMultiAnimationsResult {
+    animations(result.0)
+    }
+    if let result = stubbedMultiCompletionResult {
+    completion(result.0)
+    }
+    }
       """.trimIndent()
-//    var invokedTypealiasClosure = false
-//    var invokedTypealiasClosureCount = 0
-//    var stubbedTypealiasClosureClosureResult: (Int, Void)?
-//    func typealiasClosure(closure: Completion) {
-//    invokedTypealiasClosure = true
-//    invokedTypealiasClosureCount += 1
-//    if let result = stubbedTypealiasClosureClosureResult {
-//    _ = closure(result.0)
-//    }
-//    }
-//    var invokedInternalTypealiasClosure = false
-//    var invokedInternalTypealiasClosureCount = 0
-//    var stubbedInternalTypealiasClosureClosureResult: (String, Void)?
-//    func internalTypealiasClosure(closure: ClosureProtocol.T) {
-//    invokedInternalTypealiasClosure = true
-//    invokedInternalTypealiasClosureCount += 1
-//    if let result = stubbedInternalTypealiasClosureClosureResult {
-//    closure(result.0)
-//    }
-//    }
-//    var invokedMulti = false
-//    var invokedMultiCount = 0
-//    var stubbedMultiAnimationsResult: (Int, Void)?
-//    var stubbedMultiCompletionResult: (Bool, Void)?
-//    func multi(animations: (Int) -> (), completion: (Bool) -> ()) {
-//    invokedMulti = true
-//    invokedMultiCount += 1
-//    if let result = stubbedMultiAnimationsResult {
-//    animations(result.0)
-//    }
-//    if let result = stubbedMultiCompletionResult {
-//    completion(result.0)
-//    }
-//    }
 //    var invokedOptional = false
 //    var invokedOptionalCount = 0
 //    var stubbedOptionalAnimationsResult: (Int, Void)?

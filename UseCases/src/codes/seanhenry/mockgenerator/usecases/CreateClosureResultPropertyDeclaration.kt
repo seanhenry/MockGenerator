@@ -7,17 +7,18 @@ import codes.seanhenry.mockgenerator.util.PrependStringDecorator
 
 class CreateClosureResultPropertyDeclaration {
 
-  fun transform(name: String, closure: Closure): PropertyDeclaration? {
+  fun transform(methodName: String, closure: Closure): PropertyDeclaration? {
     if (closure.arguments.isEmpty()) {
       return null
     }
-    return PropertyDeclaration(transformName(name), transformType(closure))
+    return PropertyDeclaration(transformName(methodName, closure), transformType(closure))
   }
 
-  private fun transformName(name: String): String {
-    val suffix = AppendStringDecorator(null, "ClosureResult")
+  private fun transformName(methodName: String, closure: Closure): String {
+    val suffix = AppendStringDecorator(null, "Result")
     val prefix = PrependStringDecorator(suffix, "stubbed")
-    return prefix.process(name)
+    val methodNamePrefix = PrependStringDecorator(prefix, methodName)
+    return methodNamePrefix.process(closure.name)
   }
 
   private fun transformType(closure: Closure): String {

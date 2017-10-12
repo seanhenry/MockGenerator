@@ -9,34 +9,34 @@ class CreateClosureResultPropertyDeclarationTest: TestCase() {
 
   fun testShouldNotCreatePropertyForClosureWithoutArguments() {
     val closure = Closure("closure", emptyList(), "")
-    assertNull(CreateClosureResultPropertyDeclaration().transform("name", closure))
+    assertNull(CreateClosureResultPropertyDeclaration().transform("methodName", closure))
   }
 
   fun testShouldTransformName() {
-    val property = CreateClosureResultPropertyDeclaration().transform("closure", getClosureWithArgument())
-    assertEquals("stubbedClosureClosureResult", property?.name)
+    val property = CreateClosureResultPropertyDeclaration().transform("methodName", getClosureWithArgument())
+    assertEquals("stubbedMethodNameClosureResult", property?.name)
   }
 
-  fun testShouldTransformLongName() {
-    val property = CreateClosureResultPropertyDeclaration().transform("closureParam", getClosureWithArgument())
-    assertEquals("stubbedClosureParamClosureResult", property?.name)
+  fun testShouldTransformDifferentName() {
+    val property = CreateClosureResultPropertyDeclaration().transform("methodName", Closure("differentClosure", listOf("Type0"), ""))
+    assertEquals("stubbedMethodNameDifferentClosureResult", property?.name)
   }
 
   fun testShouldTransformType() {
-    val property = CreateClosureResultPropertyDeclaration().transform("closure", getClosureWithArgument())
+    val property = CreateClosureResultPropertyDeclaration().transform("methodName", getClosureWithArgument())
     assertEquals("(Type0, Void)", property?.type)
   }
 
   fun testShouldTransformTypes() {
-    val property = CreateClosureResultPropertyDeclaration().transform("closure", getClosureWithArguments())
+    val property = CreateClosureResultPropertyDeclaration().transform("methodName", getClosureWithArguments())
     assertEquals("(Type0, Type1)", property?.type)
   }
 
   private fun getClosureWithArgument(): Closure {
-    return Closure("", listOf("Type0"), "")
+    return Closure("closure", listOf("Type0"), "")
   }
 
   private fun getClosureWithArguments(): Closure {
-    return Closure("", listOf("Type0", "Type1"), "")
+    return Closure("closure", listOf("Type0", "Type1"), "")
   }
 }
