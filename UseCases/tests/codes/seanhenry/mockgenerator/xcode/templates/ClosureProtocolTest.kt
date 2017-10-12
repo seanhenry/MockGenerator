@@ -7,9 +7,9 @@ class ClosureProtocolTest : MockGeneratorTestTemplate {
 
   override fun build(generator: XcodeMockGenerator) {
     generator.add(
-        ProtocolMethod("map", null, "closure: () -> ()", "func map(closure: () -> ())")
-//        ProtocolMethod("flatMap", null, "closure: () -> Void", "func flatMap(closure: () -> Void)"),
-//        ProtocolMethod("filter", null, "closure: (String) -> Bool", "func filter(closure: (String) -> Bool)"),
+        ProtocolMethod("map", null, "closure: () -> ()", "func map(closure: () -> ())"),
+        ProtocolMethod("flatMap", null, "closure: () -> Void", "func flatMap(closure: () -> Void)"),
+        ProtocolMethod("filter", null, "closure: (String) -> Bool", "func filter(closure: (String) -> Bool)")
 //        ProtocolMethod("typealiasClosure", null, "closure: Completion", "func typealiasClosure(closure: Completion)"),
 //        ProtocolMethod("internalTypealiasClosure", null, "closure: T", "func internalTypealiasClosure(closure: T)"),
 //        ProtocolMethod("multi", null, "animations: (Int) -> (), completion: (Bool) -> ()", "func multi(animations: (Int) -> (), completion: (Bool) -> ())"),
@@ -43,24 +43,24 @@ class ClosureProtocolTest : MockGeneratorTestTemplate {
     invokedMapCount += 1
     closure()
     }
+    var invokedFlatMap = false
+    var invokedFlatMapCount = 0
+    func flatMap(closure: () -> Void) {
+    invokedFlatMap = true
+    invokedFlatMapCount += 1
+    closure()
+    }
+    var invokedFilter = false
+    var invokedFilterCount = 0
+    var stubbedFilterClosureResult: (String, Void)?
+    func filter(closure: (String) -> Bool) {
+    invokedFilter = true
+    invokedFilterCount += 1
+    if let result = stubbedFilterClosureResult {
+    _ = closure(result.0)
+    }
+    }
       """.trimIndent()
-//    var invokedFlatMap = false
-//    var invokedFlatMapCount = 0
-//    func flatMap(closure: () -> Void) {
-//    invokedFlatMap = true
-//    invokedFlatMapCount += 1
-//    closure()
-//    }
-//    var invokedFilter = false
-//    var invokedFilterCount = 0
-//    var stubbedFilterClosureResult: (String, Void)?
-//    func filter(closure: (String) -> Bool) {
-//    invokedFilter = true
-//    invokedFilterCount += 1
-//    if let result = stubbedFilterClosureResult {
-//    _ = closure(result.0)
-//    }
-//    }
 //    var invokedTypealiasClosure = false
 //    var invokedTypealiasClosureCount = 0
 //    var stubbedTypealiasClosureClosureResult: (Int, Void)?
