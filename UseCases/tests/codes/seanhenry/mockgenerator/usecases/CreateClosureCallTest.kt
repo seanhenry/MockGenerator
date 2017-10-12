@@ -11,7 +11,7 @@ class CreateClosureCallTest : TestCase() {
   fun testShouldReturnClosureWithNoArguments() {
     transform(emptyClosureParameter())
     assertClosureCount(1)
-    assertClosure("closure", emptyList(), 0)
+    assertClosure("closure", emptyList(), "", 0)
   }
 
   fun testShouldIgnoreNonClosures() {
@@ -22,51 +22,61 @@ class CreateClosureCallTest : TestCase() {
   fun testShouldReturnClosureWithArgument() {
     transform(argumentsClosureParameter())
     assertClosureCount(1)
-    assertClosure("argClosure", listOf("String"), 0)
+    assertClosure("argClosure", listOf("String"), "", 0)
   }
 
   fun testShouldReturnClosureWithArguments() {
     transform(listOf("closure: (String, Int?, UInt!) -> ()"))
     assertClosureCount(1)
-    assertClosure("closure", listOf("String", "Int?", "UInt!"), 0)
+    assertClosure("closure", listOf("String", "Int?", "UInt!"), "", 0)
   }
 
   fun testShouldReturnMultipleClosureWithArguments() {
     transform(listOf("closureA: (String, Int?, UInt!) -> ()", "closureB: () -> ()", "closureC: (String) -> ()"))
     assertClosureCount(3)
-    assertClosure("closureA", listOf("String", "Int?", "UInt!"), 0)
-    assertClosure("closureB", emptyList(), 1)
-    assertClosure("closureC", listOf("String"), 2)
+    assertClosure("closureA", listOf("String", "Int?", "UInt!"), "", 0)
+    assertClosure("closureB", emptyList(), "", 1)
+    assertClosure("closureC", listOf("String"), "", 2)
   }
 
   fun testShouldReturnClosureWithWeirdWhitespace() {
     transform(listOf("  \t\n  closure   \t\n  :\t   \n    (  \t\t   \nString,\t\t\t\tInt?,\n\t  UInt!) -> (  ) \n "))
     assertClosureCount(1)
-    assertClosure("closure", listOf("String", "Int?", "UInt!"), 0)
+    assertClosure("closure", listOf("String", "Int?", "UInt!"), "", 0)
   }
 
   fun testShouldReturnClosureWithNoWhitespace() {
     transform(listOf("closure:(String,Int?,UInt!)->()"))
     assertClosureCount(1)
-    assertClosure("closure", listOf("String", "Int?", "UInt!"), 0)
+    assertClosure("closure", listOf("String", "Int?", "UInt!"), "", 0)
   }
 
   fun testShouldReturnClosureWithReturnArgument() {
     transform(listOf("closure: (String) -> (String)"))
     assertClosureCount(1)
-    assertClosure("closure", listOf("String"), 0)
+    assertClosure("closure", listOf("String"), "String", 0)
+  }
+
+  fun testShouldReturnClosureWithReturnArgumentWithNoParentheses() {
+    transform(listOf("closure: (String) -> String"))
+    assertClosureCount(1)
+    assertClosure("closure", listOf("String"), "String", 0)
   }
 
   fun testShouldReturnClosureWithLegalArgumentLabel() {
     transform(listOf("closure: (_ a: String) -> ()"))
     assertClosureCount(1)
-    assertClosure("closure", listOf("String"), 0)
+    assertClosure("closure", listOf("String"), "", 0)
   }
 
   fun testShouldReturnClosureWithVoid() {
     transform(listOf("closure: ((), Void) -> (Void)"))
     assertClosureCount(1)
-    assertClosure("closure", listOf("()", "Void"), 0)
+    assertClosure("closure", listOf("()", "Void"), "", 0)
+  }
+
+  fun testShouldNotCrashWhenNotAValidClosure() {
+    transform(listOf("closure: String -> Void"))
   }
 
   private fun transform(parameters: List<String>) {
@@ -77,10 +87,14 @@ class CreateClosureCallTest : TestCase() {
     assertEquals(expected, closures.size)
   }
 
-  private fun assertClosure(expectedName: String, expectedArguments: List<String>, index: Int) {
+  private fun assertClosure(expectedName: String,
+                            expectedArguments: List<String>,
+                            expectedReturnValue: String,
+                            index: Int) {
     val closure = closures[index]
     assertEquals(expectedName, closure.name)
     assertEquals(expectedArguments, closure.arguments)
+    assertEquals(expectedReturnValue, closure.returnValue)
   }
 
   private fun argumentsClosureParameter(): List<String> {

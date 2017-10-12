@@ -81,27 +81,34 @@ class XcodeMockGenerator {
       addPropertyDeclaration(property)
       addSetterBlock(setterInvocationCheck, setterInvocationCount, invokedProperty, invokedPropertyList, property.isWritable)
       addGetterBlock(getterInvocationCheck, getterInvocationCount, returnStub, property.isWritable)
-      addClosingBrace(lines)
+      addClosingBrace()
     }
   }
 
-  private fun addGetterBlock(getterInvocationCheck: PropertyDeclaration, getterInvocationCount: PropertyDeclaration, returnStub: PropertyDeclaration, isWritable: Boolean) {
+  private fun addGetterBlock(getterInvocationCheck: PropertyDeclaration,
+                             getterInvocationCount: PropertyDeclaration,
+                             returnStub: PropertyDeclaration,
+                             isWritable: Boolean) {
     if (isWritable) {
       addLine("get {")
     }
     addPropertyInvocationCheckStatements(getterInvocationCheck, getterInvocationCount)
     addLine(SwiftStringReturnProperty().transform(returnStub))
     if (isWritable) {
-      addClosingBrace(lines)
+      addClosingBrace()
     }
   }
 
-  private fun addSetterBlock(setterInvocationCheck: PropertyDeclaration, setterInvocationCount: PropertyDeclaration, invokedProperty: PropertyDeclaration, invokedPropertyList: PropertyDeclaration, isWritable: Boolean) {
+  private fun addSetterBlock(setterInvocationCheck: PropertyDeclaration,
+                             setterInvocationCount: PropertyDeclaration,
+                             invokedProperty: PropertyDeclaration,
+                             invokedPropertyList: PropertyDeclaration,
+                             isWritable: Boolean) {
     if (isWritable) {
       addLine("set {")
       addPropertyInvocationCheckStatements(setterInvocationCheck, setterInvocationCount)
       addPropertyInvocationCaptureStatements(invokedProperty, invokedPropertyList)
-      addClosingBrace(lines)
+      addClosingBrace()
     }
   }
 
@@ -109,7 +116,11 @@ class XcodeMockGenerator {
     addScopedLine(property.getTrimmedSignature() + " {")
   }
 
-  private fun addSetterProperties(setterInvocationCheck: PropertyDeclaration, setterInvocationCount: PropertyDeclaration, invokedProperty: PropertyDeclaration, invokedPropertyList: PropertyDeclaration, isWritable: Boolean) {
+  private fun addSetterProperties(setterInvocationCheck: PropertyDeclaration,
+                                  setterInvocationCount: PropertyDeclaration,
+                                  invokedProperty: PropertyDeclaration,
+                                  invokedPropertyList: PropertyDeclaration,
+                                  isWritable: Boolean) {
     if (isWritable) {
       addScopedLine(SwiftStringImplicitValuePropertyDeclaration().transform(setterInvocationCheck, "false"))
       addScopedLine(SwiftStringImplicitValuePropertyDeclaration().transform(setterInvocationCount, "0"))
@@ -118,23 +129,28 @@ class XcodeMockGenerator {
     }
   }
 
-  private fun addGetterProperties(property: ProtocolProperty, getterInvocationCheck: PropertyDeclaration, getterInvocationCount: PropertyDeclaration, returnStub: PropertyDeclaration) {
+  private fun addGetterProperties(property: ProtocolProperty,
+                                  getterInvocationCheck: PropertyDeclaration,
+                                  getterInvocationCount: PropertyDeclaration,
+                                  returnStub: PropertyDeclaration) {
     addScopedLine(SwiftStringImplicitValuePropertyDeclaration().transform(getterInvocationCheck, "false"))
     addScopedLine(SwiftStringImplicitValuePropertyDeclaration().transform(getterInvocationCount, "0"))
     val defaultValue = DefaultValueStore().getDefaultValue(property.type)
     addScopedLine(SwiftStringDefaultValuePropertyDeclaration().transform(returnStub, defaultValue))
   }
 
-  private fun addClosingBrace(lines: ArrayList<String>) {
+  private fun addClosingBrace() {
     addLine("}")
   }
 
-  private fun addPropertyInvocationCheckStatements(invocationCheck: PropertyDeclaration, invocationCount: PropertyDeclaration) {
+  private fun addPropertyInvocationCheckStatements(invocationCheck: PropertyDeclaration,
+                                                   invocationCount: PropertyDeclaration) {
     addLine(SwiftStringPropertyAssignment().transform(invocationCheck, "true"))
     addLine(SwiftStringIncrementAssignment().transform(invocationCount))
   }
 
-  private fun addPropertyInvocationCaptureStatements(invokedProperty: PropertyDeclaration, invokedPropertyList: PropertyDeclaration) {
+  private fun addPropertyInvocationCaptureStatements(invokedProperty: PropertyDeclaration,
+                                                     invokedPropertyList: PropertyDeclaration) {
     addLine(SwiftStringPropertyAssignment().transform(invokedProperty, "newValue"))
     addLine(SwiftStringArrayAppender().transform(invokedPropertyList, "newValue"))
   }
@@ -146,12 +162,14 @@ class XcodeMockGenerator {
       val invocationCount = CreateInvocationCount().transform(name)
       val invokedParameters = CreateInvokedParameters().transform(name, method.parameterList)
       val invokedParametersList = CreateInvokedParametersList().transform(name, method.parameterList)
-      val returnStub = createReturnStub(method, name)
       val closures = CreateClosureCall().transform(method.parameterList)
-      addMethodProperties(method, invocationCheck, invocationCount, invokedParameters, invokedParametersList, returnStub)
+      val closureProperties = closures.map { CreateClosureResultPropertyDeclaration().transform(name, it) }
+      val closureCalls = closureProperties.zip(closures)
+      val returnStub = createReturnStub(method, name)
+      addMethodProperties(method, invocationCheck, invocationCount, invokedParameters, invokedParametersList, closureProperties, returnStub)
       addMethodDeclaration(method)
-      addMethodAssignments(invocationCheck, invocationCount, invokedParameters, invokedParametersList, closures, returnStub)
-      addClosingBrace(lines)
+      addMethodAssignments(invocationCheck, invocationCount, invokedParameters, invokedParametersList, closureCalls, returnStub)
+      addClosingBrace()
     }
   }
 
@@ -162,15 +180,22 @@ class XcodeMockGenerator {
     return null
   }
 
-  private fun addMethodProperties(method: ProtocolMethod, invocationCheck: PropertyDeclaration, invocationCount: PropertyDeclaration, invokedParameters: TuplePropertyDeclaration?, invokedParametersList: TuplePropertyDeclaration?, returnStub: PropertyDeclaration?) {
+  private fun addMethodProperties(method: ProtocolMethod,
+                                  invocationCheck: PropertyDeclaration,
+                                  invocationCount: PropertyDeclaration,
+                                  invokedParameters: TuplePropertyDeclaration?,
+                                  invokedParametersList: TuplePropertyDeclaration?,
+                                  closureProperties: List<PropertyDeclaration?>,
+                                  returnStub: PropertyDeclaration?) {
     addScopedLine(SwiftStringImplicitValuePropertyDeclaration().transform(invocationCheck, "false"))
     addScopedLine(SwiftStringImplicitValuePropertyDeclaration().transform(invocationCount, "0"))
     if (invokedParameters != null) addScopedLine(SwiftStringPropertyDeclaration().transform(invokedParameters) + "?")
     if (invokedParametersList != null) addScopedLine(SwiftStringInitializedArrayPropertyDeclaration().transform(invokedParametersList))
-    addStubbedResult(returnStub, method, lines)
+    closureProperties.filterNotNull().forEach { addScopedLine(SwiftStringPropertyDeclaration().transform(it) + "?") }
+    addStubbedResult(returnStub, method)
   }
 
-  private fun addStubbedResult(returnStub: PropertyDeclaration?, method: ProtocolMethod, lines: ArrayList<String>) {
+  private fun addStubbedResult(returnStub: PropertyDeclaration?, method: ProtocolMethod) {
     if (returnStub != null) {
       val defaultValue = DefaultValueStore().getDefaultValue(method.returnType)
       addScopedLine(SwiftStringDefaultValuePropertyDeclaration().transform(returnStub, defaultValue))
@@ -181,12 +206,17 @@ class XcodeMockGenerator {
     addScopedLine(method.signature + " {")
   }
 
-  private fun addMethodAssignments(invocationCheck: PropertyDeclaration, invocationCount: PropertyDeclaration, invokedParameters: TuplePropertyDeclaration?, invokedParametersList: TuplePropertyDeclaration?, closures: List<Closure>, returnStub: PropertyDeclaration?) {
+  private fun addMethodAssignments(invocationCheck: PropertyDeclaration,
+                                   invocationCount: PropertyDeclaration,
+                                   invokedParameters: TuplePropertyDeclaration?,
+                                   invokedParametersList: TuplePropertyDeclaration?,
+                                   closureCalls: List<Pair<PropertyDeclaration?, Closure>>,
+                                   returnStub: PropertyDeclaration?) {
     addLine(SwiftStringPropertyAssignment().transform(invocationCheck, "true"))
     addLine(SwiftStringIncrementAssignment().transform(invocationCount))
     if (invokedParameters != null) addLine(SwiftStringPropertyAssignment().transform(invokedParameters, SwiftStringTupleForwardCall().transform(invokedParameters)))
     if (invokedParametersList != null) addLine(SwiftStringArrayAppender().transform(invokedParametersList, SwiftStringTupleForwardCall().transform(invokedParametersList)))
-    closures.forEach { addLine(it.name + "()") }
+    closureCalls.forEach { addLine(SwiftStringClosureCall().transform(it.first?.name ?: "", it.second)) }
     if (returnStub != null) addLine(SwiftStringReturnProperty().transform(returnStub))
   }
 

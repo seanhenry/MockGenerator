@@ -5,10 +5,11 @@ import codes.seanhenry.mockgenerator.util.ParameterUtil
 import codes.seanhenry.mockgenerator.entities.Closure
 
 class CreateClosureCall {
+
   fun transform(parameters: List<String>): List<Closure> {
     return parameters
         .filter { ClosureUtil.isClosure(it) }
-        .map { Closure(getName(it), getArguments(it)) }
+        .map { Closure(getName(it), getArguments(it), getReturnValue(it)) }
   }
 
   private fun getName(parameter: String): String {
@@ -31,4 +32,19 @@ class CreateClosureCall {
   private fun removeWhitespace(it: String): String = it.replace(Regex("\\s"), "")
   private fun toArguments(it: String): List<String> = it.split(",")
   private fun toType(it: String) = it.split(":").last()
+
+  private fun getReturnValue(parameter: String): String {
+    var result = removeWhitespace(parameter)
+    result = extractClosureReturnValue(result)
+    if (result == "Void") {
+      return ""
+    }
+    return result
+  }
+
+  private fun extractClosureReturnValue(it: String): String {
+    val regex = Regex(".*\\)->(.*)")
+    return it.replace(regex, "$1")
+        .trim('(', ')')
+  }
 }

@@ -2,6 +2,7 @@ package codes.seanhenry.mockgenerator.swift
 
 import codes.seanhenry.mockgenerator.entities.TuplePropertyDeclaration
 import junit.framework.TestCase
+import kotlin.test.assertEquals
 
 class SwiftStringTupleForwardCallTest: TestCase() {
 
