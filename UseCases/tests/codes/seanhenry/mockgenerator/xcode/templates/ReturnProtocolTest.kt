@@ -17,6 +17,8 @@ class ReturnProtocolTest: MockGeneratorTestTemplate {
         ProtocolMethod("returnComplicatedClosure", "((String, Int?) -> (UInt))", "", "func returnComplicatedClosure() -> ((String, Int?) -> (UInt))"),
         ProtocolMethod("returnOptionalClosure", "(() -> ())?", "", "func returnOptionalClosure() -> (() -> ())?"),
         ProtocolMethod("returnExplicitVoid", "Void", "", "func returnExplicitVoid() -> Void")
+//        ProtocolMethod("returnClosure", null, ") -> (() -> ()", "func returnClosure() -> (() -> ())")
+//        ProtocolMethod("returnClosureArgs", null, ") -> (Int, String) -> (String", "func returnClosureArgs() -> (Int, String) -> (String)"),
     )
   }
 
@@ -113,3 +115,20 @@ class ReturnProtocolTest: MockGeneratorTestTemplate {
       """.trimIndent()
   }
 }
+
+//    var invokedReturnClosure = false
+//    var invokedReturnClosureCount = 0
+//    var stubbedReturnClosureResult: (() -> ())!
+//    func returnClosure() -> (() -> ()) {
+//      invokedReturnClosure = true
+//      invokedReturnClosureCount += 1
+//      return stubbedReturnClosureResult
+//    }
+//    var invokedReturnClosureArgs = false
+//    var invokedReturnClosureArgsCount = 0
+//    var stubbedReturnClosureArgsResult: ((Int, String) -> (String))!
+//    func returnClosureArgs() -> (Int, String) -> (String) {
+//    invokedReturnClosureArgs = true
+//    invokedReturnClosureArgsCount += 1
+//    return stubbedReturnClosureArgsResult
+//    }

@@ -1,6 +1,7 @@
 package codes.seanhenry.mockgenerator.usecases
 
 import codes.seanhenry.mockgenerator.entities.Closure
+import codes.seanhenry.mockgenerator.util.ParameterUtil
 import junit.framework.TestCase
 import kotlin.test.assertEquals
 
@@ -40,7 +41,7 @@ class CreateClosureCallTest : TestCase() {
   }
 
   fun testShouldReturnClosureWithWeirdWhitespace() {
-    transform(listOf("  \t\n  closure   \t\n  :\t   \n    (  \t\t   \nString,\t\t\t\tInt?,\n\t  UInt!) -> (  ) \n "))
+    transform(listOf("  \t\n  closure   \t\n  :\t   \n    (  \t\t   String,\t\t\t\tInt?,\t  UInt!) -> (  ) \n "))
     assertClosureCount(1)
     assertClosure("closure", listOf("String", "Int?", "UInt!"), "", 0)
   }
@@ -100,7 +101,7 @@ class CreateClosureCallTest : TestCase() {
   }
 
   fun testShouldReturnOptionalClosureWithWeirdWhitespace() {
-    transform(listOf("closure: ((String) -> ()  \t\n )?  \t\t\n "))
+    transform(listOf("closure: ((String) -> ()  \t\t )?  \t\t\n "))
     assertClosureCount(1)
     assertClosure("closure", listOf("String"), "", 0, true)
   }
@@ -111,8 +112,14 @@ class CreateClosureCallTest : TestCase() {
     assertClosure("closure", listOf("String"), "String?", 0)
   }
 
+  fun testShouldReturnClosureWithWildcard() {
+    transform(listOf("_ closure: (String) -> String?"))
+    assertClosureCount(1)
+    assertClosure("closure", listOf("String"), "String?", 0)
+  }
+
   private fun transform(parameters: List<String>) {
-    closures = CreateClosureCall().transform(parameters)
+    closures = CreateClosureCall().transform(ParameterUtil.getParameters(parameters.joinToString(", ")))
   }
 
   private fun assertClosureCount(expected: Int) {

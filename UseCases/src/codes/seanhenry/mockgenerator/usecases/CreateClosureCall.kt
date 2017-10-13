@@ -3,18 +3,15 @@ package codes.seanhenry.mockgenerator.usecases
 import codes.seanhenry.mockgenerator.util.ClosureUtil
 import codes.seanhenry.mockgenerator.util.ParameterUtil
 import codes.seanhenry.mockgenerator.entities.Closure
+import codes.seanhenry.mockgenerator.entities.Parameter
 import kotlin.ranges.IntRange.Companion.EMPTY
 
 class CreateClosureCall {
 
-  fun transform(parameters: List<String>): List<Closure> {
+  fun transform(parameters: List<Parameter>): List<Closure> {
     return parameters
-        .filter { ClosureUtil.isClosure(it) }
-        .map { Closure(getName(it), getArguments(it), getReturnValue(it), getIsOptional(it)) }
-  }
-
-  private fun getName(parameter: String): String {
-    return parameter.split(":")[0].trim()
+        .filter { ClosureUtil.isClosure(it.type) }
+        .map { Closure(it.name, getArguments(it.type), getReturnValue(it.type), getIsOptional(it.type)) }
   }
 
   private fun getArguments(parameter: String): List<String> {

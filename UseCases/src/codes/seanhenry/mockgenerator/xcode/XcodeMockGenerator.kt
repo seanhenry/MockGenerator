@@ -6,6 +6,7 @@ import codes.seanhenry.mockgenerator.swift.*
 import codes.seanhenry.mockgenerator.usecases.*
 import codes.seanhenry.mockgenerator.util.DefaultValueStore
 import codes.seanhenry.mockgenerator.util.MethodModel
+import codes.seanhenry.mockgenerator.util.ParameterUtil
 import codes.seanhenry.mockgenerator.util.UniqueMethodNameGenerator
 import java.util.*
 
@@ -162,7 +163,7 @@ class XcodeMockGenerator {
       val invocationCount = CreateInvocationCount().transform(name)
       val invokedParameters = CreateInvokedParameters().transform(name, method.parameterList)
       val invokedParametersList = CreateInvokedParametersList().transform(name, method.parameterList)
-      val closures = CreateClosureCall().transform(method.parameterList)
+      val closures = CreateClosureCall().transform(ParameterUtil.getParameters(method.parameters))
       val closureProperties = closures.map { CreateClosureResultPropertyDeclaration().transform(name, it) }
       val closureCalls = closureProperties.zip(closures)
       val returnStub = createReturnStub(method, name)
