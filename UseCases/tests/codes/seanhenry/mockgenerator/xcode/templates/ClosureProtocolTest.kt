@@ -12,8 +12,8 @@ class ClosureProtocolTest : MockGeneratorTestTemplate {
         ProtocolMethod("filter", null, "closure: (String) -> Bool", "func filter(closure: (String) -> Bool)"),
 //        ProtocolMethod("typealiasClosure", null, "closure: Completion", "func typealiasClosure(closure: Completion)"),
 //        ProtocolMethod("internalTypealiasClosure", null, "closure: T", "func internalTypealiasClosure(closure: T)"),
-        ProtocolMethod("multi", null, "animations: (Int) -> (), completion: (Bool) -> ()", "func multi(animations: (Int) -> (), completion: (Bool) -> ())")
-//        ProtocolMethod("optional", null, "animations: ((Int) -> ())?, completion: ((Bool) -> ())?", "func optional(animations: ((Int) -> ())?, completion: ((Bool) -> ())?)"),
+        ProtocolMethod("multi", null, "animations: (Int) -> (), completion: (Bool) -> ()", "func multi(animations: (Int) -> (), completion: (Bool) -> ())"),
+        ProtocolMethod("optional", null, "animations: ((Int) -> ())?, completion: ((Bool) -> ())?", "func optional(animations: ((Int) -> ())?, completion: ((Bool) -> ())?)")
 //        ProtocolMethod("escaping", null, "closure: @escaping () -> ()", "func escaping(closure: @escaping () -> ())"),
 //        ProtocolMethod("inOut", null, "var1: inout Int", "func inOut(var1: inout Int)"),
 //        ProtocolMethod("autoclosure", null, "closure: @autoclosure () -> ()", "func autoclosure(closure: @autoclosure () -> ())"),
@@ -74,21 +74,21 @@ class ClosureProtocolTest : MockGeneratorTestTemplate {
     completion(result.0)
     }
     }
-      """.trimIndent()
-//    var invokedOptional = false
-//    var invokedOptionalCount = 0
-//    var stubbedOptionalAnimationsResult: (Int, Void)?
-//    var stubbedOptionalCompletionResult: (Bool, Void)?
-//    func optional(animations: ((Int) -> ())?, completion: ((Bool) -> ())?) {
-//    invokedOptional = true
-//    invokedOptionalCount += 1
-//    if let result = stubbedOptionalAnimationsResult {
-//    animations?(result.0)
-//    }
-//    if let result = stubbedOptionalCompletionResult {
-//    completion?(result.0)
-//    }
-//    }
+    var invokedOptional = false
+    var invokedOptionalCount = 0
+    var stubbedOptionalAnimationsResult: (Int, Void)?
+    var stubbedOptionalCompletionResult: (Bool, Void)?
+    func optional(animations: ((Int) -> ())?, completion: ((Bool) -> ())?) {
+    invokedOptional = true
+    invokedOptionalCount += 1
+    if let result = stubbedOptionalAnimationsResult {
+    animations?(result.0)
+    }
+    if let result = stubbedOptionalCompletionResult {
+    completion?(result.0)
+    }
+    }
+    """.trimIndent()
 //    var invokedEscaping = false
 //    var invokedEscapingCount = 0
 //    func escaping(closure: @escaping () -> ()) {

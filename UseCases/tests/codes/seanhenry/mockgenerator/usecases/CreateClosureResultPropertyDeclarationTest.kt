@@ -8,7 +8,7 @@ import kotlin.test.assertNull
 class CreateClosureResultPropertyDeclarationTest: TestCase() {
 
   fun testShouldNotCreatePropertyForClosureWithoutArguments() {
-    val closure = Closure("closure", emptyList(), "")
+    val closure = Closure("closure", emptyList(), "", false)
     assertNull(CreateClosureResultPropertyDeclaration().transform("methodName", closure))
   }
 
@@ -18,7 +18,7 @@ class CreateClosureResultPropertyDeclarationTest: TestCase() {
   }
 
   fun testShouldTransformDifferentName() {
-    val property = CreateClosureResultPropertyDeclaration().transform("methodName", Closure("differentClosure", listOf("Type0"), ""))
+    val property = CreateClosureResultPropertyDeclaration().transform("methodName", Closure("differentClosure", listOf("Type0"), "", false))
     assertEquals("stubbedMethodNameDifferentClosureResult", property?.name)
   }
 
@@ -33,10 +33,10 @@ class CreateClosureResultPropertyDeclarationTest: TestCase() {
   }
 
   private fun getClosureWithArgument(): Closure {
-    return Closure("closure", listOf("Type0"), "")
+    return Closure("closure", listOf("Type0"), "", false)
   }
 
   private fun getClosureWithArguments(): Closure {
-    return Closure("closure", listOf("Type0", "Type1"), "")
+    return Closure("closure", listOf("Type0", "Type1"), "", false)
   }
 }

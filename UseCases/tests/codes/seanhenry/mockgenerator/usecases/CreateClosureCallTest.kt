@@ -63,6 +63,12 @@ class CreateClosureCallTest : TestCase() {
     assertClosure("closure", listOf("String"), "String", 0)
   }
 
+  fun testShouldReturnClosureReturningAnotherClosure() {
+    transform(listOf("closure: (String) -> ((String) -> (String))"))
+    assertClosureCount(1)
+    assertClosure("closure", listOf("String"), "(String) -> (String)", 0)
+  }
+
   fun testShouldReturnClosureWithLegalArgumentLabel() {
     transform(listOf("closure: (_ a: String) -> ()"))
     assertClosureCount(1)
@@ -77,6 +83,32 @@ class CreateClosureCallTest : TestCase() {
 
   fun testShouldNotCrashWhenNotAValidClosure() {
     transform(listOf("closure: String -> Void"))
+    transform(listOf("String -> Void"))
+    transform(listOf("String"))
+  }
+
+  fun testShouldReturnOptionalClosure() {
+    transform(listOf("closure: ((String) -> ())?"))
+    assertClosureCount(1)
+    assertClosure("closure", listOf("String"), "", 0, true)
+  }
+
+  fun testShouldReturnIUOClosure() {
+    transform(listOf("closure: ((String) -> ())!"))
+    assertClosureCount(1)
+    assertClosure("closure", listOf("String"), "", 0, true)
+  }
+
+  fun testShouldReturnOptionalClosureWithWeirdWhitespace() {
+    transform(listOf("closure: ((String) -> ()  \t\n )?  \t\t\n "))
+    assertClosureCount(1)
+    assertClosure("closure", listOf("String"), "", 0, true)
+  }
+
+  fun testShouldReturnClosureWithOptionalValue() {
+    transform(listOf("closure: (String) -> String?"))
+    assertClosureCount(1)
+    assertClosure("closure", listOf("String"), "String?", 0)
   }
 
   private fun transform(parameters: List<String>) {
@@ -90,11 +122,13 @@ class CreateClosureCallTest : TestCase() {
   private fun assertClosure(expectedName: String,
                             expectedArguments: List<String>,
                             expectedReturnValue: String,
-                            index: Int) {
+                            index: Int,
+                            expectedOptionalValue: Boolean = false) {
     val closure = closures[index]
     assertEquals(expectedName, closure.name)
     assertEquals(expectedArguments, closure.arguments)
     assertEquals(expectedReturnValue, closure.returnValue)
+    assertEquals(expectedOptionalValue, closure.isOptional)
   }
 
   private fun argumentsClosureParameter(): List<String> {

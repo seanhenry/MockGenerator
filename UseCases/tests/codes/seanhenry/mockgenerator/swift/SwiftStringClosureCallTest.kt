@@ -7,12 +7,12 @@ import kotlin.test.assertEquals
 class SwiftStringClosureCallTest: TestCase() {
 
   fun testShouldCallEmptyClosure() {
-    val closure = Closure("closure", emptyList(), "")
+    val closure = Closure("closure", emptyList(), "", false)
     assertEquals("closure()", SwiftStringClosureCall().transform("", closure))
   }
 
   fun testShouldCallClosureWithArgument() {
-    val closure = Closure("closure", listOf("Type"), "")
+    val closure = Closure("closure", listOf("Type"), "", false)
     val expected = """
     if let result = closureResult {
     closure(result.0)
@@ -22,7 +22,7 @@ class SwiftStringClosureCallTest: TestCase() {
   }
 
   fun testShouldCallClosureWithArguments() {
-    val closure = Closure("closure", listOf("Type", "AnotherType", "ThirdType"), "")
+    val closure = Closure("closure", listOf("Type", "AnotherType", "ThirdType"), "", false)
     val expected = """
     if let result = propertyName {
     closure(result.0, result.1, result.2)
@@ -32,15 +32,30 @@ class SwiftStringClosureCallTest: TestCase() {
   }
 
   fun testShouldSuppressWarningForUnusedClosureReturnValue() {
-    val closure = Closure("closure", emptyList(), "String")
+    val closure = Closure("closure", emptyList(), "String", false)
     assertEquals("_ = closure()", SwiftStringClosureCall().transform("", closure))
   }
 
   fun testShouldSuppressWarningForUnusedClosureReturnValueWhenMultipleArguments() {
-    val closure = Closure("closure", listOf("Type", "AnotherType", "ThirdType"), "(String, Int)")
+    val closure = Closure("closure", listOf("Type", "AnotherType", "ThirdType"), "(String, Int)", false)
     val expected = """
     if let result = propertyName {
     _ = closure(result.0, result.1, result.2)
+    }
+      """.trimIndent()
+    assertEquals(expected, SwiftStringClosureCall().transform("propertyName", closure))
+  }
+
+  fun testShouldCallOptionalClosure() {
+    val closure = Closure("closure", emptyList(), "String", true)
+    assertEquals("_ = closure?()", SwiftStringClosureCall().transform("", closure))
+  }
+
+  fun testShouldCallOptionalClosureWhenMultipleArguments() {
+    val closure = Closure("closure", listOf("Type", "AnotherType", "ThirdType"), "(String, Int)", true)
+    val expected = """
+    if let result = propertyName {
+    _ = closure?(result.0, result.1, result.2)
     }
       """.trimIndent()
     assertEquals(expected, SwiftStringClosureCall().transform("propertyName", closure))

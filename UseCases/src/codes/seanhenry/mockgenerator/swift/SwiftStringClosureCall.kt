@@ -21,13 +21,12 @@ class SwiftStringClosureCall {
   }
 
   private fun createClosureCall(closure: Closure): String {
+    val name = closure.name
     val arguments = closure.arguments
         .mapIndexed { i, _ -> "result.$i" }
         .joinToString(", ")
-    var string = ""
-    if (!closure.returnValue.isEmpty()) {
-      string = "_ = "
-    }
-    return string + closure.name + "($arguments)"
+    val suppressWarning = if (!closure.returnValue.isEmpty()) "_ = " else ""
+    val optional = if (closure.isOptional) "?" else ""
+    return "$suppressWarning$name$optional($arguments)"
   }
 }
