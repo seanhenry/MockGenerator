@@ -13,11 +13,7 @@ class SwiftStringClosureCall {
 
   private fun callClosureInIfStatement(propertyName: String, closure: Closure): String {
     val closureCall = createClosureCall(closure)
-    return """
-        if let result = $propertyName {
-        $closureCall
-        }
-        """.trimIndent()
+    return "if let result = $propertyName {\n$closureCall\n}"
   }
 
   private fun createClosureCall(closure: Closure): String {

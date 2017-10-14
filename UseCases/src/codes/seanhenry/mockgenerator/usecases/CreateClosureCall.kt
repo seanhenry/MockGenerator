@@ -87,12 +87,58 @@ class CreateClosureCall {
     return result
   }
 
-  private fun extractClosureReturnValue(it: String): String {
-    return extractFirstClosureGroup(it.reversed(), true).reversed()
-  }
-
   private fun getIsOptional(it: String): Boolean {
     val trimmed = it.trim()
     return trimmed.endsWith(")?") || trimmed.endsWith(")!")
+  }
+
+  private fun extractClosureReturnValue(it: String): String {
+    return extractLastClosureGroup(it)
+  }
+
+  // Avian can't reverse strings so the algorithm must be duplicated :(
+
+//  private fun extractClosureReturnValue(it: String): String {
+//    return extractFirstClosureGroup(it.reversed(), true).reversed()
+//  }
+
+  private fun getLastParenthesesGroup(it: String): IntRange {
+    val reversed = true
+    val firstParenIndex = it.lastIndexOf(openParenthesis(reversed))
+    val firstClosure = it.lastIndexOf(closureMarker(false))
+    if (firstParenIndex == -1) {
+      return IntRange(0, 0)
+    } else if (firstClosure in firstParenIndex until it.length) {
+      return IntRange(firstClosure + closureMarker(false).length, it.length)
+    }
+    val endIndex = firstParenIndex // inclusive
+    var startIndex = firstParenIndex
+    var substring = it.substring(0, firstParenIndex + 1)
+    var parenDepth = 1
+    while (substring.length > 1) {
+      substring = substring.substring(0, substring.length-1)
+      if (substring.endsWith(openParenthesis(reversed))) {
+        parenDepth++
+      } else if (substring.endsWith(closedParenthesis(reversed))) {
+        parenDepth--
+        if (parenDepth == 0)
+          break
+      }
+      startIndex--
+    }
+    return IntRange(startIndex, endIndex)
+  }
+
+  private fun extractLastClosureGroup(it: String): String {
+    var result = it
+    do {
+      val range = getLastParenthesesGroup(result)
+      val isClosureGroup = result.substring(0, range.start).contains(closureMarker(false))
+      result = result.substring(range.start, range.endInclusive)
+      if (isClosureGroup) {
+        break
+      }
+    } while (range != IntRange(0, 0))
+    return result
   }
 }
