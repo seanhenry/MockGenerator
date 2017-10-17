@@ -4,7 +4,7 @@ import codes.seanhenry.mockgenerator.util.ClosureUtil
 import codes.seanhenry.mockgenerator.util.ParameterUtil
 import codes.seanhenry.mockgenerator.entities.Closure
 import codes.seanhenry.mockgenerator.entities.Parameter
-import kotlin.ranges.IntRange.Companion.EMPTY
+import codes.seanhenry.mockgenerator.util.GroupUtil
 
 class CreateClosureCall {
 
@@ -23,55 +23,25 @@ class CreateClosureCall {
         .filter { it.isNotEmpty() }
   }
 
-  private fun getFirstParenthesesGroup(it: String, reversed: Boolean = false): IntRange {
-    val firstParenIndex = it.indexOf(openParenthesis(reversed))
-    val firstClosure = it.indexOf(closureMarker(reversed))
-    if (firstParenIndex == -1) {
-      return EMPTY
-    } else if (firstClosure in 0 until firstParenIndex) {
-      return IntRange(0, firstClosure - 1)
-    }
-    val startIndex = firstParenIndex + 1
-    var endIndex = firstParenIndex // inclusive
-    var substring = it.substring(firstParenIndex)
-    var parenDepth = 1
-    do {
-      substring = substring.substring(1)
-      if (substring.startsWith(openParenthesis(reversed))) {
-        parenDepth++
-      } else if (substring.startsWith(closedParenthesis(reversed))) {
-        parenDepth--
-        if (parenDepth == 0)
-          break
-      }
-      endIndex++
-    } while (substring.length > 1)
-    return IntRange(startIndex, endIndex)
+  private fun extractFirstClosureGroup(it: String): String {
+    return it.substring(findClosureArgument(it))
   }
 
-  private fun openParenthesis(reversed: Boolean): Char {
-    return if (reversed) ')' else '('
+  private fun findClosureArgument(string: String): IntRange {
+    val groups = GroupUtil('(', ')').findGroups(string)
+    (0 until groups.size)
+        .mapNotNull { groups[it] }
+        .forEach { group ->
+          val isClosureGroup = string.substring(group.endInclusive).contains(closureMarker())
+          if (isClosureGroup) {
+            return stripParentheses(group)
+          }
+        }
+    return IntRange(0, string.lastIndex)
   }
 
-  private fun closedParenthesis(reversed: Boolean): Char {
-    return if (reversed) '(' else ')'
-  }
-
-  private fun closureMarker(reversed: Boolean): String {
-    return if (reversed) ">-" else "->"
-  }
-
-  private fun extractFirstClosureGroup(it: String, reversed: Boolean = false): String {
-    var result = it
-    do {
-      val range = getFirstParenthesesGroup(result, reversed)
-      val isClosureGroup = result.substring(range.endInclusive).contains(closureMarker(reversed))
-      result = result.substring(range)
-      if (isClosureGroup) {
-        break
-      }
-    } while (range != EMPTY)
-    return result
+  private fun closureMarker(): String {
+    return "->"
   }
 
   private fun toArguments(it: String): List<String> = it.split(",")
@@ -93,52 +63,20 @@ class CreateClosureCall {
   }
 
   private fun extractClosureReturnValue(it: String): String {
-    return extractLastClosureGroup(it)
+    val range = findClosureArgument(it)
+    val substring = it.substring(range.endInclusive + 1)
+    if (substring.isEmpty()) {
+      return substring
+    }
+    val returnRange = GroupUtil('(', ')').findGroups(substring)[0]
+    if (returnRange == null) {
+      return substring.substring(substring.indexOf(closureMarker()) + 2)
+    } else {
+      return substring.substring(stripParentheses(returnRange))
+    }
   }
 
-  // Avian can't reverse strings so the algorithm must be duplicated :(
-
-//  private fun extractClosureReturnValue(it: String): String {
-//    return extractFirstClosureGroup(it.reversed(), true).reversed()
-//  }
-
-  private fun getLastParenthesesGroup(it: String): IntRange {
-    val reversed = true
-    val firstParenIndex = it.lastIndexOf(openParenthesis(reversed))
-    val firstClosure = it.lastIndexOf(closureMarker(false))
-    if (firstParenIndex == -1) {
-      return IntRange(0, 0)
-    } else if (firstClosure in firstParenIndex until it.length) {
-      return IntRange(firstClosure + closureMarker(false).length, it.length)
-    }
-    val endIndex = firstParenIndex // inclusive
-    var startIndex = firstParenIndex
-    var substring = it.substring(0, firstParenIndex + 1)
-    var parenDepth = 1
-    while (substring.length > 1) {
-      substring = substring.substring(0, substring.length-1)
-      if (substring.endsWith(openParenthesis(reversed))) {
-        parenDepth++
-      } else if (substring.endsWith(closedParenthesis(reversed))) {
-        parenDepth--
-        if (parenDepth == 0)
-          break
-      }
-      startIndex--
-    }
-    return IntRange(startIndex, endIndex)
-  }
-
-  private fun extractLastClosureGroup(it: String): String {
-    var result = it
-    do {
-      val range = getLastParenthesesGroup(result)
-      val isClosureGroup = result.substring(0, range.start).contains(closureMarker(false))
-      result = result.substring(range.start, range.endInclusive)
-      if (isClosureGroup) {
-        break
-      }
-    } while (range != IntRange(0, 0))
-    return result
+  private fun stripParentheses(range: IntRange): IntRange {
+    return IntRange(range.start + 1, range.endInclusive - 1)
   }
 }
