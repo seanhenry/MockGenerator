@@ -1,14 +1,7 @@
 package codes.seanhenry.intentions;
 
-import codes.seanhenry.helpers.DefaultValueStore;
-import codes.seanhenry.helpers.KeywordsStore;
-import codes.seanhenry.mockgenerator.entities.PropertyDeclaration;
+import codes.seanhenry.mockgenerator.entities.ProtocolMethod;
 import codes.seanhenry.mockgenerator.entities.ProtocolProperty;
-import codes.seanhenry.mockgenerator.swift.SwiftStringImplicitValuePropertyDeclaration;
-import codes.seanhenry.mockgenerator.swift.SwiftStringIncrementAssignment;
-import codes.seanhenry.mockgenerator.swift.SwiftStringPropertyAssignment;
-import codes.seanhenry.mockgenerator.usecases.CreateInvocationCheck;
-import codes.seanhenry.mockgenerator.usecases.CreateInvocationCount;
 import codes.seanhenry.mockgenerator.util.*;
 import codes.seanhenry.mockgenerator.xcode.XcodeMockGenerator;
 import codes.seanhenry.util.*;
@@ -20,7 +13,6 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
-import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
 import com.jetbrains.cidr.xcode.model.PBXProjectFile;
@@ -35,45 +27,17 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class MockGeneratingIntention extends PsiElementBaseIntentionAction implements IntentionAction, ProjectComponent {
 
   private Editor editor;
   private SwiftClassDeclaration classDeclaration;
-  private SwiftFunctionDeclaration implementedFunction;
-  private SwiftFunctionDeclaration protocolFunction;
-    private DefaultValueStore defaultValueStore = new DefaultValueStore();
-    private final KeywordsStore keywordsStore = new KeywordsStore();
-  private String name = "";
-  private UniqueMethodNameGenerator methodNameGenerator;
-  private final StringDecorator stubMethodNameDecorator;
-  {
-    StringDecorator prependDecorator = new PrependStringDecorator(null, "stubbed");
-    stubMethodNameDecorator = new AppendStringDecorator(prependDecorator, "Result");
-  }
-  private final StringDecorator methodParametersNameDecorator;
-  {
-    StringDecorator prependDecorator = new PrependStringDecorator(null, "invoked");
-    methodParametersNameDecorator = new AppendStringDecorator(prependDecorator, "Parameters");
-  }
-  private final StringDecorator methodParametersListNameDecorator;
-  {
-    StringDecorator prependDecorator = new PrependStringDecorator(null, "invoked");
-    methodParametersListNameDecorator = new AppendStringDecorator(prependDecorator, "ParametersList");
-  }
-  private final StringDecorator stubbedClosureResultNameDecorator;
-  {
-    StringDecorator prependDecorator = new PrependStringDecorator(null, "stubbed");
-    stubbedClosureResultNameDecorator = new AppendStringDecorator(prependDecorator, "Result");
-  }
-
-  private String scope = "";
+  private XcodeMockGenerator generator;
 
   @Override
   public boolean isAvailable(@NotNull Project project, Editor editor, @NotNull PsiElement psiElement) {
-    SwiftClassDeclaration classDeclaration = PsiTreeUtil.getParentOfType(psiElement, SwiftClassDeclaration.class);
+    SwiftClassDeclaration classDeclaration = findClassUnderCaret(psiElement);
     return classDeclaration != null && isElementInTestTarget(psiElement, project);
   }
 
@@ -94,7 +58,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   @Override
   public void invoke(@NotNull Project project, Editor editor, @NotNull PsiElement psiElement) throws IncorrectOperationException {
     this.editor = editor;
-    classDeclaration = PsiTreeUtil.getParentOfType(psiElement, SwiftClassDeclaration.class);
+    classDeclaration = findClassUnderCaret(psiElement);
     if (classDeclaration == null) {
       showErrorMessage("Could not find a class to mock.");
       return;
@@ -108,11 +72,10 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     protocols = removeDuplicates(protocols);
     protocols = removeNSObjectProtocol(protocols);
     if (protocols.isEmpty()) {
-      showErrorMessage("Could not find a protocol reference.");
+      showErrorMessage("Could not find a protocol to mock.");
       return;
     }
     deleteClassStatements();
-    scope = getMockScope();
     List<SwiftVariableDeclaration> properties = protocols
       .stream()
       .flatMap(p -> getProtocolProperties(p).stream())
@@ -128,15 +91,28 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     addGenericParametersToClass(removeDuplicates(associatedTypes));
     methods = removeDuplicates(methods);
     properties = removeDuplicates(properties);
-    List<MethodModel> models = MockGeneratingIntention.getMethodModelsFromMethod(methods);
-    models.addAll(getMethodModelsFromProperties(properties));
-    methodNameGenerator = new UniqueMethodNameGenerator(models);
-    methodNameGenerator.generateMethodNames();
+    generator = new XcodeMockGenerator();
+    generator.setScope(getMockScope());
     addProtocolPropertiesToClass(properties);
-    addProtocolFunctionsToClass(methods);
+    addProtocolMethodsToClass(methods);
+    generateMock();
+  }
 
-    CodeStyleManager codeStyleManager = CodeStyleManager.getInstance(psiElement.getManager());
-    codeStyleManager.reformat(classDeclaration);
+  private SwiftClassDeclaration findClassUnderCaret(@NotNull PsiElement psiElement) {
+    return PsiTreeUtil.getParentOfType(psiElement, SwiftClassDeclaration.class);
+  }
+
+  private void generateMock() {
+    String propertiesString = generator.generate();
+    try {
+      PsiFile file = PsiFileFactory.getInstance(classDeclaration.getProject()).createFileFromText(SwiftLanguage.INSTANCE, propertiesString);
+      for (PsiElement child : file.getChildren()) {
+        appendInClass(child);
+      }
+    }
+    catch (PsiInvalidElementAccessException e) {
+      showErrorMessage("An unexpected error occurred: " + e.getMessage());
+    }
   }
 
   private String getMockScope() {
@@ -218,99 +194,37 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     return null;
   }
 
-  private void addProtocolFunctionsToClass(List<SwiftFunctionDeclaration> functions) {
-    for (SwiftFunctionDeclaration function : functions) {
-      protocolFunction = function;
-      implementedFunction = createImplementedFunction();
-      name = methodNameGenerator.getMethodName(getFunctionID(protocolFunction));
-      addInvokedCheckExpression();
-      addInvokedCountExpression();
-      addInvokedParameterExpressions();
-      addCallToClosure();
-      addReturnExpression();
-      addInvocationCheckVariable();
-      addInvocationCountVariable();
-      addInvokedParameterVariables();
-      addClosureResultVariables();
-      addReturnVariable();
-      appendInClass(implementedFunction);
-    }
-  }
-
-  private SwiftFunctionDeclaration createImplementedFunction() {
-    String name = getUnescapedProtocolFunctionName();
-    List<String> params = getParameterNames(protocolFunction, p -> constructParameter(p), false);
-    String literal = scope + "func " + name + "(";
-    literal += String.join(", ", params);
-    literal += ")";
-    if (protocolFunction.getFunctionResult() != null)
-      literal += " " + protocolFunction.getFunctionResult().getText();
-    literal += " { }";
-    return getElementFactory().createFunction(literal);
-  }
-
-  private String getUnescapedProtocolFunctionName() {
-    String name = protocolFunction.getName();
-    if (protocolFunction.getText().contains("`" + name + "`")) {
-      name = "`" + name + "`";
-    }
-    return name;
-  }
-    
-  private static String constructParameter(SwiftParameter parameter) {
-    List<String> labels = PsiTreeUtil.findChildrenOfAnyType(parameter, SwiftIdentifierPattern.class, SwiftWildcardPattern.class)
-      .stream()
-      .map(p -> p.getText())
-      .collect(Collectors.toList());
-    String labelString = String.join(" ", labels);
-    return labelString + ": " + MySwiftPsiUtil.getResolvedTypeName(parameter, false);
-  }
-
   private void addProtocolPropertiesToClass(List<SwiftVariableDeclaration> properties) {
-    XcodeMockGenerator generator = new XcodeMockGenerator();
-    generator.setScope(scope);
     for (SwiftVariableDeclaration property : properties) {
-      name = methodNameGenerator.getMethodName(getPropertyID(property));
+      String name = property.getVariables().get(0).getName();
       String type = PsiTreeUtil.findChildOfType(property, SwiftTypeElement.class).getText();
       boolean hasSetter = PsiTreeUtil.findChildOfType(property, SwiftSetterClause.class) != null;
       generator.add(new ProtocolProperty(name, type, hasSetter, property.getText()));
     }
-    String propertiesString = generator.generate();
-    try {
-      PsiFile file = PsiFileFactory.getInstance(classDeclaration.getProject()).createFileFromText(SwiftLanguage.INSTANCE, propertiesString);
-      for (PsiElement child : file.getChildren()) {
-        appendInClass(child);
+  }
+
+  private void addProtocolMethodsToClass(List<SwiftFunctionDeclaration> methods) { // TODO: rename to methods
+    for (SwiftFunctionDeclaration method : methods) {
+      String name = "";
+      if (method.getName() != null) {
+        name = method.getName();
       }
+      String returnType = null;
+      SwiftTypeElement returnObject = PsiTreeUtil.findChildOfType(method.getFunctionResult(), SwiftTypeElement.class);
+      if (returnObject != null) {
+        returnType = returnObject.getText();
+      }
+      String parameterString = "";
+      PsiElement parameterClause = method.getParameterClause();
+      if (parameterClause != null && parameterClause.getText().length() > 1) {
+        String parameterClauseText = parameterClause.getText();
+        parameterString = parameterClauseText.substring(1, parameterClauseText.length() - 1);
+      }
+      generator.add(new ProtocolMethod(name, returnType, parameterString, method.getText()));
     }
-    catch (PsiInvalidElementAccessException e) {
-      showErrorMessage("An unexpected error occurred: " + e.getMessage());
-    }
-  }
-
-  private SwiftVariableDeclaration createInvocationCheckDeclaration(String name) {
-    PropertyDeclaration invokedSetterCheck = new CreateInvocationCheck().transform(name);
-    String swiftString = new SwiftStringImplicitValuePropertyDeclaration().transform(invokedSetterCheck, "false");
-    return (SwiftVariableDeclaration)getElementFactory().createStatement(scope + swiftString);
-  }
-
-  private SwiftVariableDeclaration createInvocationCountDeclaration(String name) {
-    PropertyDeclaration declaration = new CreateInvocationCount().transform(name);
-    String swiftString = new SwiftStringImplicitValuePropertyDeclaration().transform(declaration, "0");
-    return (SwiftVariableDeclaration)getElementFactory().createStatement(scope + swiftString);
-  }
-
-  private static String createInvocationCheckAssignment(String name) {
-    PropertyDeclaration invokedSetterCheck = new CreateInvocationCheck().transform(name);
-    return new SwiftStringPropertyAssignment().transform(invokedSetterCheck, "true");
-  }
-
-  private static String createInvocationCountIncrementExpression(String name) {
-    PropertyDeclaration incrementExpression = new CreateInvocationCount().transform(name);
-    return new SwiftStringIncrementAssignment().transform(incrementExpression);
   }
 
   private void addGenericParametersToClass(List<SwiftAssociatedTypeDeclaration> associatedTypes) {
-
     if (associatedTypes.isEmpty()) {
       return;
     }
@@ -325,287 +239,12 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   }
 
   private void appendInClass(PsiElement element) {
-    appendInClass(element, true);
-  }
-
-  private void appendInClass(PsiElement element, boolean shouldAppend) {
-    if (shouldAppend) {
-      classDeclaration.addBefore(element, classDeclaration.getLastChild());
-    }
-  }
-
-  private void appendInImplementedFunction(PsiElement element) {
-    SwiftCodeBlock codeBlock = implementedFunction.getCodeBlock();
-    if (codeBlock != null && codeBlock.getLastChild() != null) {
-      implementedFunction.getCodeBlock().addBefore(element, codeBlock.getLastChild());
-    }
-  }
-
-  private void addInvocationCheckVariable() {
-    appendInClass(createInvocationCheckDeclaration(name));
-  }
-
-  private void addInvocationCountVariable() {
-    appendInClass(createInvocationCountDeclaration(name));
-  }
-
-  private void addInvokedParameterVariables() {
-    List<String> parameters = getParameterNames(protocolFunction, p -> {
-      String typeName = MySwiftPsiUtil.getResolvedTypeNameRemovingInout(p);
-      String name = getUnescapedParameterName(p) + ": " + typeName;
-      if (MySwiftPsiUtil.isOptional(p)) {
-        return name + "?";
-      }
-      return name;
-    }, true);
-    if (parameters.isEmpty()) {
-      return;
-    } else if (parameters.size() == 1) {
-      parameters.add("Void");
-    }
-    String variable = scope + "var " + createInvokedParametersName() + ": (" + String.join(", ", parameters) + ")?";
-    SwiftStatement statement = getElementFactory().createStatement(variable);
-    appendInClass(statement);
-
-    String listVariable = scope + "var " + createInvokedParametersListName() + " = [(" + String.join(", ", parameters) + ")]()";
-    SwiftStatement listStatement = getElementFactory().createStatement(listVariable);
-    appendInClass(listStatement);
-  }
-
-  private void addClosureResultVariables() {
-    List<SwiftParameter> parameters = getClosureParameters();
-    for (SwiftParameter parameter : parameters) {
-      String name = parameter.getName();
-      List<String> types = getClosureParameterTypes(parameter);
-      String variable = scope + "var " + createClosureResultName(name) + ": ";
-      if (types.isEmpty()) {
-        continue;
-      }
-      if (types.size() == 1) {
-        types.add("Void");
-      }
-
-      variable += "(" + String.join(", ", types) + ")?";
-      SwiftStatement statement = getElementFactory().createStatement(variable);
-      appendInClass(statement);
-    }
+    classDeclaration.addBefore(element, classDeclaration.getLastChild());
   }
 
   @NotNull
   private SwiftPsiElementFactory getElementFactory() {
     return SwiftPsiElementFactory.getInstance(classDeclaration);
-  }
-
-  private static List<String> getClosureParameterTypes(SwiftParameter parameter) {
-    SwiftFunctionTypeElement closure = MySwiftPsiUtil.findResolvedType(parameter, SwiftFunctionTypeElement.class);
-    SwiftTupleTypeElement firstTuple = PsiTreeUtil.findChildOfType(closure, SwiftTupleTypeElement.class);
-    return PsiTreeUtil.findChildrenOfType(firstTuple, SwiftTupleTypeItem.class).stream().map(t -> t.getTypeElement().getText())
-      .collect(Collectors.toList());
-  }
-
-  private void addReturnVariable() {
-    SwiftFunctionResult result = protocolFunction.getFunctionResult();
-    if (result == null) {
-      return;
-    }
-    String resultString = MySwiftPsiUtil.getResolvedTypeName(result);
-    if (isClosure(result) && !result.getTypeElement().getText().startsWith("((")) {
-      resultString = "(" + resultString + ")";
-    }
-    String name = createStubbedVariableName();
-    SwiftStatement variable = buildStubbedVariable(name, result.getTypeElement(), resultString);
-    appendInClass(variable);
-  }
-
-  private SwiftVariableDeclaration buildStubbedVariable(String name, SwiftTypeElement typeElement, String typeString) {
-    String defaultValueAssignment = "";
-    String defaultValue = defaultValueStore.getDefaultValue(typeElement);
-    if (defaultValue != null && !defaultValue.isEmpty()) {
-      defaultValueAssignment = " = " + defaultValue;
-    }
-    String literal = scope + "var " + name + ": " + typeString + "!" + defaultValueAssignment;
-    return (SwiftVariableDeclaration)getElementFactory().createStatement(literal);
-  }
-
-  private void addInvokedCheckExpression() {
-    SwiftExpression expression = getElementFactory().createExpression(createInvocationCheckAssignment(name), protocolFunction);
-    appendInImplementedFunction(expression);
-  }
-
-  private void addInvokedCountExpression() {
-    SwiftExpression expression = getElementFactory().createExpression(createInvocationCountIncrementExpression(name), protocolFunction);
-    appendInImplementedFunction(expression);
-  }
-
-  private void addInvokedParameterExpressions() {
-    List<String> parameters = getEscapedParameterNames(protocolFunction, PsiNamedElement::getName, true);
-    if (parameters.isEmpty()) {
-      return;
-    } else if (parameters.size() == 1) {
-      parameters.add("()");
-    }
-
-    String string = createInvokedParametersName() + " = (" + String.join(", ", parameters) + ")";
-    SwiftExpression expression = getElementFactory().createExpression(string, protocolFunction);
-    appendInImplementedFunction(expression);
-
-    string = createInvokedParametersListName() + ".append((" + String.join(", ", parameters) + "))";
-    expression = getElementFactory().createExpression(string, protocolFunction);
-    appendInImplementedFunction(expression);
-  }
-
-  private void addCallToClosure() {
-    for (SwiftParameter parameter : getClosureParameters()) {
-      int count = getClosureParameterTypes(parameter).size();
-      String name = parameter.getName();
-      String closureCall;
-      String optional = MySwiftPsiUtil.isOptional(parameter) ? "?" : "";
-      String suppressWarning = getSuppressWarningString(parameter);
-
-      if (count == 0) {
-        closureCall = suppressWarning + name + optional + "()";
-      } else {
-        closureCall = "if let result = " + createClosureResultName(name) + " {";
-        closureCall += suppressWarning + name + optional + "(";
-        closureCall += IntStream.range(0, count).mapToObj(i -> "result." + i).collect(Collectors.joining(","));
-        closureCall += ") }";
-      }
-      PsiElement statement = getElementFactory().createStatement(closureCall, protocolFunction);
-      appendInImplementedFunction(statement);
-    }
-  }
-
-  private static String getSuppressWarningString(SwiftParameter parameter) {
-    SwiftFunctionTypeElement closure = MySwiftPsiUtil.findResolvedType(parameter, SwiftFunctionTypeElement.class);
-    String suppressWarning = "";
-    if (closure != null && closure.getTypeElementList().size() > 1) {
-      SwiftTypeElement typeElement = closure.getTypeElementList().get(closure.getTypeElementList().size() - 1);
-      suppressWarning = MySwiftPsiUtil.isVoid(typeElement) ? "" : "_ = ";
-    }
-    return suppressWarning;
-  }
-
-  private void addReturnExpression() {
-    if (protocolFunction.getFunctionResult() == null) {
-      return;
-    }
-    SwiftStatement statement = getElementFactory().createStatement("return " + createStubbedVariableName());
-    appendInImplementedFunction(statement);
-  }
-
-  private String createClosureResultName(String name) {
-    return new PrependStringDecorator(stubbedClosureResultNameDecorator, protocolFunction.getName())
-      .process(name);
-  }
-
-  private String createStubbedVariableName() {
-    return stubMethodNameDecorator.process(name);
-  }
-
-  private String createInvokedParametersName() {
-    return methodParametersNameDecorator.process(name);
-  }
-
-  private String createInvokedParametersListName() {
-    return methodParametersListNameDecorator.process(name);
-  }
-
-  private List<String> getEscapedParameterNames(SwiftFunctionDeclaration function, Function<SwiftParameter, String> operation, boolean shouldRemoveClosures) {
-    return streamParameterNames(function, operation, shouldRemoveClosures)
-      .map(p -> escapeSwiftKeyword(p))
-      .collect(Collectors.toList());
-  }
-
-  private String escapeSwiftKeyword(String input) {
-    if (keywordsStore.isSwiftKeyword(input)) {
-      return "`" + input + "`";
-    }
-    return input;
-  }
-
-  private static List<String> getParameterNames(SwiftFunctionDeclaration function,
-                                                Function<SwiftParameter, String> operation,
-                                                boolean shouldRemoveClosures) {
-    return streamParameterNames(function, operation, shouldRemoveClosures)
-      .collect(Collectors.toList());
-  }
-
-  private static Stream<String> streamParameterNames(SwiftFunctionDeclaration function,
-                                                     Function<SwiftParameter, String> operation,
-                                                     boolean shouldRemoveClosures) {
-    Predicate<? super SwiftParameter> filter = p -> true;
-    if (shouldRemoveClosures) {
-      filter = p -> !isClosure(p);
-    }
-    return function.getParameterClause()
-        .getParameterList()
-        .stream()
-        .filter(filter)
-        .map(operation);
-  }
-
-  private String getUnescapedParameterName(SwiftParameter parameter) {
-    String name = parameter.getName();
-    if (parameter.getText().contains("`" + name + "`")) {
-      name = "`" + name + "`";
-    }
-    return name;
-  }
-
-  private List<SwiftParameter> getClosureParameters() {
-    return protocolFunction.getParameterClause()
-        .getParameterList()
-        .stream()
-        .filter(MockGeneratingIntention::isClosure)
-        .collect(Collectors.toList());
-  }
-
-  private static boolean isClosure(PsiElement parameter) {
-    return getClosure(parameter) != null;
-  }
-
-  private static SwiftFunctionTypeElement getClosure(PsiElement element) {
-    return MySwiftPsiUtil.findResolvedType(element, SwiftFunctionTypeElement.class);
-  }
-
-  private static List<MethodModel> getMethodModelsFromMethod(List<SwiftFunctionDeclaration> functions) {
-    return functions.stream()
-      .map(MockGeneratingIntention::toMethodModel)
-        .filter(Objects::nonNull)
-      .collect(Collectors.toList());
-  }
-
-  private static List<MethodModel> getMethodModelsFromProperties(List<SwiftVariableDeclaration> properties) {
-    return properties.stream()
-      .map(MockGeneratingIntention::toMethodModel)
-      .filter(Objects::nonNull)
-      .collect(Collectors.toList());
-  }
-
-  private static MethodModel toMethodModel(SwiftFunctionDeclaration function) {
-    return new MethodModel(
-      function.getName(),
-      getParameterNames(function, p -> toParameterLabel(p), false).toArray(new String[]{})
-    );
-  }
-
-  private static MethodModel toMethodModel(SwiftVariableDeclaration property) {
-    if (property.getVariables().isEmpty()) {
-      return null;
-    }
-    return new MethodModel(property.getVariables().get(0).getName(),"");
-  }
-
-  private static String toParameterLabel(SwiftParameter parameter) {
-    return parameter.getText();
-  }
-
-  private static String getFunctionID(SwiftFunctionDeclaration function) {
-    return toMethodModel(function).getId();
-  }
-
-  private static String getPropertyID(SwiftVariableDeclaration property) {
-    return toMethodModel(property).getId();
   }
 
   @Nls
