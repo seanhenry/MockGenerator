@@ -1,5 +1,6 @@
 package codes.seanhenry.mockgenerator.util
 
+import codes.seanhenry.mockgenerator.entities.Parameter
 import junit.framework.TestCase
 
 class MethodModelTests : TestCase() {
@@ -73,14 +74,12 @@ class MethodModelTests : TestCase() {
   fun testShouldIgnoreEmptyTypeWithNoColon() {
     model = MethodModel("method", "param0 ")
     assertEquals("method", model.nextPreferredName())
-    assertEquals("methodParam0", model.nextPreferredName())
     assertNull(model.nextPreferredName())
   }
 
-  fun testShouldChooseLabelWhenNoType() {
+  fun testShouldIgnoreParameterWhenNoType() {
     model = MethodModel("method", "label0 name0")
     assertEquals("method", model.nextPreferredName())
-    assertEquals("methodLabel0", model.nextPreferredName())
     assertNull(model.nextPreferredName())
   }
 
@@ -128,7 +127,7 @@ class MethodModelTests : TestCase() {
   }
 
   private fun createModel(parameterCount: Int) {
-    val parameters = (0 until parameterCount).map { "param$it: Type$it" }
+    val parameters = (0 until parameterCount).map { Parameter("param$it", "name$it", "Type$it", "param$it name$it: Type$it") }
     model = MethodModel("method", parameters)
   }
 

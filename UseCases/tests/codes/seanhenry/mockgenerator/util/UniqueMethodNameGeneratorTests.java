@@ -106,7 +106,7 @@ public class UniqueMethodNameGeneratorTests extends TestCase {
   public void test_shouldProcessOneLetterMethodNames() throws Exception {
     assertEquals(new MethodModel[]{
       new MethodModel("a", ""),
-      new MethodModel("a", "b")
+      new MethodModel("a", "b: Type")
     }, new String[]{
       "a",
       "aB",
@@ -133,7 +133,7 @@ public class UniqueMethodNameGeneratorTests extends TestCase {
     });
   }
 
-  public void test_shouldProcessIncompleteParameters() throws Exception {
+  public void test_shouldIgnoreIncompleteParameters() throws Exception {
     assertEquals(new MethodModel[]{
       new MethodModel("method", "_"),
       new MethodModel("method", "param1"),
@@ -141,9 +141,9 @@ public class UniqueMethodNameGeneratorTests extends TestCase {
       new MethodModel("method", ":Int")
     }, new String[]{
       "method",
-      "methodParam1",
-      "methodString",
-      "methodInt"
+      "method",
+      "method",
+      "method"
     });
   }
 

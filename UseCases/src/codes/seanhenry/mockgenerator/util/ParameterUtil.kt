@@ -63,12 +63,17 @@ class ParameterUtil {
     }
 
     private fun getType(components: List<String>): String {
-      return removeAnnotations(components.last()).trim()
+      val stripped = removeAnnotations(components.last()).trim()
+      return removeDefaultArguments(stripped)
     }
 
     private fun removeAnnotations(type: String): String {
       val removed = removeConventionAnnotation(type)
       return removeSimpleAnnotation(removed)
+    }
+
+    private fun removeDefaultArguments(type: String): String {
+      return type.split("=")[0].trim()
     }
 
     private fun removeConventionAnnotation(type: String): String {

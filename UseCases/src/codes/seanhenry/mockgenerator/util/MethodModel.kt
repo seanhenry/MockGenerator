@@ -1,8 +1,9 @@
 package codes.seanhenry.mockgenerator.util
 
+import codes.seanhenry.mockgenerator.entities.Parameter
 import java.util.Arrays
 
-class MethodModel(private val methodName: String, paramLabels: List<String>) {
+class MethodModel(private val methodName: String, paramLabels: List<Parameter>) {
 
   internal class NameTypeTuple(val name: String, val type: String)
 
@@ -32,10 +33,16 @@ class MethodModel(private val methodName: String, paramLabels: List<String>) {
         .filter { isTypeValid(it) }
 
   init {
-    namesAndTypes = paramLabels.map { NameTypeTuple(getLabel(it), getType(it)) }
+
+
+    namesAndTypes = paramLabels.map { NameTypeTuple(it.label, removeSpecialCharacters(it.type)) }
   }
 
-  constructor(methodName: String, vararg paramLabels: String) : this(methodName, Arrays.asList<String>(*paramLabels))
+  private fun removeSpecialCharacters(type: String): String {
+    return type.replace(Regex("\\W"), "")
+  }
+
+  constructor(methodName: String, vararg paramLabels: String) : this(methodName, ParameterUtil.getParameters(paramLabels.joinToString(", ")))
 
   fun nextPreferredName(): String? {
     if (!hasNextPreferredName()) {
@@ -90,21 +97,5 @@ class MethodModel(private val methodName: String, paramLabels: List<String>) {
       return param.substring(0, 1).toUpperCase() + param.substring(1)
     }
     return param.toUpperCase()
-  }
-
-  private fun getType(param: String): String {
-    val components = param.replace(" ", "")
-        .split(":")
-    if (components.size > 1) {
-      return components[1].split("=")[0]
-          .replace(Regex("\\W"), "")
-    }
-    return ""
-  }
-
-  private fun getLabel(param: String): String {
-    val labelString = param.split(":")[0]
-    val labels = labelString.trim().split(" ")
-    return labels[0]
   }
 }

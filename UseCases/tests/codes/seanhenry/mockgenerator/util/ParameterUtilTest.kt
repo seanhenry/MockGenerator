@@ -133,6 +133,23 @@ class ParameterUtilTest: TestCase() {
     )
   }
 
+  fun testShouldIgnoreDefaultValues() {
+    assertParameter("label0",
+        "name0",
+        "Type0",
+        "label0 name0: Type0 = \"Something\"",
+        "label0 name0: Type0 = \"Something\", label1 name1: Type1 = 0",
+        0
+    )
+    assertParameter("label1",
+        "name1",
+        "Type1",
+        "label1 name1: Type1 = 0",
+        "label0 name0: Type0 = \"Something\", label1 name1: Type1 = 0",
+        1
+    )
+  }
+
   private fun assertParameter(expectedLabel: String, expectedName: String, expectedType: String, expectedText: String, parameters: String, index: Int = 0) {
     val parameter = ParameterUtil.getParameters(parameters)[index]
     assertEquals(expectedLabel, parameter.label)

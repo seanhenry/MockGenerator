@@ -58,7 +58,7 @@ class XcodeMockGenerator {
   }
 
   private fun toMethodModel(method: ProtocolMethod): MethodModel {
-    return MethodModel(method.name, method.parameterList)
+    return MethodModel(method.name, method.parametersList)
   }
 
   private fun toMethodModel(property: ProtocolProperty): MethodModel {
@@ -161,9 +161,9 @@ class XcodeMockGenerator {
       val name = nameGenerator.getMethodName(toMethodModel(method).id)
       val invocationCheck = CreateInvocationCheck().transform(name)
       val invocationCount = CreateInvocationCount().transform(name)
-      val invokedParameters = CreateInvokedParameters().transform(name, method.parameterList)
-      val invokedParametersList = CreateInvokedParametersList().transform(name, method.parameterList)
-      val closures = CreateClosureCall().transform(ParameterUtil.getParameters(method.parameters))
+      val invokedParameters = CreateInvokedParameters().transform(name, method.parametersList)
+      val invokedParametersList = CreateInvokedParametersList().transform(name, method.parametersList)
+      val closures = CreateClosureCall().transform(method.parametersList)
       val closureProperties = closures.map { CreateClosureResultPropertyDeclaration().transform(name, it) }
       val closureCalls = closureProperties.zip(closures)
       val returnStub = createReturnStub(method, name)

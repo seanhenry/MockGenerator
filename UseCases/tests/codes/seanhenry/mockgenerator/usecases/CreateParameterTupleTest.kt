@@ -1,7 +1,7 @@
 package codes.seanhenry.mockgenerator.usecases
 
-import codes.seanhenry.mockgenerator.entities.ProtocolMethod
 import codes.seanhenry.mockgenerator.entities.TuplePropertyDeclaration
+import codes.seanhenry.mockgenerator.util.ParameterUtil
 import junit.framework.TestCase
 
 class CreateParameterTupleTest: TestCase() {
@@ -55,16 +55,6 @@ class CreateParameterTupleTest: TestCase() {
     assertTuple("(name1: Int, name2: String)", parameters, "label1 name1: Int, label2 name2: String")
   }
 
-  fun testShouldReturnNull_whenParameterIsMissingAType() {
-    val property = transformParameters("label1 name1, label2 name2: String")
-    assertNull(property)
-  }
-
-  fun testShouldReturnNull_whenParameterIsMissingALabel() {
-    val property = transformParameters(":String, label2 name2: String")
-    assertNull(property)
-  }
-
   fun testShouldHandleWhitespace() {
     val parameters = arrayOf(
         TuplePropertyDeclaration.TupleParameter("name1", "Int"),
@@ -74,7 +64,7 @@ class CreateParameterTupleTest: TestCase() {
   }
 
   fun testShouldHandleNewlines() {
-    var methodParameters = """
+    val methodParameters = """
         label1
         name1
         :
@@ -126,7 +116,7 @@ class CreateParameterTupleTest: TestCase() {
     assertTuple("(param0: Int, inout: Int)", parameters, "param0: inout Int, inout: Int")
   }
 
-  private fun transformParameters(parameters: String) = CreateInvokedParameters().transform("name", ProtocolMethod("", null, parameters, "").parameterList)
+  private fun transformParameters(parameters: String) = CreateInvokedParameters().transform("name", ParameterUtil.getParameters(parameters))
 
   private fun assertTuple(expectedType: String, expectedParameters: Array<TuplePropertyDeclaration.TupleParameter>, methodParameters: String) {
     val property = transformParameters(methodParameters)

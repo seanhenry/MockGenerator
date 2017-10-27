@@ -27,7 +27,7 @@ public class MockGeneratingIntentionTest extends ImportProjectTestCase {
       "OptionalProtocol",
       "OverloadProtocol",
       "PropertyProtocol",
-//      "ClosureProtocol",
+      "ClosureProtocol",
       "RecursiveProtocol",
       "MultipleProtocol",
       "DeepInheritance",
