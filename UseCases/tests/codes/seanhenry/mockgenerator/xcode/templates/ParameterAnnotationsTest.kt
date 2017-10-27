@@ -9,7 +9,7 @@ class ParameterAnnotationsTest : MockGeneratorTestTemplate {
   override fun build(generator: XcodeMockGenerator) {
     generator.add(
         ProtocolMethod("escaping", null, "closure: @escaping () -> ()", "func escaping(closure: @escaping () -> ())"),
-//      ProtocolMethod("inOut", null, "var1: inout Int", "func inOut(var1: inout Int)"),
+        ProtocolMethod("inOut", null, "var1: inout Int", "func inOut(var1: inout Int)"),
         ProtocolMethod("autoclosure", null, "closure: @autoclosure () -> ()", "func autoclosure(closure: @autoclosure () -> ())"),
         ProtocolMethod("convention", null, "closure: @convention(swift) () -> ()", "func convention(closure: @convention(swift) () -> ())")
     )
@@ -23,6 +23,16 @@ class ParameterAnnotationsTest : MockGeneratorTestTemplate {
     invokedEscaping = true
     invokedEscapingCount += 1
     closure()
+    }
+    var invokedInOut = false
+    var invokedInOutCount = 0
+    var invokedInOutParameters: (var1: Int, Void)?
+    var invokedInOutParametersList = [(var1: Int, Void)]()
+    func inOut(var1: inout Int) {
+    invokedInOut = true
+    invokedInOutCount += 1
+    invokedInOutParameters = (var1, ())
+    invokedInOutParametersList.append((var1, ()))
     }
     var invokedAutoclosure = false
     var invokedAutoclosureCount = 0
@@ -41,13 +51,3 @@ class ParameterAnnotationsTest : MockGeneratorTestTemplate {
     """.trimIndent()
   }
 }
-//    var invokedInOut = false
-//    var invokedInOutCount = 0
-//    var invokedInOutParameters: (var1: Int, Void)?
-//    var invokedInOutParametersList = [(var1: Int, Void)]()
-//    func inOut(var1: inout Int) {
-//    invokedInOut = true
-//    invokedInOutCount += 1
-//    invokedInOutParameters = (var1, ())
-//    invokedInOutParametersList.append((var1, ()))
-//    }

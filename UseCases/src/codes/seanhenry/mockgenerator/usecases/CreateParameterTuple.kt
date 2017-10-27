@@ -46,12 +46,21 @@ abstract class CreateParameterTuple {
     }
     val name = getTupleParameterName(split) ?: return null
     val type = split[1].trim()
-    return TuplePropertyDeclaration.TupleParameter(name.trim(), replaceIUO(type))
+    return TuplePropertyDeclaration.TupleParameter(name.trim(), removeInOut(replaceIUO(type)))
   }
 
   private fun replaceIUO(type: String): String {
     if (type.endsWith("!")) {
       return type.removeSuffix("!") + "?"
+    }
+    return type
+  }
+
+  private fun removeInOut(type: String): String {
+    val inout = "inout "
+    val index = type.indexOf(inout)
+    if (index >= 0) {
+      return type.substring(index + inout.length)
     }
     return type
   }

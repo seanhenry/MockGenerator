@@ -118,6 +118,14 @@ class CreateParameterTupleTest: TestCase() {
     assertTuple("(param0: String?, Void)", parameters, "param0: String!")
   }
 
+  fun testShouldRemoveInOut() {
+    val parameters = arrayOf(
+        TuplePropertyDeclaration.TupleParameter("param0", "Int"),
+        TuplePropertyDeclaration.TupleParameter("inout", "Int")
+    )
+    assertTuple("(param0: Int, inout: Int)", parameters, "param0: inout Int, inout: Int")
+  }
+
   private fun transformParameters(parameters: String) = CreateInvokedParameters().transform("name", ProtocolMethod("", null, parameters, "").parameterList)
 
   private fun assertTuple(expectedType: String, expectedParameters: Array<TuplePropertyDeclaration.TupleParameter>, methodParameters: String) {
