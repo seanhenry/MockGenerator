@@ -2,7 +2,6 @@ package codes.seanhenry.intentions;
 
 import codes.seanhenry.mockgenerator.entities.ProtocolMethod;
 import codes.seanhenry.mockgenerator.entities.ProtocolProperty;
-import codes.seanhenry.mockgenerator.util.*;
 import codes.seanhenry.mockgenerator.xcode.XcodeMockGenerator;
 import codes.seanhenry.util.*;
 import com.intellij.codeInsight.hint.HintManager;
@@ -22,12 +21,9 @@ import com.jetbrains.swift.SwiftLanguage;
 import com.jetbrains.swift.psi.*;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class MockGeneratingIntention extends PsiElementBaseIntentionAction implements IntentionAction, ProjectComponent {
 
@@ -68,33 +64,19 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
       showErrorMessage("Mock class does not inherit from anything.");
       return;
     }
-    List<SwiftProtocolDeclaration> protocols = getResolvedProtocols(classDeclaration);
-    protocols = removeDuplicates(protocols);
-    protocols = removeNSObjectProtocol(protocols);
-    if (protocols.isEmpty()) {
+    ProtocolItemFinder protocolItemFinder = new ProtocolItemFinder();
+    protocolItemFinder.findItems(classDeclaration);
+    if (protocolItemFinder.getProtocols().isEmpty()) {
       showErrorMessage("Could not find a protocol to mock.");
       return;
     }
     deleteClassStatements();
-    List<SwiftVariableDeclaration> properties = protocols
-      .stream()
-      .flatMap(p -> getProtocolProperties(p).stream())
-      .collect(Collectors.toList());
-    List<SwiftFunctionDeclaration> methods = protocols
-      .stream()
-      .flatMap(p -> getProtocolMethods(p).stream())
-      .collect(Collectors.toList());
-    List<SwiftAssociatedTypeDeclaration> associatedTypes = protocols
-      .stream()
-      .flatMap(p -> getProtocolAssociatedTypes(p).stream())
-      .collect(Collectors.toList());
-    addGenericParametersToClass(removeDuplicates(associatedTypes));
-    methods = removeDuplicates(methods);
-    properties = removeDuplicates(properties);
+    new AssociatedTypeGenericConverter(classDeclaration)
+        .convert(protocolItemFinder.getProtocols());
     generator = new XcodeMockGenerator();
     generator.setScope(getMockScope());
-    addProtocolPropertiesToClass(properties);
-    addProtocolMethodsToClass(methods);
+    addProtocolPropertiesToClass(protocolItemFinder.getProperties());
+    addProtocolMethodsToClass(protocolItemFinder.getMethods());
     generateMock();
   }
 
@@ -117,19 +99,11 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
 
   private String getMockScope() {
     if (classDeclaration.getAttributes().getText().contains("public")) {
-      return "public ";
+      return "public";
     } else if (classDeclaration.getAttributes().getText().contains("open")) {
-      return "open ";
+      return "open";
     }
     return "";
-  }
-
-  private static List<SwiftProtocolDeclaration> removeNSObjectProtocol(List<SwiftProtocolDeclaration> protocols) {
-    return protocols.stream().filter(p -> !Objects.equals(p.getName(), "NSObjectProtocol")).collect(Collectors.toList());
-  }
-
-  private static <T> List<T> removeDuplicates(List<T> list) {
-    return new ArrayList<>(new LinkedHashSet<>(list));
   }
 
   private void showErrorMessage(String message) {
@@ -142,58 +116,6 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     }
   }
 
-  private static List<SwiftFunctionDeclaration> getProtocolMethods(PsiElement protocol) {
-    ElementGatheringVisitor<SwiftFunctionDeclaration> visitor = new ElementGatheringVisitor<>(SwiftFunctionDeclaration.class);
-    protocol.accept(visitor);
-    return visitor.getElements();
-  }
-
-  private static List<SwiftVariableDeclaration> getProtocolProperties(PsiElement protocol) {
-    ElementGatheringVisitor<SwiftVariableDeclaration> visitor = new ElementGatheringVisitor<>(SwiftVariableDeclaration.class);
-    protocol.accept(visitor);
-    return visitor.getElements();
-  }
-
-  private static List<SwiftAssociatedTypeDeclaration> getProtocolAssociatedTypes(PsiElement protocol) {
-    ElementGatheringVisitor<SwiftAssociatedTypeDeclaration> visitor = new ElementGatheringVisitor<>(SwiftAssociatedTypeDeclaration.class);
-    protocol.accept(visitor);
-    return visitor.getElements();
-  }
-
-  private List<SwiftProtocolDeclaration> getResolvedProtocols(SwiftTypeDeclaration typeDeclaration) {
-    SwiftTypeInheritanceClause inheritanceClause = typeDeclaration.getTypeInheritanceClause();
-    if (inheritanceClause == null) {
-      return Collections.emptyList();
-    }
-    List<SwiftProtocolDeclaration> results = inheritanceClause.getReferenceTypeElementList()
-      .stream()
-      .map(this::getResolvedProtocol)
-      .filter(Objects::nonNull)
-      .collect(Collectors.toList());
-    results.addAll(results
-      .stream()
-      .flatMap(p -> getResolvedProtocols(p).stream())
-      .collect(Collectors.toList()));
-    return results;
-  }
-
-  private SwiftProtocolDeclaration getResolvedProtocol(SwiftReferenceTypeElement reference) {
-    PsiElement element = reference.resolve();
-    if (element == null) {
-      showErrorMessage("The protocol '" + reference.getName() + "' could not be found.");
-      return null;
-    }
-    if (element instanceof SwiftProtocolDeclaration) {
-      return (SwiftProtocolDeclaration) element;
-    } else if (element instanceof SwiftClassDeclaration
-        && "NSObject".equals(((SwiftClassDeclaration)element).getName())) {
-      // ignore NSObject
-    } else {
-      showErrorMessage("This plugin currently only supports protocols.");
-    }
-    return null;
-  }
-
   private void addProtocolPropertiesToClass(List<SwiftVariableDeclaration> properties) {
     for (SwiftVariableDeclaration property : properties) {
       String name = property.getVariables().get(0).getName();
@@ -203,48 +125,48 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     }
   }
 
-  private void addProtocolMethodsToClass(List<SwiftFunctionDeclaration> methods) { // TODO: rename to methods
+  private void addProtocolMethodsToClass(List<SwiftFunctionDeclaration> methods) {
     for (SwiftFunctionDeclaration method : methods) {
-      String name = "";
-      if (method.getName() != null) {
-        name = method.getName();
-      }
-      String returnType = null;
-      SwiftTypeElement returnObject = PsiTreeUtil.findChildOfType(method.getFunctionResult(), SwiftTypeElement.class);
-      if (returnObject != null) {
-        returnType = returnObject.getText();
-      }
-      String parameterString = "";
-      PsiElement parameterClause = method.getParameterClause();
-      if (parameterClause != null && parameterClause.getText().length() > 1) {
-        String parameterClauseText = parameterClause.getText();
-        parameterString = parameterClauseText.substring(1, parameterClauseText.length() - 1);
-      }
-      generator.add(new ProtocolMethod(name, returnType, parameterString, method.getText()));
+      generator.add(new ProtocolMethod(
+          getName(method),
+          getReturnType(method),
+          getParameterString(method),
+          method.getText()
+      ));
     }
   }
 
-  private void addGenericParametersToClass(List<SwiftAssociatedTypeDeclaration> associatedTypes) {
-    if (associatedTypes.isEmpty()) {
-      return;
+  @NotNull
+  private String getParameterString(SwiftFunctionDeclaration method) {
+    String parameterString = "";
+    PsiElement parameterClause = method.getParameterClause();
+    if (parameterClause != null && parameterClause.getText().length() > 1) {
+      String parameterClauseText = parameterClause.getText();
+      parameterString = parameterClauseText.substring(1, parameterClauseText.length() - 1);
     }
-    if (classDeclaration.getGenericParameterClause() != null) {
-      classDeclaration.getGenericParameterClause().delete();
+    return parameterString;
+  }
+
+  @Nullable
+  private String getReturnType(SwiftFunctionDeclaration method) {
+    String returnType = null;
+    SwiftTypeElement returnObject = PsiTreeUtil.findChildOfType(method.getFunctionResult(), SwiftTypeElement.class);
+    if (returnObject != null) {
+      returnType = returnObject.getText();
     }
-    String literal = "<";
-    literal += associatedTypes.stream().map(PsiNamedElement::getName).collect(Collectors.joining(", "));
-    literal += ">";
-    SwiftStatement statement = getElementFactory().createStatement(literal);
-    classDeclaration.addBefore(statement, classDeclaration.getTypeInheritanceClause());
+    return returnType;
+  }
+
+  private String getName(SwiftFunctionDeclaration method) {
+    String name = "";
+    if (method.getName() != null) {
+      name = method.getName();
+    }
+    return name;
   }
 
   private void appendInClass(PsiElement element) {
     classDeclaration.addBefore(element, classDeclaration.getLastChild());
-  }
-
-  @NotNull
-  private SwiftPsiElementFactory getElementFactory() {
-    return SwiftPsiElementFactory.getInstance(classDeclaration);
   }
 
   @Nls
