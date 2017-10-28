@@ -1,9 +1,6 @@
 package codes.seanhenry.intentions;
 
-import codes.seanhenry.mockgenerator.entities.Parameter;
-import codes.seanhenry.mockgenerator.entities.ProtocolMethod;
-import codes.seanhenry.mockgenerator.entities.ProtocolProperty;
-import codes.seanhenry.mockgenerator.util.ParameterUtil;
+import codes.seanhenry.generator.ProtocolItemTransformer;
 import codes.seanhenry.mockgenerator.xcode.XcodeMockGenerator;
 import codes.seanhenry.util.*;
 import com.intellij.codeInsight.hint.HintManager;
@@ -23,20 +20,21 @@ import com.jetbrains.swift.SwiftLanguage;
 import com.jetbrains.swift.psi.*;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
 public class MockGeneratingIntention extends PsiElementBaseIntentionAction implements IntentionAction, ProjectComponent {
 
-  private Editor editor;
   private SwiftClassDeclaration classDeclaration;
-  private XcodeMockGenerator generator;
 
   @Override
   public boolean isAvailable(@NotNull Project project, Editor editor, @NotNull PsiElement psiElement) {
     SwiftClassDeclaration classDeclaration = findClassUnderCaret(psiElement);
     return classDeclaration != null && isElementInTestTarget(psiElement, project);
+  }
+
+  private SwiftClassDeclaration findClassUnderCaret(@NotNull PsiElement psiElement) {
+    return PsiTreeUtil.getParentOfType(psiElement, SwiftClassDeclaration.class);
   }
 
   private static boolean isElementInTestTarget(PsiElement element, Project project) {
@@ -55,47 +53,18 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
 
   @Override
   public void invoke(@NotNull Project project, Editor editor, @NotNull PsiElement psiElement) throws IncorrectOperationException {
-    this.editor = editor;
     classDeclaration = findClassUnderCaret(psiElement);
-    if (classDeclaration == null) {
-      showErrorMessage("Could not find a class to mock.");
-      return;
-    }
-    SwiftTypeInheritanceClause inheritanceClause = classDeclaration.getTypeInheritanceClause();
-    if (inheritanceClause == null) {
-      showErrorMessage("Mock class does not inherit from anything.");
-      return;
-    }
-    ProtocolItemFinder protocolItemFinder = new ProtocolItemFinder();
-    protocolItemFinder.findItems(classDeclaration);
-    if (protocolItemFinder.getProtocols().isEmpty()) {
-      showErrorMessage("Could not find a protocol to mock.");
-      return;
-    }
-    deleteClassStatements();
-    new AssociatedTypeGenericConverter(classDeclaration)
-        .convert(protocolItemFinder.getProtocols());
-    generator = new XcodeMockGenerator();
+    XcodeMockGenerator generator = new XcodeMockGenerator();
     generator.setScope(getMockScope());
-    addProtocolPropertiesToClass(protocolItemFinder.getProperties());
-    addProtocolMethodsToClass(protocolItemFinder.getMethods());
-    generateMock();
-  }
-
-  private SwiftClassDeclaration findClassUnderCaret(@NotNull PsiElement psiElement) {
-    return PsiTreeUtil.getParentOfType(psiElement, SwiftClassDeclaration.class);
-  }
-
-  private void generateMock() {
-    String propertiesString = generator.generate();
+    ProtocolItemFinder protocolItemFinder;
     try {
-      PsiFile file = PsiFileFactory.getInstance(classDeclaration.getProject()).createFileFromText(SwiftLanguage.INSTANCE, propertiesString);
-      for (PsiElement child : file.getChildren()) {
-        appendInClass(child);
-      }
-    }
-    catch (PsiInvalidElementAccessException e) {
-      showErrorMessage("An unexpected error occurred: " + e.getMessage());
+      protocolItemFinder = getProtocolItemFinder();
+      transformProtocolItems(protocolItemFinder, generator);
+      deleteClassStatements();
+      addGenericClauseToMock(protocolItemFinder);
+      generateMock(generator);
+    } catch (Exception e) {
+      showErrorMessage(e.getMessage(), editor);
     }
   }
 
@@ -108,8 +77,43 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     return "";
   }
 
-  private void showErrorMessage(String message) {
-    HintManager.getInstance().showErrorHint(editor, message);
+  private ProtocolItemFinder getProtocolItemFinder() throws Exception {
+    validateClass();
+    validateInheritedProtocol();
+    return validateProtocolItems();
+  }
+
+  private void validateClass() throws Exception {
+    if (classDeclaration == null) {
+      throw new Exception("Could not find a class to mock.");
+    }
+  }
+
+  private void validateInheritedProtocol() throws Exception {
+    SwiftTypeInheritanceClause inheritanceClause = classDeclaration.getTypeInheritanceClause();
+    if (inheritanceClause == null) {
+      throw new Exception("Mock class does not inherit from anything.");
+    }
+  }
+
+  @NotNull
+  private ProtocolItemFinder validateProtocolItems() throws Exception {
+    ProtocolItemFinder protocolItemFinder = new ProtocolItemFinder();
+    protocolItemFinder.findItems(classDeclaration);
+    if (protocolItemFinder.getProtocols().isEmpty()) {
+      throw new Exception("Could not find a protocol to mock.");
+    }
+    return protocolItemFinder;
+  }
+
+  private void transformProtocolItems(ProtocolItemFinder protocolItemFinder, XcodeMockGenerator generator) throws Exception {
+    new ProtocolItemTransformer(protocolItemFinder, generator)
+        .transform();
+  }
+
+  private void addGenericClauseToMock(ProtocolItemFinder protocolItemFinder) {
+    new AssociatedTypeGenericConverter(classDeclaration)
+        .convert(protocolItemFinder.getProtocols());
   }
 
   private void deleteClassStatements() {
@@ -118,81 +122,25 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     }
   }
 
-  private void addProtocolPropertiesToClass(List<SwiftVariableDeclaration> properties) {
-    for (SwiftVariableDeclaration property : properties) {
-      String name = property.getVariables().get(0).getName();
-      String type = PsiTreeUtil.findChildOfType(property, SwiftTypeElement.class).getText();
-      boolean hasSetter = PsiTreeUtil.findChildOfType(property, SwiftSetterClause.class) != null;
-      generator.add(new ProtocolProperty(name, type, hasSetter, property.getText()));
-    }
-  }
-
-  private void addProtocolMethodsToClass(List<SwiftFunctionDeclaration> methods) {
-    for (SwiftFunctionDeclaration method : methods) {
-      generator.add(new ProtocolMethod(
-          getName(method),
-          getReturnType(method),
-          getParameters(method),
-          method.getText()
-      ));
-    }
-  }
-
-  @NotNull
-  private List<Parameter> getParameters(SwiftFunctionDeclaration method) {
-    ArrayList<Parameter> parameters = new ArrayList<>();
-    SwiftParameterClause parameterClause = method.getParameterClause();
-    if (parameterClause != null && parameterClause.getText().length() > 1) {
-      for (SwiftParameter p : parameterClause.getParameterList()) {
-        parameters.add(transformParameter(p));
+  private void generateMock(XcodeMockGenerator generator) throws Exception {
+    String propertiesString = generator.generate();
+    try {
+      PsiFile file = PsiFileFactory.getInstance(classDeclaration.getProject()).createFileFromText(SwiftLanguage.INSTANCE, propertiesString);
+      for (PsiElement child : file.getChildren()) {
+        appendInClass(child);
       }
     }
-    return parameters;
-  }
-
-  @NotNull
-  private Parameter transformParameter(SwiftParameter parameter) {
-    Parameter p = ParameterUtil.Companion.getParameters(parameter.getText()).get(0);
-    return new Parameter(
-        p.getLabel(),
-        p.getName(),
-        p.getType(),
-        getResolvedType(parameter, p.getType()),
-        p.getText()
-    );
-  }
-
-  private String getResolvedType(SwiftParameter parameter, String type) {
-    SwiftReferenceTypeElement reference = PsiTreeUtil.findChildOfType(parameter.getTypeAnnotation(), SwiftReferenceTypeElement.class);
-    if (reference != null) {
-      PsiElement resolved = reference.resolve();
-      if (resolved instanceof SwiftTypeAliasDeclaration) {
-        return ((SwiftTypeAliasDeclaration)resolved).getTypeAssignment().getTypeElement().getText();
-      }
+    catch (PsiInvalidElementAccessException e) {
+      throw new Exception("An unexpected error occurred: " + e.getMessage());
     }
-    return type;
-  }
-
-  @Nullable
-  private String getReturnType(SwiftFunctionDeclaration method) {
-    String returnType = null;
-    SwiftTypeElement returnObject = PsiTreeUtil.findChildOfType(method.getFunctionResult(), SwiftTypeElement.class);
-    if (returnObject != null) {
-      returnType = returnObject.getText();
-    }
-    return returnType;
-  }
-
-  private String getName(SwiftFunctionDeclaration method) {
-    String name = "";
-    if (method.getName() != null) {
-      name = method.getName();
-    }
-    return name;
   }
 
   private void appendInClass(PsiElement element) {
     classDeclaration.addBefore(element, classDeclaration.getLastChild());
+  }
+
+  private void showErrorMessage(String message, Editor editor) {
+    HintManager.getInstance().showErrorHint(editor, message);
   }
 
   @Nls
