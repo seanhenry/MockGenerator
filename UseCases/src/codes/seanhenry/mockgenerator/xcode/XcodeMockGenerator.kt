@@ -31,12 +31,20 @@ class XcodeMockGenerator {
   }
 
   fun add(vararg methods: ProtocolMethod) {
+    addMethods(listOf(*methods))
+  }
+
+  fun add(vararg properties: ProtocolProperty) {
+    addProperties(listOf(*properties))
+  }
+
+  fun addMethods(methods: List<ProtocolMethod>) {
     for (method in methods) {
       this.methods.add(method)
     }
   }
 
-  fun add(vararg properties: ProtocolProperty) {
+  fun addProperties(properties: List<ProtocolProperty>) {
     for (property in properties) {
       this.properties.add(property)
     }

@@ -1,11 +1,10 @@
-package codes.seanhenry.generator;
+package codes.seanhenry.transformer;
 
 import codes.seanhenry.mockgenerator.entities.Parameter;
 import codes.seanhenry.mockgenerator.entities.ProtocolMethod;
 import codes.seanhenry.mockgenerator.entities.ProtocolProperty;
 import codes.seanhenry.mockgenerator.util.ParameterUtil;
-import codes.seanhenry.mockgenerator.xcode.XcodeMockGenerator;
-import codes.seanhenry.util.ProtocolItemFinder;
+import codes.seanhenry.util.SwiftTypeItemFinder;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.jetbrains.swift.psi.*;
@@ -15,33 +14,35 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProtocolItemTransformer {
+public class SwiftTypeTransformer {
 
-  private final ProtocolItemFinder protocolItemFinder;
-  private XcodeMockGenerator generator;
+  private final SwiftTypeItemFinder itemFinder;
+  private final List<ProtocolMethod> methods;
+  private final List<ProtocolProperty> properties;
 
-  public ProtocolItemTransformer(ProtocolItemFinder protocolItemFinder, XcodeMockGenerator generator) {
-    this.protocolItemFinder = protocolItemFinder;
-    this.generator = generator;
+  public SwiftTypeTransformer(SwiftTypeItemFinder itemFinder) {
+    this.itemFinder = itemFinder;
+    methods = new ArrayList<>();
+    properties = new ArrayList<>();
   }
 
   public void transform() {
-    addProtocolPropertiesToClass(protocolItemFinder.getProperties());
-    addProtocolMethodsToClass(protocolItemFinder.getMethods());
+    transformProperties(itemFinder.getProperties());
+    transformMethods(itemFinder.getMethods());
   }
 
-  private void addProtocolPropertiesToClass(List<SwiftVariableDeclaration> properties) {
+  private void transformProperties(List<SwiftVariableDeclaration> properties) {
     for (SwiftVariableDeclaration property : properties) {
       String name = property.getVariables().get(0).getName();
       String type = PsiTreeUtil.findChildOfType(property, SwiftTypeElement.class).getText();
       boolean hasSetter = PsiTreeUtil.findChildOfType(property, SwiftSetterClause.class) != null;
-      generator.add(new ProtocolProperty(name, type, hasSetter, property.getText()));
+      this.properties.add(new ProtocolProperty(name, type, hasSetter, property.getText()));
     }
   }
 
-  private void addProtocolMethodsToClass(List<SwiftFunctionDeclaration> methods) {
+  private void transformMethods(List<SwiftFunctionDeclaration> methods) {
     for (SwiftFunctionDeclaration method : methods) {
-      generator.add(new ProtocolMethod(
+      this.methods.add(new ProtocolMethod(
           getName(method),
           getReturnType(method),
           getParameters(method),
@@ -101,5 +102,13 @@ public class ProtocolItemTransformer {
       name = method.getName();
     }
     return name;
+  }
+
+  public List<ProtocolMethod> getMethods() {
+    return methods;
+  }
+
+  public List<ProtocolProperty> getProperties() {
+    return properties;
   }
 }

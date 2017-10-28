@@ -18,18 +18,18 @@ public class AssociatedTypeGenericConverter {
     this.classDeclaration = classDeclaration;
   }
 
-  public void convert(List<SwiftProtocolDeclaration> protocols) {
+  public void convert(List<SwiftTypeDeclaration> types) {
 
-    List<SwiftAssociatedTypeDeclaration> associatedTypes = protocols
+    List<SwiftAssociatedTypeDeclaration> associatedTypes = types
         .stream()
-        .flatMap(p -> getProtocolAssociatedTypes(p).stream())
+        .flatMap(t -> getAssociatedTypes(t).stream())
         .collect(Collectors.toList());
     addGenericParametersToClass(removeDuplicates(associatedTypes));
   }
 
-  private static List<SwiftAssociatedTypeDeclaration> getProtocolAssociatedTypes(PsiElement protocol) {
+  private static List<SwiftAssociatedTypeDeclaration> getAssociatedTypes(PsiElement type) {
     ElementGatheringVisitor<SwiftAssociatedTypeDeclaration> visitor = new ElementGatheringVisitor<>(SwiftAssociatedTypeDeclaration.class);
-    protocol.accept(visitor);
+    type.accept(visitor);
     return visitor.getElements();
   }
 

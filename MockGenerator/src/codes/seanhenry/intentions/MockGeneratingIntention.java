@@ -1,6 +1,6 @@
 package codes.seanhenry.intentions;
 
-import codes.seanhenry.generator.ProtocolItemTransformer;
+import codes.seanhenry.transformer.SwiftTypeTransformer;
 import codes.seanhenry.mockgenerator.xcode.XcodeMockGenerator;
 import codes.seanhenry.util.*;
 import com.intellij.codeInsight.hint.HintManager;
@@ -56,10 +56,16 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     classDeclaration = findClassUnderCaret(psiElement);
     XcodeMockGenerator generator = new XcodeMockGenerator();
     generator.setScope(getMockScope());
-    ProtocolItemFinder protocolItemFinder;
+    SwiftTypeItemFinder protocolItemFinder;
+    SwiftTypeItemFinder classItemFinder;
     try {
+      validateClass();
+      validateMockClassInheritance();
       protocolItemFinder = getProtocolItemFinder();
+      classItemFinder = getClassItemFinder();
+      validateItems(classItemFinder, protocolItemFinder);
       transformProtocolItems(protocolItemFinder, generator);
+      transformClassItems(classItemFinder, generator);
       deleteClassStatements();
       addGenericClauseToMock(protocolItemFinder);
       generateMock(generator);
@@ -77,19 +83,13 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     return "";
   }
 
-  private ProtocolItemFinder getProtocolItemFinder() throws Exception {
-    validateClass();
-    validateInheritedProtocol();
-    return validateProtocolItems();
-  }
-
   private void validateClass() throws Exception {
     if (classDeclaration == null) {
       throw new Exception("Could not find a class to mock.");
     }
   }
 
-  private void validateInheritedProtocol() throws Exception {
+  private void validateMockClassInheritance() throws Exception {
     SwiftTypeInheritanceClause inheritanceClause = classDeclaration.getTypeInheritanceClause();
     if (inheritanceClause == null) {
       throw new Exception("Mock class does not inherit from anything.");
@@ -97,23 +97,37 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   }
 
   @NotNull
-  private ProtocolItemFinder validateProtocolItems() throws Exception {
-    ProtocolItemFinder protocolItemFinder = new ProtocolItemFinder();
-    protocolItemFinder.findItems(classDeclaration);
-    if (protocolItemFinder.getProtocols().isEmpty()) {
-      throw new Exception("Could not find a protocol to mock.");
+  private SwiftTypeItemFinder getProtocolItemFinder() {
+    SwiftTypeItemFinder itemFinder = new SwiftTypeItemFinder(new ProtocolTypeStrategy());
+    itemFinder.findItems(classDeclaration);
+    return itemFinder;
+  }
+
+  private SwiftTypeItemFinder getClassItemFinder() {
+    SwiftTypeItemFinder itemFinder = new SwiftTypeItemFinder(new ClassTypeStrategy());
+    itemFinder.findItems(classDeclaration);
+    return itemFinder;
+  }
+
+  private void validateItems(SwiftTypeItemFinder classItemFinder, SwiftTypeItemFinder protocolItemFinder) throws Exception {
+    if (classItemFinder.getTypes().isEmpty() && protocolItemFinder.getTypes().isEmpty()) {
+      throw new Exception("Could not find an inherited type to mock.");
     }
-    return protocolItemFinder;
   }
 
-  private void transformProtocolItems(ProtocolItemFinder protocolItemFinder, XcodeMockGenerator generator) throws Exception {
-    new ProtocolItemTransformer(protocolItemFinder, generator)
-        .transform();
+  private void transformProtocolItems(SwiftTypeItemFinder itemFinder, XcodeMockGenerator generator) throws Exception {
+    SwiftTypeTransformer transformer = new SwiftTypeTransformer(itemFinder);
+    transformer.transform();
+    generator.addProperties(transformer.getProperties());
+    generator.addMethods(transformer.getMethods());
   }
 
-  private void addGenericClauseToMock(ProtocolItemFinder protocolItemFinder) {
+  private void transformClassItems(SwiftTypeItemFinder itemFinder, XcodeMockGenerator generator) throws Exception {
+  }
+
+  private void addGenericClauseToMock(SwiftTypeItemFinder protocolItemFinder) {
     new AssociatedTypeGenericConverter(classDeclaration)
-        .convert(protocolItemFinder.getProtocols());
+        .convert(protocolItemFinder.getTypes());
   }
 
   private void deleteClassStatements() {
