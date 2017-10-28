@@ -55,6 +55,10 @@ class XcodeMockGeneratorTest: TestCase() {
     runTest(ParameterAnnotationsTest())
   }
 
+  fun testTypeAlias() {
+    runTest(TypealiasProtocolTest())
+  }
+
   private fun runTest(template: MockGeneratorTestTemplate) {
     template.build(generator)
     assertEquals(template.getExpected(), generator.generate())

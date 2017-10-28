@@ -37,13 +37,14 @@ abstract class CreateParameterTuple {
   }
 
   private fun isClosure(parameter: TuplePropertyDeclaration.TupleParameter): Boolean {
-    return ClosureUtil.isClosure(parameter.type)
+    return ClosureUtil.isClosure(parameter.resolvedType)
   }
 
   private fun transformParameter(parameter: Parameter): TuplePropertyDeclaration.TupleParameter? {
     val name = parameter.name
     val type = parameter.type
-    return TuplePropertyDeclaration.TupleParameter(name, removeInOut(replaceIUO(type)))
+    val resolvedType = parameter.resolvedType
+    return TuplePropertyDeclaration.TupleParameter(name, removeInOut(replaceIUO(type)), resolvedType)
   }
 
   private fun replaceIUO(type: String): String {

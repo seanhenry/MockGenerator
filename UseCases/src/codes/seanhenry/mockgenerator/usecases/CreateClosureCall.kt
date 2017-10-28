@@ -10,8 +10,8 @@ class CreateClosureCall {
 
   fun transform(parameters: List<Parameter>): List<Closure> {
     return parameters
-        .filter { ClosureUtil.isClosure(it.type) }
-        .map { Closure(it.name, getArguments(it.type), getReturnValue(it.type), getIsOptional(it.type)) }
+        .filter { ClosureUtil.isClosure(it.resolvedType) }
+        .map { Closure(it.name, getArguments(it.resolvedType), getReturnValue(it.resolvedType), getIsOptional(it)) }
   }
 
   private fun getArguments(parameter: String): List<String> {
@@ -57,9 +57,21 @@ class CreateClosureCall {
     return result
   }
 
+  private fun getIsOptional(parameter: Parameter): Boolean {
+    if (ClosureUtil.isClosure(parameter.type)) {
+      return getIsOptional(parameter.type)
+    }
+    return getIsOptional(parameter.resolvedType)
+      || getIsTypeAliasOptional(parameter.type)
+  }
+
   private fun getIsOptional(it: String): Boolean {
     val trimmed = it.trim()
     return trimmed.endsWith(")?") || trimmed.endsWith(")!")
+  }
+
+  private fun getIsTypeAliasOptional(it: String): Boolean {
+    return it.endsWith("?") || it.endsWith("!")
   }
 
   private fun extractClosureReturnValue(it: String): String {

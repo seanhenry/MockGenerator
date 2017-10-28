@@ -7,7 +7,7 @@ class DefaultValuesTest: XCTestCase {
         let mock = DefaultValuesMock()
         XCTAssertEqual(mock.double(), 0)
         XCTAssertEqual(mock.float(), 0)
-        XCTAssertEqual(mock.int(), 0)
+        XCTAssertEqual(mock.int, 0)
         XCTAssertEqual(mock.int16(), 0)
         XCTAssertEqual(mock.int32(), 0)
         XCTAssertEqual(mock.int64(), 0)

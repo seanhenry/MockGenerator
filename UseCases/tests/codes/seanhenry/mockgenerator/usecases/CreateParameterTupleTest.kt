@@ -1,5 +1,6 @@
 package codes.seanhenry.mockgenerator.usecases
 
+import codes.seanhenry.mockgenerator.entities.Parameter
 import codes.seanhenry.mockgenerator.entities.TuplePropertyDeclaration
 import codes.seanhenry.mockgenerator.util.ParameterUtil
 import junit.framework.TestCase
@@ -100,6 +101,11 @@ class CreateParameterTupleTest: TestCase() {
     assertTuple("(param2: String, Void)", parameters, "param1: (arg: String) -> Void, param2: String")
   }
 
+  fun testShouldIgnoreClosureTypealiasParameter() {
+    val tuple = transformParameters(Parameter("param", "name", "Completion", "() -> ()", "param name: Completion"))
+    assertNull(tuple)
+  }
+
   fun testShouldReplaceIUOWithOptional() {
     val parameters = arrayOf(
         TuplePropertyDeclaration.TupleParameter("param0", "String?"),
@@ -117,6 +123,8 @@ class CreateParameterTupleTest: TestCase() {
   }
 
   private fun transformParameters(parameters: String) = CreateInvokedParameters().transform("name", ParameterUtil.getParameters(parameters))
+
+  private fun transformParameters(vararg parameters: Parameter) = CreateInvokedParameters().transform("name", listOf(*parameters))
 
   private fun assertTuple(expectedType: String, expectedParameters: Array<TuplePropertyDeclaration.TupleParameter>, methodParameters: String) {
     val property = transformParameters(methodParameters)

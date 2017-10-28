@@ -1,7 +1,9 @@
 package codes.seanhenry.intentions;
 
+import codes.seanhenry.mockgenerator.entities.Parameter;
 import codes.seanhenry.mockgenerator.entities.ProtocolMethod;
 import codes.seanhenry.mockgenerator.entities.ProtocolProperty;
+import codes.seanhenry.mockgenerator.util.ParameterUtil;
 import codes.seanhenry.mockgenerator.xcode.XcodeMockGenerator;
 import codes.seanhenry.util.*;
 import com.intellij.codeInsight.hint.HintManager;
@@ -130,21 +132,45 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
       generator.add(new ProtocolMethod(
           getName(method),
           getReturnType(method),
-          getParameterString(method),
+          getParameters(method),
           method.getText()
       ));
     }
   }
 
   @NotNull
-  private String getParameterString(SwiftFunctionDeclaration method) {
-    String parameterString = "";
-    PsiElement parameterClause = method.getParameterClause();
+  private List<Parameter> getParameters(SwiftFunctionDeclaration method) {
+    ArrayList<Parameter> parameters = new ArrayList<>();
+    SwiftParameterClause parameterClause = method.getParameterClause();
     if (parameterClause != null && parameterClause.getText().length() > 1) {
-      String parameterClauseText = parameterClause.getText();
-      parameterString = parameterClauseText.substring(1, parameterClauseText.length() - 1);
+      for (SwiftParameter p : parameterClause.getParameterList()) {
+        parameters.add(transformParameter(p));
+      }
     }
-    return parameterString;
+    return parameters;
+  }
+
+  @NotNull
+  private Parameter transformParameter(SwiftParameter parameter) {
+    Parameter p = ParameterUtil.Companion.getParameters(parameter.getText()).get(0);
+    return new Parameter(
+        p.getLabel(),
+        p.getName(),
+        p.getType(),
+        getResolvedType(parameter, p.getType()),
+        p.getText()
+    );
+  }
+
+  private String getResolvedType(SwiftParameter parameter, String type) {
+    SwiftReferenceTypeElement reference = PsiTreeUtil.findChildOfType(parameter.getTypeAnnotation(), SwiftReferenceTypeElement.class);
+    if (reference != null) {
+      PsiElement resolved = reference.resolve();
+      if (resolved instanceof SwiftTypeAliasDeclaration) {
+        return ((SwiftTypeAliasDeclaration)resolved).getTypeAssignment().getTypeElement().getText();
+      }
+    }
+    return type;
   }
 
   @Nullable

@@ -46,6 +46,11 @@ class SwiftStringClosureCallTest: TestCase() {
     assertEquals(expected, SwiftStringClosureCall().transform("propertyName", closure))
   }
 
+  fun testShouldSuppressWarningForTypeAliasedClosure() {
+    val closure = Closure("closure", emptyList(), "String", false)
+    assertEquals("_ = closure()", SwiftStringClosureCall().transform("", closure))
+  }
+
   fun testShouldCallOptionalClosure() {
     val closure = Closure("closure", emptyList(), "String", true)
     assertEquals("_ = closure?()", SwiftStringClosureCall().transform("", closure))

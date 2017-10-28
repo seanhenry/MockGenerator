@@ -1,6 +1,7 @@
 package codes.seanhenry.mockgenerator.usecases
 
 import codes.seanhenry.mockgenerator.entities.Closure
+import codes.seanhenry.mockgenerator.entities.Parameter
 import codes.seanhenry.mockgenerator.util.ParameterUtil
 import junit.framework.TestCase
 import kotlin.test.assertEquals
@@ -116,6 +117,26 @@ class CreateClosureCallTest : TestCase() {
     transform(listOf("_ closure: (String) -> String?"))
     assertClosureCount(1)
     assertClosure("closure", listOf("String"), "String?", 0)
+  }
+
+  fun testShouldReturnTypeAliasClosures() {
+    transform(
+        Parameter("label", "name", "Completion", "() -> ()", "label name: Completion"),
+        Parameter("label", "name", "Completion", "(String) -> (String)", "label name: Completion"),
+        Parameter("label", "name", "Completion", "(() -> ())?", "label name: Completion"),
+        Parameter("label", "name", "Completion?", "() -> ()", "label name: Completion?"),
+        Parameter("label", "name", "Completion!", "() -> ()", "label name: Completion?")
+    )
+    assertClosureCount(5)
+    assertClosure("name", emptyList(), "", 0)
+    assertClosure("name", listOf("String"), "String", 1)
+    assertClosure("name", emptyList(), "", 2, true)
+    assertClosure("name", emptyList(), "", 3, true)
+    assertClosure("name", emptyList(), "", 4, true)
+  }
+
+  private fun transform(vararg parameters: Parameter) {
+    closures = CreateClosureCall().transform(listOf(*parameters))
   }
 
   private fun transform(parameters: List<String>) {
