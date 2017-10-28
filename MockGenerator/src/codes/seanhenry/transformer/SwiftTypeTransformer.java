@@ -46,9 +46,19 @@ public class SwiftTypeTransformer {
           getName(method),
           getReturnType(method),
           getParameters(method),
-          method.getText()
+          getSignature(method)
       ));
     }
+  }
+
+  private String getSignature(SwiftFunctionDeclaration method) {
+    SwiftCodeBlock codeBlock = method.getCodeBlock();
+    if (codeBlock != null) {
+      int offset = method.getStartOffsetInParent();
+      int length = codeBlock.getTextOffset();
+      return method.getContainingFile().getText().substring(offset, length);
+    }
+    return method.getText();
   }
 
   @NotNull
@@ -80,7 +90,7 @@ public class SwiftTypeTransformer {
     if (reference != null) {
       PsiElement resolved = reference.resolve();
       if (resolved instanceof SwiftTypeAliasDeclaration) {
-        return ((SwiftTypeAliasDeclaration)resolved).getTypeAssignment().getTypeElement().getText();
+        return ((SwiftTypeAliasDeclaration) resolved).getTypeAssignment().getTypeElement().getText();
       }
     }
     return type;

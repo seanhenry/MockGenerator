@@ -6,15 +6,16 @@ import codes.seanhenry.mockgenerator.swift.*
 import codes.seanhenry.mockgenerator.usecases.*
 import codes.seanhenry.mockgenerator.util.DefaultValueStore
 import codes.seanhenry.mockgenerator.util.MethodModel
-import codes.seanhenry.mockgenerator.util.ParameterUtil
 import codes.seanhenry.mockgenerator.util.UniqueMethodNameGenerator
 import java.util.*
 
 class XcodeMockGenerator {
 
-  private val methods = ArrayList<ProtocolMethod>()
-  private val properties = ArrayList<ProtocolProperty>()
+  private val protocolMethods = ArrayList<ProtocolMethod>()
+  private val classMethods = ArrayList<ProtocolMethod>()
+  private val protocolProperties = ArrayList<ProtocolProperty>()
   private var scope = ""
+  private var override = ""
   private lateinit var nameGenerator: UniqueMethodNameGenerator
   private var lines = ArrayList<String>()
 
@@ -23,11 +24,11 @@ class XcodeMockGenerator {
   }
 
   fun add(method: ProtocolMethod) {
-    methods.add(method)
+    protocolMethods.add(method)
   }
 
   fun add(property: ProtocolProperty) {
-    properties.add(property)
+    protocolProperties.add(property)
   }
 
   fun add(vararg methods: ProtocolMethod) {
@@ -40,28 +41,40 @@ class XcodeMockGenerator {
 
   fun addMethods(methods: List<ProtocolMethod>) {
     for (method in methods) {
-      this.methods.add(method)
+      this.protocolMethods.add(method)
     }
   }
 
   fun addProperties(properties: List<ProtocolProperty>) {
     for (property in properties) {
-      this.properties.add(property)
+      this.protocolProperties.add(property)
     }
+  }
+
+  fun addClassMethods(vararg methods: ProtocolMethod) {
+    classMethods += methods
+  }
+
+  fun addClassMethods(methods: List<ProtocolMethod>) {
+    classMethods += methods
   }
 
   fun generate(): String {
     lines = ArrayList()
     generateOverloadedNames()
-    appendPropertyMocks(properties)
-    appendMethodMocks(methods)
+    appendPropertyMocks(protocolProperties)
+    override = "override "
+    appendMethodMocks(classMethods)
+    override = ""
+    appendMethodMocks(protocolMethods)
     return lines.joinToString("\n")
   }
 
   private fun generateOverloadedNames() {
-    val models = properties.map { toMethodModel(it) }.toMutableList()
-    val others = methods.map { toMethodModel(it) }
-    nameGenerator = UniqueMethodNameGenerator(models + others)
+    val protocolProperties = protocolProperties.map { toMethodModel(it) }
+    val protocolMethods = protocolMethods.map { toMethodModel(it) }
+    val classMethods = classMethods.map { toMethodModel(it) }
+    nameGenerator = UniqueMethodNameGenerator(protocolProperties + protocolMethods + classMethods)
     nameGenerator.generateMethodNames()
   }
 
@@ -122,7 +135,7 @@ class XcodeMockGenerator {
   }
 
   private fun addPropertyDeclaration(property: ProtocolProperty) {
-    addScopedLine(property.getTrimmedSignature() + " {")
+    addOverriddenLine(property.getTrimmedSignature() + " {")
   }
 
   private fun addSetterProperties(setterInvocationCheck: PropertyDeclaration,
@@ -212,7 +225,7 @@ class XcodeMockGenerator {
   }
 
   private fun addMethodDeclaration(method: ProtocolMethod) {
-    addScopedLine(method.signature + " {")
+    addOverriddenLine(method.signature + " {")
   }
 
   private fun addMethodAssignments(invocationCheck: PropertyDeclaration,
@@ -231,6 +244,10 @@ class XcodeMockGenerator {
 
   private fun addLine(line: String) {
     lines.add(line)
+  }
+
+  private fun addOverriddenLine(line: String) {
+    addScopedLine(override + line)
   }
 
   private fun addScopedLine(line: String) {

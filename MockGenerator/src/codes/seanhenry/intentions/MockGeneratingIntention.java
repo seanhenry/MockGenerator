@@ -123,6 +123,9 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   }
 
   private void transformClassItems(SwiftTypeItemFinder itemFinder, XcodeMockGenerator generator) throws Exception {
+    SwiftTypeTransformer transformer = new SwiftTypeTransformer(itemFinder);
+    transformer.transform();
+    generator.addClassMethods(transformer.getMethods());
   }
 
   private void addGenericClauseToMock(SwiftTypeItemFinder protocolItemFinder) {
