@@ -20,8 +20,6 @@ public class MockGeneratingIntentionTest extends ImportProjectTestCase {
   }
 
   public void testAll() throws Exception {
-    // ClosureProtocol - Typealias, inout
-    // Keywords
     String[] fileNames = {
       "SimpleProtocol",
       "OptionalProtocol",
@@ -38,7 +36,7 @@ public class MockGeneratingIntentionTest extends ImportProjectTestCase {
       "PublicProtocol",
       "OpenProtocol",
       "DefaultValues",
-//      "Keywords",
+      "Keywords",
     };
 
     for (String fileName : fileNames) {
