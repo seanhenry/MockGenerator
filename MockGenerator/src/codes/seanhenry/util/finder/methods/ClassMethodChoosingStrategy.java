@@ -1,8 +1,7 @@
-package codes.seanhenry.util.finder;
+package codes.seanhenry.util.finder.methods;
 
 import com.jetbrains.swift.psi.SwiftFunctionDeclaration;
 import com.jetbrains.swift.psi.SwiftTypeDeclaration;
-import com.jetbrains.swift.psi.SwiftVariableDeclaration;
 import com.jetbrains.swift.psi.SwiftVisitor;
 import org.jetbrains.annotations.NotNull;
 

@@ -4,7 +4,7 @@ import codes.seanhenry.mockgenerator.entities.Parameter;
 import codes.seanhenry.mockgenerator.entities.ProtocolMethod;
 import codes.seanhenry.mockgenerator.entities.ProtocolProperty;
 import codes.seanhenry.mockgenerator.util.ParameterUtil;
-import codes.seanhenry.util.SwiftTypeItemFinder;
+import codes.seanhenry.util.finder.SwiftTypeItemFinder;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.jetbrains.swift.psi.*;

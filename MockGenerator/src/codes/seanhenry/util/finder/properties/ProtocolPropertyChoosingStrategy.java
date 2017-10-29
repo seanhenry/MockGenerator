@@ -1,7 +1,6 @@
-package codes.seanhenry.util.finder;
+package codes.seanhenry.util.finder.properties;
 
 import codes.seanhenry.util.ElementGatheringVisitor;
-import com.jetbrains.swift.psi.SwiftFunctionDeclaration;
 import com.jetbrains.swift.psi.SwiftTypeDeclaration;
 import com.jetbrains.swift.psi.SwiftVariableDeclaration;
 

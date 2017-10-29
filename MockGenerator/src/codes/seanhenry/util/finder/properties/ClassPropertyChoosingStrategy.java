@@ -1,6 +1,5 @@
-package codes.seanhenry.util.finder;
+package codes.seanhenry.util.finder.properties;
 
-import com.intellij.psi.PsiElement;
 import com.jetbrains.swift.psi.SwiftTypeDeclaration;
 import com.jetbrains.swift.psi.SwiftVariableDeclaration;
 import com.jetbrains.swift.psi.SwiftVisitor;

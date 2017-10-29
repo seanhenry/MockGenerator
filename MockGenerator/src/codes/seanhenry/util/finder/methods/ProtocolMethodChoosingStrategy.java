@@ -1,4 +1,4 @@
-package codes.seanhenry.util.finder;
+package codes.seanhenry.util.finder.methods;
 
 import codes.seanhenry.util.ElementGatheringVisitor;
 import com.jetbrains.swift.psi.SwiftFunctionDeclaration;

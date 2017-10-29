@@ -1,7 +1,8 @@
-package codes.seanhenry.util;
+package codes.seanhenry.util.finder;
 
-import codes.seanhenry.util.finder.MethodChoosingStrategy;
-import codes.seanhenry.util.finder.PropertyChoosingStrategy;
+import codes.seanhenry.util.finder.methods.MethodChoosingStrategy;
+import codes.seanhenry.util.finder.properties.PropertyChoosingStrategy;
+import codes.seanhenry.util.finder.types.TypeChoosingStrategy;
 import com.intellij.psi.PsiElement;
 import com.jetbrains.swift.psi.*;
 
@@ -14,11 +15,11 @@ public class SwiftTypeItemFinder {
   private List<SwiftVariableDeclaration> properties = new ArrayList<>();
   private List<SwiftFunctionDeclaration> methods = new ArrayList<>();
   private List<String> errors = new ArrayList<>();
-  private final TypeStrategy strategy;
+  private final TypeChoosingStrategy strategy;
   private final PropertyChoosingStrategy propertyStrategy;
   private final MethodChoosingStrategy methodStrategy;
 
-  public SwiftTypeItemFinder(TypeStrategy strategy, PropertyChoosingStrategy propertyStrategy, MethodChoosingStrategy methodStrategy) {
+  public SwiftTypeItemFinder(TypeChoosingStrategy strategy, PropertyChoosingStrategy propertyStrategy, MethodChoosingStrategy methodStrategy) {
     this.strategy = strategy;
     this.propertyStrategy = propertyStrategy;
     this.methodStrategy = methodStrategy;
@@ -75,7 +76,7 @@ public class SwiftTypeItemFinder {
       errors.add("The type '" + reference.getName() + "' could not be found.");
       return null;
     }
-    return strategy.getType(element);
+    return strategy.chooseType(element);
   }
 
   public List<SwiftVariableDeclaration> getProperties() {

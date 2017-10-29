@@ -1,4 +1,4 @@
-package codes.seanhenry.util.finder;
+package codes.seanhenry.util.finder.methods;
 
 import com.jetbrains.swift.psi.SwiftFunctionDeclaration;
 import com.jetbrains.swift.psi.SwiftTypeDeclaration;

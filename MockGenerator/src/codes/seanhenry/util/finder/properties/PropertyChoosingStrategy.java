@@ -1,4 +1,4 @@
-package codes.seanhenry.util.finder;
+package codes.seanhenry.util.finder.properties;
 
 import com.jetbrains.swift.psi.SwiftTypeDeclaration;
 import com.jetbrains.swift.psi.SwiftVariableDeclaration;
