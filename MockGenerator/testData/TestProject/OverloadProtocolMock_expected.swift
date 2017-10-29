@@ -3,7 +3,7 @@ import UIKit
 @testable import MockableTypes
 
 class MockOverloadProtocol: OverloadProtocol {
-    
+
     var invokedIntSetter = false
     var invokedIntSetterCount = 0
     var invokedInt: Int?
@@ -29,7 +29,7 @@ class MockOverloadProtocol: OverloadProtocol {
     var invokedIntAddingParameters: (adding: Int, Void)?
     var invokedIntAddingParametersList = [(adding: Int, Void)]()
     var stubbedIntAddingResult: Int! = 0
-    
+
     func int(adding: Int) -> Int {
         invokedIntAdding = true
         invokedIntAddingCount += 1

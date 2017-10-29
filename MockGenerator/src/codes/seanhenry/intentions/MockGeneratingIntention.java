@@ -3,6 +3,8 @@ package codes.seanhenry.intentions;
 import codes.seanhenry.transformer.SwiftTypeTransformer;
 import codes.seanhenry.mockgenerator.xcode.XcodeMockGenerator;
 import codes.seanhenry.util.*;
+import codes.seanhenry.util.finder.ClassPropertyChoosingStrategy;
+import codes.seanhenry.util.finder.ProtocolPropertyChoosingStrategy;
 import com.intellij.codeInsight.hint.HintManager;
 import com.intellij.codeInsight.intention.IntentionAction;
 import com.intellij.codeInsight.intention.PsiElementBaseIntentionAction;
@@ -98,13 +100,13 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
 
   @NotNull
   private SwiftTypeItemFinder getProtocolItemFinder() {
-    SwiftTypeItemFinder itemFinder = new SwiftTypeItemFinder(new ProtocolTypeStrategy());
+    SwiftTypeItemFinder itemFinder = new SwiftTypeItemFinder(new ProtocolTypeStrategy(), new ProtocolPropertyChoosingStrategy());
     itemFinder.findItems(classDeclaration);
     return itemFinder;
   }
 
   private SwiftTypeItemFinder getClassItemFinder() {
-    SwiftTypeItemFinder itemFinder = new SwiftTypeItemFinder(new ClassTypeStrategy());
+    SwiftTypeItemFinder itemFinder = new SwiftTypeItemFinder(new ClassTypeStrategy(), new ClassPropertyChoosingStrategy());
     itemFinder.findItems(classDeclaration);
     return itemFinder;
   }
@@ -125,6 +127,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   private void transformClassItems(SwiftTypeItemFinder itemFinder, XcodeMockGenerator generator) throws Exception {
     SwiftTypeTransformer transformer = new SwiftTypeTransformer(itemFinder);
     transformer.transform();
+    generator.addClassProperties(transformer.getProperties());
     generator.addClassMethods(transformer.getMethods());
   }
 

@@ -29,6 +29,7 @@
 		35CDF275BF74CEA4352492FE /* OptionalProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDFB561287FB76195FCEB4 /* OptionalProtocolMock.swift */; };
 		35CDF288C3BCF3C419EFDE49 /* RecursiveProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDF88DC346C3A948F97F63 /* RecursiveProtocol.swift */; };
 		35CDF2B8C521A05B05681E93 /* SimpleProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDF254AAF848D8C5AFCE2B /* SimpleProtocol.swift */; };
+		35CDF2D502E6CCD963F34725 /* UnoverridableClassMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDF5405AD86FCC525EA6F4 /* UnoverridableClassMock.swift */; };
 		35CDF2EA619DA643B7D469DF /* PublicProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDF89CC41D50D230E58B7F /* PublicProtocolMock.swift */; };
 		35CDF33CBCA20120A9288B4E /* DiamondInheritanceProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDF17B3D4673A7834E5E6E /* DiamondInheritanceProtocolMock.swift */; };
 		35CDF36AFF314EF4B9C3255B /* OpenProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDFB7B3D324EE30BE6BB57 /* OpenProtocol.swift */; };
@@ -44,6 +45,7 @@
 		35CDF4A17279A6D818E66195 /* SimpleProtocolMock_expected.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147135B11E5CD2890096B3B4 /* SimpleProtocolMock_expected.swift */; };
 		35CDF4BD6184E57A61CD9076 /* PropertyProtocolMock_expected.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDF89B66BA022FCD7EBE19 /* PropertyProtocolMock_expected.swift */; };
 		35CDF4C1B950E747D4881186 /* OverloadProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDFBA92C09A1ACF62DF333 /* OverloadProtocol.swift */; };
+		35CDF4E97733C34F5200416E /* UnoverridableClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDFC56EF46344DE1591DB3 /* UnoverridableClass.swift */; };
 		35CDF510CF6D0B5D083C8A6F /* AssociatedTypeProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDF88A3EC2C04D186B24BD /* AssociatedTypeProtocol.swift */; };
 		35CDF5732C98F8E988D911D1 /* PropertyProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDFA9FC32F4B055737B39C /* PropertyProtocol.swift */; };
 		35CDF5A07B31D37866B11AAE /* DefaultValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDF64AC60105639FFAE0B6 /* DefaultValues.swift */; };
@@ -75,6 +77,7 @@
 		35CDFCEA55877C5103C69A62 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35CDF5E9615CB94E27438335 /* Main.storyboard */; };
 		35CDFD1764A8710ABA37A5DC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDF8633919419079FF167D /* AppDelegate.swift */; };
 		35CDFD2A7244E339A06636F1 /* DiamondInheritanceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDFDA10E7026B0BFB876BF /* DiamondInheritanceProtocol.swift */; };
+		35CDFD4D0ABFFEEFF561FEC9 /* UnoverridableClassMock_expected.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDFC07C7A0D286CB027F3C /* UnoverridableClassMock_expected.swift */; };
 		35CDFD81805CB10CED71062D /* UnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDFED98E9657D6E738D0EA /* UnitTests.swift */; };
 		35CDFD9DE93A350EF6A67596 /* OpenProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDFB7B3D324EE30BE6BB57 /* OpenProtocol.swift */; };
 		35CDFDB2B47EDAF0A940E0D2 /* ClosureProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDF799FE481CD57EC5739B /* ClosureProtocolMock.swift */; };
@@ -137,6 +140,7 @@
 		35CDF47EC1150E1485573E85 /* OptionalProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionalProtocol.swift; sourceTree = "<group>"; };
 		35CDF4CA1B6CCE7386ECBE3C /* DeepInheritanceMock_expected.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeepInheritanceMock_expected.swift; sourceTree = "<group>"; };
 		35CDF531AE6C643F9069DEB3 /* DefaultValuesMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultValuesMock.swift; sourceTree = "<group>"; };
+		35CDF5405AD86FCC525EA6F4 /* UnoverridableClassMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnoverridableClassMock.swift; sourceTree = "<group>"; };
 		35CDF57E13799B45BA1F659E /* AssociatedTypeProtocolMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssociatedTypeProtocolMock.swift; sourceTree = "<group>"; };
 		35CDF5A92DCB356BEC11A39C /* KeywordsMock_expected.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeywordsMock_expected.swift; sourceTree = "<group>"; };
 		35CDF5F49243D83E63D67121 /* MultiAssociatedTypeProtocolMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiAssociatedTypeProtocolMock.swift; sourceTree = "<group>"; };
@@ -168,6 +172,8 @@
 		35CDFB7B3D324EE30BE6BB57 /* OpenProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenProtocol.swift; sourceTree = "<group>"; };
 		35CDFBA0D3C046C09FF6430F /* SimpleClassMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleClassMock.swift; sourceTree = "<group>"; };
 		35CDFBA92C09A1ACF62DF333 /* OverloadProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverloadProtocol.swift; sourceTree = "<group>"; };
+		35CDFC07C7A0D286CB027F3C /* UnoverridableClassMock_expected.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnoverridableClassMock_expected.swift; sourceTree = "<group>"; };
+		35CDFC56EF46344DE1591DB3 /* UnoverridableClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnoverridableClass.swift; sourceTree = "<group>"; };
 		35CDFCB9437E89EEB376E893 /* KeywordsMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeywordsMock.swift; sourceTree = "<group>"; };
 		35CDFCEF6F60718B731964FE /* PublicProtocolMock_expected.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PublicProtocolMock_expected.swift; sourceTree = "<group>"; };
 		35CDFD54367F116349E3F5B8 /* OverloadProtocolMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverloadProtocolMock.swift; sourceTree = "<group>"; };
@@ -328,6 +334,9 @@
 				35CDFE5E0B5A26FCFEF40BEA /* SimpleClass.swift */,
 				35CDFBA0D3C046C09FF6430F /* SimpleClassMock.swift */,
 				35CDF26286EE21491157A611 /* SimpleClassMock_expected.swift */,
+				35CDFC56EF46344DE1591DB3 /* UnoverridableClass.swift */,
+				35CDF5405AD86FCC525EA6F4 /* UnoverridableClassMock.swift */,
+				35CDFC07C7A0D286CB027F3C /* UnoverridableClassMock_expected.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -519,6 +528,7 @@
 				35CDF0C310F5B85DB745656E /* DefaultValuesMock.swift in Sources */,
 				35CDF782742A81DC47A28500 /* KeywordsMock.swift in Sources */,
 				35CDF70D9F4871E9B32E951B /* SimpleClassMock.swift in Sources */,
+				35CDF2D502E6CCD963F34725 /* UnoverridableClassMock.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -572,6 +582,7 @@
 				35CDF25BC27AEDD6D6F4BB00 /* KeywordsTest.swift in Sources */,
 				35CDF1B6E9ED849FF385EDDA /* KeywordsMock_expected.swift in Sources */,
 				35CDFE8A3E6B6CEC71B71ED9 /* SimpleClassMock_expected.swift in Sources */,
+				35CDFD4D0ABFFEEFF561FEC9 /* UnoverridableClassMock_expected.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -598,6 +609,7 @@
 				14F452981F3D01A100452560 /* Keywords.swift in Sources */,
 				35CDFD1764A8710ABA37A5DC /* AppDelegate.swift in Sources */,
 				35CDF802FE33559473D9FFA2 /* Object.swift in Sources */,
+				35CDF4E97733C34F5200416E /* UnoverridableClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

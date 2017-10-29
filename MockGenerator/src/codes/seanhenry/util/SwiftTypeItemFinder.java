@@ -1,5 +1,6 @@
 package codes.seanhenry.util;
 
+import codes.seanhenry.util.finder.PropertyChoosingStrategy;
 import com.intellij.psi.PsiElement;
 import com.jetbrains.swift.psi.*;
 
@@ -12,10 +13,12 @@ public class SwiftTypeItemFinder {
   private List<SwiftVariableDeclaration> properties = new ArrayList<>();
   private List<SwiftFunctionDeclaration> methods = new ArrayList<>();
   private List<String> errors = new ArrayList<>();
-  private TypeStrategy strategy;
+  private final TypeStrategy strategy;
+  private final PropertyChoosingStrategy propertyStrategy;
 
-  public SwiftTypeItemFinder(TypeStrategy strategy) {
+  public SwiftTypeItemFinder(TypeStrategy strategy, PropertyChoosingStrategy propertyStrategy) {
     this.strategy = strategy;
+    this.propertyStrategy = propertyStrategy;
   }
 
   public void findItems(SwiftClassDeclaration classDeclaration) {
@@ -38,16 +41,14 @@ public class SwiftTypeItemFinder {
     return new ArrayList<>(new LinkedHashSet<>(list));
   }
 
-  private static List<SwiftFunctionDeclaration> getTypeMethods(PsiElement type) {
+  private List<SwiftFunctionDeclaration> getTypeMethods(SwiftTypeDeclaration type) {
     ElementGatheringVisitor<SwiftFunctionDeclaration> visitor = new ElementGatheringVisitor<>(SwiftFunctionDeclaration.class);
     type.accept(visitor);
     return visitor.getElements();
   }
 
-  private static List<SwiftVariableDeclaration> getTypeProperties(PsiElement type) {
-    ElementGatheringVisitor<SwiftVariableDeclaration> visitor = new ElementGatheringVisitor<>(SwiftVariableDeclaration.class);
-    type.accept(visitor);
-    return visitor.getElements();
+  private List<SwiftVariableDeclaration> getTypeProperties(SwiftTypeDeclaration type) {
+    return propertyStrategy.chooseProperties(type);
   }
 
   private List<SwiftTypeDeclaration> getResolvedTypes(SwiftTypeDeclaration typeDeclaration) {

@@ -14,8 +14,9 @@ class XcodeMockGenerator {
   private val protocolMethods = ArrayList<ProtocolMethod>()
   private val classMethods = ArrayList<ProtocolMethod>()
   private val protocolProperties = ArrayList<ProtocolProperty>()
+  private val classProperties = ArrayList<ProtocolProperty>()
   private var scope = ""
-  private var override = ""
+  private var override = false
   private lateinit var nameGenerator: UniqueMethodNameGenerator
   private var lines = ArrayList<String>()
 
@@ -59,14 +60,30 @@ class XcodeMockGenerator {
     classMethods += methods
   }
 
+  fun addClassProperties(vararg properties: ProtocolProperty) {
+    classProperties += properties
+  }
+
+  fun addClassProperties(properties: List<ProtocolProperty>) {
+    classProperties += properties
+  }
+
   fun generate(): String {
     lines = ArrayList()
     generateOverloadedNames()
+
+    override = true
+    appendPropertyMocks(classProperties)
+    override = false
+
     appendPropertyMocks(protocolProperties)
-    override = "override "
+
+    override = true
     appendMethodMocks(classMethods)
-    override = ""
+    override = false
+
     appendMethodMocks(protocolMethods)
+
     return lines.joinToString("\n")
   }
 
@@ -74,7 +91,8 @@ class XcodeMockGenerator {
     val protocolProperties = protocolProperties.map { toMethodModel(it) }
     val protocolMethods = protocolMethods.map { toMethodModel(it) }
     val classMethods = classMethods.map { toMethodModel(it) }
-    nameGenerator = UniqueMethodNameGenerator(protocolProperties + protocolMethods + classMethods)
+    val classProperties = classProperties.map { toMethodModel(it) }
+    nameGenerator = UniqueMethodNameGenerator(protocolProperties + protocolMethods + classMethods + classProperties)
     nameGenerator.generateMethodNames()
   }
 
@@ -247,7 +265,11 @@ class XcodeMockGenerator {
   }
 
   private fun addOverriddenLine(line: String) {
-    addScopedLine(override + line)
+    if (override) {
+      addScopedLine("override " + line)
+    } else {
+      addScopedLine(line)
+    }
   }
 
   private fun addScopedLine(line: String) {

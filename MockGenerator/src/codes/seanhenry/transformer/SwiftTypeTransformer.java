@@ -35,9 +35,13 @@ public class SwiftTypeTransformer {
     for (SwiftVariableDeclaration property : properties) {
       String name = property.getVariables().get(0).getName();
       String type = PsiTreeUtil.findChildOfType(property, SwiftTypeElement.class).getText();
-      boolean hasSetter = PsiTreeUtil.findChildOfType(property, SwiftSetterClause.class) != null;
-      this.properties.add(new ProtocolProperty(name, type, hasSetter, property.getText()));
+      this.properties.add(new ProtocolProperty(name, type, isWritable(property), property.getText()));
     }
+  }
+
+  private boolean isWritable(SwiftVariableDeclaration property) {
+    return PsiTreeUtil.findChildOfType(property, SwiftSetterClause.class) != null
+        || (property.getContext() instanceof SwiftClassDeclaration && !property.isConstant());
   }
 
   private void transformMethods(List<SwiftFunctionDeclaration> methods) {
