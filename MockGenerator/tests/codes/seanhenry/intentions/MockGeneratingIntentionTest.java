@@ -21,26 +21,27 @@ public class MockGeneratingIntentionTest extends ImportProjectTestCase {
 
   public void testAll() throws Exception {
     String[] fileNames = {
-//      "SimpleProtocol",
-//      "OptionalProtocol",
-//      "OverloadProtocol",
-//      "PropertyProtocol",
-//      "ClosureProtocol",
-//      "RecursiveProtocol",
-//      "MultipleProtocol",
-//      "DeepInheritance",
-//      "DiamondInheritanceProtocol",
-//      "AssociatedTypeProtocol",
-//      "MultiAssociatedTypeProtocol",
-////      "UIKitProtocol",
-//      "PublicProtocol",
-//      "OpenProtocol",
-//      "DefaultValues",
-//      "Keywords",
+      "SimpleProtocol",
+      "OptionalProtocol",
+      "OverloadProtocol",
+      "PropertyProtocol",
+      "ClosureProtocol",
+      "RecursiveProtocol",
+      "MultipleProtocol",
+      "DeepInheritance",
+      "DiamondInheritanceProtocol",
+      "AssociatedTypeProtocol",
+      "MultiAssociatedTypeProtocol",
+//      "UIKitProtocol",
+      "PublicProtocol",
+      "OpenProtocol",
+      "DefaultValues",
+      "Keywords",
 
       "SimpleClass",
       "UnoverridableClass",
       "FinalClass",
+      "InferredTypeClass",
     };
 
     for (String fileName : fileNames) {

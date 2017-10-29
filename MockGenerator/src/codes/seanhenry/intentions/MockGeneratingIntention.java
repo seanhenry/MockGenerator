@@ -1,5 +1,7 @@
 package codes.seanhenry.intentions;
 
+import codes.seanhenry.transformer.SwiftClassTransformer;
+import codes.seanhenry.transformer.SwiftProtocolTransformer;
 import codes.seanhenry.transformer.SwiftTypeTransformer;
 import codes.seanhenry.mockgenerator.xcode.XcodeMockGenerator;
 import codes.seanhenry.util.AssociatedTypeGenericConverter;
@@ -123,14 +125,14 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   }
 
   private void transformProtocolItems(SwiftTypeItemFinder itemFinder, XcodeMockGenerator generator) throws Exception {
-    SwiftTypeTransformer transformer = new SwiftTypeTransformer(itemFinder);
+    SwiftTypeTransformer transformer = new SwiftProtocolTransformer(itemFinder);
     transformer.transform();
     generator.addProperties(transformer.getProperties());
     generator.addMethods(transformer.getMethods());
   }
 
   private void transformClassItems(SwiftTypeItemFinder itemFinder, XcodeMockGenerator generator) throws Exception {
-    SwiftTypeTransformer transformer = new SwiftTypeTransformer(itemFinder);
+    SwiftTypeTransformer transformer = new SwiftClassTransformer(itemFinder);
     transformer.transform();
     generator.addClassProperties(transformer.getProperties());
     generator.addClassMethods(transformer.getMethods());
@@ -165,6 +167,9 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   }
 
   private void showErrorMessage(String message, Editor editor) {
+    if (message == null) {
+      message = "An unknown error occurred.";
+    }
     HintManager.getInstance().showErrorHint(editor, message);
   }
 

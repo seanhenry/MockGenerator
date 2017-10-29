@@ -3,9 +3,13 @@ package codes.seanhenry.util;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.jetbrains.swift.psi.*;
-import com.jetbrains.swift.psi.impl.types.SwiftTypeUtil;
 import com.jetbrains.swift.symbols.SwiftDeclarationSpecifiers;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+
+import static java.util.Collections.emptyList;
 
 public class MySwiftPsiUtil {
 
@@ -13,131 +17,84 @@ public class MySwiftPsiUtil {
     return attributesHolder.getAttributes().hasDeclarationSpecifier(SwiftDeclarationSpecifiers.FINAL);
   }
 
-  public static <T extends PsiElement> T findResolvedType(PsiElement element, Class<T> type) {
-    T result = findType(element, type);
-    if (result != null) {
-      return result;
-    }
-    SwiftReferenceTypeElement referenceType = findType(element, SwiftReferenceTypeElement.class);
-    if (referenceType == null) {
-      return null;
-    }
-    PsiElement resolved = referenceType.resolve();
-    if (type.isInstance(resolved)) {
-      return type.cast(resolved);
-    } else if (resolved instanceof SwiftTypeAliasDeclaration) {
-      return findTypeAliasType((SwiftTypeAliasDeclaration)resolved, type);
-    }
-    return null;
-  }
-
-  public static String getUnescapedPropertyName(SwiftVariableDeclaration property) {
-    return getPropertyName(property).replaceAll("`", "");
-  }
-
-  private static String getPropertyName(SwiftVariableDeclaration property) {
-    SwiftTypeAnnotatedPattern pattern = (SwiftTypeAnnotatedPattern) property.getPatternInitializerList().get(0).getPattern();
-    return pattern.getPattern().getText();
-  }
-
-  public static SwiftTypeAnnotation getPropertyTypeAnnotation(SwiftVariableDeclaration property) {
-    SwiftTypeAnnotatedPattern pattern = (SwiftTypeAnnotatedPattern) property.getPatternInitializerList().get(0).getPattern();
-    return pattern.getTypeAnnotation();
+  @Nullable
+  public static String getName(SwiftVariableDeclaration property) {
+     List<SwiftIdentifierPattern> variables = property.getVariables();
+     if (variables.isEmpty()) {
+       return null;
+     }
+     return variables.get(0).getText();
   }
 
   @Nullable
-  private static <T extends PsiElement> T findTypeAliasType(SwiftTypeAliasDeclaration typeAlias, Class<T> type) {
-    SwiftTypeElement typeAliasType = typeAlias.getTypeAssignment().getTypeElement();
-    if (type.isInstance(typeAliasType)) {
-      return type.cast(typeAliasType);
+  public static String getExplicitType(SwiftVariableDeclaration property) {
+    SwiftTypeElement type = PsiTreeUtil.findChildOfType(property, SwiftTypeElement.class);
+    if (type != null) {
+      return type.getText();
     }
     return null;
   }
 
-  private static <T extends PsiElement> T findType(PsiElement element, Class<T> type) {
-    if (element == null) {
+  @Nullable
+  public static String getInferredType(SwiftVariableDeclaration property) {
+    SwiftInitializer initializer = PsiTreeUtil.findChildOfType(property, SwiftInitializer.class);
+    if (initializer == null) {
       return null;
     }
-    if (type.isInstance(element)) {
-      return type.cast(element);
+    String result = getExpressInferredType(initializer);
+    if (result != null) {
+      return result;
     }
-    return PsiTreeUtil.findChildOfType(element, type);
-  }
-
-  public static boolean isOptional(SwiftParameter parameter) {
-    SwiftTypeElement type = getType(parameter);
-    if (type != null) {
-      return isOptional(type);
-    }
-    return false;
-  }
-
-  private static SwiftTypeElement getType(SwiftParameter parameter) {
-    if (parameter != null && parameter.getTypeAnnotation() != null) {
-      return parameter.getTypeAnnotation().getTypeElement();
+    result = getLiteralInferredType(initializer);
+    if (result != null) {
+      return result;
     }
     return null;
   }
 
-  public static boolean isOptional(PsiElement element) {
-    return element instanceof SwiftOptionalTypeElement || element instanceof SwiftImplicitlyUnwrappedOptionalTypeElement;
+  private static String getExpressInferredType(SwiftInitializer initializer) {
+    SwiftCallExpression call = PsiTreeUtil.findChildOfType(initializer, SwiftCallExpression.class);
+    if (call != null) {
+      return call.getInvokedExpression().getText();
+    }
+    return null;
   }
 
-  public static boolean isVoid(SwiftTypeElement typeElement) {
-    return SwiftTypeUtil.equalsToVoid(typeElement.getType())
-           || typeElement.getText().equals("Void")
-           || typeElement.getText().equals("(Void)");
+  private static String getLiteralInferredType(SwiftInitializer initializer) {
+    SwiftLiteralExpression literal = PsiTreeUtil.findChildOfType(initializer, SwiftLiteralExpression.class);
+    if (literal != null) {
+      return literal.getType().getPresentableText();
+    }
+    return null;
   }
 
-  public static String getResolvedTypeNameRemovingInout(SwiftParameter parameter) {
-    String typeName = "";
-    if (parameter.getTypeAnnotation() != null) {
-      SwiftTypeElement typeElement = parameter.getTypeAnnotation().getTypeElement();
-      if (typeElement instanceof SwiftInoutTypeElement) {
-        SwiftInoutTypeElement inOut = (SwiftInoutTypeElement)typeElement;
-        typeName = getResolvedTypeName(inOut.getTypeElement(), true);
-      } else {
-        typeName = getResolvedTypeName(typeElement, true);
+  @Nullable
+  public static String getReturnType(SwiftFunctionDeclaration method) {
+    SwiftTypeElement returnObject = PsiTreeUtil.findChildOfType(method.getFunctionResult(), SwiftTypeElement.class);
+    if (returnObject != null) {
+      return returnObject.getText();
+    }
+    return null;
+  }
+
+  @NotNull
+  public static List<SwiftParameter> getParameters(SwiftFunctionDeclaration method) {
+    SwiftParameterClause parameterClause = method.getParameterClause();
+    if (parameterClause != null) {
+      return parameterClause.getParameterList();
+    }
+    return emptyList();
+  }
+
+  @Nullable
+  public static SwiftTypeElement getResolvedType(PsiElement element) {
+    SwiftReferenceTypeElement reference = PsiTreeUtil.findChildOfType(element, SwiftReferenceTypeElement.class);
+    if (reference != null) {
+      PsiElement resolved = reference.resolve();
+      if (resolved instanceof SwiftTypeAliasDeclaration) {
+        return ((SwiftTypeAliasDeclaration) resolved).getTypeAssignment().getTypeElement();
       }
     }
-    return typeName;
-  }
-
-  public static String getResolvedTypeName(PsiElement element) {
-    return getResolvedTypeName(element, true);
-  }
-
-  public static String getResolvedTypeName(PsiElement element, boolean removeOptional) {
-    SwiftTypeElement type = getType(element, removeOptional);
-    if (type == null) {
-      return null;
-    }
-    SwiftTypeAliasDeclaration alias = findResolvedType(type, SwiftTypeAliasDeclaration.class);
-    SwiftProtocolDeclaration protocol = PsiTreeUtil.getParentOfType(alias, SwiftProtocolDeclaration.class);
-    if (protocol != null) {
-      return protocol.getName() + "." + type.getText();
-    }
-    return type.getText();
-  }
-
-  public static String getName(SwiftVariableDeclaration property) {
-    SwiftPatternInitializer pattern = property.getPatternInitializerList().get(0);
-    return PsiTreeUtil.findChildOfType(pattern, SwiftIdentifierPattern.class).getText();
-  }
-
-  private static SwiftTypeElement getType(PsiElement element, boolean removeOptional) {
-    SwiftTypeElement type;
-    if (element instanceof SwiftTypeElement) {
-      type = (SwiftTypeElement)element;
-    } else {
-      type = PsiTreeUtil.findChildOfType(element, SwiftTypeElement.class);
-    }
-    if (type == null) return null;
-    SwiftTypeElement nextType = PsiTreeUtil.findChildOfType(type, SwiftTypeElement.class);
-    boolean isOptional = type instanceof SwiftImplicitlyUnwrappedOptionalTypeElement || type instanceof SwiftOptionalTypeElement;
-    if (nextType != null && removeOptional && isOptional) {
-      return nextType;
-    }
-    return type;
+    return null;
   }
 }

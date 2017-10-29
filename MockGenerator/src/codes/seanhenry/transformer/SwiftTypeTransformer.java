@@ -4,6 +4,7 @@ import codes.seanhenry.mockgenerator.entities.Parameter;
 import codes.seanhenry.mockgenerator.entities.ProtocolMethod;
 import codes.seanhenry.mockgenerator.entities.ProtocolProperty;
 import codes.seanhenry.mockgenerator.util.ParameterUtil;
+import codes.seanhenry.util.MySwiftPsiUtil;
 import codes.seanhenry.util.finder.SwiftTypeItemFinder;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
@@ -14,13 +15,15 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SwiftTypeTransformer {
+public abstract class SwiftTypeTransformer {
 
+  private static final String UNKNOWN_TYPE = "Any";
   private final SwiftTypeItemFinder itemFinder;
   private final List<ProtocolMethod> methods;
   private final List<ProtocolProperty> properties;
+  private static final String UNKNOWN_NAME = "_";
 
-  public SwiftTypeTransformer(SwiftTypeItemFinder itemFinder) {
+  SwiftTypeTransformer(SwiftTypeItemFinder itemFinder) {
     this.itemFinder = itemFinder;
     methods = new ArrayList<>();
     properties = new ArrayList<>();
@@ -33,21 +36,35 @@ public class SwiftTypeTransformer {
 
   private void transformProperties(List<SwiftVariableDeclaration> properties) {
     for (SwiftVariableDeclaration property : properties) {
-      String name = property.getVariables().get(0).getName();
-      String type = PsiTreeUtil.findChildOfType(property, SwiftTypeElement.class).getText();
-      this.properties.add(new ProtocolProperty(name, type, isWritable(property), property.getText()));
+      String name = getName(property);
+      if (name == null) {
+        name = UNKNOWN_NAME;
+      }
+      String type = getType(property);
+      if (type == null) {
+        type = UNKNOWN_TYPE;
+      }
+      this.properties.add(new ProtocolProperty(name, type, isWritable(property), getSignature(property)));
     }
   }
 
-  private boolean isWritable(SwiftVariableDeclaration property) {
-    return PsiTreeUtil.findChildOfType(property, SwiftSetterClause.class) != null
-        || (property.getContext() instanceof SwiftClassDeclaration && !property.isConstant());
-  }
+  @Nullable
+  protected abstract String getName(SwiftVariableDeclaration property);
+  @Nullable
+  protected abstract String getType(SwiftVariableDeclaration property);
+
+  protected abstract boolean isWritable(SwiftVariableDeclaration property);
+  @NotNull
+  protected abstract String getSignature(SwiftVariableDeclaration property);
 
   private void transformMethods(List<SwiftFunctionDeclaration> methods) {
     for (SwiftFunctionDeclaration method : methods) {
+      String name = getName(method);
+      if (name == null) {
+        name = UNKNOWN_NAME;
+      }
       this.methods.add(new ProtocolMethod(
-          getName(method),
+          name,
           getReturnType(method),
           getParameters(method),
           getSignature(method)
@@ -55,30 +72,17 @@ public class SwiftTypeTransformer {
     }
   }
 
-  private String getSignature(SwiftFunctionDeclaration method) {
-    SwiftCodeBlock codeBlock = method.getCodeBlock();
-    if (codeBlock != null) {
-      int offset = method.getStartOffsetInParent();
-      int length = codeBlock.getTextOffset();
-      return method.getContainingFile().getText().substring(offset, length);
-    }
-    return method.getText();
-  }
+  @Nullable
+  protected abstract String getName(SwiftFunctionDeclaration method);
+  @Nullable
+  protected abstract String getReturnType(SwiftFunctionDeclaration method);
+  @NotNull
+  protected abstract List<Parameter> getParameters(SwiftFunctionDeclaration method);
+  @NotNull
+  protected abstract String getSignature(SwiftFunctionDeclaration method);
 
   @NotNull
-  private List<Parameter> getParameters(SwiftFunctionDeclaration method) {
-    ArrayList<Parameter> parameters = new ArrayList<>();
-    SwiftParameterClause parameterClause = method.getParameterClause();
-    if (parameterClause != null && parameterClause.getText().length() > 1) {
-      for (SwiftParameter p : parameterClause.getParameterList()) {
-        parameters.add(transformParameter(p));
-      }
-    }
-    return parameters;
-  }
-
-  @NotNull
-  private Parameter transformParameter(SwiftParameter parameter) {
+  Parameter transformParameter(SwiftParameter parameter) {
     Parameter p = ParameterUtil.Companion.getParameters(parameter.getText()).get(0);
     return new Parameter(
         p.getLabel(),
@@ -90,32 +94,11 @@ public class SwiftTypeTransformer {
   }
 
   private String getResolvedType(SwiftParameter parameter, String type) {
-    SwiftReferenceTypeElement reference = PsiTreeUtil.findChildOfType(parameter.getTypeAnnotation(), SwiftReferenceTypeElement.class);
-    if (reference != null) {
-      PsiElement resolved = reference.resolve();
-      if (resolved instanceof SwiftTypeAliasDeclaration) {
-        return ((SwiftTypeAliasDeclaration) resolved).getTypeAssignment().getTypeElement().getText();
-      }
+    SwiftTypeElement resolved = MySwiftPsiUtil.getResolvedType(parameter.getTypeAnnotation());
+    if (resolved != null) {
+      return resolved.getText();
     }
     return type;
-  }
-
-  @Nullable
-  private String getReturnType(SwiftFunctionDeclaration method) {
-    String returnType = null;
-    SwiftTypeElement returnObject = PsiTreeUtil.findChildOfType(method.getFunctionResult(), SwiftTypeElement.class);
-    if (returnObject != null) {
-      returnType = returnObject.getText();
-    }
-    return returnType;
-  }
-
-  private String getName(SwiftFunctionDeclaration method) {
-    String name = "";
-    if (method.getName() != null) {
-      name = method.getName();
-    }
-    return name;
   }
 
   public List<ProtocolMethod> getMethods() {
