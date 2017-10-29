@@ -25,7 +25,7 @@ public class ClassPropertyChoosingStrategy implements PropertyChoosingStrategy {
     @Override
     public void visitVariableDeclaration(@NotNull SwiftVariableDeclaration property) {
       super.visitVariableDeclaration(property);
-      if (property.isConstant() || property.isStatic() || MySwiftPsiUtil.isFinal(property)) {
+      if (property.isConstant() || property.isStatic() || MySwiftPsiUtil.isFinal(property) || MySwiftPsiUtil.isPrivate(property) || MySwiftPsiUtil.isFilePrivate(property)) {
         return;
       }
       properties.add(property);

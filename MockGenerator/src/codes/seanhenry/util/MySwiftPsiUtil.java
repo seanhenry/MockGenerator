@@ -17,6 +17,14 @@ public class MySwiftPsiUtil {
     return attributesHolder.getAttributes().hasDeclarationSpecifier(SwiftDeclarationSpecifiers.FINAL);
   }
 
+  public static boolean isPrivate(SwiftAttributesHolder attributesHolder) {
+    return attributesHolder.getAttributes().hasDeclarationSpecifier(SwiftDeclarationSpecifiers.PRIVATE);
+  }
+
+  public static boolean isFilePrivate(SwiftAttributesHolder attributesHolder) {
+    return attributesHolder.getAttributes().hasDeclarationSpecifier(SwiftDeclarationSpecifiers.FILEPRIVATE);
+  }
+
   @Nullable
   public static String getName(SwiftVariableDeclaration property) {
      List<SwiftIdentifierPattern> variables = property.getVariables();

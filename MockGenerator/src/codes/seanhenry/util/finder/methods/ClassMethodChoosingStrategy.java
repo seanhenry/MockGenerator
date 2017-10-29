@@ -25,7 +25,7 @@ public class ClassMethodChoosingStrategy implements MethodChoosingStrategy {
     @Override
     public void visitFunctionDeclaration(@NotNull SwiftFunctionDeclaration method) {
       super.visitFunctionDeclaration(method);
-      if (method.isStatic() || MySwiftPsiUtil.isFinal(method)) {
+      if (method.isStatic() || MySwiftPsiUtil.isFinal(method) || MySwiftPsiUtil.isPrivate(method) || MySwiftPsiUtil.isFilePrivate(method)) {
         return;
       }
       methods.add(method);
