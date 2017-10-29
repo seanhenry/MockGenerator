@@ -23,12 +23,12 @@ public class ClassPropertyChoosingStrategy implements PropertyChoosingStrategy {
     private List<SwiftVariableDeclaration> properties = new ArrayList<>();
 
     @Override
-    public void visitVariableDeclaration(@NotNull SwiftVariableDeclaration swiftVariableDeclaration) {
-      super.visitVariableDeclaration(swiftVariableDeclaration);
-      if (swiftVariableDeclaration.isConstant()) {
+    public void visitVariableDeclaration(@NotNull SwiftVariableDeclaration property) {
+      super.visitVariableDeclaration(property);
+      if (property.isConstant() || property.isStatic()) {
         return;
       }
-      properties.add(swiftVariableDeclaration);
+      properties.add(property);
     }
   }
 }

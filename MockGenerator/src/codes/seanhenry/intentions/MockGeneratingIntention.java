@@ -3,7 +3,9 @@ package codes.seanhenry.intentions;
 import codes.seanhenry.transformer.SwiftTypeTransformer;
 import codes.seanhenry.mockgenerator.xcode.XcodeMockGenerator;
 import codes.seanhenry.util.*;
+import codes.seanhenry.util.finder.ClassMethodChoosingStrategy;
 import codes.seanhenry.util.finder.ClassPropertyChoosingStrategy;
+import codes.seanhenry.util.finder.ProtocolMethodChoosingStrategy;
 import codes.seanhenry.util.finder.ProtocolPropertyChoosingStrategy;
 import com.intellij.codeInsight.hint.HintManager;
 import com.intellij.codeInsight.intention.IntentionAction;
@@ -100,13 +102,13 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
 
   @NotNull
   private SwiftTypeItemFinder getProtocolItemFinder() {
-    SwiftTypeItemFinder itemFinder = new SwiftTypeItemFinder(new ProtocolTypeStrategy(), new ProtocolPropertyChoosingStrategy());
+    SwiftTypeItemFinder itemFinder = new SwiftTypeItemFinder(new ProtocolTypeStrategy(), new ProtocolPropertyChoosingStrategy(), new ProtocolMethodChoosingStrategy());
     itemFinder.findItems(classDeclaration);
     return itemFinder;
   }
 
   private SwiftTypeItemFinder getClassItemFinder() {
-    SwiftTypeItemFinder itemFinder = new SwiftTypeItemFinder(new ClassTypeStrategy(), new ClassPropertyChoosingStrategy());
+    SwiftTypeItemFinder itemFinder = new SwiftTypeItemFinder(new ClassTypeStrategy(), new ClassPropertyChoosingStrategy(), new ClassMethodChoosingStrategy());
     itemFinder.findItems(classDeclaration);
     return itemFinder;
   }

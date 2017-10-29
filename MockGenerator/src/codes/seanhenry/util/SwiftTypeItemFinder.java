@@ -1,5 +1,6 @@
 package codes.seanhenry.util;
 
+import codes.seanhenry.util.finder.MethodChoosingStrategy;
 import codes.seanhenry.util.finder.PropertyChoosingStrategy;
 import com.intellij.psi.PsiElement;
 import com.jetbrains.swift.psi.*;
@@ -15,10 +16,12 @@ public class SwiftTypeItemFinder {
   private List<String> errors = new ArrayList<>();
   private final TypeStrategy strategy;
   private final PropertyChoosingStrategy propertyStrategy;
+  private final MethodChoosingStrategy methodStrategy;
 
-  public SwiftTypeItemFinder(TypeStrategy strategy, PropertyChoosingStrategy propertyStrategy) {
+  public SwiftTypeItemFinder(TypeStrategy strategy, PropertyChoosingStrategy propertyStrategy, MethodChoosingStrategy methodStrategy) {
     this.strategy = strategy;
     this.propertyStrategy = propertyStrategy;
+    this.methodStrategy = methodStrategy;
   }
 
   public void findItems(SwiftClassDeclaration classDeclaration) {
@@ -42,9 +45,7 @@ public class SwiftTypeItemFinder {
   }
 
   private List<SwiftFunctionDeclaration> getTypeMethods(SwiftTypeDeclaration type) {
-    ElementGatheringVisitor<SwiftFunctionDeclaration> visitor = new ElementGatheringVisitor<>(SwiftFunctionDeclaration.class);
-    type.accept(visitor);
-    return visitor.getElements();
+    return methodStrategy.chooseMethods(type);
   }
 
   private List<SwiftVariableDeclaration> getTypeProperties(SwiftTypeDeclaration type) {
