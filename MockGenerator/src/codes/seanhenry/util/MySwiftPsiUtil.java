@@ -4,9 +4,14 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.jetbrains.swift.psi.*;
 import com.jetbrains.swift.psi.impl.types.SwiftTypeUtil;
+import com.jetbrains.swift.symbols.SwiftDeclarationSpecifiers;
 import org.jetbrains.annotations.Nullable;
 
 public class MySwiftPsiUtil {
+
+  public static boolean isFinal(SwiftAttributesHolder attributesHolder) {
+    return attributesHolder.getAttributes().hasDeclarationSpecifier(SwiftDeclarationSpecifiers.FINAL);
+  }
 
   public static <T extends PsiElement> T findResolvedType(PsiElement element, Class<T> type) {
     T result = findType(element, type);

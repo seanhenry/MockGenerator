@@ -1,9 +1,9 @@
 package codes.seanhenry.util.finder.properties;
 
+import codes.seanhenry.util.MySwiftPsiUtil;
 import com.jetbrains.swift.psi.SwiftTypeDeclaration;
 import com.jetbrains.swift.psi.SwiftVariableDeclaration;
 import com.jetbrains.swift.psi.SwiftVisitor;
-import com.jetbrains.swift.symbols.SwiftDeclarationSpecifiers;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ public class ClassPropertyChoosingStrategy implements PropertyChoosingStrategy {
     @Override
     public void visitVariableDeclaration(@NotNull SwiftVariableDeclaration property) {
       super.visitVariableDeclaration(property);
-      if (property.isConstant() || property.isStatic() || property.getAttributes().hasDeclarationSpecifier(SwiftDeclarationSpecifiers.FINAL)) {
+      if (property.isConstant() || property.isStatic() || MySwiftPsiUtil.isFinal(property)) {
         return;
       }
       properties.add(property);
