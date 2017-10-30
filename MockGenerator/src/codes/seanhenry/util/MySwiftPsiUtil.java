@@ -25,6 +25,13 @@ public class MySwiftPsiUtil {
     return attributesHolder.getAttributes().hasDeclarationSpecifier(SwiftDeclarationSpecifiers.FILEPRIVATE);
   }
 
+  public static boolean isComputed(SwiftVariableDeclaration property) {
+    if (property.getPatternInitializerList().isEmpty()) {
+      return false;
+    }
+    return property.getPatternInitializerList().get(0).isComputed();
+  }
+
   @Nullable
   public static String getName(SwiftVariableDeclaration property) {
      List<SwiftIdentifierPattern> variables = property.getVariables();

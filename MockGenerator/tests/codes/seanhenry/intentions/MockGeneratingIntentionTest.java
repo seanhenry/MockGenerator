@@ -42,6 +42,7 @@ public class MockGeneratingIntentionTest extends ImportProjectTestCase {
       "UnoverridableClass",
       "FinalClass",
       "InferredTypeClass",
+      "PropertyClass",
     };
 
     for (String fileName : fileNames) {

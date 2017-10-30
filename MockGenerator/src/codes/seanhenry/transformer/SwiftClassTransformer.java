@@ -32,7 +32,7 @@ public class SwiftClassTransformer extends SwiftTypeTransformer {
 
   @Override
   protected boolean isWritable(SwiftVariableDeclaration property) {
-    return !property.isConstant();
+    return !property.isConstant() && !MySwiftPsiUtil.isComputed(property);
   }
 
   @NotNull

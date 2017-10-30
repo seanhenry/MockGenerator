@@ -22,6 +22,7 @@
 		35CDF092AE91BE6FDDA4CD24 /* FinalClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDF0314EA01EEB30DCB32F /* FinalClass.swift */; };
 		35CDF0C310F5B85DB745656E /* DefaultValuesMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDF531AE6C643F9069DEB3 /* DefaultValuesMock.swift */; };
 		35CDF0C44B877824D546E478 /* ClosureProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDFAAB4C4FA1B8510B8FB7 /* ClosureProtocol.swift */; };
+		35CDF1229A27D0DBA86FECB2 /* PropertyClassMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDFF920396514504E51E3E /* PropertyClassMock.swift */; };
 		35CDF1289D3702953D8FB1EA /* OpenProtocolMock_expected.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDFEDDECA15AFAFF06D0D9 /* OpenProtocolMock_expected.swift */; };
 		35CDF1B6E9ED849FF385EDDA /* KeywordsMock_expected.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDF5A92DCB356BEC11A39C /* KeywordsMock_expected.swift */; };
 		35CDF1F1F9702172C57E912A /* OptionalProtocolMock_expected.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147135AF1E5CD2890096B3B4 /* OptionalProtocolMock_expected.swift */; };
@@ -50,6 +51,7 @@
 		35CDF4BD6184E57A61CD9076 /* PropertyProtocolMock_expected.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDF89B66BA022FCD7EBE19 /* PropertyProtocolMock_expected.swift */; };
 		35CDF4C1B950E747D4881186 /* OverloadProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDFBA92C09A1ACF62DF333 /* OverloadProtocol.swift */; };
 		35CDF4E97733C34F5200416E /* UnoverridableClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDFC56EF46344DE1591DB3 /* UnoverridableClass.swift */; };
+		35CDF507A7E13E414C7FCBFB /* PropertyClassMock_expected.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDFF6F97DE873A5B9F97EB /* PropertyClassMock_expected.swift */; };
 		35CDF510CF6D0B5D083C8A6F /* AssociatedTypeProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDF88A3EC2C04D186B24BD /* AssociatedTypeProtocol.swift */; };
 		35CDF5732C98F8E988D911D1 /* PropertyProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDFA9FC32F4B055737B39C /* PropertyProtocol.swift */; };
 		35CDF5A07B31D37866B11AAE /* DefaultValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDF64AC60105639FFAE0B6 /* DefaultValues.swift */; };
@@ -81,6 +83,7 @@
 		35CDFCD0BFD5FB332263EA41 /* Object.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDF6927BF1AE98EFE7A260 /* Object.swift */; };
 		35CDFCEA55877C5103C69A62 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35CDF5E9615CB94E27438335 /* Main.storyboard */; };
 		35CDFD1764A8710ABA37A5DC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDF8633919419079FF167D /* AppDelegate.swift */; };
+		35CDFD1AFE6439711B6BA8DC /* PropertyClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDF55A43F68EFD73102AC6 /* PropertyClass.swift */; };
 		35CDFD2A7244E339A06636F1 /* DiamondInheritanceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDFDA10E7026B0BFB876BF /* DiamondInheritanceProtocol.swift */; };
 		35CDFD4D0ABFFEEFF561FEC9 /* UnoverridableClassMock_expected.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDFC07C7A0D286CB027F3C /* UnoverridableClassMock_expected.swift */; };
 		35CDFD81805CB10CED71062D /* UnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDFED98E9657D6E738D0EA /* UnitTests.swift */; };
@@ -150,6 +153,7 @@
 		35CDF4FA6E00B63F6FD634DB /* InferredTypeClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InferredTypeClass.swift; sourceTree = "<group>"; };
 		35CDF531AE6C643F9069DEB3 /* DefaultValuesMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultValuesMock.swift; sourceTree = "<group>"; };
 		35CDF5405AD86FCC525EA6F4 /* UnoverridableClassMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnoverridableClassMock.swift; sourceTree = "<group>"; };
+		35CDF55A43F68EFD73102AC6 /* PropertyClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PropertyClass.swift; sourceTree = "<group>"; };
 		35CDF57E13799B45BA1F659E /* AssociatedTypeProtocolMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssociatedTypeProtocolMock.swift; sourceTree = "<group>"; };
 		35CDF5A92DCB356BEC11A39C /* KeywordsMock_expected.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeywordsMock_expected.swift; sourceTree = "<group>"; };
 		35CDF5F49243D83E63D67121 /* MultiAssociatedTypeProtocolMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiAssociatedTypeProtocolMock.swift; sourceTree = "<group>"; };
@@ -193,6 +197,8 @@
 		35CDFEA3978101709224D4C8 /* SimpleProtocolMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleProtocolMock.swift; sourceTree = "<group>"; };
 		35CDFED98E9657D6E738D0EA /* UnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitTests.swift; sourceTree = "<group>"; };
 		35CDFEDDECA15AFAFF06D0D9 /* OpenProtocolMock_expected.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenProtocolMock_expected.swift; sourceTree = "<group>"; };
+		35CDFF6F97DE873A5B9F97EB /* PropertyClassMock_expected.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PropertyClassMock_expected.swift; sourceTree = "<group>"; };
+		35CDFF920396514504E51E3E /* PropertyClassMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PropertyClassMock.swift; sourceTree = "<group>"; };
 		35CDFFAEDBA2DA14330D9771 /* RecursiveProtocolMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecursiveProtocolMock.swift; sourceTree = "<group>"; };
 		35CDFFB32842F28746145AC6 /* NotAvailableInProductionCodeTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotAvailableInProductionCodeTarget.swift; sourceTree = "<group>"; };
 		35CDFFB49325BC9AA44B5605 /* DefaultValuesMock_expected.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultValuesMock_expected.swift; sourceTree = "<group>"; };
@@ -354,6 +360,9 @@
 				35CDF4FA6E00B63F6FD634DB /* InferredTypeClass.swift */,
 				35CDF3F08603C2AB53FFF1BA /* InferredTypeClassMock.swift */,
 				35CDFFCB9677C3BF1EE17218 /* InferredTypeClassMock_expected.swift */,
+				35CDF55A43F68EFD73102AC6 /* PropertyClass.swift */,
+				35CDFF920396514504E51E3E /* PropertyClassMock.swift */,
+				35CDFF6F97DE873A5B9F97EB /* PropertyClassMock_expected.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -548,6 +557,7 @@
 				35CDF2D502E6CCD963F34725 /* UnoverridableClassMock.swift in Sources */,
 				35CDF3EAF2E0A22488050942 /* FinalClassMock.swift in Sources */,
 				35CDF020BB6644E2403C680F /* InferredTypeClassMock.swift in Sources */,
+				35CDF1229A27D0DBA86FECB2 /* PropertyClassMock.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -603,6 +613,7 @@
 				35CDFE8A3E6B6CEC71B71ED9 /* SimpleClassMock_expected.swift in Sources */,
 				35CDFD4D0ABFFEEFF561FEC9 /* UnoverridableClassMock_expected.swift in Sources */,
 				35CDF293CC2648C5D45B6101 /* InferredTypeClassMock_expected.swift in Sources */,
+				35CDF507A7E13E414C7FCBFB /* PropertyClassMock_expected.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -632,6 +643,7 @@
 				35CDF4E97733C34F5200416E /* UnoverridableClass.swift in Sources */,
 				35CDF092AE91BE6FDDA4CD24 /* FinalClass.swift in Sources */,
 				35CDF722DBD192686DAB7E31 /* InferredTypeClass.swift in Sources */,
+				35CDFD1AFE6439711B6BA8DC /* PropertyClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

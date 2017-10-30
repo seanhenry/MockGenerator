@@ -1,7 +1,5 @@
 class SimpleClass {
 
-    var property: String?
-
     func method() {
 
     }
