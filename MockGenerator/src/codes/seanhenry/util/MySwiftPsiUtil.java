@@ -25,6 +25,10 @@ public class MySwiftPsiUtil {
     return attributesHolder.getAttributes().hasDeclarationSpecifier(SwiftDeclarationSpecifiers.FILEPRIVATE);
   }
 
+  public static boolean isPrivateSet(SwiftVariableDeclaration property) {
+    return property.getAttributes().hasDeclarationSpecifier(SwiftDeclarationSpecifiers.PRIVATE_SET);
+  }
+
   public static boolean isComputed(SwiftVariableDeclaration property) {
     if (property.getPatternInitializerList().isEmpty()) {
       return false;

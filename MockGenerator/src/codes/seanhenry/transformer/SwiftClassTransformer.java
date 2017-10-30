@@ -32,18 +32,37 @@ public class SwiftClassTransformer extends SwiftTypeTransformer {
 
   @Override
   protected boolean isWritable(SwiftVariableDeclaration property) {
-    return !property.isConstant() && !MySwiftPsiUtil.isComputed(property);
+    return !property.isConstant() && !MySwiftPsiUtil.isComputed(property) && !MySwiftPsiUtil.isPrivateSet(property);
   }
 
   @NotNull
   @Override
   protected String getSignature(SwiftVariableDeclaration property) {
     SwiftInitializer initializer = PsiTreeUtil.findChildOfType(property, SwiftInitializer.class);
-    if (initializer == null) {
-      return property.getText();
+    int startOffset = getStartOffset(property);
+    int endOffset = getEndOffset(property, initializer);
+    String signature = property.getContainingFile().getText().substring(startOffset, endOffset);
+    if (initializer != null) {
+      return signature + ": " + getType(property);
     }
-    String lhs = property.getContainingFile().getText().substring(property.getTextOffset(), initializer.getTextOffset());
-    return lhs + ": " + getType(property);
+    return signature;
+  }
+
+  private int getStartOffset(SwiftVariableDeclaration property) {
+    int startOffset = property.getTextOffset();
+    if (MySwiftPsiUtil.isPrivateSet(property)) {
+      SwiftDeclarationSpecifier specifier = property.getAttributes().getDeclarationSpecifierList().get(0);
+      startOffset = specifier.getTextOffset() + specifier.getTextLength();
+    }
+    return startOffset;
+  }
+
+  private int getEndOffset(SwiftVariableDeclaration property, SwiftInitializer initializer) {
+    int endOffset = property.getTextOffset() + property.getTextLength();
+    if (initializer != null) {
+      endOffset = initializer.getTextOffset();
+    }
+    return endOffset;
   }
 
   @Override

@@ -30,4 +30,12 @@ class PropertyClassMock: PropertyClass {
         invokedComputedGetterCount += 1
         return stubbedComputed
     }
+    var invokedPrivateSetGetter = false
+    var invokedPrivateSetGetterCount = 0
+    var stubbedPrivateSet: UInt!
+    override var privateSet: UInt? {
+        invokedPrivateSetGetter = true
+        invokedPrivateSetGetterCount += 1
+        return stubbedPrivateSet
+    }
 }
