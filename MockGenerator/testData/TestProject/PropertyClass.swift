@@ -7,4 +7,5 @@ class PropertyClass {
     }
 
     private(set) var privateSet: UInt?
+    fileprivate(set) var filePrivateSet: UInt?
 }

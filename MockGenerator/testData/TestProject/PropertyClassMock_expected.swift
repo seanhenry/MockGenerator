@@ -38,4 +38,12 @@ class PropertyClassMock: PropertyClass {
         invokedPrivateSetGetterCount += 1
         return stubbedPrivateSet
     }
+    var invokedFilePrivateSetGetter = false
+    var invokedFilePrivateSetGetterCount = 0
+    var stubbedFilePrivateSet: UInt!
+    override var filePrivateSet: UInt? {
+        invokedFilePrivateSetGetter = true
+        invokedFilePrivateSetGetterCount += 1
+        return stubbedFilePrivateSet
+    }
 }

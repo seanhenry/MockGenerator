@@ -32,7 +32,7 @@ public class SwiftClassTransformer extends SwiftTypeTransformer {
 
   @Override
   protected boolean isWritable(SwiftVariableDeclaration property) {
-    return !property.isConstant() && !MySwiftPsiUtil.isComputed(property) && !MySwiftPsiUtil.isPrivateSet(property);
+    return !property.isConstant() && !MySwiftPsiUtil.isComputed(property) && !MySwiftPsiUtil.isPrivateSet(property) && !MySwiftPsiUtil.isFilePrivateSet(property);
   }
 
   @NotNull
@@ -50,7 +50,7 @@ public class SwiftClassTransformer extends SwiftTypeTransformer {
 
   private int getStartOffset(SwiftVariableDeclaration property) {
     int startOffset = property.getTextOffset();
-    if (MySwiftPsiUtil.isPrivateSet(property)) {
+    if (MySwiftPsiUtil.isPrivateSet(property) || MySwiftPsiUtil.isFilePrivateSet(property)) {
       SwiftDeclarationSpecifier specifier = property.getAttributes().getDeclarationSpecifierList().get(0);
       startOffset = specifier.getTextOffset() + specifier.getTextLength();
     }
