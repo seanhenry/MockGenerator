@@ -5,6 +5,7 @@ import codes.seanhenry.util.MySwiftPsiUtil;
 import codes.seanhenry.util.finder.SwiftTypeItemFinder;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.jetbrains.swift.psi.*;
+import com.jetbrains.swift.symbols.SwiftDeclarationSpecifiers;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class SwiftClassTransformer extends SwiftTypeTransformer {
 
   @Override
   protected String getType(SwiftVariableDeclaration property) {
-    String explicitType = MySwiftPsiUtil.getExplicitType(property);
+    String explicitType = MySwiftPsiUtil.getExplicitTypeName(property);
     if (explicitType != null) {
       return explicitType;
     }
@@ -38,14 +39,13 @@ public class SwiftClassTransformer extends SwiftTypeTransformer {
   @NotNull
   @Override
   protected String getSignature(SwiftVariableDeclaration property) {
-    SwiftInitializer initializer = PsiTreeUtil.findChildOfType(property, SwiftInitializer.class);
     int startOffset = getStartOffset(property);
-    int endOffset = getEndOffset(property, initializer);
+    int endOffset = getEndOffset(property);
     String signature = property.getContainingFile().getText().substring(startOffset, endOffset);
-    if (initializer != null) {
-      return signature + ": " + getType(property);
+    if (MySwiftPsiUtil.hasExplicitType(property)) {
+      return signature;
     }
-    return signature;
+    return signature + ": " + getType(property);
   }
 
   private int getStartOffset(SwiftVariableDeclaration property) {
@@ -54,10 +54,15 @@ public class SwiftClassTransformer extends SwiftTypeTransformer {
       SwiftDeclarationSpecifier specifier = property.getAttributes().getDeclarationSpecifierList().get(0);
       startOffset = specifier.getTextOffset() + specifier.getTextLength();
     }
+    SwiftDeclarationSpecifier lazy = MySwiftPsiUtil.getDeclarationSpecifier(property, SwiftDeclarationSpecifiers.LAZY);
+    if (lazy != null) {
+      startOffset = lazy.getTextOffset() + lazy.getTextLength();
+    }
     return startOffset;
   }
 
-  private int getEndOffset(SwiftVariableDeclaration property, SwiftInitializer initializer) {
+  private int getEndOffset(SwiftVariableDeclaration property) {
+    SwiftInitializer initializer = PsiTreeUtil.findChildOfType(property, SwiftInitializer.class);
     int endOffset = property.getTextOffset() + property.getTextLength();
     if (initializer != null) {
       endOffset = initializer.getTextOffset();

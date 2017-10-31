@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Objects;
 
 import static java.util.Collections.emptyList;
 
@@ -33,6 +34,16 @@ public class MySwiftPsiUtil {
     return property.getAttributes().hasDeclarationSpecifier(SwiftDeclarationSpecifiers.FILEPRIVATE_SET);
   }
 
+  @Nullable
+  public static SwiftDeclarationSpecifier getDeclarationSpecifier(SwiftVariableDeclaration property, SwiftDeclarationSpecifiers specifier) {
+    return property.getAttributes()
+        .getDeclarationSpecifierList()
+        .stream()
+        .filter(s -> Objects.equals(s.getText(), specifier.getText()))
+        .findFirst()
+        .orElse(null);
+  }
+
   public static boolean isComputed(SwiftVariableDeclaration property) {
     if (property.getPatternInitializerList().isEmpty()) {
       return false;
@@ -49,11 +60,28 @@ public class MySwiftPsiUtil {
      return variables.get(0).getText();
   }
 
+  public static boolean hasExplicitType(SwiftVariableDeclaration property) {
+    return getExplicitType(property) != null;
+  }
+
   @Nullable
-  public static String getExplicitType(SwiftVariableDeclaration property) {
-    SwiftTypeElement type = PsiTreeUtil.findChildOfType(property, SwiftTypeElement.class);
+  public static String getExplicitTypeName(SwiftVariableDeclaration property) {
+    SwiftTypeElement type = getExplicitType(property);
     if (type != null) {
       return type.getText();
+    }
+    return null;
+  }
+
+  @Nullable
+  private static SwiftTypeElement getExplicitType(SwiftVariableDeclaration property) {
+    if (property.getPatternInitializerList().isEmpty()) {
+      return null;
+    }
+    SwiftPattern pattern = property.getPatternInitializerList().get(0).getPattern();
+    if (pattern instanceof SwiftTypeAnnotatedPattern) {
+      SwiftTypeAnnotatedPattern annotatedPattern = (SwiftTypeAnnotatedPattern) pattern;
+      return annotatedPattern.getTypeAnnotation().getTypeElement();
     }
     return null;
   }

@@ -1,16 +1,12 @@
 package codes.seanhenry.transformer;
 
 import codes.seanhenry.mockgenerator.entities.Parameter;
-import codes.seanhenry.mockgenerator.util.ParameterUtil;
 import codes.seanhenry.util.MySwiftPsiUtil;
 import codes.seanhenry.util.finder.SwiftTypeItemFinder;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.jetbrains.swift.psi.*;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,7 +23,7 @@ public class SwiftProtocolTransformer extends SwiftTypeTransformer {
 
   @Override
   protected String getType(SwiftVariableDeclaration property) {
-    return MySwiftPsiUtil.getExplicitType(property);
+    return MySwiftPsiUtil.getExplicitTypeName(property);
   }
 
   @Override

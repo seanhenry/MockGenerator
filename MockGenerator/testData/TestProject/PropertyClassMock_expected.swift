@@ -46,4 +46,24 @@ class PropertyClassMock: PropertyClass {
         invokedFilePrivateSetGetterCount += 1
         return stubbedFilePrivateSet
     }
+    var invokedLazyPropertySetter = false
+    var invokedLazyPropertySetterCount = 0
+    var invokedLazyProperty: Int?
+    var invokedLazyPropertyList = [Int]()
+    var invokedLazyPropertyGetter = false
+    var invokedLazyPropertyGetterCount = 0
+    var stubbedLazyProperty: Int! = 0
+    override var lazyProperty: Int {
+        set {
+            invokedLazyPropertySetter = true
+            invokedLazyPropertySetterCount += 1
+            invokedLazyProperty = newValue
+            invokedLazyPropertyList.append(newValue)
+        }
+        get {
+            invokedLazyPropertyGetter = true
+            invokedLazyPropertyGetterCount += 1
+            return stubbedLazyProperty
+        }
+    }
 }
