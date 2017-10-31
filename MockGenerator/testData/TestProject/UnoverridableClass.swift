@@ -8,4 +8,5 @@ class UnoverridableClass {
     fileprivate func filePrivateMethod() {}
     private var privateProperty: Int = 0
     fileprivate var filePrivateProperty: Int = 0
+    class var classProperty: Int { return 0 } // not yet supported
 }
