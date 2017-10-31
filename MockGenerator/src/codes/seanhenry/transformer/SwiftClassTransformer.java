@@ -24,11 +24,7 @@ public class SwiftClassTransformer extends SwiftTypeTransformer {
 
   @Override
   protected String getType(SwiftVariableDeclaration property) {
-    String explicitType = MySwiftPsiUtil.getExplicitTypeName(property);
-    if (explicitType != null) {
-      return explicitType;
-    }
-    return MySwiftPsiUtil.getInferredType(property);
+    return MySwiftPsiUtil.getTypeName(property);
   }
 
   @Override
@@ -77,7 +73,7 @@ public class SwiftClassTransformer extends SwiftTypeTransformer {
 
   @Override
   protected String getReturnType(SwiftFunctionDeclaration method) {
-    return MySwiftPsiUtil.getReturnType(method);
+    return MySwiftPsiUtil.getReturnTypeName(method);
   }
 
   @Override

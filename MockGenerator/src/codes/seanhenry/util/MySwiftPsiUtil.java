@@ -53,15 +53,24 @@ public class MySwiftPsiUtil {
 
   @Nullable
   public static String getName(SwiftVariableDeclaration property) {
-     List<SwiftIdentifierPattern> variables = property.getVariables();
-     if (variables.isEmpty()) {
-       return null;
-     }
-     return variables.get(0).getText();
+    List<SwiftIdentifierPattern> variables = property.getVariables();
+    if (variables.isEmpty()) {
+      return null;
+    }
+    return variables.get(0).getText();
   }
 
   public static boolean hasExplicitType(SwiftVariableDeclaration property) {
     return getExplicitType(property) != null;
+  }
+
+  @Nullable
+  public static String getTypeName(SwiftVariableDeclaration property) {
+    String explicitType = MySwiftPsiUtil.getExplicitTypeName(property);
+    if (explicitType != null) {
+      return explicitType;
+    }
+    return MySwiftPsiUtil.getInferredTypeName(property);
   }
 
   @Nullable
@@ -87,40 +96,61 @@ public class MySwiftPsiUtil {
   }
 
   @Nullable
-  public static String getInferredType(SwiftVariableDeclaration property) {
+  public static String getInferredTypeName(SwiftVariableDeclaration property) {
     SwiftInitializer initializer = PsiTreeUtil.findChildOfType(property, SwiftInitializer.class);
     if (initializer == null) {
       return null;
     }
-    String result = getExpressInferredType(initializer);
+    SwiftExpression expression = initializer.getExpression();
+    String result = getLiteralInferredTypeName(expression);
     if (result != null) {
       return result;
     }
-    result = getLiteralInferredType(initializer);
-    if (result != null) {
-      return result;
+    if (expression instanceof SwiftCallExpression) {
+      SwiftCallExpression call = (SwiftCallExpression) expression;
+      return getCallInferredTypeName(call);
+    }
+    if (expression instanceof SwiftReferenceExpression) {
+      SwiftReferenceExpression reference = (SwiftReferenceExpression) expression;
+      return getReferenceInferredTypeName(reference);
     }
     return null;
   }
 
-  private static String getExpressInferredType(SwiftInitializer initializer) {
-    SwiftCallExpression call = PsiTreeUtil.findChildOfType(initializer, SwiftCallExpression.class);
-    if (call != null) {
-      return call.getInvokedExpression().getText();
+  @NotNull
+  private static String getCallInferredTypeName(SwiftCallExpression call) {
+    SwiftExpression expression = call.getInvokedExpression();
+    if (expression instanceof SwiftReferenceExpression) {
+      SwiftReferenceExpression reference = (SwiftReferenceExpression) expression;
+      PsiElement resolved = reference.resolve();
+      if (resolved instanceof SwiftFunctionDeclaration) {
+        SwiftFunctionDeclaration method = (SwiftFunctionDeclaration) resolved;
+        return method.getFunctionResult().getTypeElement().getText();
+      }
+    }
+    return call.getInvokedExpression().getText();
+  }
+
+  @Nullable
+  private static String getReferenceInferredTypeName(SwiftReferenceExpression reference) {
+    PsiElement resolved = reference.resolve();
+    SwiftVariableDeclaration variable = PsiTreeUtil.getParentOfType(resolved, SwiftVariableDeclaration.class);
+    if (variable != null) {
+      return getTypeName(variable);
     }
     return null;
   }
 
-  private static String getLiteralInferredType(SwiftInitializer initializer) {
-    SwiftLiteralExpression literal = PsiTreeUtil.findChildOfType(initializer, SwiftLiteralExpression.class);
-    if (literal != null) {
+  private static String getLiteralInferredTypeName(SwiftExpression expression) {
+    if (expression instanceof SwiftLiteralExpression) {
+      SwiftLiteralExpression literal = (SwiftLiteralExpression) expression;
       return literal.getType().getPresentableText();
     }
     return null;
   }
 
   @Nullable
-  public static String getReturnType(SwiftFunctionDeclaration method) {
+  public static String getReturnTypeName(SwiftFunctionDeclaration method) {
     SwiftTypeElement returnObject = PsiTreeUtil.findChildOfType(method.getFunctionResult(), SwiftTypeElement.class);
     if (returnObject != null) {
       return returnObject.getText();
