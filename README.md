@@ -8,6 +8,8 @@ Using an AppCode EAP? Check [releases](https://github.com/seanhenry/MockGenerato
 
 [Looking for the Xcode version?](https://github.com/seanhenry/SwiftMockGeneratorForXcode)
 
+Want to generate mocks from classes? [Get early access.](https://github.com/seanhenry/MockGenerator/issues/11)
+
 ## Install Swift Mock Generator for AppCode
 
 - Open AppCode
