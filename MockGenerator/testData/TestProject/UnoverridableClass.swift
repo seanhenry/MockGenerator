@@ -10,3 +10,12 @@ class UnoverridableClass {
     fileprivate var filePrivateProperty: Int = 0
     class var classProperty: Int { return 0 } // not yet supported
 }
+
+extension UnoverridableClass {
+
+    var cannotOverrideExtensionProperty: Int {
+        set {}
+        get { return 0 }
+    }
+    func cannotOverrideExtensionMethod() {}
+}
