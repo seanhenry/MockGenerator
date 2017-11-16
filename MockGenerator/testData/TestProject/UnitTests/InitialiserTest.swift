@@ -12,5 +12,6 @@ class InitialiserTest: XCTestCase {
 
     func test_initialiserWithArgs() {
         _ = ArgumentInitialiserClassMock()
+        _ = MultipleInitialiserClassMock()
     }
 }
