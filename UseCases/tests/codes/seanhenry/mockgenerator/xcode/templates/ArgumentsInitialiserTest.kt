@@ -7,7 +7,7 @@ class ArgumentsInitialiserTest : MockGeneratorTestTemplate {
 
   override fun build(generator: XcodeMockGenerator) {
     generator.setInitialiser(
-        InitialiserMethod("a: Int, b: String, _ c: String?", "init(a: Int, b: String, _ c: String?) { }")
+        InitialiserMethod("a: Int, b: String, _ c: String?")
     )
   }
 

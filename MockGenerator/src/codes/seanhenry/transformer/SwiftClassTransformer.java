@@ -1,5 +1,6 @@
 package codes.seanhenry.transformer;
 
+import codes.seanhenry.mockgenerator.entities.InitialiserMethod;
 import codes.seanhenry.mockgenerator.entities.Parameter;
 import codes.seanhenry.util.MySwiftPsiUtil;
 import codes.seanhenry.util.finder.SwiftTypeItemFinder;
@@ -7,6 +8,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import com.jetbrains.swift.psi.*;
 import com.jetbrains.swift.symbols.SwiftDeclarationSpecifiers;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,6 +17,23 @@ public class SwiftClassTransformer extends SwiftTypeTransformer {
 
   public SwiftClassTransformer(SwiftTypeItemFinder itemFinder) {
     super(itemFinder);
+  }
+
+  @Nullable
+  @Override
+  protected InitialiserMethod transformInitialiser(SwiftInitializerDeclaration initialiser) {
+    if (initialiser == null) {
+      return null;
+    }
+    List<SwiftParameter> parameters = MySwiftPsiUtil.getParameters(initialiser);
+    return new InitialiserMethod(transformParameters(parameters));
+  }
+
+  private List<Parameter> transformParameters(List<SwiftParameter> parameters) {
+    return parameters
+        .stream()
+        .map(this::transformParameter)
+        .collect(Collectors.toList());
   }
 
   @Override
@@ -78,10 +97,7 @@ public class SwiftClassTransformer extends SwiftTypeTransformer {
 
   @Override
   protected List<Parameter> getParameters(SwiftFunctionDeclaration method) {
-    return MySwiftPsiUtil.getParameters(method)
-        .stream()
-        .map(this::transformParameter)
-        .collect(Collectors.toList());
+    return transformParameters(MySwiftPsiUtil.getParameters(method));
   }
 
   @NotNull

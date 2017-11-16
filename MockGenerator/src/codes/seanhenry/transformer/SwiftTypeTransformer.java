@@ -1,5 +1,6 @@
 package codes.seanhenry.transformer;
 
+import codes.seanhenry.mockgenerator.entities.InitialiserMethod;
 import codes.seanhenry.mockgenerator.entities.Parameter;
 import codes.seanhenry.mockgenerator.entities.ProtocolMethod;
 import codes.seanhenry.mockgenerator.entities.ProtocolProperty;
@@ -19,6 +20,7 @@ public abstract class SwiftTypeTransformer {
 
   private static final String UNKNOWN_TYPE = "Any";
   private final SwiftTypeItemFinder itemFinder;
+  private InitialiserMethod initialiser;
   private final List<ProtocolMethod> methods;
   private final List<ProtocolProperty> properties;
   private static final String UNKNOWN_NAME = "_";
@@ -30,9 +32,13 @@ public abstract class SwiftTypeTransformer {
   }
 
   public void transform() {
+    initialiser = transformInitialiser(itemFinder.getInitialiser());
     transformProperties(itemFinder.getProperties());
     transformMethods(itemFinder.getMethods());
   }
+
+  @Nullable
+  protected abstract InitialiserMethod transformInitialiser(SwiftInitializerDeclaration initialiser);
 
   private void transformProperties(List<SwiftVariableDeclaration> properties) {
     for (SwiftVariableDeclaration property : properties) {
@@ -107,5 +113,9 @@ public abstract class SwiftTypeTransformer {
 
   public List<ProtocolProperty> getProperties() {
     return properties;
+  }
+
+  public InitialiserMethod getInitialiser() {
+    return initialiser;
   }
 }

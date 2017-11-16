@@ -6,6 +6,8 @@ import codes.seanhenry.transformer.SwiftTypeTransformer;
 import codes.seanhenry.mockgenerator.xcode.XcodeMockGenerator;
 import codes.seanhenry.util.AssociatedTypeGenericConverter;
 import codes.seanhenry.util.finder.SwiftTypeItemFinder;
+import codes.seanhenry.util.finder.initialiser.ClassTypeInitialiserChoosingStrategy;
+import codes.seanhenry.util.finder.initialiser.EmptyInitialiserChoosingStrategy;
 import codes.seanhenry.util.finder.methods.ClassMethodChoosingStrategy;
 import codes.seanhenry.util.finder.methods.ProtocolMethodChoosingStrategy;
 import codes.seanhenry.util.finder.properties.ClassPropertyChoosingStrategy;
@@ -107,13 +109,13 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
 
   @NotNull
   private SwiftTypeItemFinder getProtocolItemFinder() {
-    SwiftTypeItemFinder itemFinder = new SwiftTypeItemFinder(new ProtocolTypeChoosingStrategy(), new ProtocolPropertyChoosingStrategy(), new ProtocolMethodChoosingStrategy());
+    SwiftTypeItemFinder itemFinder = new SwiftTypeItemFinder(new ProtocolTypeChoosingStrategy(), new EmptyInitialiserChoosingStrategy(), new ProtocolPropertyChoosingStrategy(), new ProtocolMethodChoosingStrategy());
     itemFinder.findItems(classDeclaration);
     return itemFinder;
   }
 
   private SwiftTypeItemFinder getClassItemFinder() {
-    SwiftTypeItemFinder itemFinder = new SwiftTypeItemFinder(new ClassTypeChoosingStrategy(), new ClassPropertyChoosingStrategy(), new ClassMethodChoosingStrategy());
+    SwiftTypeItemFinder itemFinder = new SwiftTypeItemFinder(new ClassTypeChoosingStrategy(), new ClassTypeInitialiserChoosingStrategy(), new ClassPropertyChoosingStrategy(), new ClassMethodChoosingStrategy());
     itemFinder.findItems(classDeclaration);
     return itemFinder;
   }
@@ -134,6 +136,9 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   private void transformClassItems(SwiftTypeItemFinder itemFinder, XcodeMockGenerator generator) throws Exception {
     SwiftTypeTransformer transformer = new SwiftClassTransformer(itemFinder);
     transformer.transform();
+    if (transformer.getInitialiser() != null) {
+      generator.setInitialiser(transformer.getInitialiser());
+    }
     generator.addClassProperties(transformer.getProperties());
     generator.addClassMethods(transformer.getMethods());
   }

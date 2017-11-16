@@ -1,11 +1,13 @@
 package codes.seanhenry.transformer;
 
+import codes.seanhenry.mockgenerator.entities.InitialiserMethod;
 import codes.seanhenry.mockgenerator.entities.Parameter;
 import codes.seanhenry.util.MySwiftPsiUtil;
 import codes.seanhenry.util.finder.SwiftTypeItemFinder;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.jetbrains.swift.psi.*;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,6 +16,12 @@ public class SwiftProtocolTransformer extends SwiftTypeTransformer {
 
   public SwiftProtocolTransformer(SwiftTypeItemFinder itemFinder) {
     super(itemFinder);
+  }
+
+  @Nullable
+  @Override
+  protected InitialiserMethod transformInitialiser(SwiftInitializerDeclaration initialiser) {
+    return null;
   }
 
   @Override

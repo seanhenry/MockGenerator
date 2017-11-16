@@ -1,5 +1,6 @@
 package codes.seanhenry.util.finder;
 
+import codes.seanhenry.util.finder.initialiser.InitialiserChoosingStrategy;
 import codes.seanhenry.util.finder.methods.MethodChoosingStrategy;
 import codes.seanhenry.util.finder.properties.PropertyChoosingStrategy;
 import codes.seanhenry.util.finder.types.TypeChoosingStrategy;
@@ -12,17 +13,20 @@ import java.util.stream.Collectors;
 public class SwiftTypeItemFinder {
 
   private List<SwiftTypeDeclaration> types = new ArrayList<>();
+  private SwiftInitializerDeclaration initialiser;
   private List<SwiftVariableDeclaration> properties = new ArrayList<>();
   private List<SwiftFunctionDeclaration> methods = new ArrayList<>();
   private List<String> errors = new ArrayList<>();
   private final TypeChoosingStrategy strategy;
   private final PropertyChoosingStrategy propertyStrategy;
   private final MethodChoosingStrategy methodStrategy;
+  private final InitialiserChoosingStrategy initialiserStrategy;
 
-  public SwiftTypeItemFinder(TypeChoosingStrategy strategy, PropertyChoosingStrategy propertyStrategy, MethodChoosingStrategy methodStrategy) {
+  public SwiftTypeItemFinder(TypeChoosingStrategy strategy, InitialiserChoosingStrategy initialiserStrategy, PropertyChoosingStrategy propertyStrategy, MethodChoosingStrategy methodStrategy) {
     this.strategy = strategy;
     this.propertyStrategy = propertyStrategy;
     this.methodStrategy = methodStrategy;
+    this.initialiserStrategy = initialiserStrategy;
   }
 
   public void findItems(SwiftClassDeclaration classDeclaration) {
@@ -37,6 +41,11 @@ public class SwiftTypeItemFinder {
         .stream()
         .flatMap(p -> getTypeMethods(p).stream())
         .collect(Collectors.toList());
+    initialiser = types
+        .stream()
+        .flatMap(p -> getTypeInitialisers(p).stream())
+        .findFirst()
+        .orElse(null);
     this.methods = removeDuplicates(methods);
     this.properties = removeDuplicates(properties);
   }
@@ -51,6 +60,10 @@ public class SwiftTypeItemFinder {
 
   private List<SwiftVariableDeclaration> getTypeProperties(SwiftTypeDeclaration type) {
     return propertyStrategy.chooseProperties(type);
+  }
+
+  private List<SwiftInitializerDeclaration> getTypeInitialisers(SwiftTypeDeclaration type) {
+    return initialiserStrategy.chooseInitialisers(type);
   }
 
   private List<SwiftTypeDeclaration> getResolvedTypes(SwiftTypeDeclaration typeDeclaration) {
@@ -89,6 +102,10 @@ public class SwiftTypeItemFinder {
 
   public List<SwiftTypeDeclaration> getTypes() {
     return types;
+  }
+
+  public SwiftInitializerDeclaration getInitialiser() {
+    return initialiser;
   }
 
   // TODO:
