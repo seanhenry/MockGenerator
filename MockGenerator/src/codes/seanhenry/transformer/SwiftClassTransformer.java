@@ -1,6 +1,6 @@
 package codes.seanhenry.transformer;
 
-import codes.seanhenry.mockgenerator.entities.InitialiserMethod;
+import codes.seanhenry.mockgenerator.entities.Initialiser;
 import codes.seanhenry.mockgenerator.entities.Parameter;
 import codes.seanhenry.util.MySwiftPsiUtil;
 import codes.seanhenry.util.finder.SwiftTypeItemFinder;
@@ -21,12 +21,12 @@ public class SwiftClassTransformer extends SwiftTypeTransformer {
 
   @Nullable
   @Override
-  protected InitialiserMethod transformInitialiser(SwiftInitializerDeclaration initialiser) {
+  protected Initialiser transformInitialiser(SwiftInitializerDeclaration initialiser) {
     if (initialiser == null) {
       return null;
     }
     List<SwiftParameter> parameters = MySwiftPsiUtil.getParameters(initialiser);
-    return new InitialiserMethod(transformParameters(parameters));
+    return new Initialiser(transformParameters(parameters));
   }
 
   private List<Parameter> transformParameters(List<SwiftParameter> parameters) {

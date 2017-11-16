@@ -1,23 +1,23 @@
 package codes.seanhenry.mockgenerator.swift
 
-import codes.seanhenry.mockgenerator.entities.InitialiserMethodCall
+import codes.seanhenry.mockgenerator.entities.InitialiserCall
 import codes.seanhenry.mockgenerator.entities.Parameter
 import junit.framework.TestCase
 
 class SwiftStringConvenienceInitCallTest: TestCase() {
 
   fun testShouldReturnEmptyCallWhenNoParameters() {
-    val call = InitialiserMethodCall(emptyList())
+    val call = InitialiserCall(emptyList())
     assertEquals("self.init()", SwiftStringConvenienceInitCall().transform(call))
   }
 
   fun testShouldReturnCallWithTemplateWhenParameterHasNoDefaultValue() {
-    val call = InitialiserMethodCall(listOf(Parameter("a", "a", "Type", "a: Type")))
+    val call = InitialiserCall(listOf(Parameter("a", "a", "Type", "a: Type")))
     assertEquals("self.init(a: <#a#>)", SwiftStringConvenienceInitCall().transform(call))
   }
 
   fun testShouldReturnCallWithTemplateWhenParametersHaveNoDefaultValues() {
-    val call = InitialiserMethodCall(listOf(
+    val call = InitialiserCall(listOf(
         Parameter("a", "a", "Type", "a: Type"),
         Parameter("b", "b", "Type", "b: Type")
     ))
@@ -25,7 +25,7 @@ class SwiftStringConvenienceInitCallTest: TestCase() {
   }
 
   fun testShouldReturnCallWithDefaultValues() {
-    val call = InitialiserMethodCall(listOf(
+    val call = InitialiserCall(listOf(
         Parameter("a", "a", "String", "a: String"),
         Parameter("b", "b", "Int", "b: Int")
     ))
@@ -33,7 +33,7 @@ class SwiftStringConvenienceInitCallTest: TestCase() {
   }
 
   fun testShouldReturnCallWithDefaultValuesForOptionals() {
-    val call = InitialiserMethodCall(listOf(
+    val call = InitialiserCall(listOf(
         Parameter("a", "a", "String?", "a: String?"),
         Parameter("b", "b", "Int?", "a: Int?"),
         Parameter("c", "c", "Object?", "c: Object?")
@@ -42,7 +42,7 @@ class SwiftStringConvenienceInitCallTest: TestCase() {
   }
 
   fun testShouldReturnCallWithWildcard() {
-    val call = InitialiserMethodCall(listOf(
+    val call = InitialiserCall(listOf(
         Parameter("_", "a", "String?", "a: String?")
     ))
     assertEquals("self.init(nil)", SwiftStringConvenienceInitCall().transform(call))

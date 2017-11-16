@@ -1,13 +1,13 @@
 package codes.seanhenry.mockgenerator.xcode.templates
 
-import codes.seanhenry.mockgenerator.entities.InitialiserMethod
+import codes.seanhenry.mockgenerator.entities.Initialiser
 import codes.seanhenry.mockgenerator.xcode.XcodeMockGenerator
 
 class ArgumentsInitialiserTest : MockGeneratorTestTemplate {
 
   override fun build(generator: XcodeMockGenerator) {
     generator.setInitialiser(
-        InitialiserMethod("a: Int, b: String, _ c: String?")
+        Initialiser("a: Int, b: String, _ c: String?")
     )
   }
 

@@ -1,6 +1,6 @@
 package codes.seanhenry.mockgenerator.swift
 
-import codes.seanhenry.mockgenerator.entities.InitialiserMethodCall
+import codes.seanhenry.mockgenerator.entities.InitialiserCall
 import codes.seanhenry.mockgenerator.util.DefaultValueStore
 import codes.seanhenry.mockgenerator.util.OptionalUtil
 
@@ -8,14 +8,14 @@ class SwiftStringConvenienceInitCall {
 
   val store = DefaultValueStore()
 
-  fun transform(call: InitialiserMethodCall): String {
+  fun transform(call: InitialiserCall): String {
     if (call.parameters.isEmpty()) {
       return "self.init()"
     }
     return "self.init(" + transformParameters(call).joinToString(", ") + ")"
   }
 
-  private fun transformParameters(call: InitialiserMethodCall) =
+  private fun transformParameters(call: InitialiserCall) =
       call.parameters.map {
         val value = getValue(it.label, it.type)
         if (it.label == "_") {

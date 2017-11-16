@@ -19,13 +19,13 @@ class XcodeMockGenerator {
   private var override = false
   private lateinit var nameGenerator: UniqueMethodNameGenerator
   private var lines = ArrayList<String>()
-  private var initialiser: InitialiserMethod? = null
+  private var initialiser: Initialiser? = null
 
   fun setScope(scope: String) {
     this.scope = scope.trim() + " "
   }
 
-  fun setInitialiser(initialiser: InitialiserMethod) {
+  fun setInitialiser(initialiser: Initialiser) {
     this.initialiser = initialiser
   }
 
