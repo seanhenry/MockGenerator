@@ -19,9 +19,14 @@ class XcodeMockGenerator {
   private var override = false
   private lateinit var nameGenerator: UniqueMethodNameGenerator
   private var lines = ArrayList<String>()
+  private var initialiser: InitialiserMethod? = null
 
   fun setScope(scope: String) {
     this.scope = scope.trim() + " "
+  }
+
+  fun setInitialiser(initialiser: InitialiserMethod) {
+    this.initialiser = initialiser
   }
 
   fun add(method: ProtocolMethod) {
@@ -72,6 +77,8 @@ class XcodeMockGenerator {
     lines = ArrayList()
     generateOverloadedNames()
 
+    appendInitialiser()
+
     override = true
     appendPropertyMocks(classProperties)
     override = false
@@ -85,6 +92,18 @@ class XcodeMockGenerator {
     appendMethodMocks(protocolMethods)
 
     return lines.joinToString("\n")
+  }
+
+  private fun appendInitialiser() {
+    val initialiser = this.initialiser
+    if (initialiser != null) {
+      val call = CreateConvenienceInitialiser().transform(initialiser)
+      if (call != null) {
+        addLine("convenience init() {")
+        addLine(SwiftStringConvenienceInitCall().transform(call))
+        addLine("}")
+      }
+    }
   }
 
   private fun generateOverloadedNames() {

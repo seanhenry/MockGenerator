@@ -67,6 +67,10 @@ class XcodeMockGeneratorTest: TestCase() {
     runTest(SimpleClassTest())
   }
 
+  fun testInitialiserWithArguments() {
+    runTest(ArgumentsInitialiserTest())
+  }
+
   private fun runTest(template: MockGeneratorTestTemplate) {
     template.build(generator)
     assertEquals(template.getExpected(), generator.generate())
