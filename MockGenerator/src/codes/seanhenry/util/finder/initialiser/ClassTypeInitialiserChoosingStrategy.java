@@ -1,5 +1,6 @@
 package codes.seanhenry.util.finder.initialiser;
 
+import codes.seanhenry.util.MySwiftPsiUtil;
 import com.jetbrains.swift.psi.SwiftInitializerDeclaration;
 import com.jetbrains.swift.psi.SwiftTypeDeclaration;
 import com.jetbrains.swift.psi.SwiftVisitor;
@@ -22,9 +23,12 @@ public class ClassTypeInitialiserChoosingStrategy implements InitialiserChoosing
     private List<SwiftInitializerDeclaration> initialisers = new ArrayList<>();
 
     @Override
-    public void visitInitializerDeclaration(@NotNull SwiftInitializerDeclaration swiftInitializerDeclaration) {
-      super.visitInitializerDeclaration(swiftInitializerDeclaration);
-      initialisers.add(swiftInitializerDeclaration);
+    public void visitInitializerDeclaration(@NotNull SwiftInitializerDeclaration initializer) {
+      super.visitInitializerDeclaration(initializer);
+      if ( MySwiftPsiUtil.isPrivate(initializer) || MySwiftPsiUtil.isFilePrivate(initializer)) {
+        return;
+      }
+      initialisers.add(initializer);
     }
   }
 }

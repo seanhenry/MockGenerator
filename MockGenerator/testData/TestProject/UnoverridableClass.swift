@@ -1,5 +1,7 @@
 class UnoverridableClass {
-    init() {}
+    private init(a: String) {}
+    fileprivate init(b: String) {}
+    init() { }
     let constant: Int = 0
     static var staticProperty: Int = 0
     static func staticMethod() {}
