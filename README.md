@@ -35,22 +35,30 @@ To regenerate the mock, place the cursor anywhere inside the mock and select ‘
 | Feature | Supported |
 |---|---|
 | Swift 3 and 4.|✅|
+| Generate and regenerate your mock in one action.|✅|
+| Classes and protocols |
+| Generates mock conforming to one or many protocols.|✅|
+| Generates mock conforming to a class.|✅|
+| Generates mock conforming to a class and protocols.||
+| Recording methods and properties |
 | Captures invocation status of methods.|✅|
 | Captures invocation status of properties.|✅|
+| Records multiple invocations of methods.|✅|
+| Records multiple invocations of properties.|✅|
 | Captures invoked method parameters.|✅|
+| Records multiple invocations of method parameters.|✅|
+| Stubbing return values and closures |
 | Stubs values for your mocks to return.|✅|
 | Stubs a default value for return values where possible.|✅|
 | Automatically calls closure parameters with stubbed values.|✅|
-| Supports mocks conforming to one or many protocols.|✅|
-| Handles overloaded method declarations.|✅|
-| Regenerate your mock in one action.|✅|
-| Supports associated types.|✅|
-| Supports parameter type-annotation attributes and inout.|✅|
-| Respects public and open mocks and makes queries publicly available.|✅|
-| Records multiple invocations of methods.|✅|
-| Records multiple invocations of method parameters.|✅|
-| Generate mocks from protocols in 3rd party frameworks.|✅|
-| Generate mocks from classes|[Vote](https://github.com/seanhenry/MockGenerator/issues/11)|
+| Initializers |
+| Generates convenience initializers requiring no parameters.|✅ (classes only)|
+| Scope, keywords, and more |
+| Avoids naming clashes from overloaded methods.|✅|
+| Generates generic mocks from protocols with associated types.|✅|
+| Supports parameter type-annotation attributes and `inout`.|✅|
+| Respects the mock scope and generates `public` and `open` methods and properties.|✅|
+| Generate mock inheriting from items in 3rd party frameworks.|✅|
 
 ## Usage example
 
