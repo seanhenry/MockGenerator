@@ -53,6 +53,9 @@ To regenerate the mock, place the cursor anywhere inside the mock and select ‘
 | Automatically calls closure parameters with stubbed values.|✅|
 | **Initializers** |
 | Generates convenience initializers requiring no parameters.|✅ (classes only)|
+| Supports initializers with arguments.|✅ (classes only)|
+| Supports failable initialzers.|✅ (classes only)|
+| Supports required initialzers.|✅ (classes only)|
 | **Scope, keywords, and more** |
 | Avoids naming clashes from overloaded methods.|✅|
 | Generates generic mocks from protocols with associated types.|✅|
