@@ -9,6 +9,6 @@ class CreateConvenienceInitialiser {
     if (initialiser.parametersList.isEmpty()) {
       return null
     }
-    return InitialiserCall(initialiser.parametersList.toList())
+    return InitialiserCall(initialiser.parametersList.toList(), initialiser.isFailable)
   }
 }

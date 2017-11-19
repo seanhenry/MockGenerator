@@ -4,6 +4,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.jetbrains.swift.psi.*;
 import com.jetbrains.swift.symbols.SwiftDeclarationSpecifiers;
+import com.jetbrains.swift.symbols.SwiftFailableStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -185,5 +186,12 @@ public class MySwiftPsiUtil {
       }
     }
     return null;
+  }
+
+  public static boolean isFailable(SwiftInitializerDeclaration initialiser) {
+    if (initialiser.getSwiftSymbol() != null) {
+      return initialiser.getSwiftSymbol().getFailableStatus() != SwiftFailableStatus.none;
+    }
+    return false;
   }
 }

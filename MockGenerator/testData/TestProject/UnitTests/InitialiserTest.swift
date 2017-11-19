@@ -14,5 +14,6 @@ class InitialiserTest: XCTestCase {
         _ = ArgumentInitialiserClassMock()
         _ = MultipleInitialiserClassMock()
         _ = RequiredInitialiserClassMock()
+        _ = FailableInitialiserClassMock()
     }
 }

@@ -1,10 +1,7 @@
 package codes.seanhenry.mockgenerator.xcode
 
-import codes.seanhenry.mockgenerator.entities.ProtocolMethod
-import codes.seanhenry.mockgenerator.entities.ProtocolProperty
 import codes.seanhenry.mockgenerator.xcode.templates.*
 import junit.framework.TestCase
-import kotlin.test.assertEquals
 
 class XcodeMockGeneratorTest: TestCase() {
 
@@ -69,6 +66,10 @@ class XcodeMockGeneratorTest: TestCase() {
 
   fun testInitialiserWithArguments() {
     runTest(ArgumentsInitialiserTest())
+  }
+
+  fun testOptionalInitialser() {
+    runTest(FailableInitialserTest())
   }
 
   private fun runTest(template: MockGeneratorTestTemplate) {

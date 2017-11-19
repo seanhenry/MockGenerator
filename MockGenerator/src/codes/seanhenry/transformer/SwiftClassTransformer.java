@@ -26,7 +26,7 @@ public class SwiftClassTransformer extends SwiftTypeTransformer {
       return null;
     }
     List<SwiftParameter> parameters = MySwiftPsiUtil.getParameters(initialiser);
-    return new Initialiser(transformParameters(parameters));
+    return new Initialiser(transformParameters(parameters), MySwiftPsiUtil.isFailable(initialiser));
   }
 
   private List<Parameter> transformParameters(List<SwiftParameter> parameters) {

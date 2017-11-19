@@ -12,8 +12,12 @@ class SwiftStringConvenienceInitCall {
     if (call.parameters.isEmpty()) {
       return "self.init()"
     }
-    return "self.init(" + transformParameters(call).joinToString(", ") + ")"
+    val forceUnwrap = getForceUnwrap(call)
+    val parameters = transformParameters(call).joinToString(", ")
+    return "self.init($parameters)$forceUnwrap"
   }
+
+  private fun getForceUnwrap(call: InitialiserCall): String = if (call.isFailable) "!" else ""
 
   private fun transformParameters(call: InitialiserCall) =
       call.parameters.map {
