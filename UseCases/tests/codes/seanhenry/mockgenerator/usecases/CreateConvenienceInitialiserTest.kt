@@ -15,8 +15,14 @@ class CreateConvenienceInitialiserTest: TestCase() {
     assertEquals(initialiser.parametersList, CreateConvenienceInitialiser().transform(initialiser)?.parameters)
   }
 
-  fun testShouldReturnOptionalInitialiserWhenFailable() {
+  fun testShouldReturnFailableInitialiserWhenFailable() {
     val initialiser = Initialiser("a: String", true)
     assertEquals(true, CreateConvenienceInitialiser().transform(initialiser)?.isFailable)
+  }
+
+  fun testShouldReturnFailableInitialiserWhenFailableAndNoArguments() {
+    val initialiser = Initialiser("", true)
+    assertEquals(true, CreateConvenienceInitialiser().transform(initialiser)?.isFailable)
+    assertEquals(initialiser.parametersList, CreateConvenienceInitialiser().transform(initialiser)?.parameters)
   }
 }

@@ -9,8 +9,8 @@ class SwiftStringConvenienceInitCall {
   val store = DefaultValueStore()
 
   fun transform(call: InitialiserCall): String {
-    if (call.parameters.isEmpty()) {
-      return "self.init()"
+    if (call.parameters.isEmpty() && call.isFailable) {
+      return "super.init()!"
     }
     val forceUnwrap = getForceUnwrap(call)
     val parameters = transformParameters(call).joinToString(", ")

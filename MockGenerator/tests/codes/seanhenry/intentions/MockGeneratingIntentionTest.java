@@ -46,6 +46,7 @@ public class MockGeneratingIntentionTest extends ImportProjectTestCase {
       "ArgumentInitialiserClass",
       "RequiredInitialiserClass",
       "FailableInitialiserClass",
+      "EmptyFailableInitialiserClass",
     };
 
     for (String fileName : fileNames) {

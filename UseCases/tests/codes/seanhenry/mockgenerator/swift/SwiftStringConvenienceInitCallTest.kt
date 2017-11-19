@@ -55,4 +55,9 @@ class SwiftStringConvenienceInitCallTest : TestCase() {
     ), true)
     assertEquals("self.init(a: nil)!", SwiftStringConvenienceInitCall().transform(call))
   }
+
+  fun testShouldReturnOverriddenInitWhenEmptyFailableInitialiser() {
+    val call = InitialiserCall(emptyList(), true)
+    assertEquals("super.init()!", SwiftStringConvenienceInitCall().transform(call))
+  }
 }

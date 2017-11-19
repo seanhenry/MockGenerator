@@ -99,7 +99,7 @@ class XcodeMockGenerator {
     if (initialiser != null) {
       val call = CreateConvenienceInitialiser().transform(initialiser)
       if (call != null) {
-        addLine("convenience init() {")
+        addLine(SwiftStringInitialiserDeclaration().transform(call) + " {")
         addLine(SwiftStringConvenienceInitCall().transform(call))
         addLine("}")
       }
