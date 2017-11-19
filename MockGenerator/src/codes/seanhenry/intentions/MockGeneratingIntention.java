@@ -3,7 +3,7 @@ package codes.seanhenry.intentions;
 import codes.seanhenry.transformer.SwiftClassTransformer;
 import codes.seanhenry.transformer.SwiftProtocolTransformer;
 import codes.seanhenry.transformer.SwiftTypeTransformer;
-import codes.seanhenry.mockgenerator.xcode.XcodeMockGenerator;
+import codes.seanhenry.mockgenerator.xcode.MockGenerator;
 import codes.seanhenry.util.AssociatedTypeGenericConverter;
 import codes.seanhenry.util.finder.SwiftTypeItemFinder;
 import codes.seanhenry.util.finder.initialiser.ClassTypeInitialiserChoosingStrategy;
@@ -65,7 +65,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   @Override
   public void invoke(@NotNull Project project, Editor editor, @NotNull PsiElement psiElement) throws IncorrectOperationException {
     classDeclaration = findClassUnderCaret(psiElement);
-    XcodeMockGenerator generator = new XcodeMockGenerator();
+    MockGenerator generator = new MockGenerator();
     generator.setScope(getMockScope());
     SwiftTypeItemFinder protocolItemFinder;
     SwiftTypeItemFinder classItemFinder;
@@ -126,14 +126,14 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     }
   }
 
-  private void transformProtocolItems(SwiftTypeItemFinder itemFinder, XcodeMockGenerator generator) throws Exception {
+  private void transformProtocolItems(SwiftTypeItemFinder itemFinder, MockGenerator generator) throws Exception {
     SwiftTypeTransformer transformer = new SwiftProtocolTransformer(itemFinder);
     transformer.transform();
     generator.addProperties(transformer.getProperties());
     generator.addMethods(transformer.getMethods());
   }
 
-  private void transformClassItems(SwiftTypeItemFinder itemFinder, XcodeMockGenerator generator) throws Exception {
+  private void transformClassItems(SwiftTypeItemFinder itemFinder, MockGenerator generator) throws Exception {
     SwiftTypeTransformer transformer = new SwiftClassTransformer(itemFinder);
     transformer.transform();
     if (transformer.getInitialiser() != null) {
@@ -154,7 +154,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     }
   }
 
-  private void generateMock(XcodeMockGenerator generator) throws Exception {
+  private void generateMock(MockGenerator generator) throws Exception {
     String propertiesString = generator.generate();
     try {
       PsiFile file = PsiFileFactory.getInstance(classDeclaration.getProject()).createFileFromText(SwiftLanguage.INSTANCE, propertiesString);

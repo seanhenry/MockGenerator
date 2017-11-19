@@ -2,11 +2,11 @@ package codes.seanhenry.mockgenerator.xcode.templates
 
 import codes.seanhenry.mockgenerator.entities.ProtocolMethod
 import codes.seanhenry.mockgenerator.entities.ProtocolProperty
-import codes.seanhenry.mockgenerator.xcode.XcodeMockGenerator
+import codes.seanhenry.mockgenerator.xcode.MockGenerator
 
 class ScopeProtocolTest : MockGeneratorTestTemplate {
 
-  override fun build(generator: XcodeMockGenerator) {
+  override fun build(generator: MockGenerator) {
     generator.setScope("open")
     generator.add(
         ProtocolProperty("variable", "Object", true, "var variable: Object { get set }")

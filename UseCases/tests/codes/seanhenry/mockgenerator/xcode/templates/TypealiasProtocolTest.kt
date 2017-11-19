@@ -2,11 +2,11 @@ package codes.seanhenry.mockgenerator.xcode.templates
 
 import codes.seanhenry.mockgenerator.entities.Parameter
 import codes.seanhenry.mockgenerator.entities.ProtocolMethod
-import codes.seanhenry.mockgenerator.xcode.XcodeMockGenerator
+import codes.seanhenry.mockgenerator.xcode.MockGenerator
 
 class TypealiasProtocolTest: MockGeneratorTestTemplate {
 
-  override fun build(generator: XcodeMockGenerator) {
+  override fun build(generator: MockGenerator) {
     generator.add(
       ProtocolMethod("typealiasClosure", null, listOf(Parameter("closure", "closure", "Completion", "(Int) -> (String)", "closure: Completion")), "func typealiasClosure(closure: Completion)"),
       ProtocolMethod("internalTypealiasClosure", null, listOf(Parameter("closure", "closure", "T", "(String) -> ()", "closure: ClosureProtocol.T")), "func internalTypealiasClosure(closure: T)")

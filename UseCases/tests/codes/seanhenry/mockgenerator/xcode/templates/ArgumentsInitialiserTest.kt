@@ -1,11 +1,11 @@
 package codes.seanhenry.mockgenerator.xcode.templates
 
 import codes.seanhenry.mockgenerator.entities.Initialiser
-import codes.seanhenry.mockgenerator.xcode.XcodeMockGenerator
+import codes.seanhenry.mockgenerator.xcode.MockGenerator
 
 class ArgumentsInitialiserTest : MockGeneratorTestTemplate {
 
-  override fun build(generator: XcodeMockGenerator) {
+  override fun build(generator: MockGenerator) {
     generator.setInitialiser(
         Initialiser("a: Int, b: String, _ c: String?", false)
     )

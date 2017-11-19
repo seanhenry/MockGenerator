@@ -9,7 +9,7 @@ import codes.seanhenry.mockgenerator.util.MethodModel
 import codes.seanhenry.mockgenerator.util.UniqueMethodNameGenerator
 import java.util.*
 
-class XcodeMockGenerator {
+class MockGenerator {
 
   private val protocolMethods = ArrayList<ProtocolMethod>()
   private val classMethods = ArrayList<ProtocolMethod>()

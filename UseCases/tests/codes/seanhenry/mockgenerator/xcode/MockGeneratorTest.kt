@@ -3,13 +3,13 @@ package codes.seanhenry.mockgenerator.xcode
 import codes.seanhenry.mockgenerator.xcode.templates.*
 import junit.framework.TestCase
 
-class XcodeMockGeneratorTest: TestCase() {
+class MockGeneratorTest : TestCase() {
 
-  lateinit var generator: XcodeMockGenerator
+  lateinit var generator: MockGenerator
 
   override fun setUp() {
     super.setUp()
-    generator = XcodeMockGenerator()
+    generator = MockGenerator()
   }
 
   fun testShouldReturnEmptyString_whenNothingToMock() {

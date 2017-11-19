@@ -2,11 +2,11 @@ package codes.seanhenry.mockgenerator.xcode.templates
 
 import codes.seanhenry.mockgenerator.entities.ProtocolMethod
 import codes.seanhenry.mockgenerator.entities.ProtocolProperty
-import codes.seanhenry.mockgenerator.xcode.XcodeMockGenerator
+import codes.seanhenry.mockgenerator.xcode.MockGenerator
 
 class DefaultValuesTest : MockGeneratorTestTemplate {
 
-  override fun build(generator: XcodeMockGenerator) {
+  override fun build(generator: MockGenerator) {
     generator.add(
         ProtocolProperty("int", "Int", true, "var int: Int { get set }"),
         ProtocolProperty("opt", "Optional<Int>", true, "var opt: Optional<Int> { get set }"),

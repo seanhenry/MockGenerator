@@ -1,11 +1,11 @@
 package codes.seanhenry.mockgenerator.xcode.templates
 
 import codes.seanhenry.mockgenerator.entities.ProtocolMethod
-import codes.seanhenry.mockgenerator.xcode.XcodeMockGenerator
+import codes.seanhenry.mockgenerator.xcode.MockGenerator
 
 class MethodParameterTest : MockGeneratorTestTemplate {
 
-  override fun build(generator: XcodeMockGenerator) {
+  override fun build(generator: MockGenerator) {
     generator.add(
         ProtocolMethod("oneParam", null, "param0: Int", "func oneParam(param0: Int)"),
         ProtocolMethod("twoParam", null, "param0: Int, param1: String", "func twoParam(param0: Int, param1: String)"),
