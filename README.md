@@ -36,24 +36,24 @@ To regenerate the mock, place the cursor anywhere inside the mock and select ‘
 |---|---|
 | Swift 3 and 4.|✅|
 | Generate and regenerate your mock in one action.|✅|
-| Classes and protocols |
+| **Classes and protocols** |
 | Generates mock conforming to one or many protocols.|✅|
 | Generates mock conforming to a class.|✅|
 | Generates mock conforming to a class and protocols.||
-| Recording methods and properties |
+| **Recording methods and properties** |
 | Captures invocation status of methods.|✅|
 | Captures invocation status of properties.|✅|
 | Records multiple invocations of methods.|✅|
 | Records multiple invocations of properties.|✅|
 | Captures invoked method parameters.|✅|
 | Records multiple invocations of method parameters.|✅|
-| Stubbing return values and closures |
+| **Stubbing return values and closures** |
 | Stubs values for your mocks to return.|✅|
 | Stubs a default value for return values where possible.|✅|
 | Automatically calls closure parameters with stubbed values.|✅|
-| Initializers |
+| **Initializers** |
 | Generates convenience initializers requiring no parameters.|✅ (classes only)|
-| Scope, keywords, and more |
+| **Scope, keywords, and more** |
 | Avoids naming clashes from overloaded methods.|✅|
 | Generates generic mocks from protocols with associated types.|✅|
 | Supports parameter type-annotation attributes and `inout`.|✅|
