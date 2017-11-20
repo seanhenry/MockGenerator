@@ -49,7 +49,7 @@ class MockClosureProtocol: ClosureProtocol {
     var invokedInternalTypealiasClosureCount = 0
     var stubbedInternalTypealiasClosureClosureResult: (String, Void)?
 
-    func internalTypealiasClosure(closure: ClosureProtocol.T) {
+    func internalTypealiasClosure(closure: T) {
         invokedInternalTypealiasClosure = true
         invokedInternalTypealiasClosureCount += 1
         if let result = stubbedInternalTypealiasClosureClosureResult {

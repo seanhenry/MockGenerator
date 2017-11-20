@@ -10,7 +10,7 @@
       <sourceFolder url="file://$MODULE_DIR$/testData" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$" isTestSource="true" />
     </content>
-    <orderEntry type="jdk" jdkName="OC-173.3188" jdkType="IDEA JDK" />
+    <orderEntry type="jdk" jdkName="OC-173.3727" jdkType="IDEA JDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="MockGeneratorUseCases" />
     <orderEntry type="library" scope="TEST" name="junit:junit:4.12" level="project" />

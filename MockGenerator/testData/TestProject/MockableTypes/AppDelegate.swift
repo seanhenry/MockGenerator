@@ -1,14 +1,7 @@
-import UIKit
+import Cocoa
 
-@UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+@NSApplicationMain
+class AppDelegate: Foundation.NSObject, NSApplicationDelegate {
 
-    var window: UIWindow?
-
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        window = UIWindow(frame: .zero)
-        window?.rootViewController = UIViewController()
-        window?.makeKeyAndVisible()
-        return true
-    }
+    @IBOutlet weak var window: NSWindow!
 }

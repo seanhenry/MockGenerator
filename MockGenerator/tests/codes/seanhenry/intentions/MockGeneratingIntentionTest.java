@@ -37,6 +37,25 @@ public class MockGeneratingIntentionTest extends ImportProjectTestCase {
       "OpenProtocol",
       "DefaultValues",
       "Keywords",
+
+      "SimpleClass",
+      "UnoverridableClass",
+      "FinalClass",
+      "InferredTypeClass",
+      "PropertyClass",
+      "ArgumentInitialiserClass",
+      "RequiredInitialiserClass",
+      "FailableInitialiserClass",
+      "EmptyFailableInitialiserClass",
+      "Superclass",
+      "NSObjectClass",
+      "InternalClass",
+      "OpenClass",
+      "PublicClass",
+      "AvailableClass",
+
+      "Delete",
+      "ClassAndProtocol",
     };
 
     for (String fileName : fileNames) {
@@ -56,7 +75,7 @@ public class MockGeneratingIntentionTest extends ImportProjectTestCase {
     System.out.println("Running test for " + fileName);
     PsiFile targetFile = configureFile(mockFileName);
     invokeIntention("Generate mock", targetFile);
-    getFixture().checkResultByFile(expectedFileName, true);
+    assertFilesEqual(expectedFileName, mockFileName);
   }
 
   @NotNull

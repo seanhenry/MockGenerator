@@ -9,7 +9,12 @@ class CreateInvocationCheckTest : TestCase() {
 
   override fun setUp() {
     super.setUp()
-    createCheck = CreateInvocationCheck(false)
+    createCheck = CreateInvocationCheck()
+  }
+
+  override fun tearDown() {
+    createCheck = null
+    super.tearDown()
   }
 
   fun testTransformsName() {
@@ -24,13 +29,8 @@ class CreateInvocationCheckTest : TestCase() {
     Assert.assertEquals("invokedURL", createCheck?.transform("URL")?.name)
   }
 
-  fun testAddsFalseInitializer() {
-    createCheck = CreateInvocationCheck(false)
-    Assert.assertEquals(false, createCheck?.transform("name")?.initializer)
-  }
-
-  fun testAddsTrueInitializer() {
-    createCheck = CreateInvocationCheck(true)
-    Assert.assertEquals(true, createCheck?.transform("name")?.initializer)
+  fun testSetsBooleanType() {
+    createCheck = CreateInvocationCheck()
+    Assert.assertEquals("Bool", createCheck?.transform("name")?.type)
   }
 }

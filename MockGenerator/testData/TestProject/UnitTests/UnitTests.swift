@@ -1,11 +1,3 @@
-//
-//  UnitTests.swift
-//  UnitTests
-//
-//  Created by Sean Henry on 15/05/2017.
-//  Copyright (c) 2017 Sean Henry. All rights reserved.
-//
-
 import XCTest
 
 class UnitTests: XCTestCase {

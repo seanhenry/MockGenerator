@@ -1,7 +1,8 @@
 import Foundation
-import UIKit
 
 protocol OverloadProtocol {
+    var int: Int { get set }
+    func int(adding: Int) -> Int
     func setValue(_ string: String, forKey key: String)
     func setValue(_ int: Int, forKey key: String)
     func set(value: String)
@@ -9,8 +10,6 @@ protocol OverloadProtocol {
     func animate() -> Bool
     func animate(withDuration duration: TimeInterval)
     func animate(withDuration duration: TimeInterval, delay: TimeInterval)
-    func present(_ viewControllerToPresent: UIViewController)
-    func present(_ viewControllerToPresent: UIViewController, animated: Bool)
-    func present(from viewControllerToPresent: UIViewController)
-    func present(from viewControllerToPresent: UINavigationController)
+    func specialCharacters(_ tuple: (String, Int))
+    func specialCharacters(_ tuple: (UInt, Float))
 }
