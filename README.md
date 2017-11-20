@@ -39,7 +39,7 @@ To regenerate the mock, place the cursor anywhere inside the mock and select ‘
 | **Classes and protocols** |
 | Generates mock conforming to one or many protocols.|✅|
 | Generates mock conforming to a class.|✅|
-| Generates mock conforming to a class and protocols.||
+| Generates mock conforming to both classes and protocols.|✅|
 | **Recording methods and properties** |
 | Captures invocation status of methods.|✅|
 | Captures invocation status of properties.|✅|

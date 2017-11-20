@@ -10,7 +10,7 @@ import com.jetbrains.swift.psi.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class SwiftTypeItemFinder {
+public class SwiftTypeItemFinder implements TypeItemFinder {
 
   private List<SwiftTypeDeclaration> types = new ArrayList<>();
   private SwiftInitializerDeclaration initialiser;

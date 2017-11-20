@@ -7,6 +7,7 @@ import codes.seanhenry.mockgenerator.entities.ProtocolProperty;
 import codes.seanhenry.mockgenerator.util.ParameterUtil;
 import codes.seanhenry.util.MySwiftPsiUtil;
 import codes.seanhenry.util.finder.SwiftTypeItemFinder;
+import codes.seanhenry.util.finder.TypeItemFinder;
 import com.jetbrains.swift.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -17,13 +18,13 @@ import java.util.List;
 public abstract class SwiftTypeTransformer {
 
   private static final String UNKNOWN_TYPE = "Any";
-  private final SwiftTypeItemFinder itemFinder;
+  private final TypeItemFinder itemFinder;
   private Initialiser initialiser;
   private final List<ProtocolMethod> methods;
   private final List<ProtocolProperty> properties;
   private static final String UNKNOWN_NAME = "_";
 
-  SwiftTypeTransformer(SwiftTypeItemFinder itemFinder) {
+  SwiftTypeTransformer(TypeItemFinder itemFinder) {
     this.itemFinder = itemFinder;
     methods = new ArrayList<>();
     properties = new ArrayList<>();

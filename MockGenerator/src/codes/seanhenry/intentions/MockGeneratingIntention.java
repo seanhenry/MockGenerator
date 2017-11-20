@@ -6,6 +6,7 @@ import codes.seanhenry.transformer.SwiftTypeTransformer;
 import codes.seanhenry.mockgenerator.xcode.MockGenerator;
 import codes.seanhenry.util.AssociatedTypeGenericConverter;
 import codes.seanhenry.util.MySwiftPsiUtil;
+import codes.seanhenry.util.finder.ProtocolDuplicateRemover;
 import codes.seanhenry.util.finder.SwiftTypeItemFinder;
 import codes.seanhenry.util.finder.initialiser.ClassTypeInitialiserChoosingStrategy;
 import codes.seanhenry.util.finder.initialiser.EmptyInitialiserChoosingStrategy;
@@ -76,7 +77,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
       protocolItemFinder = getProtocolItemFinder();
       classItemFinder = getClassItemFinder();
       validateItems(classItemFinder, protocolItemFinder);
-      transformProtocolItems(protocolItemFinder, generator);
+      transformProtocolItems(protocolItemFinder,classItemFinder, generator);
       transformClassItems(classItemFinder, generator);
       deleteClassStatements();
       addGenericClauseToMock(protocolItemFinder);
@@ -127,8 +128,9 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     }
   }
 
-  private void transformProtocolItems(SwiftTypeItemFinder itemFinder, MockGenerator generator) throws Exception {
-    SwiftTypeTransformer transformer = new SwiftProtocolTransformer(itemFinder);
+  private void transformProtocolItems(SwiftTypeItemFinder protocolItemFinder, SwiftTypeItemFinder classItemFinder, MockGenerator generator) throws Exception {
+    ProtocolDuplicateRemover remover = new ProtocolDuplicateRemover(protocolItemFinder, classItemFinder);
+    SwiftTypeTransformer transformer = new SwiftProtocolTransformer(remover);
     transformer.transform();
     generator.addProperties(transformer.getProperties());
     generator.addMethods(transformer.getMethods());

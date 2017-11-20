@@ -52,6 +52,8 @@ public class MockGeneratingIntentionTest extends ImportProjectTestCase {
       "InternalClass",
       "OpenClass",
       "PublicClass",
+
+      "ClassAndProtocol",
     };
 
     for (String fileName : fileNames) {

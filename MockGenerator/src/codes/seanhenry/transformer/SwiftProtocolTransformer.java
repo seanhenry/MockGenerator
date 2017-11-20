@@ -4,6 +4,7 @@ import codes.seanhenry.mockgenerator.entities.Initialiser;
 import codes.seanhenry.mockgenerator.entities.Parameter;
 import codes.seanhenry.util.MySwiftPsiUtil;
 import codes.seanhenry.util.finder.SwiftTypeItemFinder;
+import codes.seanhenry.util.finder.TypeItemFinder;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.jetbrains.swift.psi.*;
 import org.jetbrains.annotations.NotNull;
@@ -14,7 +15,7 @@ import java.util.stream.Collectors;
 
 public class SwiftProtocolTransformer extends SwiftTypeTransformer {
 
-  public SwiftProtocolTransformer(SwiftTypeItemFinder itemFinder) {
+  public SwiftProtocolTransformer(TypeItemFinder itemFinder) {
     super(itemFinder);
   }
 
