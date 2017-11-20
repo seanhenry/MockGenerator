@@ -7,6 +7,7 @@ import com.jetbrains.swift.psi.SwiftVisitor;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -14,6 +15,9 @@ public class ClassMethodChoosingStrategy implements MethodChoosingStrategy {
 
   @Override
   public List<SwiftFunctionDeclaration> chooseMethods(SwiftTypeDeclaration type) {
+    if (Objects.equals(type.getName(), "NSObject")) {
+      return Collections.emptyList();
+    }
     ClassMethodVisitor visitor = new ClassMethodVisitor();
     type.acceptChildren(visitor);
     return visitor.methods;
@@ -36,8 +40,7 @@ public class ClassMethodChoosingStrategy implements MethodChoosingStrategy {
       return method.isStatic()
           || MySwiftPsiUtil.isFinal(method)
           || MySwiftPsiUtil.isPrivate(method)
-          || MySwiftPsiUtil.isFilePrivate(method)
-          || Objects.equals(method.getContainingClass().getName(), "NSObject");
+          || MySwiftPsiUtil.isFilePrivate(method);
     }
   }
 }

@@ -7,6 +7,7 @@ import com.jetbrains.swift.psi.SwiftVisitor;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -14,6 +15,9 @@ public class ClassPropertyChoosingStrategy implements PropertyChoosingStrategy {
 
   @Override
   public List<SwiftVariableDeclaration> chooseProperties(SwiftTypeDeclaration type) {
+    if (Objects.equals(type.getName(), "NSObject")) {
+      return Collections.emptyList();
+    }
     ClassPropertyVisitor visitor = new ClassPropertyVisitor();
     type.acceptChildren(visitor);
     return visitor.properties;
@@ -37,8 +41,7 @@ public class ClassPropertyChoosingStrategy implements PropertyChoosingStrategy {
           || property.isStatic()
           || MySwiftPsiUtil.isFinal(property)
           || MySwiftPsiUtil.isPrivate(property)
-          || MySwiftPsiUtil.isFilePrivate(property)
-          || Objects.equals(property.getContainingClass().getName(), "NSObject");
+          || MySwiftPsiUtil.isFilePrivate(property);
     }
   }
 }
