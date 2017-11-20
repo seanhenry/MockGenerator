@@ -106,8 +106,8 @@ public class SwiftClassTransformer extends SwiftTypeTransformer {
     SwiftCodeBlock codeBlock = method.getCodeBlock();
     if (codeBlock != null) {
       int offset = method.getStartOffsetInParent();
-      int length = codeBlock.getTextOffset();
-      return method.getContainingFile().getText().substring(offset, length);
+      int endOffset = offset + codeBlock.getStartOffsetInParent();
+      return method.getContainingClass().getText().substring(offset, endOffset);
     }
     return method.getText();
   }

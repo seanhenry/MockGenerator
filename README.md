@@ -60,7 +60,7 @@ To regenerate the mock, place the cursor anywhere inside the mock and select ‘
 | Avoids naming clashes from overloaded methods.|✅|
 | Generates generic mocks from protocols with associated types.|✅|
 | Supports parameter type-annotation attributes and `inout`.|✅|
-| Respects the mock scope and generates `public` and `open` methods and properties.|✅|
+| Respects the mock scope and generates `public` and `open` methods and properties.|✅(protocols only)|
 | Generate mock inheriting from items in 3rd party frameworks.|✅|
 
 ## Usage example
