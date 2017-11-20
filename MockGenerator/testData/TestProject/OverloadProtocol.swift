@@ -1,5 +1,4 @@
 import Foundation
-import UIKit
 
 protocol OverloadProtocol {
     var int: Int { get set }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0900"
+   LastUpgradeVersion = "0910"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -9,14 +9,42 @@
          <BuildActionEntry
             buildForTesting = "YES"
             buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "35CDF7D2D5EC61E1253C8D02"
+               BlueprintIdentifier = "14F747331FC35AA900944F3A"
                BuildableName = "MockableTypes.app"
                BlueprintName = "MockableTypes"
+               ReferencedContainer = "container:TestProject.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "14F747451FC35ABF00944F3A"
+               BuildableName = "UnitTests.xctest"
+               BlueprintName = "UnitTests"
+               ReferencedContainer = "container:TestProject.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "NO"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "14F747651FC35AED00944F3A"
+               BuildableName = "TestCode.xctest"
+               BlueprintName = "TestCode"
                ReferencedContainer = "container:TestProject.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -33,7 +61,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "35CDF5BDF4A797CA676D0321"
+               BlueprintIdentifier = "14F747451FC35ABF00944F3A"
                BuildableName = "UnitTests.xctest"
                BlueprintName = "UnitTests"
                ReferencedContainer = "container:TestProject.xcodeproj">
@@ -43,7 +71,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "35CDF7D2D5EC61E1253C8D02"
+            BlueprintIdentifier = "14F747331FC35AA900944F3A"
             BuildableName = "MockableTypes.app"
             BlueprintName = "MockableTypes"
             ReferencedContainer = "container:TestProject.xcodeproj">
@@ -67,7 +95,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "35CDF7D2D5EC61E1253C8D02"
+            BlueprintIdentifier = "14F747331FC35AA900944F3A"
             BuildableName = "MockableTypes.app"
             BlueprintName = "MockableTypes"
             ReferencedContainer = "container:TestProject.xcodeproj">
@@ -82,16 +110,6 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "35CDF7D2D5EC61E1253C8D02"
-            BuildableName = "MockableTypes.app"
-            BlueprintName = "MockableTypes"
-            ReferencedContainer = "container:TestProject.xcodeproj">
-         </BuildableReference>
-      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

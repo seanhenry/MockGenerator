@@ -1,7 +1,8 @@
-import UIKit
+import Cocoa
 
-@UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+@NSApplicationMain
+class AppDelegate: NSObject, NSApplicationDelegate {
 
-    var window: UIWindow?
+    @IBOutlet weak var window: NSWindow!
 }
+
