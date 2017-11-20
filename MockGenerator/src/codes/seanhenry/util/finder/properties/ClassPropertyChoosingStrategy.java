@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ClassPropertyChoosingStrategy implements PropertyChoosingStrategy {
 
@@ -25,10 +26,19 @@ public class ClassPropertyChoosingStrategy implements PropertyChoosingStrategy {
     @Override
     public void visitVariableDeclaration(@NotNull SwiftVariableDeclaration property) {
       super.visitVariableDeclaration(property);
-      if (property.isConstant() || property.isStatic() || MySwiftPsiUtil.isFinal(property) || MySwiftPsiUtil.isPrivate(property) || MySwiftPsiUtil.isFilePrivate(property)) {
+      if (shouldNotOverride(property)) {
         return;
       }
       properties.add(property);
+    }
+
+    private boolean shouldNotOverride(@NotNull SwiftVariableDeclaration property) {
+      return property.isConstant()
+          || property.isStatic()
+          || MySwiftPsiUtil.isFinal(property)
+          || MySwiftPsiUtil.isPrivate(property)
+          || MySwiftPsiUtil.isFilePrivate(property)
+          || Objects.equals(property.getContainingClass().getName(), "NSObject");
     }
   }
 }

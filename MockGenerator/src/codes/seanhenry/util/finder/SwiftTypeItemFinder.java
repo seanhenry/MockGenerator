@@ -44,10 +44,19 @@ public class SwiftTypeItemFinder implements TypeItemFinder {
     initialiser = types
         .stream()
         .flatMap(p -> getTypeInitialisers(p).stream())
-        .findFirst()
+        .filter(this::hasParameters)
+        .min(Comparator.comparingInt(this::getParameterCount))
         .orElse(null);
     this.methods = removeDuplicates(methods);
     this.properties = removeDuplicates(properties);
+  }
+
+  private boolean hasParameters(SwiftInitializerDeclaration initializer) {
+    return initializer.getParameterClause() != null;
+  }
+
+  private int getParameterCount(SwiftInitializerDeclaration initializer) {
+    return initializer.getParameterClause().getParameterList().size();
   }
 
   private static <T> List<T> removeDuplicates(List<T> list) {

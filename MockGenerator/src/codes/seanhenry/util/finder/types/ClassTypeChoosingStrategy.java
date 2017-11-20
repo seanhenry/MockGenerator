@@ -13,7 +13,7 @@ public class ClassTypeChoosingStrategy implements TypeChoosingStrategy {
   public SwiftTypeDeclaration chooseType(PsiElement element) {
     if (element instanceof SwiftClassDeclaration) {
       SwiftClassDeclaration classDeclaration = (SwiftClassDeclaration) element;
-      if (!MySwiftPsiUtil.isFinal(classDeclaration) && !Objects.equals(classDeclaration.getName(), "NSObject")) {
+      if (!MySwiftPsiUtil.isFinal(classDeclaration)) {
         return classDeclaration;
       }
     }

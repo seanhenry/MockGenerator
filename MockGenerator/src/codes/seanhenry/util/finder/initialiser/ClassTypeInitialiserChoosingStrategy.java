@@ -16,15 +16,12 @@ public class ClassTypeInitialiserChoosingStrategy implements InitialiserChoosing
   public List<SwiftInitializerDeclaration> chooseInitialisers(SwiftTypeDeclaration type) {
     SimplestInitialiserVisitor visitor = new SimplestInitialiserVisitor();
     type.acceptChildren(visitor);
-    if (visitor.simplest == null) {
-      return Collections.emptyList();
-    }
-    return Collections.singletonList(visitor.simplest);
+    return visitor.initialisers;
   }
 
   private class SimplestInitialiserVisitor extends SwiftVisitor {
 
-    private SwiftInitializerDeclaration simplest = null;
+    private List<SwiftInitializerDeclaration> initialisers = new ArrayList<>();
 
     @Override
     public void visitInitializerDeclaration(@NotNull SwiftInitializerDeclaration initializer) {
@@ -32,23 +29,7 @@ public class ClassTypeInitialiserChoosingStrategy implements InitialiserChoosing
       if (MySwiftPsiUtil.isPrivate(initializer) || MySwiftPsiUtil.isFilePrivate(initializer)) {
         return;
       }
-      if (simplest == null) {
-        simplest = initializer;
-      } else if (isSimplerThan(initializer, simplest)) {
-        simplest = initializer;
-      }
-    }
-
-    private boolean isSimplerThan(SwiftInitializerDeclaration lhs, SwiftInitializerDeclaration rhs) {
-      boolean isSimpler = false;
-      try {
-        isSimpler = getParameterCount(lhs) < getParameterCount(rhs);
-      } catch (NullPointerException ignored) { }
-      return isSimpler;
-    }
-
-    private int getParameterCount(SwiftInitializerDeclaration initializer) throws NullPointerException {
-      return initializer.getParameterClause().getParameterList().size();
+      initialisers.add(initializer);
     }
   }
 }

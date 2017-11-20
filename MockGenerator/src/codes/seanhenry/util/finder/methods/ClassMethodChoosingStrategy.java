@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ClassMethodChoosingStrategy implements MethodChoosingStrategy {
 
@@ -25,10 +26,18 @@ public class ClassMethodChoosingStrategy implements MethodChoosingStrategy {
     @Override
     public void visitFunctionDeclaration(@NotNull SwiftFunctionDeclaration method) {
       super.visitFunctionDeclaration(method);
-      if (method.isStatic() || MySwiftPsiUtil.isFinal(method) || MySwiftPsiUtil.isPrivate(method) || MySwiftPsiUtil.isFilePrivate(method)) {
+      if (shouldNotOverride(method)) {
         return;
       }
       methods.add(method);
+    }
+
+    private boolean shouldNotOverride(@NotNull SwiftFunctionDeclaration method) {
+      return method.isStatic()
+          || MySwiftPsiUtil.isFinal(method)
+          || MySwiftPsiUtil.isPrivate(method)
+          || MySwiftPsiUtil.isFilePrivate(method)
+          || Objects.equals(method.getContainingClass().getName(), "NSObject");
     }
   }
 }
