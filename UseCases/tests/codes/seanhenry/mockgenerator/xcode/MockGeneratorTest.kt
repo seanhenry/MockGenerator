@@ -76,6 +76,10 @@ class MockGeneratorTest : TestCase() {
     runTest(NoArgumentFailableInitialiserTest())
   }
 
+  fun testOpenInitialiserShouldSetInitToPublic() {
+    runTest(OpenInitialiserTest())
+  }
+
   private fun runTest(template: MockGeneratorTestTemplate) {
     template.build(generator)
     assertEquals(template.getExpected(), generator.generate())

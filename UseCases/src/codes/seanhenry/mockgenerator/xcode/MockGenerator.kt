@@ -99,7 +99,7 @@ class MockGenerator {
     if (initialiser != null) {
       val call = CreateConvenienceInitialiser().transform(initialiser)
       if (call != null) {
-        addLine(SwiftStringInitialiserDeclaration().transform(call) + " {")
+        addInitialiserScopedLine(SwiftStringInitialiserDeclaration().transform(call) + " {")
         addLine(SwiftStringConvenienceInitCall().transform(call))
         addLine("}")
       }
@@ -293,5 +293,13 @@ class MockGenerator {
 
   private fun addScopedLine(line: String) {
     addLine(scope + line)
+  }
+
+  private fun addInitialiserScopedLine(line: String) {
+    if (scope == "open ") {
+      addLine("public " + line)
+    } else {
+      addLine(scope + line)
+    }
   }
 }

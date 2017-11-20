@@ -5,6 +5,7 @@ import codes.seanhenry.transformer.SwiftProtocolTransformer;
 import codes.seanhenry.transformer.SwiftTypeTransformer;
 import codes.seanhenry.mockgenerator.xcode.MockGenerator;
 import codes.seanhenry.util.AssociatedTypeGenericConverter;
+import codes.seanhenry.util.MySwiftPsiUtil;
 import codes.seanhenry.util.finder.SwiftTypeItemFinder;
 import codes.seanhenry.util.finder.initialiser.ClassTypeInitialiserChoosingStrategy;
 import codes.seanhenry.util.finder.initialiser.EmptyInitialiserChoosingStrategy;
@@ -86,9 +87,9 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   }
 
   private String getMockScope() {
-    if (classDeclaration.getAttributes().getText().contains("public")) {
+    if (MySwiftPsiUtil.isPublic(classDeclaration)) {
       return "public";
-    } else if (classDeclaration.getAttributes().getText().contains("open")) {
+    } else if (MySwiftPsiUtil.isOpen(classDeclaration)) {
       return "open";
     }
     return "";

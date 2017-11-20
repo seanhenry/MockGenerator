@@ -64,16 +64,7 @@ public class SwiftClassTransformer extends SwiftTypeTransformer {
   }
 
   private int getStartOffset(SwiftVariableDeclaration property) {
-    int startOffset = property.getTextOffset();
-    if (MySwiftPsiUtil.isPrivateSet(property) || MySwiftPsiUtil.isFilePrivateSet(property)) {
-      SwiftDeclarationSpecifier specifier = property.getAttributes().getDeclarationSpecifierList().get(0);
-      startOffset = specifier.getTextOffset() + specifier.getTextLength();
-    }
-    SwiftDeclarationSpecifier lazy = MySwiftPsiUtil.getDeclarationSpecifier(property, SwiftDeclarationSpecifiers.LAZY);
-    if (lazy != null) {
-      startOffset = lazy.getTextOffset() + lazy.getTextLength();
-    }
-    return startOffset;
+    return property.getTextOffset() + property.getAttributes().getTextLength();
   }
 
   private int getEndOffset(SwiftVariableDeclaration property) {
@@ -105,9 +96,10 @@ public class SwiftClassTransformer extends SwiftTypeTransformer {
   protected String getSignature(SwiftFunctionDeclaration method) {
     SwiftCodeBlock codeBlock = method.getCodeBlock();
     if (codeBlock != null) {
-      int offset = method.getStartOffsetInParent();
-      int endOffset = offset + codeBlock.getStartOffsetInParent();
-      return method.getContainingClass().getText().substring(offset, endOffset);
+      int methodOffset = method.getStartOffsetInParent();
+      int startOffset = methodOffset + method.getAttributes().getStartOffsetInParent() + method.getAttributes().getTextLength();
+      int endOffset = methodOffset + codeBlock.getStartOffsetInParent();
+      return method.getContainingClass().getText().substring(startOffset, endOffset);
     }
     return method.getText();
   }

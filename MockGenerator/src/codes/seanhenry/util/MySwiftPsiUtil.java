@@ -27,6 +27,14 @@ public class MySwiftPsiUtil {
     return attributesHolder.getAttributes().hasDeclarationSpecifier(SwiftDeclarationSpecifiers.FILEPRIVATE);
   }
 
+  public static boolean isPublic(SwiftAttributesHolder attributesHolder) {
+    return attributesHolder.getAttributes().hasDeclarationSpecifier(SwiftDeclarationSpecifiers.PUBLIC);
+  }
+
+  public static boolean isOpen(SwiftAttributesHolder attributesHolder) {
+    return attributesHolder.getAttributes().hasDeclarationSpecifier(SwiftDeclarationSpecifiers.OPEN);
+  }
+
   public static boolean isPrivateSet(SwiftVariableDeclaration property) {
     return property.getAttributes().hasDeclarationSpecifier(SwiftDeclarationSpecifiers.PRIVATE_SET);
   }
