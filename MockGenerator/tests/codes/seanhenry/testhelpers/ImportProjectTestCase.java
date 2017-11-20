@@ -3,16 +3,18 @@ package codes.seanhenry.testhelpers;
 import com.intellij.codeInsight.intention.IntentionAction;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.newvfs.impl.VfsRootAccess;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.impl.source.tree.injected.InjectedLanguageUtil;
 import com.intellij.testFramework.PlatformTestCase;
 import com.intellij.testFramework.fixtures.CodeInsightTestFixture;
 
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public abstract class ImportProjectTestCase extends PlatformTestCase {
 
@@ -34,10 +36,23 @@ public abstract class ImportProjectTestCase extends PlatformTestCase {
 
   @Override
   protected void setUp() throws Exception {
+    allowAccessToXcodeDirectory();
     testResultPath = Files.createTempDirectory("codes.seanhenry.mockgenerator");
     try {
       super.setUp();
     } catch (IllegalStateException ignored) { } 
+  }
+
+  private void allowAccessToXcodeDirectory() throws IOException {
+    String xcodePath = findXcodePath();
+    VfsRootAccess.allowRootAccess(xcodePath);
+  }
+
+  private String findXcodePath() throws IOException {
+    InputStream result = Runtime.getRuntime().exec("xcode-select -p").getInputStream();
+    BufferedReader input = new BufferedReader(new
+        InputStreamReader(result));
+    return input.lines().collect(Collectors.joining());
   }
 
   @Override
