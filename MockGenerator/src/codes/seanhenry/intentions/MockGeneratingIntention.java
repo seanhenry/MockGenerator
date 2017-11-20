@@ -152,9 +152,25 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   }
 
   private void deleteClassStatements() {
-    for (SwiftStatement statement : classDeclaration.getStatementList()) {
-      statement.delete();
+    PsiElement firstElement = findFirstClassElement();
+    PsiElement lastElement = findLastClassElement();
+    if (firstElement != null && lastElement != null) {
+      classDeclaration.deleteChildRange(firstElement, lastElement);
     }
+  }
+
+  private PsiElement findFirstClassElement() {
+    if (classDeclaration.getStatementList().isEmpty()) {
+      return null;
+    }
+    return classDeclaration.getStatementList().get(0);
+  }
+
+  private PsiElement findLastClassElement() {
+    if (classDeclaration.getStatementList().isEmpty()) {
+      return null;
+    }
+    return classDeclaration.getStatementList().get(classDeclaration.getStatementList().size() - 1);
   }
 
   private void generateMock(MockGenerator generator) throws Exception {
