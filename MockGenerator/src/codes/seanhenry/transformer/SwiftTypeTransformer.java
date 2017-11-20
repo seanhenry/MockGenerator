@@ -49,7 +49,7 @@ public abstract class SwiftTypeTransformer {
       if (type == null) {
         type = UNKNOWN_TYPE;
       }
-      this.properties.add(new ProtocolProperty(name, type, isWritable(property), getSignature(property)));
+      this.properties.add(new ProtocolProperty(name, type, isWritable(property), getSignature(property).trim()));
     }
   }
 
@@ -72,7 +72,7 @@ public abstract class SwiftTypeTransformer {
           name,
           getReturnType(method),
           getParameters(method),
-          getSignature(method)
+          getSignature(method).trim()
       ));
     }
   }

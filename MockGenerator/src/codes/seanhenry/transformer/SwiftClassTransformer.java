@@ -95,12 +95,12 @@ public class SwiftClassTransformer extends SwiftTypeTransformer {
   @Override
   protected String getSignature(SwiftFunctionDeclaration method) {
     SwiftCodeBlock codeBlock = method.getCodeBlock();
+    int methodOffset = method.getStartOffsetInParent();
+    int startOffset = methodOffset + method.getAttributes().getStartOffsetInParent() + method.getAttributes().getTextLength();
+    int endOffset = methodOffset + method.getTextLength();
     if (codeBlock != null) {
-      int methodOffset = method.getStartOffsetInParent();
-      int startOffset = methodOffset + method.getAttributes().getStartOffsetInParent() + method.getAttributes().getTextLength();
-      int endOffset = methodOffset + codeBlock.getStartOffsetInParent();
-      return method.getContainingClass().getText().substring(startOffset, endOffset);
+      endOffset = methodOffset + codeBlock.getStartOffsetInParent();
     }
-    return method.getText();
+    return method.getContainingClass().getText().substring(startOffset, endOffset);
   }
 }
