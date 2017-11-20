@@ -48,6 +48,7 @@ public class MockGeneratingIntentionTest extends ImportProjectTestCase {
       "FailableInitialiserClass",
       "EmptyFailableInitialiserClass",
       "Superclass",
+      "NSObjectClass",
     };
 
     for (String fileName : fileNames) {

@@ -1,7 +1,7 @@
 import UIKit
 @testable import MockableTypes
 
-class MockUIKitProtocol: NSObject, UITextFieldDelegate {
+class MockUIKitProtocol: Foundation.NSObject, UITextFieldDelegate {
 
     var invokedTextFieldShouldBeginEditing = false
     var invokedTextFieldShouldBeginEditingCount = 0
