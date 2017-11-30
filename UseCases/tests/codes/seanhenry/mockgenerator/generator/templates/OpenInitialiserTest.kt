@@ -1,8 +1,8 @@
-package codes.seanhenry.mockgenerator.xcode.templates
+package codes.seanhenry.mockgenerator.generator.templates
 
 import codes.seanhenry.mockgenerator.entities.Initialiser
 import codes.seanhenry.mockgenerator.entities.Parameter
-import codes.seanhenry.mockgenerator.xcode.MockGenerator
+import codes.seanhenry.mockgenerator.generator.MockGenerator
 
 class OpenInitialiserTest: MockGeneratorTestTemplate {
 

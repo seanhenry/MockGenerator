@@ -1,4 +1,4 @@
-package codes.seanhenry.mockgenerator.xcode
+package codes.seanhenry.mockgenerator.generator
 
 import codes.seanhenry.mockgenerator.entities.*
 import codes.seanhenry.mockgenerator.swift.SwiftStringReturnProperty

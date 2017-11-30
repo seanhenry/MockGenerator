@@ -3,7 +3,7 @@ package codes.seanhenry.intentions;
 import codes.seanhenry.transformer.SwiftClassTransformer;
 import codes.seanhenry.transformer.SwiftProtocolTransformer;
 import codes.seanhenry.transformer.SwiftTypeTransformer;
-import codes.seanhenry.mockgenerator.xcode.MockGenerator;
+import codes.seanhenry.mockgenerator.generator.MockGenerator;
 import codes.seanhenry.util.AssociatedTypeGenericConverter;
 import codes.seanhenry.util.MySwiftPsiUtil;
 import codes.seanhenry.util.finder.ProtocolDuplicateRemover;

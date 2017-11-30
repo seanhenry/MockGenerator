@@ -1,6 +1,6 @@
-package codes.seanhenry.mockgenerator.xcode
+package codes.seanhenry.mockgenerator.generator
 
-import codes.seanhenry.mockgenerator.xcode.templates.*
+import codes.seanhenry.mockgenerator.generator.templates.*
 import junit.framework.TestCase
 
 class MockGeneratorTest : TestCase() {
