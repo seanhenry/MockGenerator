@@ -13,11 +13,13 @@ class SwiftStringConvenienceInitCall {
       return "super.init()!"
     }
     val forceUnwrap = getForceUnwrap(call)
+    val forceTry = getForceTry(call)
     val parameters = transformParameters(call).joinToString(", ")
-    return "self.init($parameters)$forceUnwrap"
+    return "${forceTry}self.init($parameters)$forceUnwrap"
   }
 
   private fun getForceUnwrap(call: InitialiserCall): String = if (call.isFailable) "!" else ""
+  private fun getForceTry(call: InitialiserCall): String = if (call.throws) "try! " else ""
 
   private fun transformParameters(call: InitialiserCall) =
       call.parameters.map {

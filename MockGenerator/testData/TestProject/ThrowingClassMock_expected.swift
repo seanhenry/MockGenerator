@@ -2,6 +2,10 @@
 
 class ThrowingClassMock: ThrowingClass {
 
+    convenience init() {
+        try! self.init(a: "")
+    }
+
     var invokedThrowingMethod = false
     var invokedThrowingMethodCount = 0
     var stubbedThrowingMethodError: Error?

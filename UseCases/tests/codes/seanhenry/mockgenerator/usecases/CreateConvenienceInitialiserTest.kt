@@ -10,6 +10,11 @@ class CreateConvenienceInitialiserTest: TestCase() {
     assertNull(CreateConvenienceInitialiser().transform(initialiser))
   }
 
+  fun testShouldReturnNilForThrowingInitialiserWithNoArguments() {
+    val initialiser = Initialiser("", false, true)
+    assertNull(CreateConvenienceInitialiser().transform(initialiser))
+  }
+
   fun testShouldReturnOriginalInitialiserWith1Argument() {
     val initialiser = Initialiser("a: String", false)
     assertEquals(initialiser.parametersList, CreateConvenienceInitialiser().transform(initialiser)?.parameters)
@@ -18,6 +23,11 @@ class CreateConvenienceInitialiserTest: TestCase() {
   fun testShouldReturnFailableInitialiserWhenFailable() {
     val initialiser = Initialiser("a: String", true)
     assertEquals(true, CreateConvenienceInitialiser().transform(initialiser)?.isFailable)
+  }
+
+  fun testShouldReturnThrowingInitialiserWhenThrows() {
+    val initialiser = Initialiser("a: String", false, true)
+    assertEquals(true, CreateConvenienceInitialiser().transform(initialiser)?.throws)
   }
 
   fun testShouldReturnFailableInitialiserWhenFailableAndNoArguments() {

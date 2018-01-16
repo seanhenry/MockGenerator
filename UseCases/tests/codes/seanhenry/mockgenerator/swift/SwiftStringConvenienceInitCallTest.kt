@@ -60,4 +60,9 @@ class SwiftStringConvenienceInitCallTest : TestCase() {
     val call = InitialiserCall(emptyList(), true)
     assertEquals("super.init()!", SwiftStringConvenienceInitCall().transform(call))
   }
+
+  fun testShouldCallWithTryWhenInitialiserThrows() {
+    val call = InitialiserCall(emptyList(), false, true)
+    assertEquals("try! self.init()", SwiftStringConvenienceInitCall().transform(call))
+  }
 }

@@ -1,22 +1,18 @@
 package codes.seanhenry.mockgenerator.generator.templates
 
 import codes.seanhenry.mockgenerator.entities.Initialiser
-import codes.seanhenry.mockgenerator.entities.Parameter
 import codes.seanhenry.mockgenerator.generator.MockGenerator
 
-class OpenInitialiserTest: MockGeneratorTestTemplate {
+class ThrowingInitialiserTest: MockGeneratorTestTemplate {
 
   override fun build(generator: MockGenerator) {
-    generator.setInitialiser(
-        Initialiser(listOf(Parameter("a", "a", "String?", "a: String?")), false, false)
-    )
-    generator.setScope("open")
+    generator.setInitialiser(Initialiser("a: String", false, true))
   }
 
   override fun getExpected(): String {
     return """
-      public convenience init() {
-      self.init(a: nil)
+      convenience init() {
+      try! self.init(a: "")
       }
       """.trimIndent()
   }

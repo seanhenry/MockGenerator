@@ -6,12 +6,12 @@ import codes.seanhenry.mockgenerator.entities.InitialiserCall
 class CreateConvenienceInitialiser {
 
   fun transform(initialiser: Initialiser): InitialiserCall? {
-    if (emptyInitialserCanBeInferred(initialiser)) {
+    if (emptyInitialiserCanBeInferred(initialiser)) {
       return null
     }
-    return InitialiserCall(initialiser.parametersList.toList(), initialiser.isFailable)
+    return InitialiserCall(initialiser.parametersList, initialiser.isFailable, initialiser.throws)
   }
 
-  private fun emptyInitialserCanBeInferred(initialiser: Initialiser) =
+  private fun emptyInitialiserCanBeInferred(initialiser: Initialiser) =
       initialiser.parametersList.isEmpty() && !initialiser.isFailable
 }
