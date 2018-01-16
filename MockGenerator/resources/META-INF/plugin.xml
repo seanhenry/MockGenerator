@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>codes.seanhenry.mockgenerator</id>
     <name>Swift Mock Generator for AppCode</name>
-    <version>8</version>
+    <version>9</version>
     <vendor email="hello@seanhenry.codes" url="https://github.com/seanhenry/MockGenerator">Sean Henry</vendor>
 
     <description><![CDATA[
@@ -22,6 +22,9 @@
         <li>Supports initializers with arguments.</li>
         <li>Supports failable initialzers.</li>
         <li>Supports required initialzers.</li>
+        <li>Stub an error for your mock method to throw.</li>
+        <li>Supports throwing initializers.</li>
+        <li>Supports throwing closures.</li>
         <li>Avoids naming clashes from overloaded methods.</li>
         <li>Generates generic mocks from protocols with associated types.</li>
         <li>Supports parameter type-annotation attributes and `inout`.</li>
@@ -42,13 +45,17 @@ class MockDataStore: DataStore {
     var invokedSaveCount = 0
     var invokedSaveParameters: (data: Data, file: URL)?
     var invokedSaveParametersList = [(data: Data, file: URL)]()
+    var stubbedSaveError: Error?
     var stubbedSaveResult: Bool! = false
 
-    func save(_ data: Data, to file: URL) -> Bool {
+    func save(_ data: Data, to file: URL) throws -> Bool {
         invokedSave = true
         invokedSaveCount += 1
         invokedSaveParameters = (data, file)
         invokedSaveParametersList.append((data, file))
+        if let error = stubbedSaveError {
+            throw error
+        }
         return stubbedSaveResult
     }
 }
@@ -57,8 +64,9 @@ class MockDataStore: DataStore {
 
     <change-notes><![CDATA[
       <ul>
-        <li>Supports 2017.3</li>
-        <li>Generate a mock inheriting from a class</li>
+        <li>Stub an error for your mock method to throw.</li>
+        <li>Supports throwing initializers.</li>
+        <li>Supports throwing closures.</li>
       </ul>
     ]]>
     </change-notes>

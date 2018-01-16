@@ -52,8 +52,12 @@ To regenerate the mock, place the cursor anywhere inside the mock and select ‘
 | **Initializers** |
 | Generates convenience initializers requiring no parameters.|✅ (classes only)|
 | Supports initializers with arguments.|✅ (classes only)|
-| Supports failable initialzers.|✅ (classes only)|
-| Supports required initialzers.|✅ (classes only)|
+| Supports failable initializers.|✅ (classes only)|
+| Supports required initializers.|✅ (classes only)|
+| **Throws** |
+| Stub an error for your mock method to throw. |✅|
+| Supports throwing initializers. |✅|
+| Supports throwing closures. |✅|
 | **Scope, keywords, and more** |
 | Avoids naming clashes from overloaded methods.|✅|
 | Generates generic mocks from protocols with associated types.|✅|
