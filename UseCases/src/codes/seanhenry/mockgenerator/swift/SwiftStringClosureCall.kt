@@ -23,6 +23,7 @@ class SwiftStringClosureCall {
         .joinToString(", ")
     val suppressWarning = if (!closure.returnValue.isEmpty()) "_ = " else ""
     val optional = if (closure.isOptional) "?" else ""
-    return "$suppressWarning$name$optional($arguments)"
+    val safeTry = if (closure.throws) "try? " else ""
+    return "$suppressWarning$safeTry$name$optional($arguments)"
   }
 }

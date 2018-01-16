@@ -135,6 +135,24 @@ class CreateClosureCallTest : TestCase() {
     assertClosure("name", emptyList(), "", 4, true)
   }
 
+  fun testShouldReturnThrowingClosure() {
+    transform(listOf(
+        "closure: () throws -> ()",
+        "closure:()throws->()",
+        "closure: ()     throws    -> ()"
+    ))
+    assertClosureCount(3)
+    assertThrowingClosure("closure", emptyList(), "", 0, true)
+    assertThrowingClosure("closure", emptyList(), "", 1, true)
+    assertThrowingClosure("closure", emptyList(), "", 2, true)
+  }
+
+  fun testShouldNotReturnThrowingClosureFalsePositive() {
+    transform(listOf("closure: (_ throws: String) -> ()"))
+    assertClosureCount(1)
+    assertThrowingClosure("closure", listOf("String"), "", 0, false)
+  }
+
   private fun transform(vararg parameters: Parameter) {
     closures = CreateClosureCall().transform(listOf(*parameters))
   }
@@ -157,6 +175,15 @@ class CreateClosureCallTest : TestCase() {
     assertEquals(expectedArguments, closure.arguments)
     assertEquals(expectedReturnValue, closure.returnValue)
     assertEquals(expectedOptionalValue, closure.isOptional)
+  }
+
+  private fun assertThrowingClosure(expectedName: String,
+                                    expectedArguments: List<String>,
+                                    expectedReturnValue: String,
+                                    index: Int,
+                                    throws: Boolean) {
+    assertClosure(expectedName, expectedArguments, expectedReturnValue, index)
+    assertEquals(throws, closures[index].throws)
   }
 
   private fun argumentsClosureParameter(): List<String> {

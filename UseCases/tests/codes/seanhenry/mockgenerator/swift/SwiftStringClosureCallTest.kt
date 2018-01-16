@@ -56,6 +56,11 @@ class SwiftStringClosureCallTest: TestCase() {
     assertEquals("_ = closure?()", SwiftStringClosureCall().transform("", closure))
   }
 
+  fun testShouldCallThrowingClosure() {
+    val closure = Closure("closure", emptyList(), "", false, true)
+    assertEquals("try? closure()", SwiftStringClosureCall().transform("", closure))
+  }
+
   fun testShouldCallOptionalClosureWhenMultipleArguments() {
     val closure = Closure("closure", listOf("Type", "AnotherType", "ThirdType"), "(String, Int)", true)
     val expected = """
@@ -64,5 +69,10 @@ class SwiftStringClosureCallTest: TestCase() {
     }
       """.trimIndent()
     assertEquals(expected, SwiftStringClosureCall().transform("propertyName", closure))
+  }
+
+  fun testShouldCallThrowingOptionalClosureWithReturnValue() {
+    val closure = Closure("closure", emptyList(), "String", true, true)
+    assertEquals("_ = try? closure?()", SwiftStringClosureCall().transform("", closure))
   }
 }
