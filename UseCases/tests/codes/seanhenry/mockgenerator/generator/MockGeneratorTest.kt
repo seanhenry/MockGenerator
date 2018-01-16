@@ -80,6 +80,10 @@ class MockGeneratorTest : TestCase() {
     runTest(OpenInitialiserTest())
   }
 
+  fun testStubsThrowableMethods() {
+    runTest(ThrowingTest())
+  }
+
   private fun runTest(template: MockGeneratorTestTemplate) {
     template.build(generator)
     assertEquals(template.getExpected(), generator.generate())

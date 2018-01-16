@@ -72,7 +72,8 @@ public abstract class SwiftTypeTransformer {
           name,
           getReturnType(method),
           getParameters(method),
-          getSignature(method).trim()
+          getSignature(method).trim(),
+          getThrows(method)
       ));
     }
   }
@@ -85,6 +86,10 @@ public abstract class SwiftTypeTransformer {
   protected abstract List<Parameter> getParameters(SwiftFunctionDeclaration method);
   @NotNull
   protected abstract String getSignature(SwiftFunctionDeclaration method);
+
+  private boolean getThrows(SwiftFunctionDeclaration method) {
+    return method.isThrowing();
+  }
 
   @NotNull
   Parameter transformParameter(SwiftParameter parameter) {

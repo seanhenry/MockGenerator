@@ -14,4 +14,8 @@ class SwiftStringPropertyDeclarationTest: TestCase() {
     val declaration = PropertyDeclaration("otherName", "OtherType")
     assertEquals("var otherName: OtherType", SwiftStringPropertyDeclaration().transform(declaration))
   }
+
+  fun testTransformsEmptyPropertyToEmptyString() {
+    assertEquals("", SwiftStringPropertyDeclaration().transform(PropertyDeclaration.EMPTY))
+  }
 }

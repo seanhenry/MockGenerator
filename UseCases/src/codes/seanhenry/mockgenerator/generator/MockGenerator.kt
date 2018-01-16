@@ -22,7 +22,7 @@ class MockGenerator {
   private var initialiser: Initialiser? = null
 
   fun setScope(scope: String) {
-    this.scope = scope.trim() + " "
+    this.scope = scope.trim()
   }
 
   fun setInitialiser(initialiser: Initialiser) {
@@ -225,9 +225,10 @@ class MockGenerator {
       val closureProperties = closures.map { CreateClosureResultPropertyDeclaration().transform(name, it) }
       val closureCalls = closureProperties.zip(closures)
       val returnStub = createReturnStub(method, name)
-      addMethodProperties(method, invocationCheck, invocationCount, invokedParameters, invokedParametersList, closureProperties, returnStub)
+      val errorStub = CreateErrorStub().transform(name, method.throws)
+      addMethodProperties(method, invocationCheck, invocationCount, invokedParameters, invokedParametersList, closureProperties, returnStub, errorStub)
       addMethodDeclaration(method)
-      addMethodAssignments(invocationCheck, invocationCount, invokedParameters, invokedParametersList, closureCalls, returnStub)
+      addMethodAssignments(invocationCheck, invocationCount, invokedParameters, invokedParametersList, closureCalls, returnStub, errorStub)
       addClosingBrace()
     }
   }
@@ -245,13 +246,15 @@ class MockGenerator {
                                   invokedParameters: TuplePropertyDeclaration?,
                                   invokedParametersList: TuplePropertyDeclaration?,
                                   closureProperties: List<PropertyDeclaration?>,
-                                  returnStub: PropertyDeclaration?) {
+                                  returnStub: PropertyDeclaration?,
+                                  errorStub: PropertyDeclaration) {
     addScopedLine(SwiftStringImplicitValuePropertyDeclaration().transform(invocationCheck, "false"))
     addScopedLine(SwiftStringImplicitValuePropertyDeclaration().transform(invocationCount, "0"))
     if (invokedParameters != null) addScopedLine(SwiftStringPropertyDeclaration().transform(invokedParameters) + "?")
     if (invokedParametersList != null) addScopedLine(SwiftStringInitializedArrayPropertyDeclaration().transform(invokedParametersList))
     closureProperties.filterNotNull().forEach { addScopedLine(SwiftStringPropertyDeclaration().transform(it) + "?") }
     addStubbedResult(returnStub, method)
+    addScopedLine(SwiftStringPropertyDeclaration().transform(errorStub))
   }
 
   private fun addStubbedResult(returnStub: PropertyDeclaration?, method: ProtocolMethod) {
@@ -270,17 +273,30 @@ class MockGenerator {
                                    invokedParameters: TuplePropertyDeclaration?,
                                    invokedParametersList: TuplePropertyDeclaration?,
                                    closureCalls: List<Pair<PropertyDeclaration?, Closure>>,
-                                   returnStub: PropertyDeclaration?) {
+                                   returnStub: PropertyDeclaration?,
+                                   errorStub: PropertyDeclaration) {
     addLine(SwiftStringPropertyAssignment().transform(invocationCheck, "true"))
     addLine(SwiftStringIncrementAssignment().transform(invocationCount))
     if (invokedParameters != null) addLine(SwiftStringPropertyAssignment().transform(invokedParameters, SwiftStringTupleForwardCall().transform(invokedParameters)))
     if (invokedParametersList != null) addLine(SwiftStringArrayAppender().transform(invokedParametersList, SwiftStringTupleForwardCall().transform(invokedParametersList)))
     closureCalls.forEach { addLine(SwiftStringClosureCall().transform(it.first?.name ?: "", it.second)) }
     if (returnStub != null) addLine(SwiftStringReturnProperty().transform(returnStub))
+    addLine(SwiftStringThrowError().transform(errorStub))
   }
 
   private fun addLine(line: String) {
+    if (line.isEmpty()) {
+      return
+    }
     lines.add(line)
+  }
+
+  private fun addLine(scope: String, line: String) {
+    when {
+      line.isEmpty() -> return
+      scope.isEmpty() -> addLine(line)
+      else -> addLine(scope + " " + line)
+    }
   }
 
   private fun addOverriddenLine(line: String) {
@@ -292,14 +308,14 @@ class MockGenerator {
   }
 
   private fun addScopedLine(line: String) {
-    addLine(scope + line)
+    addLine(scope, line)
   }
 
   private fun addInitialiserScopedLine(line: String) {
-    if (scope == "open ") {
-      addLine("public " + line)
+    if (scope == "open") {
+      addLine("public", line)
     } else {
-      addLine(scope + line)
+      addLine(scope, line)
     }
   }
 }
