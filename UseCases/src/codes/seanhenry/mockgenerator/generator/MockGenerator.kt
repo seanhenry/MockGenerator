@@ -224,11 +224,11 @@ class MockGenerator {
       val closures = CreateClosureCall().transform(method.parametersList)
       val closureProperties = closures.map { CreateClosureResultPropertyDeclaration().transform(name, it) }
       val closureCalls = closureProperties.zip(closures)
-      val returnStub = createReturnStub(method, name)
       val errorStub = CreateErrorStub().transform(name, method.throws)
-      addMethodProperties(method, invocationCheck, invocationCount, invokedParameters, invokedParametersList, closureProperties, returnStub, errorStub)
+      val returnStub = createReturnStub(method, name)
+      addMethodProperties(method, invocationCheck, invocationCount, invokedParameters, invokedParametersList, closureProperties, errorStub, returnStub)
       addMethodDeclaration(method)
-      addMethodAssignments(invocationCheck, invocationCount, invokedParameters, invokedParametersList, closureCalls, returnStub, errorStub)
+      addMethodAssignments(invocationCheck, invocationCount, invokedParameters, invokedParametersList, closureCalls, errorStub, returnStub)
       addClosingBrace()
     }
   }
@@ -246,15 +246,15 @@ class MockGenerator {
                                   invokedParameters: TuplePropertyDeclaration?,
                                   invokedParametersList: TuplePropertyDeclaration?,
                                   closureProperties: List<PropertyDeclaration?>,
-                                  returnStub: PropertyDeclaration?,
-                                  errorStub: PropertyDeclaration) {
+                                  errorStub: PropertyDeclaration,
+                                  returnStub: PropertyDeclaration?) {
     addScopedLine(SwiftStringImplicitValuePropertyDeclaration().transform(invocationCheck, "false"))
     addScopedLine(SwiftStringImplicitValuePropertyDeclaration().transform(invocationCount, "0"))
     if (invokedParameters != null) addScopedLine(SwiftStringPropertyDeclaration().transform(invokedParameters) + "?")
     if (invokedParametersList != null) addScopedLine(SwiftStringInitializedArrayPropertyDeclaration().transform(invokedParametersList))
     closureProperties.filterNotNull().forEach { addScopedLine(SwiftStringPropertyDeclaration().transform(it) + "?") }
-    addStubbedResult(returnStub, method)
     addScopedLine(SwiftStringPropertyDeclaration().transform(errorStub))
+    addStubbedResult(returnStub, method)
   }
 
   private fun addStubbedResult(returnStub: PropertyDeclaration?, method: ProtocolMethod) {
@@ -273,15 +273,15 @@ class MockGenerator {
                                    invokedParameters: TuplePropertyDeclaration?,
                                    invokedParametersList: TuplePropertyDeclaration?,
                                    closureCalls: List<Pair<PropertyDeclaration?, Closure>>,
-                                   returnStub: PropertyDeclaration?,
-                                   errorStub: PropertyDeclaration) {
+                                   errorStub: PropertyDeclaration,
+                                   returnStub: PropertyDeclaration?) {
     addLine(SwiftStringPropertyAssignment().transform(invocationCheck, "true"))
     addLine(SwiftStringIncrementAssignment().transform(invocationCount))
     if (invokedParameters != null) addLine(SwiftStringPropertyAssignment().transform(invokedParameters, SwiftStringTupleForwardCall().transform(invokedParameters)))
     if (invokedParametersList != null) addLine(SwiftStringArrayAppender().transform(invokedParametersList, SwiftStringTupleForwardCall().transform(invokedParametersList)))
     closureCalls.forEach { addLine(SwiftStringClosureCall().transform(it.first?.name ?: "", it.second)) }
-    if (returnStub != null) addLine(SwiftStringReturnProperty().transform(returnStub))
     addLine(SwiftStringThrowError().transform(errorStub))
+    if (returnStub != null) addLine(SwiftStringReturnProperty().transform(returnStub))
   }
 
   private fun addLine(line: String) {

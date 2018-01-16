@@ -9,6 +9,7 @@ class ThrowingTest: MockGeneratorTestTemplate {
   override fun build(generator: MockGenerator) {
     generator.add(
         ProtocolMethod("throwingMethod", null, emptyList(), "func throwingMethod() throws", true),
+        ProtocolMethod("throwingReturnMethod", "String", emptyList(), "func throwingReturnMethod() throws -> String", true),
         ProtocolMethod("throwingClosure", null, "closure: () throws -> ()", "func throwingClosure(closure: () throws -> ())"),
         ProtocolMethod("throwingClosureArgument", null,"closure: (String) throws -> (String)", "func throwingClosureArgument(closure: (String) throws -> (String))")
     )
@@ -25,6 +26,18 @@ class ThrowingTest: MockGeneratorTestTemplate {
       if let error = stubbedThrowingMethodError {
       throw error
       }
+      }
+      var invokedThrowingReturnMethod = false
+      var invokedThrowingReturnMethodCount = 0
+      var stubbedThrowingReturnMethodError: Error?
+      var stubbedThrowingReturnMethodResult: String! = ""
+      func throwingReturnMethod() throws -> String {
+      invokedThrowingReturnMethod = true
+      invokedThrowingReturnMethodCount += 1
+      if let error = stubbedThrowingReturnMethodError {
+      throw error
+      }
+      return stubbedThrowingReturnMethodResult
       }
       var invokedThrowingClosure = false
       var invokedThrowingClosureCount = 0
