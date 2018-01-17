@@ -1,0 +1,30 @@
+{
+  "title": "Was a method invoked?",
+  "summary": "Mocks can determine if a method was called.",
+  "mock": {
+    "body": [
+      "var invokedMyMethod = false",
+      "var invokedMyMethodCount = 0",
+      "",
+      "func myMethod() {",
+      "  invokedMyMethod = true",
+      "  invokedMyMethodCount += 1",
+      "}"
+    ]
+  },
+  "protocol_name": "SimpleProtocol",
+  "protocol": {
+    "description": "Given a simple protocol",
+    "body": "func myMethod()"
+  }, 
+  "example_name": "CallMethodOnceExample",
+  "example": {
+    "description": "When a method is called",
+    "body": "injected.myMethod()"
+  },
+  "test": {
+    "name": "CheckInvocation",
+    "description": "Then the mock can determine if the method was invoked",
+    "body": "XCTAssertTrue(mock.invokedMyMethod)"
+  }
+}

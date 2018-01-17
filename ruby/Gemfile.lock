@@ -1,0 +1,14 @@
+GEM
+  specs:
+    json (2.1.0)
+    mustache (1.0.5)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  json
+  mustache
+
+BUNDLED WITH
+   1.16.0

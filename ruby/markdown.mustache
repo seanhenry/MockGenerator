@@ -1,0 +1,42 @@
+{{#item}}
+# {{title}}
+{{summary}}
+{{#protocol}}
+### {{description}}
+```
+protocol {{protocol_name}} {
+  {{#body}}
+  {{.}}
+  {{/body}}
+}
+```
+{{/protocol}}
+{{#example}}
+### {{description}}
+```
+class {{example_name}} {
+
+  func execute(_ injected: {{protocol_name}}) {
+    {{#body}}
+    {{.}}
+    {{/body}}
+  }
+}
+```
+{{/example}}
+{{#test}}
+### {{description}}
+```
+class {{example_name}}Test: XCTestCase {
+
+    func test{{name}}() {
+      let mock = Mock{{protocol_name}}()
+      {{example_name}}().execute(mock)
+      {{#body}}
+      {{.}}
+      {{/body}}
+    }
+}
+```
+{{/test}}
+{{/item}}
