@@ -1,5 +1,6 @@
 # Table of Contents
 ## 1 - Query
-- [Was a method invoked?](invokeMethod.md)
-- [How many times was a method invoked?](invokeMethodCount.md)
+- [What parameters were used?](InvokedParameters.md)
+- [Was a method invoked?](InvokeMethod.md)
+- [How many times was a method invoked?](InvokeMethodCount.md)
 ## 2 - Stub

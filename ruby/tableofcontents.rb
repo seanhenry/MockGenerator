@@ -11,10 +11,10 @@ def get_items(dir)
 end
 
 groups = Dir.foreach('examples')
-             .sort
-             .reject { |f| f == '.' || f == '..' }
-             .select { |f| File.directory?("examples/#{f}") }
-             .map { |dir| { title: dir, items: get_items("examples/#{dir}/") } }
+            .sort
+            .reject { |f| f == '.' || f == '..' }
+            .select { |f| File.directory?("examples/#{f}") }
+            .map { |dir| { title: dir, items: get_items("examples/#{dir}/") } }
 
 class TableOfContents < Mustache
 end

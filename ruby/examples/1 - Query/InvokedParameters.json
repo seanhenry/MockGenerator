@@ -1,0 +1,37 @@
+{
+  "title": "What parameters were used?",
+  "summary": "Determine what parameters were passed into a method.",
+  "mock": {
+    "body": [
+      "var invokedAdd = false",
+      "var invokedAddCount = 0",
+      "var invokedAddParameters: (left: Int, right: Int)?",
+      "var invokedAddParameterList = [(left: Int, right: Int)]()",
+      "",
+      "func add(left: Int, right: Int) {",
+      "  invokedAdd = true",
+      "  invokedAddCount += 1",
+      "  invokedAddParameters = (left, right)",
+      "  invokedAddParameterList.append((left, right))",
+      "}"
+    ]
+  },
+  "protocol_name": "AddIntegers",
+  "protocol": {
+    "description": "Given a protocol with a method adding 2 integers",
+    "body": "func add(left: Int, right: Int)"
+  },
+  "example_name": "InvokedParametersExample",
+  "example": {
+    "description": "When the add method is called with 5 and 10",
+    "body": "injected.add(left: 5, right: 10)"
+  },
+  "test": {
+    "name": "CheckInvokedParameters",
+    "description": "Then the mock can determine which parameters were used",
+    "body": [
+      "XCTAssertEqual(mock.invokedAddParameters?.left, 5)",
+      "XCTAssertEqual(mock.invokedAddParameters?.right, 10)"
+    ]
+  }
+}

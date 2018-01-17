@@ -17,9 +17,9 @@
     "description": "Given a simple protocol",
     "body": "func myMethod()"
   }, 
-  "example_name": "CallMethodOnceExample",
+  "example_name": "CallMethodTwiceExample",
   "example": {
-    "description": "When a method is called",
+    "description": "When a method is called twice",
     "body": [
       "injected.myMethod()",
       "injected.myMethod()"
@@ -27,7 +27,7 @@
   },
   "test": {
     "name": "CheckInvocation",
-    "description": "Then the mock can determine if the method was invoked",
-    "body": "XCTAssertTrue(mock.invokedMyMethod)"
+    "description": "Then the mock can determine exactly how many times the method was called",
+    "body": "XCTAssertEqual(mock.invokedMyMethodCount, 2)"
   }
 }

@@ -6,9 +6,9 @@ protocol SimpleProtocol {
   func myMethod()
 }
 ```
-### When a method is called
+### When a method is called twice
 ```
-class CallMethodOnceExample {
+class CallMethodTwiceExample {
 
   func execute(_ injected: SimpleProtocol) {
     injected.myMethod()
@@ -16,14 +16,14 @@ class CallMethodOnceExample {
   }
 }
 ```
-### Then the mock can determine if the method was invoked
+### Then the mock can determine exactly how many times the method was called
 ```
-class CallMethodOnceExampleTest: XCTestCase {
+class CallMethodTwiceExampleTest: XCTestCase {
 
     func testCheckInvocation() {
       let mock = MockSimpleProtocol()
-      CallMethodOnceExample().execute(mock)
-      XCTAssertTrue(mock.invokedMyMethod)
+      CallMethodTwiceExample().execute(mock)
+      XCTAssertEqual(mock.invokedMyMethodCount, 2)
     }
 }
 ```
