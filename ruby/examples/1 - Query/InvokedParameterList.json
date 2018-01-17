@@ -1,0 +1,42 @@
+{
+  "title": "What parameters were used for multiple method calls?",
+  "summary": "The mock records the parameters passed to a method every time it is invoked.",
+  "mock": {
+    "body": [
+      "var invokedAdd = false",
+      "var invokedAddCount = 0",
+      "var invokedAddParameters: (left: Int, right: Int)?",
+      "var invokedAddParameterList = [(left: Int, right: Int)]()",
+      "",
+      "func add(left: Int, right: Int) {",
+      "  invokedAdd = true",
+      "  invokedAddCount += 1",
+      "  invokedAddParameters = (left, right)",
+      "  invokedAddParameterList.append((left, right))",
+      "}"
+    ]
+  },
+  "protocol_name": "AddIntegers",
+  "protocol": {
+    "description": "Given a protocol with a method adding 2 integers",
+    "body": "func add(left: Int, right: Int)"
+  },
+  "example_name": "InvokedParametersTwiceExample",
+  "example": {
+    "description": "When the add method is called with 5 and 10, and then, 100 and 200",
+    "body": [
+        "injected.add(left: 5, right: 10)",
+        "injected.add(left: 100, right: 200)"
+      ]
+  },
+  "test": {
+    "name": "CheckInvokedParameterList",
+    "description": "Then the mock can determine exactly which parameters were used, and in the invoked order",
+    "body": [
+      "XCTAssertEqual(mock.invokedAddParameterList[0].left, 5)",
+      "XCTAssertEqual(mock.invokedAddParameterList[0].right, 10)",
+      "XCTAssertEqual(mock.invokedAddParameterList[1].left, 100)",
+      "XCTAssertEqual(mock.invokedAddParameterList[1].right, 200)"
+    ]
+  }
+}
