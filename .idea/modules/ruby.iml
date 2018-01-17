@@ -3,7 +3,11 @@
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../ruby" />
+    <orderEntry type="jdk" jdkName="RVM: ruby-2.4.0" jdkType="RUBY_SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" scope="PROVIDED" name="bundler (v1.16.0, RVM: ruby-2.4.0) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="json (v2.1.0, RVM: ruby-2.4.0) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="mustache (v1.0.5, RVM: ruby-2.4.0) [gem]" level="application" />
   </component>
   <component name="RubyModuleProperties">
     <option name="autoCreated" value="true" />
