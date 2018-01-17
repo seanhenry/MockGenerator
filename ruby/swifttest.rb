@@ -4,8 +4,8 @@ Dir.glob('output/*.swift') do |file|
   dir_name = "swift/#{name}"
   system("mkdir -p #{dir_name}")
   Dir.chdir("#{dir_name}") do
-    system("swift package init --type library", out: '/dev/null')
-    system("cp ../../output/#{name}.swift Tests/#{name}")
+    system('swift package init --type library', out: '/dev/null')
+    system("cp -f ../../output/#{name}.swift Tests/#{name}Tests/#{name}Tests.swift")
     abort("Test failed for #{name}") unless system("swift test", out: $stdout)
   end
 end

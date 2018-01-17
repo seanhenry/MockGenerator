@@ -16,3 +16,7 @@ Dir.glob('examples/*.json') do |file|
   File.write(out.sub('.json', '.md'), md.render)
   File.write(out.sub('.json', '.swift'), unit.render)
 end
+
+system('ruby tableofcontents.rb')
+system('ruby mdcopy.rb')
+system('ruby swifttest.rb')

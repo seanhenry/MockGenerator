@@ -45,6 +45,10 @@ class {{example_name}}Test: XCTestCase {
       {{.}}
       {{/body}}
     }
+
+    static var allTests = [
+        ("test{{name}}", test{{name}})
+    ]
 }
 
 {{/test}}

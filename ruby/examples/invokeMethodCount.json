@@ -4,7 +4,7 @@
   "mock": {
     "body": [
       "var invokedMyMethod = false",
-      "va invokedMyMethodCount = 0",
+      "var invokedMyMethodCount = 0",
       "",
       "func myMethod() {",
       "  invokedMyMethod = true",
