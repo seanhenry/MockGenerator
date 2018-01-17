@@ -9,5 +9,9 @@ Dir.glob('examples/*.json') do |file|
   )
 end
 
-rendered = Mustache.render("{{#.}}\n- [{{title}}]({{link}})\n{{/.}}", contents)
-File.write('../documentation/README.md', rendered)
+class TableOfContents < Mustache
+end
+
+template = TableOfContents.new
+template[:item] = contents
+File.write('../documentation/README.md', template.render)
