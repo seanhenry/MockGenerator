@@ -1,7 +1,6 @@
 package codes.seanhenry.mockgenerator.util
 
 import codes.seanhenry.mockgenerator.entities.Parameter
-import java.util.Arrays
 
 class MethodModel(private val methodName: String, paramLabels: List<Parameter>) {
 

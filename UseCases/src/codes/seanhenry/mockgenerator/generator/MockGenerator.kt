@@ -7,7 +7,6 @@ import codes.seanhenry.mockgenerator.usecases.*
 import codes.seanhenry.mockgenerator.util.DefaultValueStore
 import codes.seanhenry.mockgenerator.util.MethodModel
 import codes.seanhenry.mockgenerator.util.UniqueMethodNameGenerator
-import java.util.*
 
 class MockGenerator {
 
