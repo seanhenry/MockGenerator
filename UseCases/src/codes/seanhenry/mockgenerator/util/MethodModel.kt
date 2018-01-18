@@ -59,8 +59,8 @@ class MethodModel(private val methodName: String, paramLabels: List<Parameter>) 
     val name = StringBuilder(methodName)
     val names = filteredNames
     val types = filteredTypes
-    val nameCount = Math.min(index + 1, names.size)
-    val typeCount = Math.min(index + 1 - nameCount, types.size)
+    val nameCount = minOf(index + 1, names.size)
+    val typeCount = minOf(index + 1 - nameCount, types.size)
     var nameIndex = 0
     var typeIndex = 0
     for (nameAndType in namesAndTypes) {
