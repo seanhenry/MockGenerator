@@ -259,7 +259,7 @@ class MockGenerator {
 
   private fun addStubbedResult(returnStub: PropertyDeclaration?, method: ProtocolMethod) {
     if (returnStub != null) {
-      val defaultValue = DefaultValueStore().getDefaultValue(method.returnType)
+      val defaultValue = DefaultValueStore().getDefaultValue(method.returnType!!)
       addScopedLine(SwiftStringDefaultValuePropertyDeclaration().transform(returnStub, defaultValue))
     }
   }
