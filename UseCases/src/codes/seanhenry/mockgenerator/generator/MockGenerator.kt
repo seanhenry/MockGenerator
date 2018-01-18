@@ -124,7 +124,7 @@ class MockGenerator {
 
   private fun appendPropertyMocks(properties: List<ProtocolProperty>) {
     for (property in properties) {
-      val name = nameGenerator.getMethodName(toMethodModel(property).id)
+      val name = nameGenerator.getMethodName(toMethodModel(property).id) ?: continue
       val setterName = name + "Setter"
       val setterInvocationCheck = CreateInvocationCheck().transform(setterName)
       val setterInvocationCount = CreateInvocationCount().transform(setterName)
@@ -215,7 +215,7 @@ class MockGenerator {
 
   private fun appendMethodMocks(methods: List<ProtocolMethod>) {
     for (method in methods) {
-      val name = nameGenerator.getMethodName(toMethodModel(method).id)
+      val name = nameGenerator.getMethodName(toMethodModel(method).id) ?: continue
       val invocationCheck = CreateInvocationCheck().transform(name)
       val invocationCount = CreateInvocationCount().transform(name)
       val invokedParameters = CreateInvokedParameters().transform(name, method.parametersList)
