@@ -10,7 +10,6 @@ internal class OptionalUtil {
       return type
     }
 
-    @JvmStatic
     fun isOptional(type: String): Boolean {
       val trimmed = type.replace(Regex("\\s"), "")
       return trimmed.endsWith("?") || trimmed.endsWith("!") || trimmed.startsWith("Optional<")
