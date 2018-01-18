@@ -150,12 +150,28 @@ class ParameterUtilTest: TestCase() {
     )
   }
 
+  fun testShouldRecogniseTypesWithSpecialCharacters() {
+    assertType("[Int]",
+        "a: [Int]",
+        0
+    )
+    assertType("Optional<String>",
+        "a: Optional<String>   ",
+        0
+    )
+  }
+
   private fun assertParameter(expectedLabel: String, expectedName: String, expectedType: String, expectedText: String, parameters: String, index: Int = 0) {
     val parameter = ParameterUtil.getParameters(parameters)[index]
     assertEquals(expectedLabel, parameter.label)
     assertEquals(expectedName, parameter.name)
     assertEquals(expectedType, parameter.type)
     assertEquals(expectedText, parameter.text)
+  }
+
+  private fun assertType(expectedType: String, parameters: String, index: Int = 0) {
+    val parameter = ParameterUtil.getParameters(parameters)[index]
+    assertEquals(expectedType, parameter.type)
   }
 
   private fun assertNullParameter(parameters: String) {

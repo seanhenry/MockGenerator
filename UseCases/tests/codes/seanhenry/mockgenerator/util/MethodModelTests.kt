@@ -2,6 +2,8 @@ package codes.seanhenry.mockgenerator.util
 
 import codes.seanhenry.mockgenerator.entities.Parameter
 import junit.framework.TestCase
+import kotlin.test.assertEquals
+import kotlin.test.assertNull
 
 class MethodModelTests : TestCase() {
 
@@ -64,10 +66,9 @@ class MethodModelTests : TestCase() {
     assertNull(model.nextPreferredName())
   }
 
-  fun testShouldIgnoreEmptyType() {
+  fun testShouldIgnoreParameterWhenEmptyType() {
     model = MethodModel("method", "param0 :")
     assertEquals("method", model.nextPreferredName())
-    assertEquals("methodParam0", model.nextPreferredName())
     assertNull(model.nextPreferredName())
   }
 

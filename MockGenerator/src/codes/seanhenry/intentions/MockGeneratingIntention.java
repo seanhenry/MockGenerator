@@ -83,6 +83,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
       addGenericClauseToMock(protocolItemFinder);
       generateMock(generator);
     } catch (Exception e) {
+      e.printStackTrace();
       showErrorMessage(e.getMessage(), editor);
     }
   }

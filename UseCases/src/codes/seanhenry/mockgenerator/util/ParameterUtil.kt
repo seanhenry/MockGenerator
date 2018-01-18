@@ -27,32 +27,18 @@ class ParameterUtil {
       return Parameter(label, name, type, parameter)
     }
 
-    // Ugly implementation until Avian supports replace with Regex
     private fun getComponents(parameters: String): List<String> {
-      var components = parameters.split(":")
-      if (components.size < 2) {
+      val pattern = Regex("([\\S]*)\\s*([\\S]*)?\\s*:([\\s\\S]*)")
+      val matches = pattern.find(parameters)
+      val components = matches?.groupValues?.drop(1)?.map { it.trim() }?.toMutableList() ?: return emptyList()
+      if (!isLabelValid(components) || !isTypeValid(components)) {
         return emptyList()
       }
-      val type = components.drop(1).joinToString(":")
-      val labelName = components[0]
-      components = labelName.replace(Regex("\\s+"), " ").split(" ")
-      val label = components[0]
-      var name = label
-      if (components.size > 1) {
-        name = components[1]
-      }
-      if (label.isEmpty()) {
-        return emptyList()
-      }
-      return listOf(label, name, type)
+      return components
     }
 
-    // Avian does not support MatchResult
-//    private fun getComponents(parameters: String): List<String> {
-//      val pattern = Regex("([\\w][\\w0-9]*)\\s*([\\w][\\w0-9]*)?\\s*:\\s*([\\w(@].*)")
-//      val matches = pattern.find(parameters)
-//      return matches?.groupValues?.drop(1) ?: emptyList()
-//    }
+    private fun isLabelValid(components: MutableList<String>) = components[0].isNotEmpty()
+    private fun isTypeValid(components: MutableList<String>) = components[2].isNotEmpty()
 
     private fun getLabel(components: List<String>): String {
       return components.first()
