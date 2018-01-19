@@ -21,36 +21,40 @@ class ParameterUtil {
       if (components.isEmpty()) {
         return null
       }
-      val label = getLabel(components)
-      val name = getName(components)
-      val type = getType(components)
+      val label = components[0]
+      val name = components[1]
+      val type = cleanType(components[2])
       return Parameter(label, name, type, parameter)
     }
 
+    private fun cleanType(type: String): String {
+      val stripped = removeAnnotations(type)
+      return removeDefaultArguments(stripped)
+    }
+
     private fun getComponents(parameters: String): List<String> {
-      val pattern = Regex("([\\S]*)\\s*([\\S]*)?\\s*:([\\s\\S]*)")
-      val matches = pattern.find(parameters)
-      val components = matches?.groupValues?.drop(1)?.map { it.trim() }?.toMutableList() ?: return emptyList()
-      if (!isLabelValid(components) || !isTypeValid(components)) {
+      val typeIndex = parameters.indexOf(":")
+      if (typeIndex == -1) {
         return emptyList()
       }
-      return components
+      val labelName = parameters.substring(0, typeIndex)
+      val type = parameters.substring(typeIndex+1) // May have more than 1 ':' if type is closure
+      val components = replaceSpacesWithSpace(labelName).split(" ")
+      val label = components[0]
+      val name = findName(components) ?: label
+      if (label.isEmpty()) {
+        return emptyList()
+      }
+      return listOf(label, name, type)
     }
 
-    private fun isLabelValid(components: MutableList<String>) = components[0].isNotEmpty()
-    private fun isTypeValid(components: MutableList<String>) = components[2].isNotEmpty()
+    private fun replaceSpacesWithSpace(string: String): String = string.replace(Regex("\\s+"), " ")
 
-    private fun getLabel(components: List<String>): String {
-      return components.first()
-    }
-
-    private fun getName(components: List<String>): String {
-      return if (components[1].isNotEmpty()) components[1] else components[0]
-    }
-
-    private fun getType(components: List<String>): String {
-      val stripped = removeAnnotations(components.last()).trim()
-      return removeDefaultArguments(stripped)
+    private fun findName(components: List<String>): String? {
+      if (components.size > 1 && components[1].isNotEmpty()) {
+        return components[1]
+      }
+      return null
     }
 
     private fun removeAnnotations(type: String): String {

@@ -69,6 +69,7 @@ class MethodModelTests : TestCase() {
   fun testShouldIgnoreParameterWhenEmptyType() {
     model = MethodModel("method", "param0 :")
     assertEquals("method", model.nextPreferredName())
+    assertEquals("methodParam0", model.nextPreferredName())
     assertNull(model.nextPreferredName())
   }
 
