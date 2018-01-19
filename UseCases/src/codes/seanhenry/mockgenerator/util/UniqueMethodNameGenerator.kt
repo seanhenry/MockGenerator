@@ -62,10 +62,21 @@ class UniqueMethodNameGenerator(methodModels: List<MethodModel>) {
     return name.replace("\\W".toRegex(), "")
   }
 
+  // sortBy not available in Kotlin Native
+
   private fun sortBySimplest(models: MutableList<MethodModel>) {
-    return models.sortBy {
-      it.parameterCount
-    }
+    var swapped: Boolean
+    do {
+      swapped = false
+      for (i in 1 until models.size) {
+        if (models[i].parameterCount < models[i - 1].parameterCount) {
+          val m = models[i - 1]
+          models[i - 1] = models[i]
+          models[i] = m
+          swapped = true
+        }
+      }
+    } while (swapped)
   }
 
   private fun moveDuplicatesToNameBuckets(): HashMap<String, MutableList<MethodModel>> {
