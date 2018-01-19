@@ -14,7 +14,7 @@ class UniqueMethodNameGeneratorTests : TestCase() {
 
   fun test_shouldReturnNull_whenIDDoesNotExist() {
     generator = createGenerator()
-    assertNull(generator!!.getMethodName("1"))
+    assertNull(generator.getMethodName("1"))
   }
 
   fun test_uniqueMethodName_shouldReturnMethodName_whenNoOverloadedMethods() {
