@@ -43,16 +43,6 @@ public class MySwiftPsiUtil {
     return property.getAttributes().hasDeclarationSpecifier(SwiftDeclarationSpecifiers.FILEPRIVATE_SET);
   }
 
-  @Nullable
-  public static SwiftDeclarationSpecifier getDeclarationSpecifier(SwiftVariableDeclaration property, SwiftDeclarationSpecifiers specifier) {
-    return property.getAttributes()
-        .getDeclarationSpecifierList()
-        .stream()
-        .filter(s -> Objects.equals(s.getText(), specifier.getText()))
-        .findFirst()
-        .orElse(null);
-  }
-
   public static boolean isComputed(SwiftVariableDeclaration property) {
     if (property.getPatternInitializerList().isEmpty()) {
       return false;
@@ -182,18 +172,6 @@ public class MySwiftPsiUtil {
       return parameterClause.getParameterList();
     }
     return emptyList();
-  }
-
-  @Nullable
-  public static SwiftTypeElement getResolvedType(PsiElement element) {
-    SwiftReferenceTypeElement reference = PsiTreeUtil.findChildOfType(element, SwiftReferenceTypeElement.class);
-    if (reference != null) {
-      PsiElement resolved = reference.resolve();
-      if (resolved instanceof SwiftTypeAliasDeclaration) {
-        return ((SwiftTypeAliasDeclaration) resolved).getTypeAssignment().getTypeElement();
-      }
-    }
-    return null;
   }
 
   public static boolean isFailable(SwiftInitializerDeclaration initialiser) {

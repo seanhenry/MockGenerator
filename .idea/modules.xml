@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/AppCodeMockGenerator.iml" filepath="$PROJECT_DIR$/.idea/AppCodeMockGenerator.iml" />
       <module fileurl="file://$PROJECT_DIR$/MockGenerator/MockGenerator.iml" filepath="$PROJECT_DIR$/MockGenerator/MockGenerator.iml" />
       <module fileurl="file://$PROJECT_DIR$/UseCases/MockGeneratorUseCases.iml" filepath="$PROJECT_DIR$/UseCases/MockGeneratorUseCases.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/ruby.iml" filepath="$PROJECT_DIR$/.idea/modules/ruby.iml" />

@@ -8,7 +8,10 @@ import codes.seanhenry.mockgenerator.util.ParameterUtil;
 import codes.seanhenry.util.MySwiftPsiUtil;
 import codes.seanhenry.util.finder.SwiftTypeItemFinder;
 import codes.seanhenry.util.finder.TypeItemFinder;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.jetbrains.swift.psi.*;
+import com.jetbrains.swift.psi.types.SwiftType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -104,9 +107,12 @@ public abstract class SwiftTypeTransformer {
   }
 
   private String getResolvedType(SwiftParameter parameter, String type) {
-    SwiftTypeElement resolved = MySwiftPsiUtil.getResolvedType(parameter.getTypeAnnotation());
-    if (resolved != null) {
-      return resolved.getText();
+    SwiftReferenceTypeElement reference = PsiTreeUtil.findChildOfType(parameter.getTypeAnnotation(), SwiftReferenceTypeElement.class);
+    if (reference != null) {
+      PsiElement resolved = reference.resolve();
+      if (resolved instanceof SwiftTypeAliasDeclaration) {
+        return parameter.getSwiftType().resolveType().getPresentableText();
+      }
     }
     return type;
   }
