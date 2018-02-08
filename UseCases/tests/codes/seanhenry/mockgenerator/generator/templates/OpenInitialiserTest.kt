@@ -6,7 +6,7 @@ import codes.seanhenry.mockgenerator.generator.MockGenerator
 class OpenInitialiserTest: MockGeneratorTestTemplate {
 
   override fun build(generator: MockGenerator) {
-    generator.setClassInitialiser(
+    generator.setClassInitialisers(
         Initialiser("a: String?", false, false)
     )
     generator.setScope("open")

@@ -141,29 +141,11 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   private void transformClassItems(SwiftTypeItemFinder itemFinder, MockGenerator generator) throws Exception {
     SwiftTypeTransformer transformer = new SwiftClassTransformer(itemFinder);
     transformer.transform();
-    Initialiser initialiser = getSimplestInitialiser(transformer);
-    if (initialiser != null) {
-      generator.setClassInitialiser(initialiser);
-    }
+    generator.setClassInitialisers(transformer.getInitialisers());
     generator.addClassProperties(transformer.getProperties());
     generator.addClassMethods(transformer.getMethods());
   }
-
-  private Initialiser getSimplestInitialiser(SwiftTypeTransformer transformer) {
-    return transformer.getInitialisers()
-          .stream()
-          .min(Comparator.comparingInt(this::getParameterCount))
-          .orElse(null);
-  }
-
-  private boolean hasParameters(Initialiser initializer) {
-    return !initializer.getParametersList().isEmpty();
-  }
-
-  private int getParameterCount(Initialiser initializer) {
-    return initializer.getParametersList().size();
-  }
-
+  
   private void addGenericClauseToMock(SwiftTypeItemFinder protocolItemFinder) {
     new AssociatedTypeGenericConverter(classDeclaration)
         .convert(protocolItemFinder.getTypes());

@@ -6,7 +6,7 @@ import codes.seanhenry.mockgenerator.generator.MockGenerator
 class ThrowingInitialiserTest: MockGeneratorTestTemplate {
 
   override fun build(generator: MockGenerator) {
-    generator.setClassInitialiser(Initialiser("a: String", false, true))
+    generator.setClassInitialisers(Initialiser("a: String", false, true))
   }
 
   override fun getExpected(): String {

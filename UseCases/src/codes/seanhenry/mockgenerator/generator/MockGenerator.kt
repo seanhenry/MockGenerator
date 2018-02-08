@@ -25,10 +25,6 @@ class MockGenerator {
     this.scope = scope.trim()
   }
 
-  fun setClassInitialiser(initialiser: Initialiser) {
-    this.classInitialiser = initialiser
-  }
-
   fun add(method: ProtocolMethod) {
     protocolMethods.add(method)
   }
@@ -64,6 +60,16 @@ class MockGenerator {
   fun addProperties(properties: List<ProtocolProperty>) {
     for (property in properties) {
       this.protocolProperties.add(property)
+    }
+  }
+
+  fun setClassInitialisers(vararg initialisers: Initialiser) {
+    setClassInitialisers(*initialisers)
+  }
+
+  fun setClassInitialisers(initialisers: List<Initialiser>) {
+    classInitialiser = initialisers.minBy {
+      it.parametersList.size
     }
   }
 

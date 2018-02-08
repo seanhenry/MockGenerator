@@ -3,18 +3,19 @@ package codes.seanhenry.mockgenerator.generator.templates
 import codes.seanhenry.mockgenerator.entities.Initialiser
 import codes.seanhenry.mockgenerator.generator.MockGenerator
 
-class FailableInitialserTest : MockGeneratorTestTemplate {
-
+class SimplestClassInitialiserTest: MockGeneratorTestTemplate {
   override fun build(generator: MockGenerator) {
     generator.setClassInitialisers(
-      Initialiser("a: String", true)
+      Initialiser("a: Int, b: String", false),
+      Initialiser("a: Int, b: String, c: UInt", false),
+      Initialiser("a: String", false)
     )
   }
 
   override fun getExpected(): String {
     return """
       convenience init() {
-      self.init(a: "")!
+      self.init(a: "")
       }
       """.trimIndent()
   }

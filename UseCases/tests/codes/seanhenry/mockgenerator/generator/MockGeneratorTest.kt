@@ -80,6 +80,10 @@ class MockGeneratorTest : TestCase() {
     runTest(ProtocoInitialiserTest())
   }
 
+  fun testFiltersToSimplestInitialiser() {
+    runTest(SimplestClassInitialiserTest())
+  }
+
   fun testOpenInitialiserShouldSetInitToPublic() {
     runTest(OpenInitialiserTest())
   }
