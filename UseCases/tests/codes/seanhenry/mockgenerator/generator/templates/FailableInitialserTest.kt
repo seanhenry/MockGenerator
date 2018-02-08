@@ -6,7 +6,7 @@ import codes.seanhenry.mockgenerator.generator.MockGenerator
 class FailableInitialserTest : MockGeneratorTestTemplate {
 
   override fun build(generator: MockGenerator) {
-    generator.setInitialiser(
+    generator.setClassInitialiser(
       Initialiser("a: String", true)
     )
   }

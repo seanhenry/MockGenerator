@@ -1,5 +1,6 @@
 package codes.seanhenry.util.finder;
 
+import codes.seanhenry.mockgenerator.entities.Initialiser;
 import codes.seanhenry.util.finder.initialiser.InitialiserChoosingStrategy;
 import codes.seanhenry.util.finder.methods.MethodChoosingStrategy;
 import codes.seanhenry.util.finder.properties.PropertyChoosingStrategy;
@@ -13,7 +14,7 @@ import java.util.stream.Collectors;
 public class SwiftTypeItemFinder implements TypeItemFinder {
 
   private List<SwiftTypeDeclaration> types = new ArrayList<>();
-  private SwiftInitializerDeclaration initialiser;
+  private List<SwiftInitializerDeclaration> initialisers;
   private List<SwiftVariableDeclaration> properties = new ArrayList<>();
   private List<SwiftFunctionDeclaration> methods = new ArrayList<>();
   private List<String> errors = new ArrayList<>();
@@ -41,22 +42,12 @@ public class SwiftTypeItemFinder implements TypeItemFinder {
         .stream()
         .flatMap(p -> getTypeMethods(p).stream())
         .collect(Collectors.toList());
-    initialiser = types
+    this.initialisers = types
         .stream()
         .flatMap(p -> getTypeInitialisers(p).stream())
-        .filter(this::hasParameters)
-        .min(Comparator.comparingInt(this::getParameterCount))
-        .orElse(null);
+        .collect(Collectors.toList());
     this.methods = removeDuplicates(methods);
     this.properties = removeDuplicates(properties);
-  }
-
-  private boolean hasParameters(SwiftInitializerDeclaration initializer) {
-    return initializer.getParameterClause() != null;
-  }
-
-  private int getParameterCount(SwiftInitializerDeclaration initializer) {
-    return initializer.getParameterClause().getParameterList().size();
   }
 
   private static <T> List<T> removeDuplicates(List<T> list) {
@@ -113,8 +104,8 @@ public class SwiftTypeItemFinder implements TypeItemFinder {
     return types;
   }
 
-  public SwiftInitializerDeclaration getInitialiser() {
-    return initialiser;
+  public List<SwiftInitializerDeclaration> getInitialisers() {
+    return initialisers;
   }
 
   // TODO:

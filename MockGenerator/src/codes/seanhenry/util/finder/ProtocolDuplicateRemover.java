@@ -36,8 +36,8 @@ public class ProtocolDuplicateRemover implements TypeItemFinder {
   }
 
   @Override
-  public SwiftInitializerDeclaration getInitialiser() {
-    return protocolItemFinder.getInitialiser();
+  public List<SwiftInitializerDeclaration> getInitialisers() {
+    return protocolItemFinder.getInitialisers();
   }
 
   private <T> List<T> removeDuplicateProtocolItems(List<T> protocolItems, List<T> classItems, Comparator<T> comparator) {

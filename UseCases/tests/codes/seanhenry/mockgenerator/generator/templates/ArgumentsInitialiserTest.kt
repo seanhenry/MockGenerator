@@ -6,7 +6,7 @@ import codes.seanhenry.mockgenerator.generator.MockGenerator
 class ArgumentsInitialiserTest : MockGeneratorTestTemplate {
 
   override fun build(generator: MockGenerator) {
-    generator.setInitialiser(
+    generator.setClassInitialiser(
         Initialiser("a: Int, b: String, _ c: String?", false)
     )
   }

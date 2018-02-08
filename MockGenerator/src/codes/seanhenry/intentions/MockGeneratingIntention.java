@@ -1,5 +1,6 @@
 package codes.seanhenry.intentions;
 
+import codes.seanhenry.mockgenerator.entities.Initialiser;
 import codes.seanhenry.transformer.SwiftClassTransformer;
 import codes.seanhenry.transformer.SwiftProtocolTransformer;
 import codes.seanhenry.transformer.SwiftTypeTransformer;
@@ -9,7 +10,6 @@ import codes.seanhenry.util.MySwiftPsiUtil;
 import codes.seanhenry.util.finder.ProtocolDuplicateRemover;
 import codes.seanhenry.util.finder.SwiftTypeItemFinder;
 import codes.seanhenry.util.finder.initialiser.ClassTypeInitialiserChoosingStrategy;
-import codes.seanhenry.util.finder.initialiser.EmptyInitialiserChoosingStrategy;
 import codes.seanhenry.util.finder.methods.ClassMethodChoosingStrategy;
 import codes.seanhenry.util.finder.methods.ProtocolMethodChoosingStrategy;
 import codes.seanhenry.util.finder.properties.ClassPropertyChoosingStrategy;
@@ -133,9 +133,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     ProtocolDuplicateRemover remover = new ProtocolDuplicateRemover(protocolItemFinder, classItemFinder);
     SwiftTypeTransformer transformer = new SwiftProtocolTransformer(remover);
     transformer.transform();
-    if (transformer.getInitialiser() != null) {
-      generator.setInitialiser(transformer.getInitialiser());
-    }
+    generator.addInitialisers(transformer.getInitialisers());
     generator.addProperties(transformer.getProperties());
     generator.addMethods(transformer.getMethods());
   }
@@ -143,11 +141,27 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   private void transformClassItems(SwiftTypeItemFinder itemFinder, MockGenerator generator) throws Exception {
     SwiftTypeTransformer transformer = new SwiftClassTransformer(itemFinder);
     transformer.transform();
-    if (transformer.getInitialiser() != null) {
-      generator.setInitialiser(transformer.getInitialiser());
+    Initialiser initialiser = getSimplestInitialiser(transformer);
+    if (initialiser != null) {
+      generator.setClassInitialiser(initialiser);
     }
     generator.addClassProperties(transformer.getProperties());
     generator.addClassMethods(transformer.getMethods());
+  }
+
+  private Initialiser getSimplestInitialiser(SwiftTypeTransformer transformer) {
+    return transformer.getInitialisers()
+          .stream()
+          .min(Comparator.comparingInt(this::getParameterCount))
+          .orElse(null);
+  }
+
+  private boolean hasParameters(Initialiser initializer) {
+    return !initializer.getParametersList().isEmpty();
+  }
+
+  private int getParameterCount(Initialiser initializer) {
+    return initializer.getParametersList().size();
   }
 
   private void addGenericClauseToMock(SwiftTypeItemFinder protocolItemFinder) {

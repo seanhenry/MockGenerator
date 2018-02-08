@@ -21,29 +21,31 @@ public abstract class SwiftTypeTransformer {
 
   private static final String UNKNOWN_TYPE = "Any";
   private final TypeItemFinder itemFinder;
-  private Initialiser initialiser;
+  private final List<Initialiser> initialisers;
   private final List<ProtocolMethod> methods;
   private final List<ProtocolProperty> properties;
   private static final String UNKNOWN_NAME = "_";
 
   SwiftTypeTransformer(TypeItemFinder itemFinder) {
     this.itemFinder = itemFinder;
+    initialisers = new ArrayList<>();
     methods = new ArrayList<>();
     properties = new ArrayList<>();
   }
 
   public void transform() {
-    initialiser = transformInitialiser(itemFinder.getInitialiser());
+    transformInitialisers(itemFinder.getInitialisers());
     transformProperties(itemFinder.getProperties());
     transformMethods(itemFinder.getMethods());
   }
 
   @Nullable
-  private Initialiser transformInitialiser(SwiftInitializerDeclaration initialiser) {
-    if (initialiser == null) {
-      return null;
+  private void transformInitialisers(List<SwiftInitializerDeclaration> initialisers) {
+    for (SwiftInitializerDeclaration initialiser : initialisers) {
+      this.initialisers.add(
+          new Initialiser(getParameters(initialiser.getParameterClause()), MySwiftPsiUtil.isFailable(initialiser), getThrows(initialiser), isProtocol())
+      );
     }
-    return new Initialiser(getParameters(initialiser.getParameterClause()), MySwiftPsiUtil.isFailable(initialiser), getThrows(initialiser), isProtocol());
   }
 
   private boolean getThrows(SwiftInitializerDeclaration initialiser) {
@@ -140,7 +142,7 @@ public abstract class SwiftTypeTransformer {
     return properties;
   }
 
-  public Initialiser getInitialiser() {
-    return initialiser;
+  public List<Initialiser> getInitialisers() {
+    return initialisers;
   }
 }

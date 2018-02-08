@@ -11,6 +11,6 @@ public interface TypeItemFinder {
   List<SwiftVariableDeclaration> getProperties();
   List<SwiftFunctionDeclaration> getMethods();
   List<SwiftTypeDeclaration> getTypes();
-  SwiftInitializerDeclaration getInitialiser();
+  List<SwiftInitializerDeclaration> getInitialisers();
 }
 

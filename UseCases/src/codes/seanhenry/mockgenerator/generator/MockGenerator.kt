@@ -18,14 +18,15 @@ class MockGenerator {
   private var override = false
   private lateinit var nameGenerator: UniqueMethodNameGenerator
   private var lines = ArrayList<String>()
-  private var initialiser: Initialiser? = null
+  private var classInitialiser: Initialiser? = null
+  private var initialisers = ArrayList<Initialiser>()
 
   fun setScope(scope: String) {
     this.scope = scope.trim()
   }
 
-  fun setInitialiser(initialiser: Initialiser) {
-    this.initialiser = initialiser
+  fun setClassInitialiser(initialiser: Initialiser) {
+    this.classInitialiser = initialiser
   }
 
   fun add(method: ProtocolMethod) {
@@ -36,12 +37,22 @@ class MockGenerator {
     protocolProperties.add(property)
   }
 
+  fun add(vararg initialisers: Initialiser) {
+    addInitialisers(listOf(*initialisers))
+  }
+
   fun add(vararg methods: ProtocolMethod) {
     addMethods(listOf(*methods))
   }
 
   fun add(vararg properties: ProtocolProperty) {
     addProperties(listOf(*properties))
+  }
+
+  fun addInitialisers(initialisers: List<Initialiser>) {
+    for (initialiser in initialisers) {
+      this.initialisers.add(initialiser)
+    }
   }
 
   fun addMethods(methods: List<ProtocolMethod>) {
@@ -76,7 +87,7 @@ class MockGenerator {
     lines = ArrayList()
     generateOverloadedNames()
 
-    appendInitialiser()
+    appendInitialisers()
 
     override = true
     appendPropertyMocks(classProperties)
@@ -93,14 +104,13 @@ class MockGenerator {
     return lines.joinToString("\n")
   }
 
-  private fun appendInitialiser() {
-    val initialiser = this.initialiser
-    if (initialiser != null) {
-      if (initialiser.isProtocol) {
-        appendProtocolInitialiser(initialiser)
-      } else {
-        appendClassInitialiser(initialiser)
-      }
+  private fun appendInitialisers() {
+    val classInitialiser = this.classInitialiser
+    if (classInitialiser != null) {
+      appendClassInitialiser(classInitialiser)
+    }
+    for (initialiser in initialisers) {
+      appendProtocolInitialiser(initialiser)
     }
   }
 
