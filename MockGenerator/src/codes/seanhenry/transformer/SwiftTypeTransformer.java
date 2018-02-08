@@ -6,17 +6,16 @@ import codes.seanhenry.mockgenerator.entities.ProtocolMethod;
 import codes.seanhenry.mockgenerator.entities.ProtocolProperty;
 import codes.seanhenry.mockgenerator.util.ParameterUtil;
 import codes.seanhenry.util.MySwiftPsiUtil;
-import codes.seanhenry.util.finder.SwiftTypeItemFinder;
 import codes.seanhenry.util.finder.TypeItemFinder;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.jetbrains.swift.psi.*;
-import com.jetbrains.swift.psi.types.SwiftType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public abstract class SwiftTypeTransformer {
 
@@ -40,7 +39,18 @@ public abstract class SwiftTypeTransformer {
   }
 
   @Nullable
-  protected abstract Initialiser transformInitialiser(SwiftInitializerDeclaration initialiser);
+  private Initialiser transformInitialiser(SwiftInitializerDeclaration initialiser) {
+    if (initialiser == null) {
+      return null;
+    }
+    return new Initialiser(getParameters(initialiser.getParameterClause()), MySwiftPsiUtil.isFailable(initialiser), getThrows(initialiser), isProtocol());
+  }
+
+  private boolean getThrows(SwiftInitializerDeclaration initialiser) {
+    return initialiser.isThrowing();
+  }
+
+  protected abstract boolean isProtocol();
 
   private void transformProperties(List<SwiftVariableDeclaration> properties) {
     for (SwiftVariableDeclaration property : properties) {
@@ -74,7 +84,7 @@ public abstract class SwiftTypeTransformer {
       this.methods.add(new ProtocolMethod(
           name,
           getReturnType(method),
-          getParameters(method),
+          getParameters(method.getParameterClause()),
           getSignature(method).trim(),
           getThrows(method)
       ));
@@ -86,7 +96,12 @@ public abstract class SwiftTypeTransformer {
   @Nullable
   protected abstract String getReturnType(SwiftFunctionDeclaration method);
   @NotNull
-  protected abstract List<Parameter> getParameters(SwiftFunctionDeclaration method);
+  private List<Parameter> getParameters(SwiftParameterClause parameterClause) {
+    return MySwiftPsiUtil.getParameters(parameterClause)
+        .stream()
+        .map(this::transformParameter)
+        .collect(Collectors.toList());
+  }
   @NotNull
   protected abstract String getSignature(SwiftFunctionDeclaration method);
 

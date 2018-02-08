@@ -19,25 +19,9 @@ public class SwiftClassTransformer extends SwiftTypeTransformer {
     super(itemFinder);
   }
 
-  @Nullable
   @Override
-  protected Initialiser transformInitialiser(SwiftInitializerDeclaration initialiser) {
-    if (initialiser == null) {
-      return null;
-    }
-    List<SwiftParameter> parameters = MySwiftPsiUtil.getParameters(initialiser);
-    return new Initialiser(transformParameters(parameters), MySwiftPsiUtil.isFailable(initialiser), getThrows(initialiser));
-  }
-
-  private boolean getThrows(SwiftInitializerDeclaration initialiser) {
-    return initialiser.isThrowing();
-  }
-
-  private List<Parameter> transformParameters(List<SwiftParameter> parameters) {
-    return parameters
-        .stream()
-        .map(this::transformParameter)
-        .collect(Collectors.toList());
+  protected boolean isProtocol() {
+    return false;
   }
 
   @Override
@@ -88,11 +72,6 @@ public class SwiftClassTransformer extends SwiftTypeTransformer {
   @Override
   protected String getReturnType(SwiftFunctionDeclaration method) {
     return MySwiftPsiUtil.getReturnTypeName(method);
-  }
-
-  @Override
-  protected List<Parameter> getParameters(SwiftFunctionDeclaration method) {
-    return transformParameters(MySwiftPsiUtil.getParameters(method));
   }
 
   @NotNull

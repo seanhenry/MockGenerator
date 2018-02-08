@@ -1,14 +1,10 @@
 package codes.seanhenry.transformer;
 
-import codes.seanhenry.mockgenerator.entities.Initialiser;
-import codes.seanhenry.mockgenerator.entities.Parameter;
 import codes.seanhenry.util.MySwiftPsiUtil;
-import codes.seanhenry.util.finder.SwiftTypeItemFinder;
 import codes.seanhenry.util.finder.TypeItemFinder;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.jetbrains.swift.psi.*;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,10 +15,9 @@ public class SwiftProtocolTransformer extends SwiftTypeTransformer {
     super(itemFinder);
   }
 
-  @Nullable
   @Override
-  protected Initialiser transformInitialiser(SwiftInitializerDeclaration initialiser) {
-    return null;
+  protected boolean isProtocol() {
+    return true;
   }
 
   @Override
@@ -54,14 +49,6 @@ public class SwiftProtocolTransformer extends SwiftTypeTransformer {
   @Override
   protected String getReturnType(SwiftFunctionDeclaration method) {
     return MySwiftPsiUtil.getReturnTypeName(method);
-  }
-
-  @Override
-  protected List<Parameter> getParameters(SwiftFunctionDeclaration method) {
-    return MySwiftPsiUtil.getParameters(method)
-        .stream()
-        .map(this::transformParameter)
-        .collect(Collectors.toList());
   }
 
   @NotNull

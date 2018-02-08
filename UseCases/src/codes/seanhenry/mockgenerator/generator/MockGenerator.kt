@@ -96,12 +96,24 @@ class MockGenerator {
   private fun appendInitialiser() {
     val initialiser = this.initialiser
     if (initialiser != null) {
-      val call = CreateConvenienceInitialiser().transform(initialiser)
-      if (call != null) {
-        addInitialiserScopedLine(SwiftStringInitialiserDeclaration().transform(call) + " {")
-        addLine(SwiftStringConvenienceInitCall().transform(call))
-        addLine("}")
+      if (initialiser.isProtocol) {
+        appendProtocolInitialiser(initialiser)
+      } else {
+        appendClassInitialiser(initialiser)
       }
+    }
+  }
+
+  private fun appendProtocolInitialiser(initialiser: Initialiser) {
+    addInitialiserScopedLine(SwiftStringProtocolInitialiserDeclaration().transform(initialiser) + " {}")
+  }
+
+  private fun appendClassInitialiser(initialiser: Initialiser) {
+    val call = CreateConvenienceInitialiser().transform(initialiser)
+    if (call != null) {
+      addInitialiserScopedLine(SwiftStringInitialiserDeclaration().transform(call) + " {")
+      addLine(SwiftStringConvenienceInitCall().transform(call))
+      addLine("}")
     }
   }
 

@@ -76,6 +76,10 @@ class MockGeneratorTest : TestCase() {
     runTest(NoArgumentFailableInitialiserTest())
   }
 
+  fun testNoProtocolInitialiser() {
+    runTest(ProtocoInitialiserTest())
+  }
+
   fun testOpenInitialiserShouldSetInitToPublic() {
     runTest(OpenInitialiserTest())
   }

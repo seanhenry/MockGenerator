@@ -158,16 +158,7 @@ public class MySwiftPsiUtil {
   }
 
   @NotNull
-  public static List<SwiftParameter> getParameters(SwiftFunctionDeclaration method) {
-    return getParameters(method.getParameterClause());
-  }
-
-  @NotNull
-  public static List<SwiftParameter> getParameters(SwiftInitializerDeclaration initializer) {
-    return getParameters(initializer.getParameterClause());
-  }
-
-  private static List<SwiftParameter> getParameters(SwiftParameterClause parameterClause) {
+  public static List<SwiftParameter> getParameters(SwiftParameterClause parameterClause) {
     if (parameterClause != null) {
       return parameterClause.getParameterList();
     }

@@ -112,7 +112,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
 
   @NotNull
   private SwiftTypeItemFinder getProtocolItemFinder() {
-    SwiftTypeItemFinder itemFinder = new SwiftTypeItemFinder(new ProtocolTypeChoosingStrategy(), new EmptyInitialiserChoosingStrategy(), new ProtocolPropertyChoosingStrategy(), new ProtocolMethodChoosingStrategy());
+    SwiftTypeItemFinder itemFinder = new SwiftTypeItemFinder(new ProtocolTypeChoosingStrategy(), new ClassTypeInitialiserChoosingStrategy(), new ProtocolPropertyChoosingStrategy(), new ProtocolMethodChoosingStrategy());
     itemFinder.findItems(classDeclaration);
     return itemFinder;
   }
@@ -133,6 +133,9 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     ProtocolDuplicateRemover remover = new ProtocolDuplicateRemover(protocolItemFinder, classItemFinder);
     SwiftTypeTransformer transformer = new SwiftProtocolTransformer(remover);
     transformer.transform();
+    if (transformer.getInitialiser() != null) {
+      generator.setInitialiser(transformer.getInitialiser());
+    }
     generator.addProperties(transformer.getProperties());
     generator.addMethods(transformer.getMethods());
   }
