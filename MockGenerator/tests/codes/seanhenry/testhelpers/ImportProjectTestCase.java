@@ -25,12 +25,15 @@ public abstract class ImportProjectTestCase extends PlatformTestCase {
   protected void tearDown() throws Exception {
     try {
       fixture.tearDown();
-    } catch (Throwable ignored) {
+    } catch (Throwable e) {
+      e.printStackTrace();
     } finally {
       fixture = null;
       try {
         super.tearDown();
-      } catch (Throwable ignored) {}
+      } catch (Throwable e) {
+        e.printStackTrace();
+      }
     }
   }
 
@@ -40,7 +43,9 @@ public abstract class ImportProjectTestCase extends PlatformTestCase {
     testResultPath = Files.createTempDirectory("codes.seanhenry.mockgenerator");
     try {
       super.setUp();
-    } catch (IllegalStateException ignored) { } 
+    } catch (Throwable e) {
+      e.printStackTrace();
+    }
   }
 
   private void allowAccessToXcodeDirectory() throws IOException {
