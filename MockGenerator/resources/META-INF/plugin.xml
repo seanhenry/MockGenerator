@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>codes.seanhenry.mockgenerator</id>
     <name>Swift Mock Generator for AppCode</name>
-    <version>9</version>
+    <version>10</version>
     <vendor email="hello@seanhenry.codes" url="https://github.com/seanhenry/MockGenerator">Sean Henry</vendor>
 
     <description><![CDATA[
@@ -64,9 +64,8 @@ class MockDataStore: DataStore {
 
     <change-notes><![CDATA[
       <ul>
-        <li>Stub an error for your mock method to throw.</li>
-        <li>Supports throwing initializers.</li>
-        <li>Supports throwing closures.</li>
+        <li>Resolves typealiases that reference another typealias correctly.</li>
+        <li>Supports initialisers declared in protocols.</li>
       </ul>
     ]]>
     </change-notes>
