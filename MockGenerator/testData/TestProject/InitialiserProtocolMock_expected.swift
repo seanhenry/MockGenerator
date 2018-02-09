@@ -1,6 +1,6 @@
 @testable import MockableTypes
 
-class ArgumentInitialiserProtocolMock: ArgumentInitialiserProtocol {
+class InitialiserProtocolMock: InitialiserProtocol {
 
     required init() {
     }
