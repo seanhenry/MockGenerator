@@ -50,10 +50,10 @@ To regenerate the mock, place the cursor anywhere inside the mock and select ‘
 | Stubs a default value for return values where possible.|✅|
 | Automatically calls closure parameters with stubbed values.|✅|
 | **Initializers** |
-| Generates convenience initializers requiring no parameters.|✅ (classes only)|
-| Supports initializers with arguments.|✅ (classes only)|
-| Supports failable initializers.|✅ (classes only)|
-| Supports required initializers.|✅ (classes only)|
+| Generates convenience initializers requiring no parameters.|✅|
+| Supports initializers with arguments.|✅|
+| Supports failable initializers.|✅|
+| Supports required initializers.|✅|
 | **Throws** |
 | Stub an error for your mock method to throw. |✅|
 | Supports throwing initializers. |✅|
