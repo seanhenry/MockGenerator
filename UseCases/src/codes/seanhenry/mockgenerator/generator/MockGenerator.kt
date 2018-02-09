@@ -64,7 +64,7 @@ class MockGenerator {
   }
 
   fun setClassInitialisers(vararg initialisers: Initialiser) {
-    setClassInitialisers(*initialisers)
+    setClassInitialisers(listOf(*initialisers))
   }
 
   fun setClassInitialisers(initialisers: List<Initialiser>) {
