@@ -40,6 +40,7 @@ public class MockGeneratingIntentionTest extends ImportProjectTestCase {
       "ThrowingProtocol",
       "TypealiasProtocol",
       "InitialiserProtocol",
+      "GenericMethod",
 
       "SimpleClass",
       "UnoverridableClass",
