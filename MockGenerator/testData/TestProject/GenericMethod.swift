@@ -1,5 +1,3 @@
-import Foundation
-
 protocol GenericMethod {
     func test<T>(a: T)
     func test<T: NSObject>(b: T)
