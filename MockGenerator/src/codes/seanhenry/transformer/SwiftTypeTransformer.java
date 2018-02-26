@@ -1,9 +1,6 @@
 package codes.seanhenry.transformer;
 
-import codes.seanhenry.mockgenerator.entities.Initialiser;
-import codes.seanhenry.mockgenerator.entities.Parameter;
-import codes.seanhenry.mockgenerator.entities.ProtocolMethod;
-import codes.seanhenry.mockgenerator.entities.ProtocolProperty;
+import codes.seanhenry.mockgenerator.entities.*;
 import codes.seanhenry.mockgenerator.util.ParameterUtil;
 import codes.seanhenry.util.MySwiftPsiUtil;
 import codes.seanhenry.util.finder.TypeItemFinder;
@@ -83,9 +80,11 @@ public abstract class SwiftTypeTransformer {
       if (name == null) {
         name = UNKNOWN_NAME;
       }
+      String returnType = getReturnType(method);
       this.methods.add(new ProtocolMethod(
           name,
-          getReturnType(method),
+          returnType,
+          getResolvedReturnType(method, returnType),
           getParameters(method.getParameterClause()),
           getSignature(method).trim(),
           getThrows(method)
@@ -96,17 +95,22 @@ public abstract class SwiftTypeTransformer {
   @Nullable
   protected abstract String getName(SwiftFunctionDeclaration method);
 
+  @Nullable
   private String getReturnType(SwiftFunctionDeclaration method) {
-    if (method.getFunctionResult() == null) {
+    return MySwiftPsiUtil.getReturnTypeName(method);
+  }
+
+  @Nullable
+  private Type getResolvedReturnType(SwiftFunctionDeclaration method, String returnType) {
+    SwiftReferenceTypeElement reference = PsiTreeUtil.findChildOfType(method.getFunctionResult(), SwiftReferenceTypeElement.class);
+    if (returnType == null || reference == null) {
       return null;
     }
-    PsiElement resolved = resolveType(method.getFunctionResult());
-    if (isGenericParameter(resolved)) {
-      return "Any";
-    } else if (method.getFunctionResult().getTypeElement() != null) {
-      return method.getFunctionResult().getTypeElement().getText();
+    PsiElement resolved = reference.resolve();
+    if (resolved != null && resolved.getContext() instanceof SwiftGenericParameterClause) {
+      return new GenericType(returnType);
     }
-    return null;
+    return new Type(returnType);
   }
 
   @NotNull
@@ -129,38 +133,23 @@ public abstract class SwiftTypeTransformer {
     return new Parameter(
         p.getLabel(),
         p.getName(),
-        getType(parameter, p.getType()),
+        p.getType(),
         getResolvedType(parameter, p.getType()),
         p.getText()
     );
   }
 
-  private String getType(SwiftParameter parameter, String type) {
-    PsiElement resolved = resolveType(parameter.getTypeAnnotation());
-    if (isGenericParameter(resolved)) {
-      return "Any";
-    }
-    return type;
-  }
-
-  private boolean isGenericParameter(PsiElement element) {
-    return element != null && element.getContext() instanceof SwiftGenericParameterClause;
-  }
-
-  private String getResolvedType(SwiftParameter parameter, String type) {
-    PsiElement resolved = resolveType(parameter.getTypeAnnotation());
-    if (resolved instanceof SwiftTypeAliasDeclaration) {
-      return parameter.getSwiftType().resolveType().getPresentableText();
-    }
-    return type;
-  }
-
-  private PsiElement resolveType(PsiElement element) {
-    SwiftReferenceTypeElement reference = PsiTreeUtil.findChildOfType(element, SwiftReferenceTypeElement.class);
+  private Type getResolvedType(SwiftParameter parameter, String type) {
+    SwiftReferenceTypeElement reference = PsiTreeUtil.findChildOfType(parameter.getTypeAnnotation(), SwiftReferenceTypeElement.class);
     if (reference != null) {
-      return reference.resolve();
+      PsiElement resolved = reference.resolve();
+      if (resolved instanceof SwiftTypeAliasDeclaration) {
+        return new Type(parameter.getSwiftType().resolveType().getPresentableText());
+      } else if (resolved != null && resolved.getContext() instanceof SwiftGenericParameterClause) {
+        return new GenericType(type);
+      }
     }
-    return null;
+    return new Type(type);
   }
 
   public List<ProtocolMethod> getMethods() {

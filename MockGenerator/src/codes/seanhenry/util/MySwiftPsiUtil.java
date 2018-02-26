@@ -148,6 +148,15 @@ public class MySwiftPsiUtil {
     return null;
   }
 
+  @Nullable
+  public static String getReturnTypeName(SwiftFunctionDeclaration method) {
+    SwiftTypeElement returnObject = PsiTreeUtil.findChildOfType(method.getFunctionResult(), SwiftTypeElement.class);
+    if (returnObject != null) {
+      return returnObject.getText();
+    }
+    return null;
+  }
+
   @NotNull
   public static List<SwiftParameter> getParameters(SwiftParameterClause parameterClause) {
     if (parameterClause != null) {
