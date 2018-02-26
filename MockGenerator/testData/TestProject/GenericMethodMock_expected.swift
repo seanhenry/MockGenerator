@@ -79,4 +79,28 @@ class GenericMethodMock: GenericMethod {
         invokedTestDParameters = (d, ())
         invokedTestDParametersList.append((d, ()))
     }
+
+    var invokedTestE = false
+    var invokedTestECount = 0
+    var invokedTestEParameters: (e: Any, Void)?
+    var invokedTestEParametersList = [(e: Any, Void)]()
+
+    func test<T: AssociatedTypeProtocol>(e: T) where T.SomeType == NSObject {
+        invokedTestE = true
+        invokedTestECount += 1
+        invokedTestEParameters = (e, ())
+        invokedTestEParametersList.append((e, ()))
+    }
+
+    var invokedTestF = false
+    var invokedTestFCount = 0
+    var invokedTestFParameters: (f: Any?, g: Any?)?
+    var invokedTestFParametersList = [(f: Any?, g: Any?)]()
+
+    func test<T, U>(f: T!, g: U?) {
+        invokedTestF = true
+        invokedTestFCount += 1
+        invokedTestFParameters = (f, g)
+        invokedTestFParametersList.append((f, g))
+    }
 }

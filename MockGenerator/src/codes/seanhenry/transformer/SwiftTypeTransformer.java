@@ -117,21 +117,34 @@ public abstract class SwiftTypeTransformer {
     return new Parameter(
         p.getLabel(),
         p.getName(),
-        p.getType(),
+        getType(parameter, p.getType()),
         getResolvedType(parameter, p.getType()),
         p.getText()
     );
   }
 
-  private String getResolvedType(SwiftParameter parameter, String type) {
-    SwiftReferenceTypeElement reference = PsiTreeUtil.findChildOfType(parameter.getTypeAnnotation(), SwiftReferenceTypeElement.class);
-    if (reference != null) {
-      PsiElement resolved = reference.resolve();
-      if (resolved instanceof SwiftTypeAliasDeclaration) {
-        return parameter.getSwiftType().resolveType().getPresentableText();
-      }
+  private String getType(SwiftParameter parameter, String type) {
+    PsiElement resolved = resolve(parameter);
+     if (resolved != null && resolved.getContext() instanceof SwiftGenericParameterClause) {
+      return "Any";
     }
     return type;
+  }
+
+  private String getResolvedType(SwiftParameter parameter, String type) {
+    PsiElement resolved = resolve(parameter);
+    if (resolved instanceof SwiftTypeAliasDeclaration) {
+      return parameter.getSwiftType().resolveType().getPresentableText();
+    }
+    return type;
+  }
+
+  private PsiElement resolve(SwiftParameter parameter) {
+    SwiftReferenceTypeElement reference = PsiTreeUtil.findChildOfType(parameter.getTypeAnnotation(), SwiftReferenceTypeElement.class);
+    if (reference != null) {
+      return reference.resolve();
+    }
+    return null;
   }
 
   public List<ProtocolMethod> getMethods() {
