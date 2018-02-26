@@ -1,5 +1,6 @@
 package codes.seanhenry.mockgenerator.usecases
 
+import codes.seanhenry.mockgenerator.entities.GenericType
 import codes.seanhenry.mockgenerator.entities.Parameter
 import codes.seanhenry.mockgenerator.entities.TuplePropertyDeclaration
 import codes.seanhenry.mockgenerator.util.ClosureUtil
@@ -42,9 +43,22 @@ abstract class CreateParameterTuple {
 
   private fun transformParameter(parameter: Parameter): TuplePropertyDeclaration.TupleParameter? {
     val name = parameter.name
-    val type = parameter.type
-    val resolvedType = parameter.resolvedType
-    return TuplePropertyDeclaration.TupleParameter(name, removeInOut(replaceIUO(type)), resolvedType.typeName)
+    var type = parameter.type
+    var resolvedType = parameter.resolvedType.typeName
+    if (parameter.resolvedType is GenericType) {
+      val genericType = translateGenericType(parameter.type)
+      type = genericType
+      resolvedType = genericType
+    }
+    return TuplePropertyDeclaration.TupleParameter(name, removeInOut(replaceIUO(type)), resolvedType)
+  }
+
+  private fun translateGenericType(type: String): String {
+    val any = "Any"
+    if (type.endsWith("!") || type.endsWith("?")) {
+      return any + "!"
+    }
+    return any
   }
 
   private fun replaceIUO(type: String): String {

@@ -1,5 +1,6 @@
 package codes.seanhenry.mockgenerator.usecases
 
+import codes.seanhenry.mockgenerator.entities.GenericType
 import codes.seanhenry.mockgenerator.entities.Parameter
 import codes.seanhenry.mockgenerator.entities.TuplePropertyDeclaration
 import codes.seanhenry.mockgenerator.util.ParameterUtil
@@ -122,12 +123,43 @@ class CreateParameterTupleTest: TestCase() {
     assertTuple("(param0: Int, inout: Int)", parameters, "param0: inout Int, inout: Int")
   }
 
+  fun testShouldReplaceGenericParameterWithAny() {
+    val parameters = arrayOf(
+        TuplePropertyDeclaration.TupleParameter("a", "Any"),
+        TuplePropertyDeclaration.TupleParameter("b", "Any")
+    )
+    assertTuple("(a: Any, b: Any)", parameters, listOf(
+        Parameter("a", "a", "T", GenericType("T"), "a: T"),
+        Parameter("b", "b", "U", GenericType("U"), "b: U")
+    ))
+  }
+
+  fun testShouldReplaceOptionalGenericParameters() {
+    val parameters = arrayOf(
+        TuplePropertyDeclaration.TupleParameter("a", "Any?"),
+        TuplePropertyDeclaration.TupleParameter("b", "Any?")
+    )
+    assertTuple("(a: Any?, b: Any?)", parameters, listOf(
+        Parameter("a", "a", "T?", GenericType("T?"), "a: T?"),
+        Parameter("b", "b", "U!", GenericType("U!"), "b: U!")
+    ))
+  }
+
   private fun transformParameters(parameters: String) = CreateInvokedParameters().transform("name", ParameterUtil.getParameters(parameters))
 
   private fun transformParameters(vararg parameters: Parameter) = CreateInvokedParameters().transform("name", listOf(*parameters))
 
   private fun assertTuple(expectedType: String, expectedParameters: Array<TuplePropertyDeclaration.TupleParameter>, methodParameters: String) {
     val property = transformParameters(methodParameters)
+    assertEquals(expectedParameters.map { it.type }, property?.parameters?.map { it.type })
+    assertEquals(expectedParameters.map { it.name }, property?.parameters?.map { it.name })
+    assertEquals(expectedType, property?.type)
+  }
+
+  private fun assertTuple(expectedType: String,
+                          expectedParameters: Array<TuplePropertyDeclaration.TupleParameter>,
+                          parameters: List<Parameter>) {
+    val property = CreateInvokedParameters().transform("name", parameters)
     assertEquals(expectedParameters.map { it.type }, property?.parameters?.map { it.type })
     assertEquals(expectedParameters.map { it.name }, property?.parameters?.map { it.name })
     assertEquals(expectedType, property?.type)
