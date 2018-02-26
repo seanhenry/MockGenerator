@@ -46,11 +46,6 @@ public class SwiftProtocolTransformer extends SwiftTypeTransformer {
     return method.getName();
   }
 
-  @Override
-  protected String getReturnType(SwiftFunctionDeclaration method) {
-    return MySwiftPsiUtil.getReturnTypeName(method);
-  }
-
   @NotNull
   @Override
   protected String getSignature(SwiftFunctionDeclaration method) {

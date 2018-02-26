@@ -95,8 +95,20 @@ public abstract class SwiftTypeTransformer {
 
   @Nullable
   protected abstract String getName(SwiftFunctionDeclaration method);
-  @Nullable
-  protected abstract String getReturnType(SwiftFunctionDeclaration method);
+
+  private String getReturnType(SwiftFunctionDeclaration method) {
+    if (method.getFunctionResult() == null) {
+      return null;
+    }
+    PsiElement resolved = resolveType(method.getFunctionResult());
+    if (isGenericParameter(resolved)) {
+      return "Any";
+    } else if (method.getFunctionResult().getTypeElement() != null) {
+      return method.getFunctionResult().getTypeElement().getText();
+    }
+    return null;
+  }
+
   @NotNull
   private List<Parameter> getParameters(SwiftParameterClause parameterClause) {
     return MySwiftPsiUtil.getParameters(parameterClause)
@@ -124,23 +136,27 @@ public abstract class SwiftTypeTransformer {
   }
 
   private String getType(SwiftParameter parameter, String type) {
-    PsiElement resolved = resolve(parameter);
-     if (resolved != null && resolved.getContext() instanceof SwiftGenericParameterClause) {
+    PsiElement resolved = resolveType(parameter.getTypeAnnotation());
+    if (isGenericParameter(resolved)) {
       return "Any";
     }
     return type;
   }
 
+  private boolean isGenericParameter(PsiElement element) {
+    return element != null && element.getContext() instanceof SwiftGenericParameterClause;
+  }
+
   private String getResolvedType(SwiftParameter parameter, String type) {
-    PsiElement resolved = resolve(parameter);
+    PsiElement resolved = resolveType(parameter.getTypeAnnotation());
     if (resolved instanceof SwiftTypeAliasDeclaration) {
       return parameter.getSwiftType().resolveType().getPresentableText();
     }
     return type;
   }
 
-  private PsiElement resolve(SwiftParameter parameter) {
-    SwiftReferenceTypeElement reference = PsiTreeUtil.findChildOfType(parameter.getTypeAnnotation(), SwiftReferenceTypeElement.class);
+  private PsiElement resolveType(PsiElement element) {
+    SwiftReferenceTypeElement reference = PsiTreeUtil.findChildOfType(element, SwiftReferenceTypeElement.class);
     if (reference != null) {
       return reference.resolve();
     }
