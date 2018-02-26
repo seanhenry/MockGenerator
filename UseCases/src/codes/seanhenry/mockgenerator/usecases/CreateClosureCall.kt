@@ -10,8 +10,8 @@ class CreateClosureCall {
 
   fun transform(parameters: List<Parameter>): List<Closure> {
     return parameters
-        .filter { ClosureUtil.isClosure(it.resolvedType) }
-        .map { Closure(it.name, getArguments(it.resolvedType), getReturnValue(it.resolvedType), getIsOptional(it), getThrows(it)) }
+        .filter { ClosureUtil.isClosure(it.resolvedType.typeName) }
+        .map { Closure(it.name, getArguments(it.resolvedType.typeName), getReturnValue(it.resolvedType.typeName), getIsOptional(it), getThrows(it)) }
   }
 
   private fun getArguments(parameter: String): List<String> {
@@ -61,7 +61,7 @@ class CreateClosureCall {
     if (ClosureUtil.isClosure(parameter.type)) {
       return getIsOptional(parameter.type)
     }
-    return getIsOptional(parameter.resolvedType)
+    return getIsOptional(parameter.resolvedType.typeName)
       || getIsTypeAliasOptional(parameter.type)
   }
 
@@ -71,7 +71,7 @@ class CreateClosureCall {
   }
 
   private fun getThrows(parameter: Parameter): Boolean {
-    return parameter.resolvedType.matches(Regex(".*throws\\s*->.*"))
+    return parameter.resolvedType.typeName.matches(Regex(".*throws\\s*->.*"))
   }
 
   private fun getIsTypeAliasOptional(it: String): Boolean {

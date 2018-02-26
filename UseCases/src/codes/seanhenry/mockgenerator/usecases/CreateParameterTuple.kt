@@ -44,7 +44,7 @@ abstract class CreateParameterTuple {
     val name = parameter.name
     val type = parameter.type
     val resolvedType = parameter.resolvedType
-    return TuplePropertyDeclaration.TupleParameter(name, removeInOut(replaceIUO(type)), resolvedType)
+    return TuplePropertyDeclaration.TupleParameter(name, removeInOut(replaceIUO(type)), resolvedType.typeName)
   }
 
   private fun replaceIUO(type: String): String {
