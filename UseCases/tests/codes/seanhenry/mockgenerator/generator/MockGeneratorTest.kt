@@ -96,6 +96,10 @@ class MockGeneratorTest : TestCase() {
     runTest(ThrowingInitialiserTest())
   }
 
+  fun testGenericParameters() {
+    runTest(GenericParametersTest())
+  }
+
   private fun runTest(template: MockGeneratorTestTemplate) {
     template.build(generator)
     assertEquals(template.getExpected(), generator.generate())
