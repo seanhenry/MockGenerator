@@ -1,5 +1,6 @@
 package codes.seanhenry.intentions;
 
+import codes.seanhenry.analytics.Tracker;
 import codes.seanhenry.testhelpers.ImportProjectTestCase;
 import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
@@ -8,6 +9,12 @@ import org.junit.Assert;
 import java.io.IOException;
 
 public class MockGeneratingIntentionTest extends ImportProjectTestCase {
+
+  @Override
+  protected void setUp() throws Exception {
+    super.setUp();
+    MockGeneratingIntention.tracker = new TrackerSpy();
+  }
 
   @Override
   protected String getDataPath() {
@@ -67,6 +74,14 @@ public class MockGeneratingIntentionTest extends ImportProjectTestCase {
       runTest(fileName);
     }
     Assert.assertFalse(isIntentionAvailable("NotAvailableInProductionCodeTarget"));
+    runSuccessAnalyticsTest();
+  }
+
+  private void runSuccessAnalyticsTest() throws Exception {
+    TrackerSpy trackerSpy = new TrackerSpy();
+    MockGeneratingIntention.tracker = trackerSpy;
+    runTest("SimpleProtocol");
+    Assert.assertEquals("generated", trackerSpy.invokedTrackAction);
   }
 
   private boolean isIntentionAvailable(String fileName) {
@@ -86,5 +101,15 @@ public class MockGeneratingIntentionTest extends ImportProjectTestCase {
   @NotNull
   private PsiFile configureFile(String mockFileName) {
     return getFixture().configureByFile(mockFileName);
+  }
+
+  private class TrackerSpy implements Tracker {
+
+    String invokedTrackAction;
+
+    @Override
+    public void track(String action) {
+      invokedTrackAction = action;
+    }
   }
 }

@@ -1,6 +1,7 @@
 package codes.seanhenry.intentions;
 
-import codes.seanhenry.mockgenerator.entities.Initialiser;
+import codes.seanhenry.analytics.GoogleAnalyticsTracker;
+import codes.seanhenry.analytics.Tracker;
 import codes.seanhenry.transformer.SwiftClassTransformer;
 import codes.seanhenry.transformer.SwiftProtocolTransformer;
 import codes.seanhenry.transformer.SwiftTypeTransformer;
@@ -21,6 +22,7 @@ import com.intellij.codeInsight.intention.IntentionAction;
 import com.intellij.codeInsight.intention.PsiElementBaseIntentionAction;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
@@ -39,6 +41,7 @@ import java.util.*;
 public class MockGeneratingIntention extends PsiElementBaseIntentionAction implements IntentionAction, ProjectComponent {
 
   private SwiftClassDeclaration classDeclaration;
+  public static Tracker tracker = new GoogleAnalyticsTracker();
 
   @Override
   public boolean isAvailable(@NotNull Project project, Editor editor, @NotNull PsiElement psiElement) {
@@ -77,14 +80,16 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
       protocolItemFinder = getProtocolItemFinder();
       classItemFinder = getClassItemFinder();
       validateItems(classItemFinder, protocolItemFinder);
-      transformProtocolItems(protocolItemFinder,classItemFinder, generator);
+      transformProtocolItems(protocolItemFinder, classItemFinder, generator);
       transformClassItems(classItemFinder, generator);
       deleteClassStatements();
       addGenericClauseToMock(protocolItemFinder);
       generateMock(generator);
+      track("generated");
     } catch (Exception e) {
       e.printStackTrace();
       showErrorMessage(e.getMessage(), editor);
+      track(e.getMessage());
     }
   }
 
@@ -195,6 +200,10 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
       message = "An unknown error occurred.";
     }
     HintManager.getInstance().showErrorHint(editor, message);
+  }
+
+  private void track(String action) {
+    ProgressManager.getInstance().executeNonCancelableSection(() -> tracker.track(action));
   }
 
   @Nls
