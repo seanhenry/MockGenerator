@@ -28,8 +28,8 @@ class GenericMethodMock: GenericMethod {
 
     var invokedTestC = false
     var invokedTestCCount = 0
-    var invokedTestCParameters: (c: Any.Type, Void)?
-    var invokedTestCParametersList = [(c: Any.Type, Void)]()
+    var invokedTestCParameters: (c: Any, Void)?
+    var invokedTestCParametersList = [(c: Any, Void)]()
 
     func test<T: NSObject>(c: T.Type) {
         invokedTestC = true
