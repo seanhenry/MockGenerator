@@ -1,6 +1,8 @@
 package codes.seanhenry.mockgenerator.usecases
 
+import codes.seanhenry.mockgenerator.entities.GenericType
 import codes.seanhenry.mockgenerator.entities.PropertyDeclaration
+import codes.seanhenry.mockgenerator.entities.Type
 import codes.seanhenry.mockgenerator.util.OptionalUtil
 import codes.seanhenry.mockgenerator.util.StringDecorator
 
@@ -8,8 +10,11 @@ abstract class CreateStub {
 
   abstract fun getStringDecorator(): StringDecorator
 
-  fun transform(name: String, type: String): PropertyDeclaration {
+  fun transform(name: String, type: String, resolvedType: Type): PropertyDeclaration {
     val transformedName = getStringDecorator().process(name)
+    if (resolvedType is GenericType) {
+      return PropertyDeclaration(transformedName, "Any!")
+    }
     var transformedType = surroundClosure(type)
     transformedType = OptionalUtil.removeOptionalRecursively(transformedType) + "!"
     return PropertyDeclaration(transformedName, transformedType)

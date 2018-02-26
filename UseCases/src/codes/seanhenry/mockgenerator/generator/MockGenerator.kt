@@ -161,7 +161,7 @@ class MockGenerator {
       val getterName = name + "Getter"
       val getterInvocationCheck = CreateInvocationCheck().transform(getterName)
       val getterInvocationCount = CreateInvocationCount().transform(getterName)
-      val returnStub = CreatePropertyGetterStub().transform(name, property.type)
+      val returnStub = CreatePropertyGetterStub().transform(name, property.type, Type(property.type))
       addSetterProperties(setterInvocationCheck, setterInvocationCount, invokedProperty, invokedPropertyList, property.isWritable)
       addGetterProperties(property, getterInvocationCheck, getterInvocationCount, returnStub)
       addPropertyDeclaration(property)
@@ -255,14 +255,14 @@ class MockGenerator {
       val returnStub = createReturnStub(method, name)
       addMethodProperties(method, invocationCheck, invocationCount, invokedParameters, invokedParametersList, closureProperties, errorStub, returnStub)
       addMethodDeclaration(method)
-      addMethodAssignments(invocationCheck, invocationCount, invokedParameters, invokedParametersList, closureCalls, errorStub, returnStub)
+      addMethodAssignments(method, invocationCheck, invocationCount, invokedParameters, invokedParametersList, closureCalls, errorStub, returnStub)
       addClosingBrace()
     }
   }
 
   private fun createReturnStub(method: ProtocolMethod, name: String): PropertyDeclaration? {
     if (method.returnType != null) {
-      return CreateMethodReturnStub().transform(name, method.returnType)
+      return CreateMethodReturnStub().transform(name, method.returnType, method.resolvedReturnType ?: Type(method.returnType))
     }
     return null
   }
@@ -295,7 +295,8 @@ class MockGenerator {
     addOverriddenLine(method.signature + " {")
   }
 
-  private fun addMethodAssignments(invocationCheck: PropertyDeclaration,
+  private fun addMethodAssignments(method: ProtocolMethod,
+                                   invocationCheck: PropertyDeclaration,
                                    invocationCount: PropertyDeclaration,
                                    invokedParameters: TuplePropertyDeclaration?,
                                    invokedParametersList: TuplePropertyDeclaration?,
@@ -308,7 +309,18 @@ class MockGenerator {
     if (invokedParametersList != null) addLine(SwiftStringArrayAppender().transform(invokedParametersList, SwiftStringTupleForwardCall().transform(invokedParametersList)))
     closureCalls.forEach { addLine(SwiftStringClosureCall().transform(it.first?.name ?: "", it.second)) }
     addLine(SwiftStringThrowError().transform(errorStub))
-    if (returnStub != null) addLine(SwiftStringReturnProperty().transform(returnStub))
+    addReturnStub(returnStub, method)
+  }
+
+  private fun addReturnStub(returnStub: PropertyDeclaration?,
+                            method: ProtocolMethod) {
+    if (returnStub != null) {
+      if (method.resolvedReturnType is GenericType) {
+        addLine(SwiftStringCastReturnProperty().transform(returnStub, method.returnType!!))
+      } else {
+        addLine(SwiftStringReturnProperty().transform(returnStub))
+      }
+    }
   }
 
   private fun addLine(line: String) {
