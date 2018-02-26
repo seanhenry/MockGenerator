@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>codes.seanhenry.mockgenerator</id>
     <name>Swift Mock Generator for AppCode</name>
-    <version>10</version>
+    <version>11</version>
     <vendor email="hello@seanhenry.codes" url="https://github.com/seanhenry/MockGenerator">Sean Henry</vendor>
 
     <description><![CDATA[
@@ -25,8 +25,10 @@
         <li>Stub an error for your mock method to throw.</li>
         <li>Supports throwing initializers.</li>
         <li>Supports throwing closures.</li>
-        <li>Avoids naming clashes from overloaded methods.</li>
         <li>Generates generic mocks from protocols with associated types.</li>
+        <li>Captures invoked generic parameters.</li>
+        <li>Captures invoked generic return values.</li>
+        <li>Avoids naming clashes from overloaded methods.</li>
         <li>Supports parameter type-annotation attributes and `inout`.</li>
         <li>Respects the mock scope and generates `public` and `open` methods and properties.</li>
         <li>Generate mock inheriting from items in 3rd party frameworks.</li>
@@ -64,8 +66,8 @@ class MockDataStore: DataStore {
 
     <change-notes><![CDATA[
       <ul>
-        <li>Resolves typealiases that reference another typealias correctly.</li>
-        <li>Supports initialisers declared in protocols.</li>
+        <li>Supports capturing of generic method parameters.</li>
+        <li>Supports capturing of generic method return values.</li>
       </ul>
     ]]>
     </change-notes>
