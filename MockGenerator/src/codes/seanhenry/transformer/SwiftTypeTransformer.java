@@ -124,7 +124,8 @@ public abstract class SwiftTypeTransformer {
   protected abstract String getSignature(SwiftFunctionDeclaration method);
 
   private boolean getThrows(SwiftFunctionDeclaration method) {
-    return method.isThrowing();
+    SwiftThrowsClause throwsClause = method.getThrowsClause();
+    return throwsClause != null && throwsClause.isThrows();
   }
 
   @NotNull

@@ -3,6 +3,7 @@ package codes.seanhenry.mockgenerator.util
 import codes.seanhenry.mockgenerator.entities.Parameter
 
 class ParameterUtil {
+
   companion object {
     fun getParameterList(parameters: String): List<String> {
       return parameters
