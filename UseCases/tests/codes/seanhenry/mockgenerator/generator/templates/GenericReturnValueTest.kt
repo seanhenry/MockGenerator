@@ -1,17 +1,17 @@
 package codes.seanhenry.mockgenerator.generator.templates
 
-import codes.seanhenry.mockgenerator.entities.GenericType
 import codes.seanhenry.mockgenerator.entities.ProtocolMethod
+import codes.seanhenry.mockgenerator.entities.Type
 import codes.seanhenry.mockgenerator.generator.MockGenerator
 
 class GenericReturnValueTest : MockGeneratorTestTemplate {
 
   override fun build(generator: MockGenerator) {
     generator.add(
-        ProtocolMethod("generic1", "Any", GenericType("T"), emptyList(), "func generic1<T>() -> T", false),
-        ProtocolMethod("generic2", "Any?", GenericType("T?"), emptyList(), "func generic2<T>() -> T?", false),
-        ProtocolMethod("generic3", "Any!", GenericType("T!"), emptyList(), "func generic3<T>() -> T!", false),
-        ProtocolMethod("genericArray", "[Any]", GenericType("[T]"), emptyList(), "func genericArray<T>() -> [T]", false)
+        ProtocolMethod("generic1", "Any", Type("T"), emptyList(), "func generic1<T>() -> T", false),
+        ProtocolMethod("generic2", "Any?", Type("T?"), emptyList(), "func generic2<T>() -> T?", false),
+        ProtocolMethod("generic3", "Any!", Type("T!"), emptyList(), "func generic3<T>() -> T!", false),
+        ProtocolMethod("genericArray", "[Any]", Type("[T]"), emptyList(), "func genericArray<T>() -> [T]", false)
     )
   }
 

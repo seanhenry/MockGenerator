@@ -315,12 +315,21 @@ class MockGenerator {
   private fun addReturnStub(returnStub: PropertyDeclaration?,
                             method: ProtocolMethod) {
     if (returnStub != null) {
-      if (method.resolvedReturnType is GenericType) {
-        addLine(SwiftStringCastReturnProperty().transform(returnStub, method.resolvedReturnType.typeName))
+      if (areTypesDifferent(method.returnType, method.resolvedReturnType?.typeName)) {
+        addLine(SwiftStringCastReturnProperty().transform(returnStub, method.resolvedReturnType!!.typeName))
       } else {
         addLine(SwiftStringReturnProperty().transform(returnStub))
       }
     }
+  }
+
+  private fun areTypesDifferent(a: String?, b: String?): Boolean {
+    if (a == null || b == null) {
+      return false
+    }
+    val trimmedA = a.replace("\\s+".toRegex(), "")
+    val trimmedB = b.replace("\\s+".toRegex(), "")
+    return trimmedA.trim() != trimmedB.trim()
   }
 
   private fun addLine(line: String) {
