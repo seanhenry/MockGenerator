@@ -1,8 +1,6 @@
 package codes.seanhenry.mockgenerator.usecases
 
-import codes.seanhenry.mockgenerator.entities.GenericType
 import codes.seanhenry.mockgenerator.entities.PropertyDeclaration
-import codes.seanhenry.mockgenerator.entities.Type
 import codes.seanhenry.mockgenerator.util.AppendStringDecorator
 import codes.seanhenry.mockgenerator.util.PrependStringDecorator
 import codes.seanhenry.mockgenerator.util.StringDecorator
@@ -104,21 +102,21 @@ class CreateStubTest: TestCase() {
   }
 
   fun testTransformsGenericReturnTypeToAny() {
-    val property = stub.transform("", "T", GenericType("T"))
+    val property = stub.transform("", "Any")
     assertEquals("Any!", property.type)
   }
 
   fun testTransformsOptionalGenericReturnTypeToAny() {
-    val property = stub.transform("", "T?", GenericType("T?"))
+    val property = stub.transform("", "Any?")
     assertEquals("Any!", property.type)
   }
 
   fun testTransformsIUOGenericReturnTypeToAny() {
-    val property = stub.transform("", "T!", GenericType("T!"))
+    val property = stub.transform("", "Any!")
     assertEquals("Any!", property.type)
   }
 
   private fun transform(name: String, type: String): PropertyDeclaration {
-    return stub.transform(name, type, Type(type))
+    return stub.transform(name, type)
   }
 }

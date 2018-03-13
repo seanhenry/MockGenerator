@@ -8,9 +8,10 @@ class GenericReturnValueTest : MockGeneratorTestTemplate {
 
   override fun build(generator: MockGenerator) {
     generator.add(
-        ProtocolMethod("generic1", "T", GenericType("T"), emptyList(), "func generic1<T>() -> T", false),
-        ProtocolMethod("generic2", "T?", GenericType("T?"), emptyList(), "func generic2<T>() -> T?", false),
-        ProtocolMethod("generic3", "T!", GenericType("T!"), emptyList(), "func generic3<T>() -> T!", false)
+        ProtocolMethod("generic1", "Any", GenericType("T"), emptyList(), "func generic1<T>() -> T", false),
+        ProtocolMethod("generic2", "Any?", GenericType("T?"), emptyList(), "func generic2<T>() -> T?", false),
+        ProtocolMethod("generic3", "Any!", GenericType("T!"), emptyList(), "func generic3<T>() -> T!", false),
+        ProtocolMethod("genericArray", "[Any]", GenericType("[T]"), emptyList(), "func genericArray<T>() -> [T]", false)
     )
   }
 
@@ -39,6 +40,14 @@ class GenericReturnValueTest : MockGeneratorTestTemplate {
       invokedGeneric3 = true
       invokedGeneric3Count += 1
       return stubbedGeneric3Result as? T
+      }
+      var invokedGenericArray = false
+      var invokedGenericArrayCount = 0
+      var stubbedGenericArrayResult: [Any]! = []
+      func genericArray<T>() -> [T] {
+      invokedGenericArray = true
+      invokedGenericArrayCount += 1
+      return stubbedGenericArrayResult as! [T]
       }
       """.trimIndent()
   }

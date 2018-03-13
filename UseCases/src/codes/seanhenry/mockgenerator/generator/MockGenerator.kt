@@ -161,7 +161,7 @@ class MockGenerator {
       val getterName = name + "Getter"
       val getterInvocationCheck = CreateInvocationCheck().transform(getterName)
       val getterInvocationCount = CreateInvocationCount().transform(getterName)
-      val returnStub = CreatePropertyGetterStub().transform(name, property.type, Type(property.type))
+      val returnStub = CreatePropertyGetterStub().transform(name, property.type)
       addSetterProperties(setterInvocationCheck, setterInvocationCount, invokedProperty, invokedPropertyList, property.isWritable)
       addGetterProperties(property, getterInvocationCheck, getterInvocationCount, returnStub)
       addPropertyDeclaration(property)
@@ -262,7 +262,7 @@ class MockGenerator {
 
   private fun createReturnStub(method: ProtocolMethod, name: String): PropertyDeclaration? {
     if (method.returnType != null) {
-      return CreateMethodReturnStub().transform(name, method.returnType, method.resolvedReturnType ?: Type(method.returnType))
+      return CreateMethodReturnStub().transform(name, method.returnType)
     }
     return null
   }
@@ -316,7 +316,7 @@ class MockGenerator {
                             method: ProtocolMethod) {
     if (returnStub != null) {
       if (method.resolvedReturnType is GenericType) {
-        addLine(SwiftStringCastReturnProperty().transform(returnStub, method.returnType!!))
+        addLine(SwiftStringCastReturnProperty().transform(returnStub, method.resolvedReturnType.typeName))
       } else {
         addLine(SwiftStringReturnProperty().transform(returnStub))
       }
