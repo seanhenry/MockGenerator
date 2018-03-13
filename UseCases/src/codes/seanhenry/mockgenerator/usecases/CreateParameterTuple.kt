@@ -43,22 +43,9 @@ abstract class CreateParameterTuple {
 
   private fun transformParameter(parameter: Parameter): TuplePropertyDeclaration.TupleParameter? {
     val name = parameter.name
-    var type = parameter.type
-    var resolvedType = parameter.resolvedType.typeName
-    if (parameter.resolvedType is GenericType) {
-      val genericType = translateGenericType(parameter.type)
-      type = genericType
-      resolvedType = genericType
-    }
+    val type = parameter.type
+    val resolvedType = parameter.resolvedType.typeName
     return TuplePropertyDeclaration.TupleParameter(name, removeInOut(replaceIUO(type)), resolvedType)
-  }
-
-  private fun translateGenericType(type: String): String {
-    val any = "Any"
-    if (type.endsWith("!") || type.endsWith("?")) {
-      return any + "!"
-    }
-    return any
   }
 
   private fun replaceIUO(type: String): String {

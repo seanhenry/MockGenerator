@@ -123,28 +123,6 @@ class CreateParameterTupleTest: TestCase() {
     assertTuple("(param0: Int, inout: Int)", parameters, "param0: inout Int, inout: Int")
   }
 
-  fun testShouldReplaceGenericParameterWithAny() {
-    val parameters = arrayOf(
-        TuplePropertyDeclaration.TupleParameter("a", "Any"),
-        TuplePropertyDeclaration.TupleParameter("b", "Any")
-    )
-    assertTuple("(a: Any, b: Any)", parameters, listOf(
-        Parameter("a", "a", "T", GenericType("T"), "a: T"),
-        Parameter("b", "b", "U", GenericType("U"), "b: U")
-    ))
-  }
-
-  fun testShouldReplaceOptionalGenericParameters() {
-    val parameters = arrayOf(
-        TuplePropertyDeclaration.TupleParameter("a", "Any?"),
-        TuplePropertyDeclaration.TupleParameter("b", "Any?")
-    )
-    assertTuple("(a: Any?, b: Any?)", parameters, listOf(
-        Parameter("a", "a", "T?", GenericType("T?"), "a: T?"),
-        Parameter("b", "b", "U!", GenericType("U!"), "b: U!")
-    ))
-  }
-
   private fun transformParameters(parameters: String) = CreateInvokedParameters().transform("name", ParameterUtil.getParameters(parameters))
 
   private fun transformParameters(vararg parameters: Parameter) = CreateInvokedParameters().transform("name", listOf(*parameters))

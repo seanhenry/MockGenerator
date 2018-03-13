@@ -3,17 +3,19 @@ package codes.seanhenry.mockgenerator.generator.templates
 import codes.seanhenry.mockgenerator.entities.GenericType
 import codes.seanhenry.mockgenerator.entities.Parameter
 import codes.seanhenry.mockgenerator.entities.ProtocolMethod
+import codes.seanhenry.mockgenerator.entities.Type
 import codes.seanhenry.mockgenerator.generator.MockGenerator
 
 class GenericParametersTest: MockGeneratorTestTemplate {
 
   override fun build(generator: MockGenerator) {
     generator.add(
-        ProtocolMethod("generic", null, listOf(Parameter("a", "a", "T", GenericType("T"), "a: T")), "func generic<T>(a: T)"),
-        ProtocolMethod("generic", null, listOf(Parameter("b", "b", "T", GenericType("T"), "b: T")), "func generic<T: NSObject>(b: T.Type)"),
+        ProtocolMethod("generic", null, listOf(Parameter("a", "a", "Any", Type("T"), "a: T")), "func generic<T>(a: T)"),
+        ProtocolMethod("generic", null, listOf(Parameter("array", "array", "[Any]", Type("[T]"), "a: [T]")), "func generic<T>(array: [T])"),
+        ProtocolMethod("generic", null, listOf(Parameter("b", "b", "Any", Type("T"), "b: T")), "func generic<T: NSObject>(b: T.Type)"),
         ProtocolMethod("generic", null, listOf(
-            Parameter("c", "c", "T?", GenericType("T?"), "c: T?"),
-            Parameter("d", "d", "U!", GenericType("U!"), "c: U!")
+            Parameter("c", "c", "Any?", Type("T?"), "c: T?"),
+            Parameter("d", "d", "Any!", Type("U!"), "c: U!")
         ), "func generic<T, U>(c: T?, d: U!)")
     )
   }
@@ -29,6 +31,16 @@ class GenericParametersTest: MockGeneratorTestTemplate {
       invokedGenericACount += 1
       invokedGenericAParameters = (a, ())
       invokedGenericAParametersList.append((a, ()))
+      }
+      var invokedGenericArray = false
+      var invokedGenericArrayCount = 0
+      var invokedGenericArrayParameters: (array: [Any], Void)?
+      var invokedGenericArrayParametersList = [(array: [Any], Void)]()
+      func generic<T>(array: [T]) {
+      invokedGenericArray = true
+      invokedGenericArrayCount += 1
+      invokedGenericArrayParameters = (array, ())
+      invokedGenericArrayParametersList.append((array, ()))
       }
       var invokedGenericB = false
       var invokedGenericBCount = 0
