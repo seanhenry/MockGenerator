@@ -2,10 +2,10 @@ package codes.seanhenry.mockgenerator.generator.templates
 
 import codes.seanhenry.mockgenerator.entities.ProtocolMethod
 import codes.seanhenry.mockgenerator.entities.ProtocolProperty
-import codes.seanhenry.mockgenerator.generator.MockGenerator
+import codes.seanhenry.mockgenerator.generator.MockTransformer
 
 class PropertyProtocolTest : MockGeneratorTestTemplate {
-  override fun build(generator: MockGenerator) {
+  override fun build(generator: MockTransformer) {
     generator.add(
         ProtocolProperty("readWrite", "String", true, "var readWrite: String { set get }"),
         ProtocolProperty("readOnly", "Int", false, "var readOnly: Int { get }"),

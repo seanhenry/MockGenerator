@@ -2,11 +2,11 @@ package codes.seanhenry.mockgenerator.generator.templates
 
 import codes.seanhenry.mockgenerator.entities.ProtocolMethod
 import codes.seanhenry.mockgenerator.entities.ProtocolProperty
-import codes.seanhenry.mockgenerator.generator.MockGenerator
+import codes.seanhenry.mockgenerator.generator.MockTransformer
 
 class SimpleClassTest: MockGeneratorTestTemplate {
 
-  override fun build(generator: MockGenerator) {
+  override fun build(generator: MockTransformer) {
     generator.addClassProperties(
         ProtocolProperty("property", "String?", true, "var property: String?")
     )

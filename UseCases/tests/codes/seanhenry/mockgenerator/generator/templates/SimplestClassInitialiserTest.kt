@@ -1,10 +1,10 @@
 package codes.seanhenry.mockgenerator.generator.templates
 
 import codes.seanhenry.mockgenerator.entities.Initialiser
-import codes.seanhenry.mockgenerator.generator.MockGenerator
+import codes.seanhenry.mockgenerator.generator.MockTransformer
 
 class SimplestClassInitialiserTest: MockGeneratorTestTemplate {
-  override fun build(generator: MockGenerator) {
+  override fun build(generator: MockTransformer) {
     generator.setClassInitialisers(
       Initialiser("a: Int, b: String", false),
       Initialiser("a: Int, b: String, c: UInt", false),

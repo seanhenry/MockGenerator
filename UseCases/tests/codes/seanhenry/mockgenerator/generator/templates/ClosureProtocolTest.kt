@@ -1,11 +1,11 @@
 package codes.seanhenry.mockgenerator.generator.templates
 
 import codes.seanhenry.mockgenerator.entities.ProtocolMethod
-import codes.seanhenry.mockgenerator.generator.MockGenerator
+import codes.seanhenry.mockgenerator.generator.MockTransformer
 
 class ClosureProtocolTest : MockGeneratorTestTemplate {
 
-  override fun build(generator: MockGenerator) {
+  override fun build(generator: MockTransformer) {
     generator.add(
         ProtocolMethod("map", null, "closure: () -> ()", "func map(closure: () -> ())"),
         ProtocolMethod("flatMap", null, "closure: () -> Void", "func flatMap(closure: () -> Void)"),

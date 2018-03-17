@@ -1,12 +1,12 @@
 package codes.seanhenry.mockgenerator.generator.templates
 
 import codes.seanhenry.mockgenerator.entities.ProtocolMethod
-import codes.seanhenry.mockgenerator.generator.MockGenerator
+import codes.seanhenry.mockgenerator.generator.MockTransformer
 
 
 class ParameterAnnotationsTest : MockGeneratorTestTemplate {
 
-  override fun build(generator: MockGenerator) {
+  override fun build(generator: MockTransformer) {
     generator.add(
         ProtocolMethod("escaping", null, "closure: @escaping () -> ()", "func escaping(closure: @escaping () -> ())"),
         ProtocolMethod("inOut", null, "var1: inout Int", "func inOut(var1: inout Int)"),

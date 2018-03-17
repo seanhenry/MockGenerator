@@ -1,12 +1,11 @@
 package codes.seanhenry.mockgenerator.generator.templates
 
-import codes.seanhenry.mockgenerator.entities.Parameter
 import codes.seanhenry.mockgenerator.entities.ProtocolMethod
-import codes.seanhenry.mockgenerator.generator.MockGenerator
+import codes.seanhenry.mockgenerator.generator.MockTransformer
 
 class ThrowingTest: MockGeneratorTestTemplate {
 
-  override fun build(generator: MockGenerator) {
+  override fun build(generator: MockTransformer) {
     generator.add(
         ProtocolMethod("throwingMethod", null, emptyList(), "func throwingMethod() throws", true),
         ProtocolMethod("throwingReturnMethod", "String", emptyList(), "func throwingReturnMethod() throws -> String", true),

@@ -8,7 +8,7 @@ import codes.seanhenry.mockgenerator.util.DefaultValueStore
 import codes.seanhenry.mockgenerator.util.MethodModel
 import codes.seanhenry.mockgenerator.util.UniqueMethodNameGenerator
 
-class MockGenerator {
+class MockGenerator: MockTransformer {
 
   private val protocolMethods = ArrayList<ProtocolMethod>()
   private val classMethods = ArrayList<ProtocolMethod>()
@@ -21,75 +21,75 @@ class MockGenerator {
   private var classInitialiser: Initialiser? = null
   private var initialisers = ArrayList<Initialiser>()
 
-  fun setScope(scope: String) {
+  override fun setScope(scope: String) {
     this.scope = scope.trim()
   }
 
-  fun add(method: ProtocolMethod) {
+  override fun add(method: ProtocolMethod) {
     protocolMethods.add(method)
   }
 
-  fun add(property: ProtocolProperty) {
+  override fun add(property: ProtocolProperty) {
     protocolProperties.add(property)
   }
 
-  fun add(vararg initialisers: Initialiser) {
+  override fun add(vararg initialisers: Initialiser) {
     addInitialisers(listOf(*initialisers))
   }
 
-  fun add(vararg methods: ProtocolMethod) {
+  override fun add(vararg methods: ProtocolMethod) {
     addMethods(listOf(*methods))
   }
 
-  fun add(vararg properties: ProtocolProperty) {
+  override fun add(vararg properties: ProtocolProperty) {
     addProperties(listOf(*properties))
   }
 
-  fun addInitialisers(initialisers: List<Initialiser>) {
+  override fun addInitialisers(initialisers: List<Initialiser>) {
     for (initialiser in initialisers) {
       this.initialisers.add(initialiser)
     }
   }
 
-  fun addMethods(methods: List<ProtocolMethod>) {
+  override fun addMethods(methods: List<ProtocolMethod>) {
     for (method in methods) {
       this.protocolMethods.add(method)
     }
   }
 
-  fun addProperties(properties: List<ProtocolProperty>) {
+  override fun addProperties(properties: List<ProtocolProperty>) {
     for (property in properties) {
       this.protocolProperties.add(property)
     }
   }
 
-  fun setClassInitialisers(vararg initialisers: Initialiser) {
+  override fun setClassInitialisers(vararg initialisers: Initialiser) {
     setClassInitialisers(listOf(*initialisers))
   }
 
-  fun setClassInitialisers(initialisers: List<Initialiser>) {
+  override fun setClassInitialisers(initialisers: List<Initialiser>) {
     classInitialiser = initialisers.minBy {
       it.parametersList.size
     }
   }
 
-  fun addClassMethods(vararg methods: ProtocolMethod) {
+  override fun addClassMethods(vararg methods: ProtocolMethod) {
     classMethods += methods
   }
 
-  fun addClassMethods(methods: List<ProtocolMethod>) {
+  override fun addClassMethods(methods: List<ProtocolMethod>) {
     classMethods += methods
   }
 
-  fun addClassProperties(vararg properties: ProtocolProperty) {
+  override fun addClassProperties(vararg properties: ProtocolProperty) {
     classProperties += properties
   }
 
-  fun addClassProperties(properties: List<ProtocolProperty>) {
+  override fun addClassProperties(properties: List<ProtocolProperty>) {
     classProperties += properties
   }
 
-  fun generate(): String {
+  override fun generate(): String {
     lines = ArrayList()
     generateOverloadedNames()
 

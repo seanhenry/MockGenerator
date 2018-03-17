@@ -1,11 +1,11 @@
 package codes.seanhenry.mockgenerator.generator.templates
 
 import codes.seanhenry.mockgenerator.entities.Initialiser
-import codes.seanhenry.mockgenerator.generator.MockGenerator
+import codes.seanhenry.mockgenerator.generator.MockTransformer
 
 class ProtocoInitialiserTest: MockGeneratorTestTemplate {
 
-  override fun build(generator: MockGenerator) {
+  override fun build(generator: MockTransformer) {
     generator.add(
         Initialiser("", false, false, true),
         Initialiser("a: String", false, false, true),

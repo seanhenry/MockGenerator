@@ -1,14 +1,13 @@
 package codes.seanhenry.mockgenerator.generator.templates
 
-import codes.seanhenry.mockgenerator.entities.GenericType
 import codes.seanhenry.mockgenerator.entities.Parameter
 import codes.seanhenry.mockgenerator.entities.ProtocolMethod
 import codes.seanhenry.mockgenerator.entities.Type
-import codes.seanhenry.mockgenerator.generator.MockGenerator
+import codes.seanhenry.mockgenerator.generator.MockTransformer
 
 class GenericParametersTest: MockGeneratorTestTemplate {
 
-  override fun build(generator: MockGenerator) {
+  override fun build(generator: MockTransformer) {
     generator.add(
         ProtocolMethod("generic", null, listOf(Parameter("a", "a", "Any", Type("T"), "a: T")), "func generic<T>(a: T)"),
         ProtocolMethod("generic", null, listOf(Parameter("array", "array", "[Any]", Type("[T]"), "a: [T]")), "func generic<T>(array: [T])"),
