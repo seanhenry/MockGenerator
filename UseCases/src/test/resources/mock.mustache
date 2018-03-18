@@ -1,0 +1,87 @@
+{{! 
+ViewModel
+
+method: [Method]
+
+Method
+
+(superCallExpression: String)
+capitalizedUniqueName: String
+escapingParameters: Parameters
+closureParameter: [ClosureParameter]
+resultType: ResultType
+declarationText: String
+
+Parameters
+
+tupleRepresentation: String
+tupleAssignment: String
+
+ClosureParameter
+
+capitalizedName: String
+name: String
+argumentsTupleRepresentation: String
+argumentsImplicitTupleAssignment: String
+hasArguments: Boolean
+
+ResultType
+
+defaultValueAssignment: String
+nonOptionalRepresentation: String
+returnStatement: String
+
+}}
+{{#method}}
+
+    var invoked{{capitalizedUniqueName}} = false
+    var invoked{{capitalizedUniqueName}}Count = 0
+
+    {{#escapingParameters}}
+        var invoked{{capitalizedUniqueName}}Parameters: {{tupleRepresentation}}?
+        var invoked{{capitalizedUniqueName}}ParametersList = [{{tupleRepresentation}}]()
+    {{/escapingParameters}}
+
+    {{#closureParameter}}
+        {{#hasArguments}}
+            var stubbed{{capitalizedUniqueName}}{{capitalizedName}}: {{argumentsTupleRepresentation}}?
+        {{/hasArguments}}
+        {{^hasArguments}}
+        {{!var shouldInvoke{{capitalizedUniqueName}}{{!{{capitalizedName}}{{! = false}}
+        {{/hasArguments}}
+    {{/closureParameter}}
+
+    {{#resultType}}
+        var stubbed{{capitalizedUniqueName}}Result: {{nonOptionalRepresentation}}! {{defaultValueAssignment}}
+    {{/resultType}}
+
+    {{{declarationText}}} {
+
+    invoked{{capitalizedUniqueName}} = true
+    invoked{{capitalizedUniqueName}}Count += 1
+
+    {{#escapingParameters}}
+        invoked{{capitalizedUniqueName}}Parameters = {{tupleAssignment}}
+        invoked{{capitalizedUniqueName}}ParametersList.append({{tupleAssignment}})
+    {{/escapingParameters}}
+
+    {{#closureParameter}}
+        {{#hasArguments}}
+            if let result = stubbed{{capitalizedUniqueName}}{{capitalizedName}} {
+            {{name}}{{argumentsImplicitTupleAssignment}}
+            }
+        {{/hasArguments}}
+        {{^hasArguments}}
+            {{!if shouldInvoke{{capitalizedUniqueName}}{{!{{capitalizedName}} {{!{
+            {{name}}{{!()
+            }}
+            {{name}}()
+        {{/hasArguments}}
+    {{/closureParameter}}
+
+    {{#resultType}}
+        {{returnStatement}}
+    {{/resultType}}
+
+    }
+{{/method}}
