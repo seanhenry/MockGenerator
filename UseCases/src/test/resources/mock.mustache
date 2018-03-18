@@ -33,7 +33,7 @@ ClosureParameter
 capitalizedName: String
 name: String
 argumentsTupleRepresentation: String
-argumentsImplicitTupleAssignment: String
+implicitClosureCall: String
 hasArguments: Boolean
 
 ResultType
@@ -91,7 +91,7 @@ returnStatement: String
 
     {{#closureParameter}}
         {{#hasArguments}}
-            {{scope}} var stubbed{{capitalizedUniqueName}}{{capitalizedName}}: {{{argumentsTupleRepresentation}}}?
+            {{scope}} var stubbed{{capitalizedUniqueName}}{{capitalizedName}}Result: {{{argumentsTupleRepresentation}}}?
         {{/hasArguments}}
         {{^hasArguments}}
         {{!{{scope}} {{!var shouldInvoke{{capitalizedUniqueName}}{{!{{capitalizedName}}{{! = false}}
@@ -114,15 +114,15 @@ returnStatement: String
 
     {{#closureParameter}}
         {{#hasArguments}}
-            if let result = stubbed{{capitalizedUniqueName}}{{capitalizedName}} {
-            {{name}}{{{argumentsImplicitTupleAssignment}}}
+            if let result = stubbed{{capitalizedUniqueName}}{{capitalizedName}}Result {
+            {{{implicitClosureCall}}}
             }
         {{/hasArguments}}
         {{^hasArguments}}
             {{!if shouldInvoke{{capitalizedUniqueName}}{{!{{capitalizedName}} {{!{
             {{name}}{{!()
             }}
-            {{name}}()
+            {{{implicitClosureCall}}}
         {{/hasArguments}}
     {{/closureParameter}}
 

@@ -1,5 +1,7 @@
 package codes.seanhenry.mockgenerator.generator.templates
 
+import codes.seanhenry.mockgenerator.entities.ClosureHelper.Companion.createClosure
+import codes.seanhenry.mockgenerator.entities.ClosureHelper.Companion.createOptionalClosure
 import codes.seanhenry.mockgenerator.entities.ProtocolMethod
 import codes.seanhenry.mockgenerator.generator.MockTransformer
 
@@ -7,21 +9,21 @@ class ClosureProtocolTest : MockGeneratorTestTemplate {
 
   override fun build(generator: MockTransformer) {
     generator.add(
-        ProtocolMethod("map", null, "closure: () -> ()", "func map(closure: () -> ())"),
-        ProtocolMethod("flatMap", null, "closure: () -> Void", "func flatMap(closure: () -> Void)"),
-        ProtocolMethod("filter", null, "closure: (String) -> Bool", "func filter(closure: (String) -> Bool)"),
-        ProtocolMethod("multi", null, "animations: (Int) -> (), completion: (Bool) -> ()", "func multi(animations: (Int) -> (), completion: (Bool) -> ())"),
-        ProtocolMethod("optional", null, "animations: ((Int) -> ())?, completion: ((Bool) -> ())?", "func optional(animations: ((Int) -> ())?, completion: ((Bool) -> ())?)"),
-        ProtocolMethod("optionalParam", null, "_ closure: (String?) -> ()", "func optionalParam(_ closure: (String?) -> ())"),
-        ProtocolMethod("optionalParams", null, "_ closure: (String?, Int?) -> ()", "func optionalParams(_ closure: (String?, Int?) -> ())"),
-        ProtocolMethod("optionalArrayParams", null, "_ closure: ([String]?, [UInt]) -> ()", "func optionalArrayParams(_ closure: ([String]?, [UInt]) -> ())"),
-        ProtocolMethod("doNotSuppressWarning1", null, "_ closure: () -> ()", "func doNotSuppressWarning1(_ closure: () -> ())"),
-        ProtocolMethod("doNotSuppressWarning2", null, "_ closure: () -> Void", "func doNotSuppressWarning2(_ closure: () -> Void)"),
-        ProtocolMethod("doNotSuppressWarning3", null, "_ closure: () -> (Void)", "func doNotSuppressWarning3(_ closure: () -> (Void))"),
-        ProtocolMethod("suppressWarning1", null, "_ closure: () -> String", "func suppressWarning1(_ closure: () -> String)"),
-        ProtocolMethod("suppressWarning2", null, "_ closure: () -> (String)", "func suppressWarning2(_ closure: () -> (String))"),
-        ProtocolMethod("suppressWarning3", null, "_ closure: () -> String?", "func suppressWarning3(_ closure: () -> String?)"),
-        ProtocolMethod("suppressWarning4", null, "_ closure: () -> String!", "func suppressWarning4(_ closure: () -> String!)")
+        ProtocolMethod("map", null, createClosure("", "()"), "func map(closure: () -> ())"),
+        ProtocolMethod("flatMap", null, createClosure("", "Void"), "func flatMap(closure: () -> Void)"),
+        ProtocolMethod("filter", null, createClosure("String", "Bool"), "func filter(closure: (String) -> Bool)"),
+        ProtocolMethod("multi", null, createClosure("animations", "Int", "()") + createClosure("completion", "Bool", "()"), "func multi(animations: (Int) -> (), completion: (Bool) -> ())"),
+        ProtocolMethod("optional", null, createOptionalClosure("animations", "Int", "()") + createOptionalClosure("completion", "Bool", "()"), "func optional(animations: ((Int) -> ())?, completion: ((Bool) -> ())?)"),
+        ProtocolMethod("optionalParam", null, createClosure("String?", "()"), "func optionalParam(_ closure: (String?) -> ())"),
+        ProtocolMethod("optionalParams", null, createClosure("String?, Int?", "()"), "func optionalParams(_ closure: (String?, Int?) -> ())"),
+        ProtocolMethod("optionalArrayParams", null, createClosure("[String]?, [UInt]", "()"), "func optionalArrayParams(_ closure: ([String]?, [UInt]) -> ())"),
+        ProtocolMethod("doNotSuppressWarning1", null, createClosure("", "()"), "func doNotSuppressWarning1(_ closure: () -> ())"),
+        ProtocolMethod("doNotSuppressWarning2", null, createClosure("", "Void"), "func doNotSuppressWarning2(_ closure: () -> Void)"),
+        ProtocolMethod("doNotSuppressWarning3", null, createClosure("", "(Void)"), "func doNotSuppressWarning3(_ closure: () -> (Void))"),
+        ProtocolMethod("suppressWarning1", null, createClosure("", "String"), "func suppressWarning1(_ closure: () -> String)"),
+        ProtocolMethod("suppressWarning2", null, createClosure("", "(String)"), "func suppressWarning2(_ closure: () -> (String))"),
+        ProtocolMethod("suppressWarning3", null, createClosure("", "String?"), "func suppressWarning3(_ closure: () -> String?)"),
+        ProtocolMethod("suppressWarning4", null, createClosure("", "String!"), "func suppressWarning4(_ closure: () -> String!)")
     )
   }
 

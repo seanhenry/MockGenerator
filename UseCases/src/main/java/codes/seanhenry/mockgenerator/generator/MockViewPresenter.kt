@@ -1,7 +1,10 @@
 package codes.seanhenry.mockgenerator.generator
 
 import codes.seanhenry.mockgenerator.entities.*
+import codes.seanhenry.mockgenerator.swift.SwiftStringClosureCall
 import codes.seanhenry.mockgenerator.swift.SwiftStringTupleForwardCall
+import codes.seanhenry.mockgenerator.usecases.CreateClosureCall
+import codes.seanhenry.mockgenerator.usecases.CreateClosureResultPropertyDeclaration
 import codes.seanhenry.mockgenerator.usecases.CreateInvokedParameters
 import codes.seanhenry.mockgenerator.util.*
 
@@ -129,6 +132,7 @@ class MockViewPresenter(val view: MockView): MockTransformer {
       MethodViewModel(
           getUniqueName(it).capitalize(),
           transformParameters(it),
+          transformClosureParameters(it),
           transformReturnType(it),
           it.signature
       )
@@ -139,6 +143,42 @@ class MockViewPresenter(val view: MockView): MockTransformer {
       nameGenerator.getMethodName(toMethodModel(method).id)!!
   private fun getUniqueName(property: ProtocolProperty) =
       nameGenerator.getMethodName(toMethodModel(property).id)!!
+
+  private fun transformClosureParameters(method: ProtocolMethod): List<ClosureParameterViewModel> {
+    return method.parametersList
+        .mapNotNull { it as? ClosureParameter }
+        .map {
+          ClosureParameterViewModel(
+              it.name.capitalize(),
+              it.name,
+              transformClosureToTupleDeclaration(it.closureArguments), // TODO: use same method as method params when closure model is complete
+              transformClosureToImplicitTupleAssignment(it),
+              it.closureArguments.isNotEmpty() // TODO: require proper closure model so this is done without string parsing
+          )
+        }
+  }
+
+  private fun transformClosureToTupleDeclaration(parameter: List<Parameter>): String {
+    val closure = Closure("", parameter.map { it.text }, "", false)
+    return CreateClosureResultPropertyDeclaration()
+        .transform("", closure)?.type ?: ""
+  }
+
+  private fun transformClosureToImplicitTupleAssignment(closure: ClosureParameter): String {
+    var tuple = ""
+    if (closure.closureReturnType != "()" && closure.closureReturnType != "Void" && closure.closureReturnType != "(Void)") {
+      tuple = "_ = "
+    }
+    tuple += closure.name
+    if (closure.isOptional) {
+      tuple += "?"
+    }
+    tuple += "("
+    tuple += (0 until closure.closureArguments.size).joinToString(", ") {
+      "result.$it"
+    }
+    return tuple + ")"
+  }
 
   private fun transformReturnType(method: ProtocolMethod): ResultTypeViewModel? {
     val type = method.returnType

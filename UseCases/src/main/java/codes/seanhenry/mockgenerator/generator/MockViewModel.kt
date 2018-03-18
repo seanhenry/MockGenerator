@@ -15,7 +15,7 @@ class PropertyViewModel(var capitalizedUniqueName: String,
 
 class MethodViewModel(var capitalizedUniqueName: String,
                       var escapingParameters: ParametersViewModel?,
-//                      var closureParameter: [ClosureParameterViewModel],
+                      var closureParameter: List<ClosureParameterViewModel>,
                       var resultType: ResultTypeViewModel?,
                       var declarationText: String)
 
@@ -26,3 +26,9 @@ class ResultTypeViewModel(var defaultValueAssignment: String,
 )
 
 class ParametersViewModel(var tupleRepresentation: String, var tupleAssignment: String)
+
+class ClosureParameterViewModel(var capitalizedName: String,
+                                var name: String,
+                                var argumentsTupleRepresentation: String,
+                                var implicitClosureCall: String,
+                                var hasArguments: Boolean)

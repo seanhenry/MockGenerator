@@ -1,5 +1,6 @@
 package codes.seanhenry.mockgenerator.generator.templates
 
+import codes.seanhenry.mockgenerator.entities.ClosureHelper.Companion.createClosure
 import codes.seanhenry.mockgenerator.entities.ProtocolMethod
 import codes.seanhenry.mockgenerator.generator.MockTransformer
 
@@ -12,7 +13,8 @@ class MethodParameterTest : MockGeneratorTestTemplate {
         ProtocolMethod("optionalParam", null, "param0: Int?", "func optionalParam(param0: Int?)"),
         ProtocolMethod("iuoParam", null, "param0: Int!", "func iuoParam(param0: Int!)"),
         ProtocolMethod("noLabelParam", null, "_ name0: Int!", "func noLabelParam(_ name0: Int!)"),
-        ProtocolMethod("nameAndLabelParam", null, "label0 name0: Int!", "func nameAndLabelParam(label0 name0: Int!)")
+        ProtocolMethod("nameAndLabelParam", null, "label0 name0: Int!", "func nameAndLabelParam(label0 name0: Int!)"),
+        ProtocolMethod("closureParam", null, createClosure("", "()"), "func closureParam(closure: () -> ())")
     )
   }
 
@@ -77,6 +79,13 @@ class MethodParameterTest : MockGeneratorTestTemplate {
     invokedNameAndLabelParamCount += 1
     invokedNameAndLabelParamParameters = (name0, ())
     invokedNameAndLabelParamParametersList.append((name0, ()))
+    }
+    var invokedClosureParam = false
+    var invokedClosureParamCount = 0
+    func closureParam(closure: () -> ()) {
+    invokedClosureParam = true
+    invokedClosureParamCount += 1
+    closure()
     }
       """.trimIndent()
   }
