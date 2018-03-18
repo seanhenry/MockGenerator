@@ -1,7 +1,17 @@
 {{! 
 ViewModel
 
+property: [Property]
 method: [Method]
+
+Property
+
+capitalizedUniqueName: String
+hasSetter: Boolean
+nonOptionalType: String
+defaultValueAssignment: String
+declarationText: String
+returnStatement: String
 
 Method
 
@@ -32,19 +42,55 @@ nonOptionalRepresentation: String
 returnStatement: String
 
 }}
+{{#property}}
+
+    {{#hasSetter}}
+        var invoked{{capitalizedUniqueName}}Setter = false
+        var invoked{{capitalizedUniqueName}}SetterCount = 0
+        var invoked{{capitalizedUniqueName}}: {{{nonOptionalType}}}?
+        var invoked{{capitalizedUniqueName}}List = [{{{type}}}]()
+    {{/hasSetter}}
+    var invoked{{capitalizedUniqueName}}Getter = false
+    var invoked{{capitalizedUniqueName}}GetterCount = 0
+    var stubbed{{capitalizedUniqueName}}: {{{nonOptionalTypeRecursively}}}! {{{defaultValueAssignment}}}
+
+    {{{declarationText}}} {
+
+    {{#hasSetter}}
+        set {
+        invoked{{capitalizedUniqueName}}Setter = true
+        invoked{{capitalizedUniqueName}}SetterCount += 1
+        invoked{{capitalizedUniqueName}} = newValue
+        invoked{{capitalizedUniqueName}}List.append(newValue)
+        }
+        get {
+        invoked{{capitalizedUniqueName}}Getter = true
+        invoked{{capitalizedUniqueName}}GetterCount += 1
+        return stubbed{{capitalizedUniqueName}}
+        }
+    {{/hasSetter}}
+    {{^hasSetter}}
+        invoked{{capitalizedUniqueName}}Getter = true
+        invoked{{capitalizedUniqueName}}GetterCount += 1
+        return stubbed{{capitalizedUniqueName}}
+    {{/hasSetter}}
+
+    }
+{{/property}}
+
 {{#method}}
 
     var invoked{{capitalizedUniqueName}} = false
     var invoked{{capitalizedUniqueName}}Count = 0
 
     {{#escapingParameters}}
-        var invoked{{capitalizedUniqueName}}Parameters: {{tupleRepresentation}}?
-        var invoked{{capitalizedUniqueName}}ParametersList = [{{tupleRepresentation}}]()
+        var invoked{{capitalizedUniqueName}}Parameters: {{{tupleRepresentation}}}?
+        var invoked{{capitalizedUniqueName}}ParametersList = [{{{tupleRepresentation}}}]()
     {{/escapingParameters}}
 
     {{#closureParameter}}
         {{#hasArguments}}
-            var stubbed{{capitalizedUniqueName}}{{capitalizedName}}: {{argumentsTupleRepresentation}}?
+            var stubbed{{capitalizedUniqueName}}{{capitalizedName}}: {{{argumentsTupleRepresentation}}}?
         {{/hasArguments}}
         {{^hasArguments}}
         {{!var shouldInvoke{{capitalizedUniqueName}}{{!{{capitalizedName}}{{! = false}}
@@ -52,7 +98,7 @@ returnStatement: String
     {{/closureParameter}}
 
     {{#resultType}}
-        var stubbed{{capitalizedUniqueName}}Result: {{nonOptionalRepresentation}}! {{defaultValueAssignment}}
+        var stubbed{{capitalizedUniqueName}}Result: {{{nonOptionalTypeRecursively}}}! {{{defaultValueAssignment}}}
     {{/resultType}}
 
     {{{declarationText}}} {
@@ -61,14 +107,14 @@ returnStatement: String
     invoked{{capitalizedUniqueName}}Count += 1
 
     {{#escapingParameters}}
-        invoked{{capitalizedUniqueName}}Parameters = {{tupleAssignment}}
-        invoked{{capitalizedUniqueName}}ParametersList.append({{tupleAssignment}})
+        invoked{{capitalizedUniqueName}}Parameters = {{{tupleAssignment}}}
+        invoked{{capitalizedUniqueName}}ParametersList.append({{{tupleAssignment}}})
     {{/escapingParameters}}
 
     {{#closureParameter}}
         {{#hasArguments}}
             if let result = stubbed{{capitalizedUniqueName}}{{capitalizedName}} {
-            {{name}}{{argumentsImplicitTupleAssignment}}
+            {{name}}{{{argumentsImplicitTupleAssignment}}}
             }
         {{/hasArguments}}
         {{^hasArguments}}
@@ -80,7 +126,7 @@ returnStatement: String
     {{/closureParameter}}
 
     {{#resultType}}
-        {{returnStatement}}
+        return stubbed{{capitalizedUniqueName}}Result
     {{/resultType}}
 
     }

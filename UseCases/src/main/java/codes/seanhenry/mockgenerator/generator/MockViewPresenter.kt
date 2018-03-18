@@ -3,11 +3,14 @@ package codes.seanhenry.mockgenerator.generator
 import codes.seanhenry.mockgenerator.entities.*
 import codes.seanhenry.mockgenerator.swift.SwiftStringTupleForwardCall
 import codes.seanhenry.mockgenerator.usecases.CreateInvokedParameters
-import codes.seanhenry.mockgenerator.util.UniqueMethodNameGenerator
+import codes.seanhenry.mockgenerator.util.*
 
 class MockViewPresenter(val view: MockView): MockTransformer {
 
   private val protocolMethods = ArrayList<ProtocolMethod>()
+  private val classMethods = ArrayList<ProtocolMethod>()
+  private val protocolProperties = ArrayList<ProtocolProperty>()
+  private val classProperties = ArrayList<ProtocolProperty>()
   private lateinit var nameGenerator: UniqueMethodNameGenerator
 
   override fun add(method: ProtocolMethod) {
@@ -19,9 +22,7 @@ class MockViewPresenter(val view: MockView): MockTransformer {
   }
 
   override fun addMethods(methods: List<ProtocolMethod>) {
-    for (method in methods) {
-      this.protocolMethods.add(method)
-    }
+    protocolMethods.addAll(methods)
   }
 
   override fun setScope(scope: String) {
@@ -29,7 +30,7 @@ class MockViewPresenter(val view: MockView): MockTransformer {
   }
 
   override fun add(property: ProtocolProperty) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    protocolProperties.add(property)
   }
 
   override fun add(vararg initialisers: Initialiser) {
@@ -37,7 +38,7 @@ class MockViewPresenter(val view: MockView): MockTransformer {
   }
 
   override fun add(vararg properties: ProtocolProperty) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    addProperties(listOf(*properties))
   }
 
   override fun addInitialisers(initialisers: List<Initialiser>) {
@@ -45,7 +46,7 @@ class MockViewPresenter(val view: MockView): MockTransformer {
   }
 
   override fun addProperties(properties: List<ProtocolProperty>) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    protocolProperties.addAll(properties)
   }
 
   override fun setClassInitialisers(vararg initialisers: Initialiser) {
@@ -73,21 +74,81 @@ class MockViewPresenter(val view: MockView): MockTransformer {
   }
 
   override fun generate(): String {
+    generateOverloadedNames()
     val mockModel = MockViewModel(
+        transformProperties(),
         transformMethods()
     )
     view.render(mockModel)
     return ""
   }
 
+  private fun generateOverloadedNames() {
+    val protocolProperties = protocolProperties.map { toMethodModel(it) }
+    val protocolMethods = protocolMethods.map { toMethodModel(it) }
+    val classMethods = classMethods.map { toMethodModel(it) }
+    val classProperties = classProperties.map { toMethodModel(it) }
+    nameGenerator = UniqueMethodNameGenerator(protocolProperties + protocolMethods + classMethods + classProperties)
+    nameGenerator.generateMethodNames()
+  }
+
+  private fun toMethodModel(method: ProtocolMethod): MethodModel {
+    return MethodModel(method.name, method.parametersList)
+  }
+
+  private fun toMethodModel(property: ProtocolProperty): MethodModel {
+    return MethodModel(property.name, "")
+  }
+
+  private fun transformProperties(): List<PropertyViewModel> {
+    return protocolProperties.map {
+      PropertyViewModel(
+          getUniqueName(it).capitalize(),
+          it.isWritable,
+          it.type,
+          OptionalUtil.removeOptional(it.type),
+          OptionalUtil.removeOptionalRecursively(it.type),
+          getDefaultValueAssignment(it.type),
+          it.getTrimmedSignature()
+      )
+    }
+  }
+
+  private fun getDefaultValueAssignment(type: String): String {
+    val defaultValue = DefaultValueStore().getDefaultValue(type)
+    if (defaultValue != null) {
+      return "= $defaultValue"
+    }
+    return ""
+  }
+
   private fun transformMethods(): List<MethodViewModel> {
     return protocolMethods.map {
       MethodViewModel(
-          it.name.capitalize(),
+          getUniqueName(it).capitalize(),
           transformParameters(it),
+          transformReturnType(it),
           it.signature
       )
     }
+  }
+
+  private fun getUniqueName(method: ProtocolMethod) =
+      nameGenerator.getMethodName(toMethodModel(method).id)!!
+  private fun getUniqueName(property: ProtocolProperty) =
+      nameGenerator.getMethodName(toMethodModel(property).id)!!
+
+  private fun transformReturnType(method: ProtocolMethod): ResultTypeViewModel? {
+    val type = method.returnType
+    if (type != null) {
+      return ResultTypeViewModel(
+          getDefaultValueAssignment(type),
+          OptionalUtil.removeOptional(type),
+          ClosureUtil.surroundClosure(OptionalUtil.removeOptionalRecursively(type))
+      // TODO: we need to surround all closures when appending an optional. Write some tests
+      )
+    }
+    return null
   }
 
   private fun transformParameters(method: ProtocolMethod): ParametersViewModel? {

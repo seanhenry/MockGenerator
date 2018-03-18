@@ -26,22 +26,22 @@ class MockViewPresenterTest : TestCase() {
     runTest(MethodParameterTest())
   }
 
-//  fun testDefaultValues() {
-//    runTest(DefaultValuesTest())
-//  }
-//
-//  fun testOverloadProtocol() {
-//    runTest(OverloadProtocolTest())
-//  }
-//
-//  fun testPropertyProtocol() {
-//    runTest(PropertyProtocolTest())
-//  }
-//
-//  fun testReturnProtocol() {
-//    runTest(ReturnProtocolTest())
-//  }
-//
+  fun testDefaultValues() {
+    runTest(DefaultValuesTest())
+  }
+
+  fun testOverloadProtocol() {
+    runTest(OverloadProtocolTest())
+  }
+
+  fun testPropertyProtocol() {
+    runTest(PropertyProtocolTest())
+  }
+
+  fun testReturnProtocol() {
+    runTest(ReturnProtocolTest())
+  }
+
 //  fun testScopeProtocol() {
 //    runTest(ScopeProtocolTest())
 //  }
