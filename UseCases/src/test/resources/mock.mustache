@@ -46,16 +46,16 @@ returnStatement: String
 {{#property}}
 
     {{#hasSetter}}
-        var invoked{{capitalizedUniqueName}}Setter = false
-        var invoked{{capitalizedUniqueName}}SetterCount = 0
-        var invoked{{capitalizedUniqueName}}: {{{optionalType}}}
-        var invoked{{capitalizedUniqueName}}List = [{{{type}}}]()
+        {{scope}} var invoked{{capitalizedUniqueName}}Setter = false
+        {{scope}} var invoked{{capitalizedUniqueName}}SetterCount = 0
+        {{scope}} var invoked{{capitalizedUniqueName}}: {{{optionalType}}}
+        {{scope}} var invoked{{capitalizedUniqueName}}List = [{{{type}}}]()
     {{/hasSetter}}
-    var invoked{{capitalizedUniqueName}}Getter = false
-    var invoked{{capitalizedUniqueName}}GetterCount = 0
-    var stubbed{{capitalizedUniqueName}}: {{{iuoType}}} {{{defaultValueAssignment}}}
+    {{scope}} var invoked{{capitalizedUniqueName}}Getter = false
+    {{scope}} var invoked{{capitalizedUniqueName}}GetterCount = 0
+    {{scope}} var stubbed{{capitalizedUniqueName}}: {{{iuoType}}} {{{defaultValueAssignment}}}
 
-    {{{declarationText}}} {
+    {{scope}} {{{declarationText}}} {
 
     {{#hasSetter}}
         set {
@@ -81,28 +81,28 @@ returnStatement: String
 
 {{#method}}
 
-    var invoked{{capitalizedUniqueName}} = false
-    var invoked{{capitalizedUniqueName}}Count = 0
+    {{scope}} var invoked{{capitalizedUniqueName}} = false
+    {{scope}} var invoked{{capitalizedUniqueName}}Count = 0
 
     {{#escapingParameters}}
-        var invoked{{capitalizedUniqueName}}Parameters: {{{tupleRepresentation}}}?
-        var invoked{{capitalizedUniqueName}}ParametersList = [{{{tupleRepresentation}}}]()
+        {{scope}} var invoked{{capitalizedUniqueName}}Parameters: {{{tupleRepresentation}}}?
+        {{scope}} var invoked{{capitalizedUniqueName}}ParametersList = [{{{tupleRepresentation}}}]()
     {{/escapingParameters}}
 
     {{#closureParameter}}
         {{#hasArguments}}
-            var stubbed{{capitalizedUniqueName}}{{capitalizedName}}: {{{argumentsTupleRepresentation}}}?
+            {{scope}} var stubbed{{capitalizedUniqueName}}{{capitalizedName}}: {{{argumentsTupleRepresentation}}}?
         {{/hasArguments}}
         {{^hasArguments}}
-        {{!var shouldInvoke{{capitalizedUniqueName}}{{!{{capitalizedName}}{{! = false}}
+        {{!{{scope}} {{!var shouldInvoke{{capitalizedUniqueName}}{{!{{capitalizedName}}{{! = false}}
         {{/hasArguments}}
     {{/closureParameter}}
 
     {{#resultType}}
-        var stubbed{{capitalizedUniqueName}}Result: {{{iuoType}}} {{{defaultValueAssignment}}}
+        {{scope}} var stubbed{{capitalizedUniqueName}}Result: {{{iuoType}}} {{{defaultValueAssignment}}}
     {{/resultType}}
 
-    {{{declarationText}}} {
+    {{scope}} {{{declarationText}}} {
 
     invoked{{capitalizedUniqueName}} = true
     invoked{{capitalizedUniqueName}}Count += 1

@@ -11,6 +11,7 @@ class MockViewPresenter(val view: MockView): MockTransformer {
   private val classMethods = ArrayList<ProtocolMethod>()
   private val protocolProperties = ArrayList<ProtocolProperty>()
   private val classProperties = ArrayList<ProtocolProperty>()
+  private var scope = ""
   private lateinit var nameGenerator: UniqueMethodNameGenerator
 
   override fun add(method: ProtocolMethod) {
@@ -26,7 +27,7 @@ class MockViewPresenter(val view: MockView): MockTransformer {
   }
 
   override fun setScope(scope: String) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    this.scope = scope
   }
 
   override fun add(property: ProtocolProperty) {
@@ -77,7 +78,8 @@ class MockViewPresenter(val view: MockView): MockTransformer {
     generateOverloadedNames()
     val mockModel = MockViewModel(
         transformProperties(),
-        transformMethods()
+        transformMethods(),
+        scope
     )
     view.render(mockModel)
     return ""

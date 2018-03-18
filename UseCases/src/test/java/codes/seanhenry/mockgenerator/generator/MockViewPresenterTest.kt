@@ -42,10 +42,10 @@ class MockViewPresenterTest : TestCase() {
     runTest(ReturnProtocolTest())
   }
 
-//  fun testScopeProtocol() {
-//    runTest(ScopeProtocolTest())
-//  }
-//
+  fun testScopeProtocol() {
+    runTest(ScopeProtocolTest())
+  }
+
 //  fun testClosureProtocol() {
 //    runTest(ClosureProtocolTest())
 //  }

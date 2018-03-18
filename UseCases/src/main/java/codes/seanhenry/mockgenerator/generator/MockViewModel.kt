@@ -1,6 +1,8 @@
 package codes.seanhenry.mockgenerator.generator
 
-class MockViewModel(var property: List<PropertyViewModel>, var method: List<MethodViewModel>)
+class MockViewModel(var property: List<PropertyViewModel>,
+                    var method: List<MethodViewModel>,
+                    var scope: String)
 
 class PropertyViewModel(var capitalizedUniqueName: String,
                         var hasSetter: Boolean,
