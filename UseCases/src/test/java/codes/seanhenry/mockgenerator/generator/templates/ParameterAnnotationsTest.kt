@@ -1,5 +1,6 @@
 package codes.seanhenry.mockgenerator.generator.templates
 
+import codes.seanhenry.mockgenerator.entities.ClosureHelper.Companion.createClosure
 import codes.seanhenry.mockgenerator.entities.ProtocolMethod
 import codes.seanhenry.mockgenerator.generator.MockTransformer
 
@@ -8,10 +9,10 @@ class ParameterAnnotationsTest : MockGeneratorTestTemplate {
 
   override fun build(generator: MockTransformer) {
     generator.add(
-        ProtocolMethod("escaping", null, "closure: @escaping () -> ()", "func escaping(closure: @escaping () -> ())"),
+        ProtocolMethod("escaping", null, createClosure("", "()"), "func escaping(closure: @escaping () -> ())"),
         ProtocolMethod("inOut", null, "var1: inout Int", "func inOut(var1: inout Int)"),
-        ProtocolMethod("autoclosure", null, "closure: @autoclosure () -> ()", "func autoclosure(closure: @autoclosure () -> ())"),
-        ProtocolMethod("convention", null, "closure: @convention(swift) () -> ()", "func convention(closure: @convention(swift) () -> ())")
+        ProtocolMethod("autoclosure", null, createClosure("","()"), "func autoclosure(closure: @autoclosure () -> ())"),
+        ProtocolMethod("convention", null, createClosure("", "()"), "func convention(closure: @convention(swift) () -> ())")
     )
   }
 

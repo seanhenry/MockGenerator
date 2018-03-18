@@ -1,9 +1,7 @@
 package codes.seanhenry.mockgenerator.generator
 
 import codes.seanhenry.mockgenerator.entities.*
-import codes.seanhenry.mockgenerator.swift.SwiftStringClosureCall
 import codes.seanhenry.mockgenerator.swift.SwiftStringTupleForwardCall
-import codes.seanhenry.mockgenerator.usecases.CreateClosureCall
 import codes.seanhenry.mockgenerator.usecases.CreateClosureResultPropertyDeclaration
 import codes.seanhenry.mockgenerator.usecases.CreateInvokedParameters
 import codes.seanhenry.mockgenerator.util.*
@@ -14,23 +12,17 @@ class MockViewPresenter(val view: MockView): MockTransformer {
   private val classMethods = ArrayList<ProtocolMethod>()
   private val protocolProperties = ArrayList<ProtocolProperty>()
   private val classProperties = ArrayList<ProtocolProperty>()
-  private var scope = ""
+  private var classInitialiser: Initialiser? = null
+  private var initialisers = ArrayList<Initialiser>()
+  private var scope: String? = null
   private lateinit var nameGenerator: UniqueMethodNameGenerator
+
+  override fun setScope(scope: String) {
+    this.scope = scope.trim()
+  }
 
   override fun add(method: ProtocolMethod) {
     protocolMethods.add(method)
-  }
-
-  override fun add(vararg methods: ProtocolMethod) {
-    addMethods(listOf(*methods))
-  }
-
-  override fun addMethods(methods: List<ProtocolMethod>) {
-    protocolMethods.addAll(methods)
-  }
-
-  override fun setScope(scope: String) {
-    this.scope = scope
   }
 
   override fun add(property: ProtocolProperty) {
@@ -38,7 +30,11 @@ class MockViewPresenter(val view: MockView): MockTransformer {
   }
 
   override fun add(vararg initialisers: Initialiser) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    addInitialisers(listOf(*initialisers))
+  }
+
+  override fun add(vararg methods: ProtocolMethod) {
+    addMethods(listOf(*methods))
   }
 
   override fun add(vararg properties: ProtocolProperty) {
@@ -46,35 +42,47 @@ class MockViewPresenter(val view: MockView): MockTransformer {
   }
 
   override fun addInitialisers(initialisers: List<Initialiser>) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    for (initialiser in initialisers) {
+      this.initialisers.add(initialiser)
+    }
+  }
+
+  override fun addMethods(methods: List<ProtocolMethod>) {
+    for (method in methods) {
+      this.protocolMethods.add(method)
+    }
   }
 
   override fun addProperties(properties: List<ProtocolProperty>) {
-    protocolProperties.addAll(properties)
+    for (property in properties) {
+      this.protocolProperties.add(property)
+    }
   }
 
   override fun setClassInitialisers(vararg initialisers: Initialiser) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    setClassInitialisers(listOf(*initialisers))
   }
 
   override fun setClassInitialisers(initialisers: List<Initialiser>) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    classInitialiser = initialisers.minBy {
+      it.parametersList.size
+    }
   }
 
   override fun addClassMethods(vararg methods: ProtocolMethod) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    classMethods += methods
   }
 
   override fun addClassMethods(methods: List<ProtocolMethod>) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    classMethods += methods
   }
 
   override fun addClassProperties(vararg properties: ProtocolProperty) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    classProperties += properties
   }
 
   override fun addClassProperties(properties: List<ProtocolProperty>) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    classProperties += properties
   }
 
   override fun generate(): String {
@@ -106,7 +114,11 @@ class MockViewPresenter(val view: MockView): MockTransformer {
   }
 
   private fun transformProperties(): List<PropertyViewModel> {
-    return protocolProperties.map {
+    return transformProperties(classProperties, true) + transformProperties(protocolProperties, false)
+  }
+
+  private fun transformProperties(properties: List<ProtocolProperty>, isClass: Boolean): List<PropertyViewModel> {
+    return properties.map {
       PropertyViewModel(
           getUniqueName(it).capitalize(),
           it.isWritable,
@@ -114,9 +126,19 @@ class MockViewPresenter(val view: MockView): MockTransformer {
           OptionalUtil.removeOptional(it.type) + "?",
           OptionalUtil.removeOptionalRecursively(it.type) + "!",
           getDefaultValueAssignment(it.type),
-          it.getTrimmedSignature()
-      )
+          transformDeclarationText(it.getTrimmedSignature(), isClass))
     }
+  }
+
+  private fun transformDeclarationText(declaration: String, isClass: Boolean): String {
+    var modifiers = ""
+    if (isClass) {
+      modifiers = "override "
+    }
+    if (scope != null) {
+      modifiers += "$scope "
+    }
+    return "$modifiers$declaration"
   }
 
   private fun getDefaultValueAssignment(type: String): String {
@@ -128,13 +150,17 @@ class MockViewPresenter(val view: MockView): MockTransformer {
   }
 
   private fun transformMethods(): List<MethodViewModel> {
-    return protocolMethods.map {
+    return transformMethods(classMethods, true) + transformMethods(protocolMethods, false)
+  }
+
+  private fun transformMethods(methods: List<ProtocolMethod>, isClass: Boolean): List<MethodViewModel> {
+    return methods.map {
       MethodViewModel(
           getUniqueName(it).capitalize(),
           transformParameters(it),
           transformClosureParameters(it),
           transformReturnType(it),
-          it.signature
+          transformDeclarationText(it.signature, isClass)
       )
     }
   }

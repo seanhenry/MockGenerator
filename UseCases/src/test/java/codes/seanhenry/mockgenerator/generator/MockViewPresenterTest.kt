@@ -50,22 +50,22 @@ class MockViewPresenterTest : TestCase() {
     runTest(ClosureProtocolTest())
   }
 
-//  fun testAnnotations() {
-//    runTest(ParameterAnnotationsTest())
-//  }
-//
+  fun testAnnotations() {
+    runTest(ParameterAnnotationsTest())
+  }
+
 //  fun testTypeAlias() {
 //    runTest(TypealiasProtocolTest())
 //  }
-//
-//  fun testKeywords() {
-//    runTest(KeywordsProtocolTest())
-//  }
-//
-//  fun testSimpleClass() {
-//    runTest(SimpleClassTest())
-//  }
-//
+
+  fun testKeywords() {
+    runTest(KeywordsProtocolTest())
+  }
+
+  fun testSimpleClass() {
+    runTest(SimpleClassTest())
+  }
+
 //  fun testInitialiserWithArguments() {
 //    runTest(ArgumentsInitialiserTest())
 //  }

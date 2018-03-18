@@ -55,7 +55,7 @@ returnStatement: String
     {{scope}} var invoked{{capitalizedUniqueName}}GetterCount = 0
     {{scope}} var stubbed{{capitalizedUniqueName}}: {{{iuoType}}} {{{defaultValueAssignment}}}
 
-    {{scope}} {{{declarationText}}} {
+    {{{declarationText}}} {
 
     {{#hasSetter}}
         set {
@@ -102,7 +102,7 @@ returnStatement: String
         {{scope}} var stubbed{{capitalizedUniqueName}}Result: {{{iuoType}}} {{{defaultValueAssignment}}}
     {{/resultType}}
 
-    {{scope}} {{{declarationText}}} {
+    {{{declarationText}}} {
 
     invoked{{capitalizedUniqueName}} = true
     invoked{{capitalizedUniqueName}}Count += 1
