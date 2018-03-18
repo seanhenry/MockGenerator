@@ -17,5 +17,16 @@
       <entry name="!*.iml" />
       <entry name="!*.gant" />
     </wildcardResourcePatterns>
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="MockGeneratorUseCases" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="MockGeneratorUseCases" target="1.5" />
+    </bytecodeTargetLevel>
   </component>
 </project>

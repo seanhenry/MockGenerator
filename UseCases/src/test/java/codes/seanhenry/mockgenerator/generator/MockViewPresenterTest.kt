@@ -6,10 +6,12 @@ import junit.framework.TestCase
 class MockViewPresenterTest : TestCase() {
 
   lateinit var generator: MockViewPresenter
+  lateinit var view: MustacheMockView
 
   override fun setUp() {
     super.setUp()
-    generator = MockViewPresenter()
+    view = MustacheMockView()
+    generator = MockViewPresenter(view)
   }
 
   fun testShouldReturnEmptyString_whenNothingToMock() {
@@ -20,10 +22,10 @@ class MockViewPresenterTest : TestCase() {
     runTest(SimpleProtocolTest())
   }
 
-//  fun testMethodParameter() {
-//    runTest(MethodParameterTest())
-//  }
-//
+  fun testMethodParameter() {
+    runTest(MethodParameterTest())
+  }
+
 //  fun testDefaultValues() {
 //    runTest(DefaultValuesTest())
 //  }
@@ -106,6 +108,7 @@ class MockViewPresenterTest : TestCase() {
 
   private fun runTest(template: MockGeneratorTestTemplate) {
     template.build(generator)
-    assertEquals(template.getExpected(), generator.generate())
+    generator.generate()
+    assertEquals(template.getExpected(), view.rendered)
   }
 }
