@@ -1,8 +1,12 @@
 package codes.seanhenry.mockgenerator.generator
 
 import codes.seanhenry.mockgenerator.entities.*
+import codes.seanhenry.mockgenerator.swift.SwiftStringConvenienceInitCall
+import codes.seanhenry.mockgenerator.swift.SwiftStringInitialiserDeclaration
+import codes.seanhenry.mockgenerator.swift.SwiftStringProtocolInitialiserDeclaration
 import codes.seanhenry.mockgenerator.swift.SwiftStringTupleForwardCall
 import codes.seanhenry.mockgenerator.usecases.CreateClosureResultPropertyDeclaration
+import codes.seanhenry.mockgenerator.usecases.CreateConvenienceInitialiser
 import codes.seanhenry.mockgenerator.usecases.CreateInvokedParameters
 import codes.seanhenry.mockgenerator.util.*
 
@@ -88,12 +92,45 @@ class MockViewPresenter(val view: MockView): MockTransformer {
   override fun generate(): String {
     generateOverloadedNames()
     val mockModel = MockViewModel(
+        transformInitializers(),
         transformProperties(),
         transformMethods(),
         scope
     )
     view.render(mockModel)
     return ""
+  }
+
+  private fun transformInitializers(): List<InitializerViewModel> {
+    return transformClassInitializer() + transformProtocolInitializer()
+  }
+
+  private fun transformProtocolInitializer(): List<InitializerViewModel> {
+    return initialisers.map {
+      InitializerViewModel(
+          SwiftStringProtocolInitialiserDeclaration().transform(it),
+          "")
+    }
+  }
+
+  private fun transformClassInitializer(): List<InitializerViewModel> {
+    val init = classInitialiser
+    if (init == null) {
+      return emptyList()
+    }
+    var scope = this.scope
+    if (scope == "open") {
+      scope = "public "
+    } else if (scope != null) {
+      scope += " "
+    } else {
+      scope = ""
+    }
+    val call = CreateConvenienceInitialiser().transform(init)!!
+    return listOf(InitializerViewModel(
+        scope + SwiftStringInitialiserDeclaration().transform(call),
+        SwiftStringConvenienceInitCall().transform(call)
+    ))
   }
 
   private fun generateOverloadedNames() {
@@ -130,9 +167,9 @@ class MockViewPresenter(val view: MockView): MockTransformer {
     }
   }
 
-  private fun transformDeclarationText(declaration: String, isClass: Boolean): String {
+  private fun transformDeclarationText(declaration: String, isOverriding: Boolean): String {
     var modifiers = ""
-    if (isClass) {
+    if (isOverriding) {
       modifiers = "override "
     }
     if (scope != null) {

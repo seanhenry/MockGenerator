@@ -1,6 +1,7 @@
 package codes.seanhenry.mockgenerator.generator
 
-class MockViewModel(var property: List<PropertyViewModel>,
+class MockViewModel(var initializer: List<InitializerViewModel>,
+                    var property: List<PropertyViewModel>,
                     var method: List<MethodViewModel>,
                     var scope: String?)
 
@@ -32,3 +33,5 @@ class ClosureParameterViewModel(var capitalizedName: String,
                                 var argumentsTupleRepresentation: String,
                                 var implicitClosureCall: String,
                                 var hasArguments: Boolean)
+
+class InitializerViewModel(var declarationText: String, var initializerCall: String)

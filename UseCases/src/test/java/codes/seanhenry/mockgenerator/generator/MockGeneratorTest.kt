@@ -77,7 +77,7 @@ class MockGeneratorTest : TestCase() {
   }
 
   fun testNoProtocolInitialiser() {
-    runTest(ProtocoInitialiserTest())
+    runTest(ProtocolInitialiserTest())
   }
 
   fun testFiltersToSimplestInitialiser() {

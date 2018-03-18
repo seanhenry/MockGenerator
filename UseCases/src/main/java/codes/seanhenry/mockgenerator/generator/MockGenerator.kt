@@ -121,7 +121,7 @@ class MockGenerator: MockTransformer {
   }
 
   private fun appendProtocolInitialiser(initialiser: Initialiser) {
-    addInitialiserScopedLine(SwiftStringProtocolInitialiserDeclaration().transform(initialiser) + " {}")
+    addInitialiserScopedLine(SwiftStringProtocolInitialiserDeclaration().transform(initialiser) + " {\n}")
   }
 
   private fun appendClassInitialiser(initialiser: Initialiser) {

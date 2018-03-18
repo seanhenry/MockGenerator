@@ -1,48 +1,9 @@
-{{! 
-ViewModel
+{{#initializer}}
+    {{{declarationText}}} {
+      {{{initializerCall}}}
+    }
+{{/initializer}}
 
-property: [Property]
-method: [Method]
-
-Property
-
-capitalizedUniqueName: String
-hasSetter: Boolean
-optionalType: String
-iuoType: String
-defaultValueAssignment: String
-declarationText: String
-returnStatement: String
-
-Method
-
-(superCallExpression: String)
-capitalizedUniqueName: String
-escapingParameters: Parameters
-closureParameter: [ClosureParameter]
-resultType: ResultType
-declarationText: String
-
-Parameters
-
-tupleRepresentation: String
-tupleAssignment: String
-
-ClosureParameter
-
-capitalizedName: String
-name: String
-argumentsTupleRepresentation: String
-implicitClosureCall: String
-hasArguments: Boolean
-
-ResultType
-
-defaultValueAssignment: String
-iuoType: String
-returnStatement: String
-
-}}
 {{#property}}
 
     {{#hasSetter}}

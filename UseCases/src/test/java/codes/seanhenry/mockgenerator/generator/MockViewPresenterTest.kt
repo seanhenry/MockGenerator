@@ -66,30 +66,30 @@ class MockViewPresenterTest : TestCase() {
     runTest(SimpleClassTest())
   }
 
-//  fun testInitialiserWithArguments() {
-//    runTest(ArgumentsInitialiserTest())
-//  }
-//
-//  fun testOptionalInitialser() {
-//    runTest(FailableInitialserTest())
-//  }
-//
-//  fun testNoArgumentOptionalInitialiser() {
-//    runTest(NoArgumentFailableInitialiserTest())
-//  }
-//
-//  fun testNoProtocolInitialiser() {
-//    runTest(ProtocoInitialiserTest())
-//  }
-//
-//  fun testFiltersToSimplestInitialiser() {
-//    runTest(SimplestClassInitialiserTest())
-//  }
-//
-//  fun testOpenInitialiserShouldSetInitToPublic() {
-//    runTest(OpenInitialiserTest())
-//  }
-//
+  fun testInitialiserWithArguments() {
+    runTest(ArgumentsInitialiserTest())
+  }
+
+  fun testOptionalInitialser() {
+    runTest(FailableInitialserTest())
+  }
+
+  fun testNoArgumentOptionalInitialiser() {
+    runTest(NoArgumentFailableInitialiserTest())
+  }
+
+  fun testNoProtocolInitialiser() {
+    runTest(ProtocolInitialiserTest())
+  }
+
+  fun testFiltersToSimplestInitialiser() {
+    runTest(SimplestClassInitialiserTest())
+  }
+
+  fun testOpenInitialiserShouldSetInitToPublic() {
+    runTest(OpenInitialiserTest())
+  }
+
 //  fun testStubsThrowableMethods() {
 //    runTest(ThrowingTest())
 //  }
