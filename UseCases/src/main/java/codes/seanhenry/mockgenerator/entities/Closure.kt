@@ -16,4 +16,5 @@ class ClosureParameter(label: String,
                        text: String,
                        val closureArguments: List<Parameter>,
                        val closureReturnType: String,
-                       val isOptional: Boolean): Parameter(label, name, type, resolvedType, text)
+                       val isOptional: Boolean,
+                       val throws: Boolean): Parameter(label, name, type, resolvedType, text)

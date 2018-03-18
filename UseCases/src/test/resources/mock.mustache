@@ -59,6 +59,10 @@
         {{/hasArguments}}
     {{/closureParameter}}
 
+    {{#throws}}
+        {{scope}} var stubbed{{capitalizedUniqueName}}Error: Error?
+    {{/throws}}
+
     {{#resultType}}
         {{scope}} var stubbed{{capitalizedUniqueName}}Result: {{{iuoType}}} {{{defaultValueAssignment}}}
     {{/resultType}}
@@ -86,6 +90,12 @@
             {{{implicitClosureCall}}}
         {{/hasArguments}}
     {{/closureParameter}}
+
+    {{#throws}}
+        if let error = stubbed{{capitalizedUniqueName}}Error {
+          throw error
+        }
+    {{/throws}}
 
     {{#resultType}}
         return stubbed{{capitalizedUniqueName}}Result

@@ -18,6 +18,7 @@ class MethodViewModel(var capitalizedUniqueName: String,
                       var escapingParameters: ParametersViewModel?,
                       var closureParameter: List<ClosureParameterViewModel>,
                       var resultType: ResultTypeViewModel?,
+                      var throws: Boolean,
                       var declarationText: String)
 
 class ResultTypeViewModel(var defaultValueAssignment: String,

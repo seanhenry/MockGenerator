@@ -197,6 +197,7 @@ class MockViewPresenter(val view: MockView): MockTransformer {
           transformParameters(it),
           transformClosureParameters(it),
           transformReturnType(it),
+          it.throws,
           transformDeclarationText(it.signature, isClass)
       )
     }
@@ -230,7 +231,10 @@ class MockViewPresenter(val view: MockView): MockTransformer {
   private fun transformClosureToImplicitTupleAssignment(closure: ClosureParameter): String {
     var tuple = ""
     if (closure.closureReturnType != "()" && closure.closureReturnType != "Void" && closure.closureReturnType != "(Void)") {
-      tuple = "_ = "
+      tuple += "_ = "
+    }
+    if (closure.throws) {
+      tuple += "try? "
     }
     tuple += closure.name
     if (closure.isOptional) {

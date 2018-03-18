@@ -90,14 +90,14 @@ class MockViewPresenterTest : TestCase() {
     runTest(OpenInitialiserTest())
   }
 
-//  fun testStubsThrowableMethods() {
-//    runTest(ThrowingTest())
-//  }
-//
-//  fun testStubsThrowableInitialisers() {
-//    runTest(ThrowingInitialiserTest())
-//  }
-//
+  fun testStubsThrowableMethods() {
+    runTest(ThrowingTest())
+  }
+
+  fun testStubsThrowableInitialisers() {
+    runTest(ThrowingInitialiserTest())
+  }
+
 //  fun testGenericParameters() {
 //    runTest(GenericParametersTest())
 //  }

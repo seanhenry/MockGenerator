@@ -1,5 +1,6 @@
 package codes.seanhenry.mockgenerator.generator.templates
 
+import codes.seanhenry.mockgenerator.entities.ClosureHelper.Companion.createClosure
 import codes.seanhenry.mockgenerator.entities.ProtocolMethod
 import codes.seanhenry.mockgenerator.generator.MockTransformer
 
@@ -9,8 +10,8 @@ class ThrowingTest: MockGeneratorTestTemplate {
     generator.add(
         ProtocolMethod("throwingMethod", null, emptyList(), "func throwingMethod() throws", true),
         ProtocolMethod("throwingReturnMethod", "String", emptyList(), "func throwingReturnMethod() throws -> String", true),
-        ProtocolMethod("throwingClosure", null, "closure: () throws -> ()", "func throwingClosure(closure: () throws -> ())"),
-        ProtocolMethod("throwingClosureArgument", null,"closure: (String) throws -> (String)", "func throwingClosureArgument(closure: (String) throws -> (String))")
+        ProtocolMethod("throwingClosure", null, createClosure("", "()", true), "func throwingClosure(closure: () throws -> ())"),
+        ProtocolMethod("throwingClosureArgument", null, createClosure("String", "(String)", true), "func throwingClosureArgument(closure: (String) throws -> (String))")
     )
   }
 
