@@ -8,7 +8,8 @@ Property
 
 capitalizedUniqueName: String
 hasSetter: Boolean
-nonOptionalType: String
+optionalType: String
+iuoType: String
 defaultValueAssignment: String
 declarationText: String
 returnStatement: String
@@ -38,7 +39,7 @@ hasArguments: Boolean
 ResultType
 
 defaultValueAssignment: String
-nonOptionalRepresentation: String
+iuoType: String
 returnStatement: String
 
 }}
@@ -47,12 +48,12 @@ returnStatement: String
     {{#hasSetter}}
         var invoked{{capitalizedUniqueName}}Setter = false
         var invoked{{capitalizedUniqueName}}SetterCount = 0
-        var invoked{{capitalizedUniqueName}}: {{{nonOptionalType}}}?
+        var invoked{{capitalizedUniqueName}}: {{{optionalType}}}
         var invoked{{capitalizedUniqueName}}List = [{{{type}}}]()
     {{/hasSetter}}
     var invoked{{capitalizedUniqueName}}Getter = false
     var invoked{{capitalizedUniqueName}}GetterCount = 0
-    var stubbed{{capitalizedUniqueName}}: {{{nonOptionalTypeRecursively}}}! {{{defaultValueAssignment}}}
+    var stubbed{{capitalizedUniqueName}}: {{{iuoType}}} {{{defaultValueAssignment}}}
 
     {{{declarationText}}} {
 
@@ -98,7 +99,7 @@ returnStatement: String
     {{/closureParameter}}
 
     {{#resultType}}
-        var stubbed{{capitalizedUniqueName}}Result: {{{nonOptionalTypeRecursively}}}! {{{defaultValueAssignment}}}
+        var stubbed{{capitalizedUniqueName}}Result: {{{iuoType}}} {{{defaultValueAssignment}}}
     {{/resultType}}
 
     {{{declarationText}}} {

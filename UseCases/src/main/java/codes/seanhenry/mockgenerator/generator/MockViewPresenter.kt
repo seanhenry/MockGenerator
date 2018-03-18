@@ -106,8 +106,8 @@ class MockViewPresenter(val view: MockView): MockTransformer {
           getUniqueName(it).capitalize(),
           it.isWritable,
           it.type,
-          OptionalUtil.removeOptional(it.type),
-          OptionalUtil.removeOptionalRecursively(it.type),
+          OptionalUtil.removeOptional(it.type) + "?",
+          OptionalUtil.removeOptionalRecursively(it.type) + "!",
           getDefaultValueAssignment(it.type),
           it.getTrimmedSignature()
       )
@@ -143,8 +143,8 @@ class MockViewPresenter(val view: MockView): MockTransformer {
     if (type != null) {
       return ResultTypeViewModel(
           getDefaultValueAssignment(type),
-          OptionalUtil.removeOptional(type),
-          ClosureUtil.surroundClosure(OptionalUtil.removeOptionalRecursively(type))
+          OptionalUtil.removeOptional(type) + "?",
+          ClosureUtil.surroundClosure(OptionalUtil.removeOptionalRecursively(type)) + "!"
       // TODO: we need to surround all closures when appending an optional. Write some tests
       )
     }

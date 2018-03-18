@@ -5,8 +5,8 @@ class MockViewModel(var property: List<PropertyViewModel>, var method: List<Meth
 class PropertyViewModel(var capitalizedUniqueName: String,
                         var hasSetter: Boolean,
                         var type: String,
-                        var nonOptionalType: String,
-                        var nonOptionalTypeRecursively: String,
+                        var optionalType: String,
+                        var iuoType: String,
                         var defaultValueAssignment: String,
                         var declarationText: String
 )
@@ -18,8 +18,8 @@ class MethodViewModel(var capitalizedUniqueName: String,
                       var declarationText: String)
 
 class ResultTypeViewModel(var defaultValueAssignment: String,
-                          var nonOptionalType: String,
-                          var nonOptionalTypeRecursively: String
+                          var optionalType: String,
+                          var iuoType: String
 //                          var returnCastStatement: String
 )
 
