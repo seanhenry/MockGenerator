@@ -261,8 +261,8 @@ class MockGenerator: MockTransformer {
   }
 
   private fun createReturnStub(method: ProtocolMethod, name: String): PropertyDeclaration? {
-    if (method.returnType != null) {
-      return CreateMethodReturnStub().transform(name, method.returnType)
+    if (method.returnType?.originalType != null) {
+      return CreateMethodReturnStub().transform(name, method.returnType.erasedType.typeName)
     }
     return null
   }
@@ -286,7 +286,7 @@ class MockGenerator: MockTransformer {
 
   private fun addStubbedResult(returnStub: PropertyDeclaration?, method: ProtocolMethod) {
     if (returnStub != null) {
-      val defaultValue = DefaultValueStore().getDefaultValue(method.returnType!!)
+      val defaultValue = DefaultValueStore().getDefaultValue(method.returnType!!.erasedType.typeName)
       addScopedLine(SwiftStringDefaultValuePropertyDeclaration().transform(returnStub, defaultValue))
     }
   }
@@ -315,21 +315,12 @@ class MockGenerator: MockTransformer {
   private fun addReturnStub(returnStub: PropertyDeclaration?,
                             method: ProtocolMethod) {
     if (returnStub != null) {
-      if (areTypesDifferent(method.returnType, method.resolvedReturnType?.typeName)) {
-        addLine(SwiftStringCastReturnProperty().transform(returnStub, method.resolvedReturnType!!.typeName))
+      if (method.returnType?.originalType?.typeName != method.returnType?.erasedType?.typeName) {
+        addLine(SwiftStringCastReturnProperty().transform(returnStub, method.returnType!!.originalType.typeName))
       } else {
         addLine(SwiftStringReturnProperty().transform(returnStub))
       }
     }
-  }
-
-  private fun areTypesDifferent(a: String?, b: String?): Boolean {
-    if (a == null || b == null) {
-      return false
-    }
-    val trimmedA = a.replace("\\s+".toRegex(), "")
-    val trimmedB = b.replace("\\s+".toRegex(), "")
-    return trimmedA.trim() != trimmedB.trim()
   }
 
   private fun addLine(line: String) {

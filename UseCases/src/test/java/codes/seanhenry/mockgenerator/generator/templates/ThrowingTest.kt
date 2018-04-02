@@ -1,17 +1,20 @@
 package codes.seanhenry.mockgenerator.generator.templates
 
 import codes.seanhenry.mockgenerator.entities.ClosureHelper.Companion.createClosure
+import codes.seanhenry.mockgenerator.entities.Parameter
 import codes.seanhenry.mockgenerator.entities.ProtocolMethod
 import codes.seanhenry.mockgenerator.generator.MockTransformer
 
 class ThrowingTest: MockGeneratorTestTemplate {
 
   override fun build(generator: MockTransformer) {
+    val empty = emptyList<Parameter>()
+    val noReturnType: String? = null
     generator.add(
-        ProtocolMethod("throwingMethod", null, emptyList(), "func throwingMethod() throws", true),
-        ProtocolMethod("throwingReturnMethod", "String", emptyList(), "func throwingReturnMethod() throws -> String", true),
-        ProtocolMethod("throwingClosure", null, createClosure("", "()", true), "func throwingClosure(closure: () throws -> ())"),
-        ProtocolMethod("throwingClosureArgument", null, createClosure("String", "(String)", true), "func throwingClosureArgument(closure: (String) throws -> (String))")
+        ProtocolMethod("throwingMethod", noReturnType, empty, "func throwingMethod() throws", true),
+        ProtocolMethod("throwingReturnMethod", "String", empty, "func throwingReturnMethod() throws -> String", true),
+        ProtocolMethod("throwingClosure", noReturnType, createClosure("", "()", true), "func throwingClosure(closure: () throws -> ())"),
+        ProtocolMethod("throwingClosureArgument", noReturnType, createClosure("String", "(String)", true), "func throwingClosureArgument(closure: (String) throws -> (String))")
     )
   }
 

@@ -165,13 +165,13 @@ class ParameterUtilTest: TestCase() {
     val parameter = ParameterUtil.getParameters(parameters)[index]
     assertEquals(expectedLabel, parameter.label)
     assertEquals(expectedName, parameter.name)
-    assertEquals(expectedType, parameter.type)
+    assertEquals(expectedType, parameter.originalType)
     assertEquals(expectedText, parameter.text)
   }
 
   private fun assertType(expectedType: String, parameters: String, index: Int = 0) {
     val parameter = ParameterUtil.getParameters(parameters)[index]
-    assertEquals(expectedType, parameter.type)
+    assertEquals(expectedType, parameter.originalType)
   }
 
   private fun assertNullParameter(parameters: String) {

@@ -23,7 +23,7 @@ class SwiftStringConvenienceInitCall {
 
   private fun transformParameters(call: InitialiserCall) =
       call.parameters.map {
-        val value = getValue(it.label, it.type)
+        val value = getValue(it.label, it.originalType)
         if (it.label == "_") {
           value
         } else {

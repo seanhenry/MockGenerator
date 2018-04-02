@@ -1,5 +1,6 @@
 package codes.seanhenry.mockgenerator.generator.templates
 
+import codes.seanhenry.mockgenerator.entities.MethodType
 import codes.seanhenry.mockgenerator.entities.Parameter
 import codes.seanhenry.mockgenerator.entities.ProtocolMethod
 import codes.seanhenry.mockgenerator.entities.Type
@@ -9,12 +10,12 @@ class GenericParametersTest: MockGeneratorTestTemplate {
 
   override fun build(generator: MockTransformer) {
     generator.add(
-        ProtocolMethod("generic", null, listOf(Parameter("a", "a", "Any", Type("T"), "a: T")), "func generic<T>(a: T)"),
-        ProtocolMethod("generic", null, listOf(Parameter("array", "array", "[Any]", Type("[T]"), "a: [T]")), "func generic<T>(array: [T])"),
-        ProtocolMethod("generic", null, listOf(Parameter("b", "b", "Any", Type("T"), "b: T")), "func generic<T: NSObject>(b: T.Type)"),
+        ProtocolMethod("generic", null, listOf(Parameter("a", "a", MethodType("T", "T", "Any"), "a: T")), "func generic<T>(a: T)"),
+        ProtocolMethod("generic", null, listOf(Parameter("array", "array", MethodType("[T]", "[T]", "[Any]"), "a: [T]")), "func generic<T>(array: [T])"),
+        ProtocolMethod("generic", null, listOf(Parameter("b", "b", MethodType("T", "T", "Any"), "b: T")), "func generic<T: NSObject>(b: T.Type)"),
         ProtocolMethod("generic", null, listOf(
-            Parameter("c", "c", "Any?", Type("T?"), "c: T?"),
-            Parameter("d", "d", "Any!", Type("U!"), "c: U!")
+            Parameter("c", "c", MethodType("T?", "T?", "Any?"), "c: T?"),
+            Parameter("d", "d", MethodType("U!", "U!", "Any!"), "c: U!")
         ), "func generic<T, U>(c: T?, d: U!)")
     )
   }

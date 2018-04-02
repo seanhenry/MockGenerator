@@ -98,13 +98,13 @@ class MockViewPresenterTest : TestCase() {
     runTest(ThrowingInitialiserTest())
   }
 
-//  fun testGenericParameters() {
-//    runTest(GenericParametersTest())
-//  }
-//
-//  fun testGenericReturnValue() {
-//    runTest(GenericReturnValueTest())
-//  }
+  fun testGenericParameters() {
+    runTest(GenericParametersTest())
+  }
+
+  fun testGenericReturnValue() {
+    runTest(GenericReturnValueTest())
+  }
 
   private fun runTest(template: MockGeneratorTestTemplate) {
     template.build(generator)

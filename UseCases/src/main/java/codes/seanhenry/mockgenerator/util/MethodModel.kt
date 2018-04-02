@@ -34,7 +34,7 @@ class MethodModel(private val methodName: String, paramLabels: List<Parameter>) 
   init {
 
 
-    namesAndTypes = paramLabels.map { NameTypeTuple(it.label, removeSpecialCharacters(it.type)) }
+    namesAndTypes = paramLabels.map { NameTypeTuple(it.label, removeSpecialCharacters(it.originalType)) }
   }
 
   private fun removeSpecialCharacters(type: String): String {

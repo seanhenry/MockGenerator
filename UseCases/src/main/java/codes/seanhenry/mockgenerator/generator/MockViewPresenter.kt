@@ -251,13 +251,25 @@ class MockViewPresenter(val view: MockView): MockTransformer {
     val type = method.returnType
     if (type != null) {
       return ResultTypeViewModel(
-          getDefaultValueAssignment(type),
-          OptionalUtil.removeOptional(type) + "?",
-          ClosureUtil.surroundClosure(OptionalUtil.removeOptionalRecursively(type)) + "!"
+          getDefaultValueAssignment(type.erasedType.typeName),
+          OptionalUtil.removeOptional(type.erasedType.typeName) + "?",
+          ClosureUtil.surroundClosure(OptionalUtil.removeOptionalRecursively(type.erasedType.typeName)) + "!",
       // TODO: we need to surround all closures when appending an optional. Write some tests
+        transformReturnCastStatement(type)
       )
     }
     return null
+  }
+
+  private fun transformReturnCastStatement(returnType: MethodType): String {
+    if (returnType.originalType.typeName == returnType.erasedType.typeName) { return "" }
+    var optional = "!"
+    var type = returnType.originalType.typeName
+    if (OptionalUtil.isOptional(type)) {
+      optional = "?"
+      type = OptionalUtil.removeOptional(type)
+    }
+    return " as$optional $type"
   }
 
   private fun transformParameters(method: ProtocolMethod): ParametersViewModel? {

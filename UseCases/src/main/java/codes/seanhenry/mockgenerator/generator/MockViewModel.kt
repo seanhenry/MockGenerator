@@ -23,8 +23,8 @@ class MethodViewModel(var capitalizedUniqueName: String,
 
 class ResultTypeViewModel(var defaultValueAssignment: String,
                           var optionalType: String,
-                          var iuoType: String
-//                          var returnCastStatement: String
+                          var iuoType: String,
+                          var returnCastStatement: String
 )
 
 class ParametersViewModel(var tupleRepresentation: String, var tupleAssignment: String)

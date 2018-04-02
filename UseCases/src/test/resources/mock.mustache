@@ -98,7 +98,7 @@
     {{/throws}}
 
     {{#resultType}}
-        return stubbed{{capitalizedUniqueName}}Result
+        return stubbed{{capitalizedUniqueName}}Result{{returnCastStatement}}
     {{/resultType}}
 
     }
