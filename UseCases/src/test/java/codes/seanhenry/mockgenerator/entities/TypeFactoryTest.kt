@@ -25,4 +25,11 @@ class TypeFactoryTest: TestCase() {
     val optional = OptionalType.Builder().type().bracket().type("Type").build()
     assertEquals("(Type)?", optional.text)
   }
+
+  fun testShouldBuildDictionaryType() {
+    val optional = OptionalType.Builder()
+        .type().dictionary {}
+        .build()
+    assertEquals("[:]?", optional.text)
+  }
 }

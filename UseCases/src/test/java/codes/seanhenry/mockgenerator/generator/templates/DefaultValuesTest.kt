@@ -59,7 +59,6 @@ class DefaultValuesTest : MockGeneratorTestTemplate {
             .returnType().array { it.type("String") }
             .build(),
         // TODO: support Generics
-        // TODO: support Dictionary Literals
         // TODO: support Optional<Int>
         Method("arraySlice", "ArraySlice<String>", "", "func arraySlice() -> ArraySlice<String>"),
         Method("contiguousArray", "ContiguousArray<String>", "", "func contiguousArray() -> ContiguousArray<String>"),
@@ -70,9 +69,21 @@ class DefaultValuesTest : MockGeneratorTestTemplate {
             .build(),
         Method("dictionary", "Dictionary<String, String>", "", "func dictionary() -> Dictionary<String, String>"),
         Method("dictionaryLiteral", "DictionaryLiteral<String, String>", "", "func dictionaryLiteral() -> DictionaryLiteral<String, String>"),
-        Method("dictionaryShorthand", "[String: String]", "", "func dictionaryShorthand() -> [String: String]"),
+        Method.Builder("dictionaryShorthand")
+            .returnType().dictionary { dict ->
+              dict.keyType("String")
+                  .valueType("String")
+            }
+            .build(),
         Method("optionalDict", "Optional<Dictionary<String, String>>", "", "func optionalDict() -> Optional<Dictionary<String, String>>"),
-        Method("shortOptionalDict", "[String: String]?", "", "func shortOptionalDict() -> [String: String]?"),
+        Method.Builder("shortOptionalDict")
+            .returnType().optional { opt ->
+              opt.type().dictionary { dict ->
+                dict.keyType("String")
+                    .valueType("String")
+              }
+            }
+            .build(),
         Method.Builder("bool")
             .returnType("Bool")
             .build(),

@@ -4,8 +4,8 @@ class DictionaryType(text: String, val keyType: Type, val valueType: Type): Type
 
   class Builder {
 
-    var keyType = Type.EMPTY
-    var valueType = Type.EMPTY
+    private var keyType = Type.EMPTY
+    private var valueType = Type.EMPTY
 
     fun keyType(type: String): Builder {
       keyType = Type(type)

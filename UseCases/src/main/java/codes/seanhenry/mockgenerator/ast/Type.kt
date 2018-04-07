@@ -41,6 +41,13 @@ open class Type(val text: String) {
       return previousBuilder
     }
 
+    fun dictionary(build: (DictionaryType.Builder) -> Unit): B {
+      val builder = DictionaryType.Builder()
+      build(builder)
+      getType(builder.build())
+      return previousBuilder
+    }
+
     fun bracket(): Factory<B> {
       return Factory(previousBuilder) {
         getType(BracketType(it))
