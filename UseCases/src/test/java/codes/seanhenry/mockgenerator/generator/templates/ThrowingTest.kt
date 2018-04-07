@@ -11,10 +11,27 @@ class ThrowingTest: MockGeneratorTestTemplate {
     val empty = emptyList<Parameter>()
     val noReturnType: String? = null
     generator.add(
-        Method.Builder("throwingMethod").throws().build(),
-        Method.Builder("throwingReturnMethod").returnType("String").throws().build(),
-        Method("throwingClosure", noReturnType, createClosure("", "()", true), "func throwingClosure(closure: () throws -> ())"),
-        Method("throwingClosureArgument", noReturnType, createClosure("String", "(String)", true), "func throwingClosureArgument(closure: (String) throws -> (String))")
+        Method.Builder("throwingMethod")
+            .throws()
+            .build(),
+        Method.Builder("throwingReturnMethod")
+            .returnType("String")
+            .throws()
+            .build(),
+        Method.Builder("throwingClosure")
+            .parameter("closure") { param ->
+              param.type().function { it.throws() }
+            }
+            .build(),
+        Method.Builder("throwingClosureArgument")
+            .parameter("closure") { param ->
+              param.type().function { func ->
+                func.argument("String")
+                    .returnType("(String)")
+                    .throws()
+              }
+            }
+            .build()
     )
   }
 
