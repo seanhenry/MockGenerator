@@ -26,4 +26,9 @@ class OptionalTypeBuilderTest: TestCase() {
     assertEquals("Type!", optional.text)
     assertTrue(optional.isImplicitlyUnwrapped)
   }
+
+  fun testBuildVerboseOptionalType() {
+    val optional = OptionalType.Builder().type("Type").verbose().build()
+    assertEquals("Optional<Type>", optional.text)
+  }
 }

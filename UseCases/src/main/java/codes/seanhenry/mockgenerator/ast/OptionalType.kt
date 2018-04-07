@@ -12,6 +12,7 @@ class OptionalType(text: String, val type: Type, val isImplicitlyUnwrapped: Bool
 
     private var type = Type.EMPTY
     private var implicitlyUnwrapped = false
+    private var useVerboseSyntax = false
 
     fun type(type: String): Builder {
       this.type = Type(type)
@@ -33,9 +34,28 @@ class OptionalType(text: String, val type: Type, val isImplicitlyUnwrapped: Bool
       return this
     }
 
+    fun verbose(): Builder {
+      useVerboseSyntax = true
+      return this
+    }
+
     fun build(): OptionalType {
-      val optional = if (implicitlyUnwrapped) "!" else "?"
-      return OptionalType("${type.text}$optional", type, implicitlyUnwrapped)
+      val text = surroundWithOptional(type.text)
+      return OptionalType(text, type, implicitlyUnwrapped)
+    }
+
+    private fun surroundWithOptional(text: String): String {
+      if (useVerboseSyntax) {
+        return surroundWithVerboseOptional(text)
+      } else if(implicitlyUnwrapped) {
+        return "$text!"
+      } else {
+        return "$text?"
+      }
+    }
+
+    private fun surroundWithVerboseOptional(text: String): String {
+      return "Optional<$text>"
     }
   }
 }

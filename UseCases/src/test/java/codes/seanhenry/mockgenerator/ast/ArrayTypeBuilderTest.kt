@@ -14,5 +14,14 @@ class ArrayTypeBuilderTest: TestCase() {
     assertEquals("[Type]", array.text)
     assertEquals("Type", array.type.text)
   }
+
+  fun testShouldBuildVerboseArray() {
+    val array = ArrayType.Builder()
+        .verbose()
+        .type("Type")
+        .build()
+    assertEquals("Array<Type>", array.text)
+    assertEquals("Type", array.type.text)
+  }
 }
 

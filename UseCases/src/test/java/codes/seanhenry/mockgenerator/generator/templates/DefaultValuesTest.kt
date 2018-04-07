@@ -58,7 +58,6 @@ class DefaultValuesTest : MockGeneratorTestTemplate {
         Method.Builder("arrayLiteral")
             .returnType().array { it.type("String") }
             .build(),
-        // TODO: support Optional<Int>
         Method.Builder("arraySlice")
             .returnType().generic("ArraySlice") { it.argument("String") }
             .build(),
@@ -68,7 +67,12 @@ class DefaultValuesTest : MockGeneratorTestTemplate {
         Method.Builder("set")
             .returnType().generic("Set") { it.argument("String") }
             .build(),
-        Method("optionalArray", "Optional<Array<String>>", "", "func optionalArray() -> Optional<Array<String>>"),
+        Method.Builder("optionalArray")
+            .returnType().optional { opt ->
+              opt.verbose()
+                  .type().array { it.verbose().type("String") }
+            }
+            .build(),
         Method.Builder("shortOptionalArray")
             .returnType().optional { it.type().array { it.type("String") } }
             .build(),
@@ -90,7 +94,14 @@ class DefaultValuesTest : MockGeneratorTestTemplate {
                   .valueType("String")
             }
             .build(),
-        Method("optionalDict", "Optional<Dictionary<String, String>>", "", "func optionalDict() -> Optional<Dictionary<String, String>>"),
+        Method.Builder("optionalDict")
+            .returnType().optional { opt ->
+              opt.verbose().type().generic("Dictionary") { gen ->
+                gen.argument("String")
+                    .argument("String")
+              }
+            }
+            .build(),
         Method.Builder("shortOptionalDict")
             .returnType().optional { opt ->
               opt.type().dictionary { dict ->
