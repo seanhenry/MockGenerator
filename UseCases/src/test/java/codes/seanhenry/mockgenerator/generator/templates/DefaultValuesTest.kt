@@ -15,36 +15,79 @@ class DefaultValuesTest : MockGeneratorTestTemplate {
         Property("iuo", "Int!", true, "var iuo: Int! { get set }")
     )
     generator.add(
-        Method("optionalInt", "Int?", "", "func optionalInt() -> Int?"),
-        Method("iuoInt", "Int!", "", "func iuoInt() -> Int!"),
-        Method("double", "Double", "", "func double() -> Double"),
-        Method("float", "Float", "", "func float() -> Float"),
-        Method("int16", "Int16", "", "func int16() -> Int16"),
-        Method("int32", "Int32", "", "func int32() -> Int32"),
-        Method("int64", "Int64", "", "func int64() -> Int64"),
-        Method("int8", "Int8", "", "func int8() -> Int8"),
-        Method("uInt", "UInt", "", "func uInt() -> UInt"),
-        Method("uInt16", "UInt16", "", "func uInt16() -> UInt16"),
-        Method("uInt32", "UInt32", "", "func uInt32() -> UInt32"),
-        Method("uInt64", "UInt64", "", "func uInt64() -> UInt64"),
-        Method("uInt8", "UInt8", "", "func uInt8() -> UInt8"),
+        Method.Builder("optionalInt")
+            .returnType().optional { it.type("Int") }
+            .build(),
+        Method.Builder("iuoInt")
+            .returnType().optional { it.unwrapped().type("Int") }
+            .build(),
+        Method.Builder("double")
+            .returnType("Double")
+            .build(),
+        Method.Builder("float")
+            .returnType("Float")
+            .build(),
+        Method.Builder("int16")
+            .returnType("Int16")
+            .build(),
+        Method.Builder("int32")
+            .returnType("Int32")
+            .build(),
+        Method.Builder("int64")
+            .returnType("Int64")
+            .build(),
+        Method.Builder("int8")
+            .returnType("Int8")
+            .build(),
+        Method.Builder("uInt")
+            .returnType("UInt")
+            .build(),
+        Method.Builder("uInt16")
+            .returnType("UInt16")
+            .build(),
+        Method.Builder("uInt32")
+            .returnType("UInt32")
+            .build(),
+        Method.Builder("uInt64")
+            .returnType("UInt64")
+            .build(),
+        Method.Builder("uInt8")
+            .returnType("UInt8")
+            .build(),
         Method("array", "Array<String>", "", "func array() -> Array<String>"),
-        Method("arrayLiteral", "[String]", "", "func arrayLiteral() -> [String]"),
+        Method.Builder("arrayLiteral")
+            .returnType().array { it.type("String") }
+            .build(),
+        // TODO: support Generics
+        // TODO: support Dictionary Literals
+        // TODO: support Optional<Int>
         Method("arraySlice", "ArraySlice<String>", "", "func arraySlice() -> ArraySlice<String>"),
         Method("contiguousArray", "ContiguousArray<String>", "", "func contiguousArray() -> ContiguousArray<String>"),
         Method("set", "Set<String>", "", "func set() -> Set<String>"),
         Method("optionalArray", "Optional<Array<String>>", "", "func optionalArray() -> Optional<Array<String>>"),
-        Method("shortOptionalArray", "[String]?", "", "func shortOptionalArray() -> [String]?"),
+        Method.Builder("shortOptionalArray")
+            .returnType().optional { it.type().array { it.type("String") } }
+            .build(),
         Method("dictionary", "Dictionary<String, String>", "", "func dictionary() -> Dictionary<String, String>"),
         Method("dictionaryLiteral", "DictionaryLiteral<String, String>", "", "func dictionaryLiteral() -> DictionaryLiteral<String, String>"),
         Method("dictionaryShorthand", "[String: String]", "", "func dictionaryShorthand() -> [String: String]"),
         Method("optionalDict", "Optional<Dictionary<String, String>>", "", "func optionalDict() -> Optional<Dictionary<String, String>>"),
         Method("shortOptionalDict", "[String: String]?", "", "func shortOptionalDict() -> [String: String]?"),
-        Method("bool", "Bool", "", "func bool() -> Bool"),
-        Method("unicodeScalar", "UnicodeScalar", "", "func unicodeScalar() -> UnicodeScalar"),
-        Method("character", "Character", "", "func character() -> Character"),
-        Method("staticString", "StaticString", "", "func staticString() -> StaticString"),
-        Method("string", "String", "", "func string() -> String")
+        Method.Builder("bool")
+            .returnType("Bool")
+            .build(),
+        Method.Builder("unicodeScalar")
+            .returnType("UnicodeScalar")
+            .build(),
+        Method.Builder("character")
+            .returnType("Character")
+            .build(),
+        Method.Builder("staticString")
+            .returnType("StaticString")
+            .build(),
+        Method.Builder("string")
+            .returnType("String")
+            .build()
     )
   }
 

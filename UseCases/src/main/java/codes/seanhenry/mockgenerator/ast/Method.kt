@@ -26,6 +26,10 @@ class Method(val name: String, val returnType: MethodType, val parametersList: L
       return this
     }
 
+    fun returnType(): Type.Factory<Builder> {
+      return Type.Factory(this) { returnType = MethodType(it, it, it) }
+    }
+
     fun throws(): Builder {
       throws = true
       return this
