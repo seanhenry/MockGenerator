@@ -4,10 +4,11 @@ import codes.seanhenry.mockgenerator.ast.Type
 
 // TODO: change label and name to external/internal name
 // TODO: make externalName optional
-open class Parameter(val label: String, val name: String, val type: MethodType, val text: String) {
+open class Parameter(val label: String, val name: String, val type: MethodType, val text: String, val isEscaping: Boolean) {
 
   // TODO: REMOVE THESE
-  constructor(label: String, name: String, type: String, resolvedType: Type, text: String) : this(label, name, MethodType(Type(type), resolvedType, Type(type)), text)
+  constructor(label: String, name: String, type: MethodType, text: String) : this(label, name, type, text, false)
+  constructor(label: String, name: String, type: String, resolvedType: Type, text: String) : this(label, name, MethodType(Type(type), resolvedType, Type(type)), text, false)
   constructor(label: String, name: String, type: String, resolvedType: String, text: String) : this(label, name, type, Type(resolvedType), text)
   constructor(label: String, name: String, type: String, text: String) : this(label, name, type, type, text)
 
@@ -19,6 +20,9 @@ open class Parameter(val label: String, val name: String, val type: MethodType, 
   class Builder(private val externalName: String, private val internalName: String) {
 
     private var type = MethodType.IMPLICIT
+    private var isEscaping = false
+    private val annotations = ArrayList<String>()
+    private var isInout = false
 
     // TODO: external should start nil
     constructor(name: String): this("", name)
@@ -33,8 +37,23 @@ open class Parameter(val label: String, val name: String, val type: MethodType, 
       return Type.Factory(this) { this.type = MethodType(it, it, it) }
     }
 
+    fun escaping(): Builder {
+      isEscaping = true
+      return annotation("@escaping")
+    }
+
+    fun annotation(annotation: String): Builder {
+      annotations.add(annotation)
+      return this
+    }
+
+    fun inout(): Builder {
+      isInout = true
+      return this
+    }
+
     fun build(): Parameter {
-      return Parameter(externalName, internalName, type, getText())
+      return Parameter(externalName, internalName, type, getText(), isEscaping)
     }
 
     private fun getText(): String {
@@ -42,7 +61,15 @@ open class Parameter(val label: String, val name: String, val type: MethodType, 
       if (externalName.isNotEmpty()) {
         labels = "$externalName $labels"
       }
-      return "$labels: ${type.originalType.text}"
+      var annotations = ""
+      if (!this.annotations.isEmpty()) {
+        annotations = this.annotations.joinToString(" ") + " "
+      }
+      var inout = ""
+      if (isInout) {
+        inout = "inout "
+      }
+      return "$labels: $inout$annotations${type.originalType.text}"
     }
   }
 }

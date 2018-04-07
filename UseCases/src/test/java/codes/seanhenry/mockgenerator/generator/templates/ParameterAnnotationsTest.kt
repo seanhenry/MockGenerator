@@ -9,10 +9,18 @@ class ParameterAnnotationsTest : MockGeneratorTestTemplate {
 
   override fun build(generator: MockTransformer) {
     generator.add(
-        Method("escaping", null, createClosure("", "()"), "func escaping(closure: @escaping () -> ())"),
-        Method("inOut", null, "var1: inout Int", "func inOut(var1: inout Int)"),
-        Method("autoclosure", null, createClosure("", "()"), "func autoclosure(closure: @autoclosure () -> ())"),
-        Method("convention", null, createClosure("", "()"), "func convention(closure: @convention(swift) () -> ())")
+        Method.Builder("escaping").parameter("closure") { param ->
+          param.escaping().type().function { }
+        }.build(),
+        Method.Builder("inOut").parameter("var1") { param ->
+          param.inout().type("Int")
+        }.build(),
+        Method.Builder("autoclosure").parameter("closure") { param ->
+          param.annotation("@autoclosure").type().function { }
+        }.build(),
+        Method.Builder("convention").parameter("closure") { param ->
+          param.annotation("@convention(swift)").type().function { }
+        }.build()
     )
   }
 
