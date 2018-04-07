@@ -7,7 +7,7 @@ class SimpleProtocolTest: MockGeneratorTestTemplate {
 
   override fun build(generator: MockTransformer) {
     generator.add(
-        Method("simpleMethod", null, "", "func simpleMethod()")
+        Method.Builder("simpleMethod").build()
     )
   }
 

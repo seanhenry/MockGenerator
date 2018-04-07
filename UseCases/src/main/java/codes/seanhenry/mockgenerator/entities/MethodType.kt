@@ -3,7 +3,8 @@ package codes.seanhenry.mockgenerator.entities
 import codes.seanhenry.mockgenerator.ast.Type;
 
 // TODO: remove erased type - this will be done by a visitor instead of the client now :)
-class MethodType(val originalType: Type, val resolvedType: Type, val erasedType: Type) {
+// TODO: rename to ResolvedType
+class MethodType(var originalType: Type, var resolvedType: Type, val erasedType: Type) {
 
   var isVoid = resolvedType.isVoid
 

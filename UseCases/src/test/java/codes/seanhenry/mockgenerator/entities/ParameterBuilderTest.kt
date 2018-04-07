@@ -25,7 +25,6 @@ class ParameterBuilderTest: TestCase() {
     val param = Parameter.Builder("name").type("Type").build()
     assertEquals("Type", param.type.originalType.text)
     assertEquals("Type", param.type.resolvedType.text)
-    assertEquals("Type", param.type.erasedType.text)
     assertEquals("name: Type", param.text)
   }
 
@@ -33,7 +32,6 @@ class ParameterBuilderTest: TestCase() {
     val param = Parameter.Builder("name").type("Type").escaping().build()
     assertEquals("Type", param.type.originalType.text)
     assertEquals("Type", param.type.resolvedType.text)
-    assertEquals("Type", param.type.erasedType.text)
     assertTrue(param.isEscaping)
     assertEquals("name: @escaping Type", param.text)
   }
@@ -42,15 +40,20 @@ class ParameterBuilderTest: TestCase() {
     val param = Parameter.Builder("name").type("Type").inout().build()
     assertEquals("Type", param.type.originalType.text)
     assertEquals("Type", param.type.resolvedType.text)
-    assertEquals("Type", param.type.erasedType.text)
     assertEquals("name: inout Type", param.text)
   }
 
-  fun testAnootation() {
+  fun testAnnotation() {
     val param = Parameter.Builder("name").type("Type").annotation("@objc").build()
     assertEquals("Type", param.type.originalType.text)
     assertEquals("Type", param.type.resolvedType.text)
-    assertEquals("Type", param.type.erasedType.text)
     assertEquals("name: @objc Type", param.text)
+  }
+
+  fun testResolvedType() {
+    val param = Parameter.Builder("name").type("Type").resolvedType().function { }.build()
+    assertEquals("Type", param.type.originalType.text)
+    assertEquals("() -> ()", param.type.resolvedType.text)
+    assertEquals("name: Type", param.text)
   }
 }

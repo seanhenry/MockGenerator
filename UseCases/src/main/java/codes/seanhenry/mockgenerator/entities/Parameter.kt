@@ -37,6 +37,10 @@ open class Parameter(val label: String, val name: String, val type: MethodType, 
       return Type.Factory(this) { this.type = MethodType(it, it, it) }
     }
 
+    fun resolvedType(): Type.Factory<Builder> {
+      return Type.Factory(this) { this.type.resolvedType = it }
+    }
+
     fun escaping(): Builder {
       isEscaping = true
       return annotation("@escaping")

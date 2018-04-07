@@ -8,8 +8,21 @@ class TypealiasProtocolTest: MockGeneratorTestTemplate {
 
   override fun build(generator: MockTransformer) {
     generator.add(
-        Method("typealiasClosure", null, listOf(Parameter("closure", "closure", "Completion", "(Int) -> (String)", "closure: Completion")), "func typealiasClosure(closure: Completion)"),
-        Method("internalTypealiasClosure", null, listOf(Parameter("closure", "closure", "T", "(String) -> ()", "closure: ClosureProtocol.T")), "func internalTypealiasClosure(closure: T)")
+        Method.Builder("typealiasClosure")
+            .parameter("closure") { param ->
+              param.type("Completion").resolvedType().function { func ->
+                func.argument("Int")
+                    .returnType("(String)")
+              }
+            }
+            .build(),
+        Method.Builder("internalTypealiasClosure")
+            .parameter("closure") { param ->
+              param.type("T").resolvedType().function { func ->
+                func.argument("String")
+              }
+            }
+            .build()
     )
   }
 
