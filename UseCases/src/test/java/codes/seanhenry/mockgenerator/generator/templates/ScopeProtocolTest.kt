@@ -13,9 +13,12 @@ class ScopeProtocolTest : MockGeneratorTestTemplate {
     generator.add(
         Property("variable", "Object", true, "var variable: Object { get set }")
     )
-    val param = Parameter("param", "param", "Object", "Object", "param: Object")
     generator.add(
-        Method("method", "Object", listOf(param) + createClosure("", "()"), "func method(param: Object, closure: () -> ()) -> Object")
+        Method.Builder("method")
+            .parameter("param") { it.type("Object") }
+            .parameter("closure") { it.type().function { } }
+            .returnType("Object")
+            .build()
     )
   }
 
