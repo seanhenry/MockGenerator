@@ -8,13 +8,28 @@ class MethodParameterTest : MockGeneratorTestTemplate {
 
   override fun build(generator: MockTransformer) {
     generator.add(
-        Method("oneParam", null, "param0: Int", "func oneParam(param0: Int)"),
-        Method("twoParam", null, "param0: Int, param1: String", "func twoParam(param0: Int, param1: String)"),
-        Method("optionalParam", null, "param0: Int?", "func optionalParam(param0: Int?)"),
-        Method("iuoParam", null, "param0: Int!", "func iuoParam(param0: Int!)"),
-        Method("noLabelParam", null, "_ name0: Int!", "func noLabelParam(_ name0: Int!)"),
-        Method("nameAndLabelParam", null, "label0 name0: Int!", "func nameAndLabelParam(label0 name0: Int!)"),
-        Method("closureParam", null, createClosure("", "()"), "func closureParam(closure: () -> ())")
+        Method.Builder("oneParam")
+            .parameter("param0") { it.type("Int") }
+            .build(),
+        Method.Builder("twoParam")
+            .parameter("param0") { it.type("Int") }
+            .parameter("param1") { it.type("String") }
+            .build(),
+        Method.Builder("optionalParam")
+            .parameter("param0") { it.type().optional { it.type("Int") } }
+            .build(),
+        Method.Builder("iuoParam")
+            .parameter("param0") { it.type().optional { it.unwrapped().type("Int") } }
+            .build(),
+        Method.Builder("noLabelParam")
+            .parameter("_", "name0") { it.type().optional { it.unwrapped().type("Int") } }
+            .build(),
+        Method.Builder("nameAndLabelParam")
+            .parameter("label0", "name0") { it.type().optional { it.unwrapped().type("Int") } }
+            .build(),
+        Method.Builder("closureParam")
+            .parameter("closure") { it.type().function { } }
+            .build()
     )
   }
 
