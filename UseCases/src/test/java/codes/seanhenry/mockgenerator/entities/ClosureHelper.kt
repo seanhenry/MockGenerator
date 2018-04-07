@@ -1,5 +1,7 @@
 package codes.seanhenry.mockgenerator.entities
 
+import codes.seanhenry.mockgenerator.ast.Type
+
 class ClosureHelper {
   companion object {
     fun createClosure(args: String, rtn: String): List<ClosureParameter> {

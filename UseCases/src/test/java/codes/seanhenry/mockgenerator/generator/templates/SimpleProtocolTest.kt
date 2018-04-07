@@ -1,13 +1,13 @@
 package codes.seanhenry.mockgenerator.generator.templates
 
-import codes.seanhenry.mockgenerator.entities.ProtocolMethod
+import codes.seanhenry.mockgenerator.ast.Method
 import codes.seanhenry.mockgenerator.generator.MockTransformer
 
 class SimpleProtocolTest: MockGeneratorTestTemplate {
 
   override fun build(generator: MockTransformer) {
     generator.add(
-        ProtocolMethod("simpleMethod", null, "", "func simpleMethod()")
+        Method("simpleMethod", null, "", "func simpleMethod()")
     )
   }
 

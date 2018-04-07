@@ -2,20 +2,19 @@ package codes.seanhenry.mockgenerator.generator.templates
 
 import codes.seanhenry.mockgenerator.entities.MethodType
 import codes.seanhenry.mockgenerator.entities.Parameter
-import codes.seanhenry.mockgenerator.entities.ProtocolMethod
-import codes.seanhenry.mockgenerator.entities.Type
+import codes.seanhenry.mockgenerator.ast.Method
 import codes.seanhenry.mockgenerator.generator.MockTransformer
 
 class GenericParametersTest: MockGeneratorTestTemplate {
 
   override fun build(generator: MockTransformer) {
     generator.add(
-        ProtocolMethod("generic", null, listOf(Parameter("a", "a", MethodType("T", "T", "Any"), "a: T")), "func generic<T>(a: T)"),
-        ProtocolMethod("generic", null, listOf(Parameter("array", "array", MethodType("[T]", "[T]", "[Any]"), "a: [T]")), "func generic<T>(array: [T])"),
-        ProtocolMethod("generic", null, listOf(Parameter("b", "b", MethodType("T", "T", "Any"), "b: T")), "func generic<T: NSObject>(b: T.Type)"),
-        ProtocolMethod("generic", null, listOf(
-            Parameter("c", "c", MethodType("T?", "T?", "Any?"), "c: T?"),
-            Parameter("d", "d", MethodType("U!", "U!", "Any!"), "c: U!")
+        Method("generic", null, listOf(Parameter("a", "a", MethodType.Builder("T", "T", "Any").build(), "a: T")), "func generic<T>(a: T)"),
+        Method("generic", null, listOf(Parameter("array", "array", MethodType.Builder("[T]", "[T]", "[Any]").build(), "a: [T]")), "func generic<T>(array: [T])"),
+        Method("generic", null, listOf(Parameter("b", "b", MethodType.Builder("T", "T", "Any").build(), "b: T")), "func generic<T: NSObject>(b: T.Type)"),
+        Method("generic", null, listOf(
+            Parameter("c", "c", MethodType.Builder("T?", "T?", "Any?").build(), "c: T?"),
+            Parameter("d", "d", MethodType.Builder("U!", "U!", "Any!").build(), "c: U!")
         ), "func generic<T, U>(c: T?, d: U!)")
     )
   }

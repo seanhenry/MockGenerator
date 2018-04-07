@@ -1,5 +1,6 @@
 package codes.seanhenry.mockgenerator.generator
 
+import codes.seanhenry.mockgenerator.ast.Method
 import codes.seanhenry.mockgenerator.entities.*
 import codes.seanhenry.mockgenerator.swift.SwiftStringReturnProperty
 import codes.seanhenry.mockgenerator.swift.*
@@ -10,10 +11,10 @@ import codes.seanhenry.mockgenerator.util.UniqueMethodNameGenerator
 
 class MockGenerator: MockTransformer {
 
-  private val protocolMethods = ArrayList<ProtocolMethod>()
-  private val classMethods = ArrayList<ProtocolMethod>()
-  private val protocolProperties = ArrayList<ProtocolProperty>()
-  private val classProperties = ArrayList<ProtocolProperty>()
+  private val protocolMethods = ArrayList<Method>()
+  private val classMethods = ArrayList<Method>()
+  private val protocolProperties = ArrayList<Property>()
+  private val classProperties = ArrayList<Property>()
   private var scope = ""
   private var override = false
   private lateinit var nameGenerator: UniqueMethodNameGenerator
@@ -25,11 +26,11 @@ class MockGenerator: MockTransformer {
     this.scope = scope.trim()
   }
 
-  override fun add(method: ProtocolMethod) {
+  override fun add(method: Method) {
     protocolMethods.add(method)
   }
 
-  override fun add(property: ProtocolProperty) {
+  override fun add(property: Property) {
     protocolProperties.add(property)
   }
 
@@ -37,11 +38,11 @@ class MockGenerator: MockTransformer {
     addInitialisers(listOf(*initialisers))
   }
 
-  override fun add(vararg methods: ProtocolMethod) {
+  override fun add(vararg methods: Method) {
     addMethods(listOf(*methods))
   }
 
-  override fun add(vararg properties: ProtocolProperty) {
+  override fun add(vararg properties: Property) {
     addProperties(listOf(*properties))
   }
 
@@ -51,13 +52,13 @@ class MockGenerator: MockTransformer {
     }
   }
 
-  override fun addMethods(methods: List<ProtocolMethod>) {
+  override fun addMethods(methods: List<Method>) {
     for (method in methods) {
       this.protocolMethods.add(method)
     }
   }
 
-  override fun addProperties(properties: List<ProtocolProperty>) {
+  override fun addProperties(properties: List<Property>) {
     for (property in properties) {
       this.protocolProperties.add(property)
     }
@@ -73,19 +74,19 @@ class MockGenerator: MockTransformer {
     }
   }
 
-  override fun addClassMethods(vararg methods: ProtocolMethod) {
+  override fun addClassMethods(vararg methods: Method) {
     classMethods += methods
   }
 
-  override fun addClassMethods(methods: List<ProtocolMethod>) {
+  override fun addClassMethods(methods: List<Method>) {
     classMethods += methods
   }
 
-  override fun addClassProperties(vararg properties: ProtocolProperty) {
+  override fun addClassProperties(vararg properties: Property) {
     classProperties += properties
   }
 
-  override fun addClassProperties(properties: List<ProtocolProperty>) {
+  override fun addClassProperties(properties: List<Property>) {
     classProperties += properties
   }
 
@@ -142,15 +143,15 @@ class MockGenerator: MockTransformer {
     nameGenerator.generateMethodNames()
   }
 
-  private fun toMethodModel(method: ProtocolMethod): MethodModel {
+  private fun toMethodModel(method: Method): MethodModel {
     return MethodModel(method.name, method.parametersList)
   }
 
-  private fun toMethodModel(property: ProtocolProperty): MethodModel {
+  private fun toMethodModel(property: Property): MethodModel {
     return MethodModel(property.name, "")
   }
 
-  private fun appendPropertyMocks(properties: List<ProtocolProperty>) {
+  private fun appendPropertyMocks(properties: List<Property>) {
     for (property in properties) {
       val name = nameGenerator.getMethodName(toMethodModel(property).id) ?: continue
       val setterName = name + "Setter"
@@ -198,7 +199,7 @@ class MockGenerator: MockTransformer {
     }
   }
 
-  private fun addPropertyDeclaration(property: ProtocolProperty) {
+  private fun addPropertyDeclaration(property: Property) {
     addOverriddenLine(property.getTrimmedSignature() + " {")
   }
 
@@ -215,7 +216,7 @@ class MockGenerator: MockTransformer {
     }
   }
 
-  private fun addGetterProperties(property: ProtocolProperty,
+  private fun addGetterProperties(property: Property,
                                   getterInvocationCheck: PropertyDeclaration,
                                   getterInvocationCount: PropertyDeclaration,
                                   returnStub: PropertyDeclaration) {
@@ -241,7 +242,7 @@ class MockGenerator: MockTransformer {
     addLine(SwiftStringArrayAppender().transform(invokedPropertyList, "newValue"))
   }
 
-  private fun appendMethodMocks(methods: List<ProtocolMethod>) {
+  private fun appendMethodMocks(methods: List<Method>) {
     for (method in methods) {
       val name = nameGenerator.getMethodName(toMethodModel(method).id) ?: continue
       val invocationCheck = CreateInvocationCheck().transform(name)
@@ -260,14 +261,14 @@ class MockGenerator: MockTransformer {
     }
   }
 
-  private fun createReturnStub(method: ProtocolMethod, name: String): PropertyDeclaration? {
-    if (method.returnType?.originalType != null) {
-      return CreateMethodReturnStub().transform(name, method.returnType.erasedType.typeName)
+  private fun createReturnStub(method: Method, name: String): PropertyDeclaration? {
+    if (!method.returnType.originalType.isEmpty) {
+      return CreateMethodReturnStub().transform(name, method.returnType.erasedType.text)
     }
     return null
   }
 
-  private fun addMethodProperties(method: ProtocolMethod,
+  private fun addMethodProperties(method: Method,
                                   invocationCheck: PropertyDeclaration,
                                   invocationCount: PropertyDeclaration,
                                   invokedParameters: TuplePropertyDeclaration?,
@@ -284,18 +285,18 @@ class MockGenerator: MockTransformer {
     addStubbedResult(returnStub, method)
   }
 
-  private fun addStubbedResult(returnStub: PropertyDeclaration?, method: ProtocolMethod) {
+  private fun addStubbedResult(returnStub: PropertyDeclaration?, method: Method) {
     if (returnStub != null) {
-      val defaultValue = DefaultValueStore().getDefaultValue(method.returnType!!.erasedType.typeName)
+      val defaultValue = DefaultValueStore().getDefaultValue(method.returnType.erasedType.text)
       addScopedLine(SwiftStringDefaultValuePropertyDeclaration().transform(returnStub, defaultValue))
     }
   }
 
-  private fun addMethodDeclaration(method: ProtocolMethod) {
-    addOverriddenLine(method.signature + " {")
+  private fun addMethodDeclaration(method: Method) {
+    addOverriddenLine(method.declarationText + " {")
   }
 
-  private fun addMethodAssignments(method: ProtocolMethod,
+  private fun addMethodAssignments(method: Method,
                                    invocationCheck: PropertyDeclaration,
                                    invocationCount: PropertyDeclaration,
                                    invokedParameters: TuplePropertyDeclaration?,
@@ -313,10 +314,10 @@ class MockGenerator: MockTransformer {
   }
 
   private fun addReturnStub(returnStub: PropertyDeclaration?,
-                            method: ProtocolMethod) {
+                            method: Method) {
     if (returnStub != null) {
-      if (method.returnType?.originalType?.typeName != method.returnType?.erasedType?.typeName) {
-        addLine(SwiftStringCastReturnProperty().transform(returnStub, method.returnType!!.originalType.typeName))
+      if (!method.returnType.isVoid && method.returnType.originalType.text != method.returnType.erasedType.text) {
+        addLine(SwiftStringCastReturnProperty().transform(returnStub, method.returnType.originalType.text))
       } else {
         addLine(SwiftStringReturnProperty().transform(returnStub))
       }

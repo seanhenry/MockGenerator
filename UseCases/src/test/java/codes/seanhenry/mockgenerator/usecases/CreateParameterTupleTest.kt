@@ -1,6 +1,5 @@
 package codes.seanhenry.mockgenerator.usecases
 
-import codes.seanhenry.mockgenerator.entities.GenericType
 import codes.seanhenry.mockgenerator.entities.Parameter
 import codes.seanhenry.mockgenerator.entities.TuplePropertyDeclaration
 import codes.seanhenry.mockgenerator.util.ParameterUtil

@@ -1,5 +1,6 @@
 package codes.seanhenry.transformer;
 
+import codes.seanhenry.mockgenerator.ast.Method;
 import codes.seanhenry.mockgenerator.entities.*;
 import codes.seanhenry.mockgenerator.util.ParameterUtil;
 import codes.seanhenry.util.MySwiftPsiUtil;
@@ -19,8 +20,8 @@ public abstract class SwiftTypeTransformer {
   private static final String UNKNOWN_TYPE = "Any";
   private final TypeItemFinder itemFinder;
   private final List<Initialiser> initialisers;
-  private final List<ProtocolMethod> methods;
-  private final List<ProtocolProperty> properties;
+  private final List<Method> methods;
+  private final List<Property> properties;
   private static final String UNKNOWN_NAME = "_";
 
   SwiftTypeTransformer(TypeItemFinder itemFinder) {
@@ -61,7 +62,7 @@ public abstract class SwiftTypeTransformer {
       if (type == null) {
         type = UNKNOWN_TYPE;
       }
-      this.properties.add(new ProtocolProperty(name, type, isWritable(property), getSignature(property).trim()));
+      this.properties.add(new Property(name, type, isWritable(property), getSignature(property).trim()));
     }
   }
 
@@ -81,7 +82,7 @@ public abstract class SwiftTypeTransformer {
         name = UNKNOWN_NAME;
       }
       String returnType = getReturnType(method);
-      this.methods.add(new ProtocolMethod(
+      this.methods.add(new Method(
           name,
           returnType,
           getResolvedReturnType(method, returnType),
@@ -153,11 +154,11 @@ public abstract class SwiftTypeTransformer {
     return new Type(type);
   }
 
-  public List<ProtocolMethod> getMethods() {
+  public List<Method> getMethods() {
     return methods;
   }
 
-  public List<ProtocolProperty> getProperties() {
+  public List<Property> getProperties() {
     return properties;
   }
 

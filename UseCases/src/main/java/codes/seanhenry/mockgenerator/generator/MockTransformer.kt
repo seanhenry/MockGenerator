@@ -1,25 +1,25 @@
 package codes.seanhenry.mockgenerator.generator
 
 import codes.seanhenry.mockgenerator.entities.Initialiser
-import codes.seanhenry.mockgenerator.entities.ProtocolMethod
-import codes.seanhenry.mockgenerator.entities.ProtocolProperty
+import codes.seanhenry.mockgenerator.ast.Method
+import codes.seanhenry.mockgenerator.entities.Property
 
 interface MockTransformer {
 
   fun setScope(scope: String)
-  fun add(method: ProtocolMethod)
-  fun add(property: ProtocolProperty)
+  fun add(method: Method)
+  fun add(property: Property)
   fun add(vararg initialisers: Initialiser)
-  fun add(vararg methods: ProtocolMethod)
-  fun add(vararg properties: ProtocolProperty)
+  fun add(vararg methods: Method)
+  fun add(vararg properties: Property)
   fun addInitialisers(initialisers: List<Initialiser>)
-  fun addMethods(methods: List<ProtocolMethod>)
-  fun addProperties(properties: List<ProtocolProperty>)
+  fun addMethods(methods: List<Method>)
+  fun addProperties(properties: List<Property>)
   fun setClassInitialisers(vararg initialisers: Initialiser)
   fun setClassInitialisers(initialisers: List<Initialiser>)
-  fun addClassMethods(vararg methods: ProtocolMethod)
-  fun addClassMethods(methods: List<ProtocolMethod>)
-  fun addClassProperties(vararg properties: ProtocolProperty)
-  fun addClassProperties(properties: List<ProtocolProperty>)
+  fun addClassMethods(vararg methods: Method)
+  fun addClassMethods(methods: List<Method>)
+  fun addClassProperties(vararg properties: Property)
+  fun addClassProperties(properties: List<Property>)
   fun generate(): String
 }

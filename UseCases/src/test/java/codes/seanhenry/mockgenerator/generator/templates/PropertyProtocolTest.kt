@@ -1,21 +1,21 @@
 package codes.seanhenry.mockgenerator.generator.templates
 
-import codes.seanhenry.mockgenerator.entities.ProtocolMethod
-import codes.seanhenry.mockgenerator.entities.ProtocolProperty
+import codes.seanhenry.mockgenerator.ast.Method
+import codes.seanhenry.mockgenerator.entities.Property
 import codes.seanhenry.mockgenerator.generator.MockTransformer
 
 class PropertyProtocolTest : MockGeneratorTestTemplate {
   override fun build(generator: MockTransformer) {
     generator.add(
-        ProtocolProperty("readWrite", "String", true, "var readWrite: String { set get }"),
-        ProtocolProperty("readOnly", "Int", false, "var readOnly: Int { get }"),
-        ProtocolProperty("optional", "UInt?", true, "var optional: UInt? { get set }"),
-        ProtocolProperty("unwrapped", "String!", true, "var unwrapped: String! { get set }"),
-        ProtocolProperty("weakVar", "AnyObject?", true, "weak var weakVar: AnyObject? { get set }"),
-        ProtocolProperty("tuple", "(Int, String?)?", true, "var tuple: (Int, String?)? { get set }")
+        Property("readWrite", "String", true, "var readWrite: String { set get }"),
+        Property("readOnly", "Int", false, "var readOnly: Int { get }"),
+        Property("optional", "UInt?", true, "var optional: UInt? { get set }"),
+        Property("unwrapped", "String!", true, "var unwrapped: String! { get set }"),
+        Property("weakVar", "AnyObject?", true, "weak var weakVar: AnyObject? { get set }"),
+        Property("tuple", "(Int, String?)?", true, "var tuple: (Int, String?)? { get set }")
     )
     generator.add(
-        ProtocolMethod("method", null, "", "func method()")
+        Method("method", null, "", "func method()")
     )
   }
 

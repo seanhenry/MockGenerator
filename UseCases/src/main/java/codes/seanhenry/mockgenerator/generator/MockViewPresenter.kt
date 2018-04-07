@@ -1,5 +1,6 @@
 package codes.seanhenry.mockgenerator.generator
 
+import codes.seanhenry.mockgenerator.ast.*
 import codes.seanhenry.mockgenerator.entities.*
 import codes.seanhenry.mockgenerator.swift.SwiftStringConvenienceInitCall
 import codes.seanhenry.mockgenerator.swift.SwiftStringInitialiserDeclaration
@@ -9,13 +10,14 @@ import codes.seanhenry.mockgenerator.usecases.CreateClosureResultPropertyDeclara
 import codes.seanhenry.mockgenerator.usecases.CreateConvenienceInitialiser
 import codes.seanhenry.mockgenerator.usecases.CreateInvokedParameters
 import codes.seanhenry.mockgenerator.util.*
+import codes.seanhenry.mockgenerator.visitor.Visitor
 
 class MockViewPresenter(val view: MockView): MockTransformer {
 
-  private val protocolMethods = ArrayList<ProtocolMethod>()
-  private val classMethods = ArrayList<ProtocolMethod>()
-  private val protocolProperties = ArrayList<ProtocolProperty>()
-  private val classProperties = ArrayList<ProtocolProperty>()
+  private val protocolMethods = ArrayList<Method>()
+  private val classMethods = ArrayList<Method>()
+  private val protocolProperties = ArrayList<Property>()
+  private val classProperties = ArrayList<Property>()
   private var classInitialiser: Initialiser? = null
   private var initialisers = ArrayList<Initialiser>()
   private var scope: String? = null
@@ -25,11 +27,11 @@ class MockViewPresenter(val view: MockView): MockTransformer {
     this.scope = scope.trim()
   }
 
-  override fun add(method: ProtocolMethod) {
+  override fun add(method: Method) {
     protocolMethods.add(method)
   }
 
-  override fun add(property: ProtocolProperty) {
+  override fun add(property: Property) {
     protocolProperties.add(property)
   }
 
@@ -37,11 +39,11 @@ class MockViewPresenter(val view: MockView): MockTransformer {
     addInitialisers(listOf(*initialisers))
   }
 
-  override fun add(vararg methods: ProtocolMethod) {
+  override fun add(vararg methods: Method) {
     addMethods(listOf(*methods))
   }
 
-  override fun add(vararg properties: ProtocolProperty) {
+  override fun add(vararg properties: Property) {
     addProperties(listOf(*properties))
   }
 
@@ -51,13 +53,13 @@ class MockViewPresenter(val view: MockView): MockTransformer {
     }
   }
 
-  override fun addMethods(methods: List<ProtocolMethod>) {
+  override fun addMethods(methods: List<Method>) {
     for (method in methods) {
       this.protocolMethods.add(method)
     }
   }
 
-  override fun addProperties(properties: List<ProtocolProperty>) {
+  override fun addProperties(properties: List<Property>) {
     for (property in properties) {
       this.protocolProperties.add(property)
     }
@@ -73,19 +75,19 @@ class MockViewPresenter(val view: MockView): MockTransformer {
     }
   }
 
-  override fun addClassMethods(vararg methods: ProtocolMethod) {
+  override fun addClassMethods(vararg methods: Method) {
     classMethods += methods
   }
 
-  override fun addClassMethods(methods: List<ProtocolMethod>) {
+  override fun addClassMethods(methods: List<Method>) {
     classMethods += methods
   }
 
-  override fun addClassProperties(vararg properties: ProtocolProperty) {
+  override fun addClassProperties(vararg properties: Property) {
     classProperties += properties
   }
 
-  override fun addClassProperties(properties: List<ProtocolProperty>) {
+  override fun addClassProperties(properties: List<Property>) {
     classProperties += properties
   }
 
@@ -142,11 +144,11 @@ class MockViewPresenter(val view: MockView): MockTransformer {
     nameGenerator.generateMethodNames()
   }
 
-  private fun toMethodModel(method: ProtocolMethod): MethodModel {
+  private fun toMethodModel(method: Method): MethodModel {
     return MethodModel(method.name, method.parametersList)
   }
 
-  private fun toMethodModel(property: ProtocolProperty): MethodModel {
+  private fun toMethodModel(property: Property): MethodModel {
     return MethodModel(property.name, "")
   }
 
@@ -154,7 +156,7 @@ class MockViewPresenter(val view: MockView): MockTransformer {
     return transformProperties(classProperties, true) + transformProperties(protocolProperties, false)
   }
 
-  private fun transformProperties(properties: List<ProtocolProperty>, isClass: Boolean): List<PropertyViewModel> {
+  private fun transformProperties(properties: List<Property>, isClass: Boolean): List<PropertyViewModel> {
     return properties.map {
       PropertyViewModel(
           getUniqueName(it).capitalize(),
@@ -190,7 +192,7 @@ class MockViewPresenter(val view: MockView): MockTransformer {
     return transformMethods(classMethods, true) + transformMethods(protocolMethods, false)
   }
 
-  private fun transformMethods(methods: List<ProtocolMethod>, isClass: Boolean): List<MethodViewModel> {
+  private fun transformMethods(methods: List<Method>, isClass: Boolean): List<MethodViewModel> {
     return methods.map {
       MethodViewModel(
           getUniqueName(it).capitalize(),
@@ -198,62 +200,81 @@ class MockViewPresenter(val view: MockView): MockTransformer {
           transformClosureParameters(it),
           transformReturnType(it),
           it.throws,
-          transformDeclarationText(it.signature, isClass)
+          transformDeclarationText(it.declarationText, isClass)
       )
     }
   }
 
-  private fun getUniqueName(method: ProtocolMethod) =
+  private fun getUniqueName(method: Method) =
       nameGenerator.getMethodName(toMethodModel(method).id)!!
-  private fun getUniqueName(property: ProtocolProperty) =
+  private fun getUniqueName(property: Property) =
       nameGenerator.getMethodName(toMethodModel(property).id)!!
 
-  private fun transformClosureParameters(method: ProtocolMethod): List<ClosureParameterViewModel> {
+  private fun transformClosureParameters(method: Method): List<ClosureParameterViewModel> {
+    // TODO: extract and test
+    class V(val name: String): Visitor() {
+      var transformed: ClosureParameterViewModel? = null
+      var isOptional = false
+      override fun visitFunctionType(type: FunctionType) {
+        transformed = ClosureParameterViewModel(
+            name.capitalize(),
+            name,
+            transformClosureToTupleDeclaration(type.parameters), // TODO: use same method as method params when closure model is complete
+            transformClosureToImplicitTupleAssignment(name, type, isOptional),
+            type.parameters.isNotEmpty()) // TODO: require proper closure model so this is done without string parsing
+      }
+
+      override fun visitBracketType(type: BracketType) {
+        type.type.accept(this) // TODO: Make recursive visitor instead
+        super.visitBracketType(type)
+      }
+
+      override fun visitOptionalType(type: OptionalType) {
+        isOptional = true
+        type.type.accept(this) // TODO: Make recursive visitor instead
+        super.visitOptionalType(type)
+      }
+    }
     return method.parametersList
-        .mapNotNull { it as? ClosureParameter }
-        .map {
-          ClosureParameterViewModel(
-              it.name.capitalize(),
-              it.name,
-              transformClosureToTupleDeclaration(it.closureArguments), // TODO: use same method as method params when closure model is complete
-              transformClosureToImplicitTupleAssignment(it),
-              it.closureArguments.isNotEmpty() // TODO: require proper closure model so this is done without string parsing
-          )
+        .mapNotNull {
+          val visitor = V(it.name)
+          it.type.resolvedType.accept(visitor)
+          visitor.transformed
         }
   }
 
-  private fun transformClosureToTupleDeclaration(parameter: List<Parameter>): String {
+  private fun transformClosureToTupleDeclaration(parameter: List<Type>): String {
     val closure = Closure("", parameter.map { it.text }, "", false)
     return CreateClosureResultPropertyDeclaration()
         .transform("", closure)?.type ?: ""
   }
 
-  private fun transformClosureToImplicitTupleAssignment(closure: ClosureParameter): String {
+  private fun transformClosureToImplicitTupleAssignment(name: String, closure: FunctionType, isOptional: Boolean): String {
     var tuple = ""
-    if (closure.closureReturnType != "()" && closure.closureReturnType != "Void" && closure.closureReturnType != "(Void)") {
+    if (!closure.returnType.isVoid) {
       tuple += "_ = "
     }
     if (closure.throws) {
       tuple += "try? "
     }
-    tuple += closure.name
-    if (closure.isOptional) {
+    tuple += name
+    if (isOptional) {
       tuple += "?"
     }
     tuple += "("
-    tuple += (0 until closure.closureArguments.size).joinToString(", ") {
+    tuple += (0 until closure.parameters.size).joinToString(", ") {
       "result.$it"
     }
     return tuple + ")"
   }
 
-  private fun transformReturnType(method: ProtocolMethod): ResultTypeViewModel? {
+  private fun transformReturnType(method: Method): ResultTypeViewModel? {
     val type = method.returnType
-    if (type != null) {
+    if (!type.resolvedType.isEmpty) {
       return ResultTypeViewModel(
-          getDefaultValueAssignment(type.erasedType.typeName),
-          OptionalUtil.removeOptional(type.erasedType.typeName) + "?",
-          ClosureUtil.surroundClosure(OptionalUtil.removeOptionalRecursively(type.erasedType.typeName)) + "!",
+          getDefaultValueAssignment(type.erasedType.text),
+          OptionalUtil.removeOptional(type.erasedType.text) + "?",
+          ClosureUtil.surroundClosure(OptionalUtil.removeOptionalRecursively(type.erasedType.text)) + "!",
       // TODO: we need to surround all closures when appending an optional. Write some tests
         transformReturnCastStatement(type)
       )
@@ -262,9 +283,9 @@ class MockViewPresenter(val view: MockView): MockTransformer {
   }
 
   private fun transformReturnCastStatement(returnType: MethodType): String {
-    if (returnType.originalType.typeName == returnType.erasedType.typeName) { return "" }
+    if (returnType.originalType.text == returnType.erasedType.text) { return "" }
     var optional = "!"
-    var type = returnType.originalType.typeName
+    var type = returnType.originalType.text
     if (OptionalUtil.isOptional(type)) {
       optional = "?"
       type = OptionalUtil.removeOptional(type)
@@ -272,7 +293,7 @@ class MockViewPresenter(val view: MockView): MockTransformer {
     return " as$optional $type"
   }
 
-  private fun transformParameters(method: ProtocolMethod): ParametersViewModel? {
+  private fun transformParameters(method: Method): ParametersViewModel? {
     if (method.parametersList.isEmpty()) {
       return null
     }

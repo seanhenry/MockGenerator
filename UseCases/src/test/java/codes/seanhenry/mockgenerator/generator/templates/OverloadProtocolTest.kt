@@ -1,26 +1,26 @@
 package codes.seanhenry.mockgenerator.generator.templates
 
-import codes.seanhenry.mockgenerator.entities.ProtocolMethod
-import codes.seanhenry.mockgenerator.entities.ProtocolProperty
+import codes.seanhenry.mockgenerator.ast.Method
+import codes.seanhenry.mockgenerator.entities.Property
 import codes.seanhenry.mockgenerator.generator.MockTransformer
 
 class OverloadProtocolTest : MockGeneratorTestTemplate {
 
   override fun build(generator: MockTransformer) {
     generator.add(
-        ProtocolProperty("int", "Int", true, "var int: Int { get set }")
+        Property("int", "Int", true, "var int: Int { get set }")
     )
     generator.add(
-        ProtocolMethod("int", "Int", "adding: Int", "func int(adding: Int) -> Int"),
-        ProtocolMethod("setValue", null, "_ string: String, forKey key: String", "func setValue(_ string: String, forKey key: String)"),
-        ProtocolMethod("setValue", null, "_ int: Int, forKey key: String", "func setValue(_ int: Int, forKey key: String)"),
-        ProtocolMethod("set", null, "value: String", "func set(value: String)"),
-        ProtocolMethod("set", null, "value: Int", "func set(value: Int)"),
-        ProtocolMethod("animate", "Bool", "", "func animate() -> Bool"),
-        ProtocolMethod("animate", null, "withDuration duration: TimeInterval", "func animate(withDuration duration: TimeInterval)"),
-        ProtocolMethod("animate", null, "withDuration duration: TimeInterval, delay: TimeInterval", "func animate(withDuration duration: TimeInterval, delay: TimeInterval)"),
-        ProtocolMethod("specialCharacters", null, "_ tuple: (String, Int)", "func specialCharacters(_ tuple: (String, Int))"),
-        ProtocolMethod("specialCharacters", null, "_ tuple: (UInt, Float)", "func specialCharacters(_ tuple: (UInt, Float))")
+        Method("int", "Int", "adding: Int", "func int(adding: Int) -> Int"),
+        Method("setValue", null, "_ string: String, forKey key: String", "func setValue(_ string: String, forKey key: String)"),
+        Method("setValue", null, "_ int: Int, forKey key: String", "func setValue(_ int: Int, forKey key: String)"),
+        Method("set", null, "value: String", "func set(value: String)"),
+        Method("set", null, "value: Int", "func set(value: Int)"),
+        Method("animate", "Bool", "", "func animate() -> Bool"),
+        Method("animate", null, "withDuration duration: TimeInterval", "func animate(withDuration duration: TimeInterval)"),
+        Method("animate", null, "withDuration duration: TimeInterval, delay: TimeInterval", "func animate(withDuration duration: TimeInterval, delay: TimeInterval)"),
+        Method("specialCharacters", null, "_ tuple: (String, Int)", "func specialCharacters(_ tuple: (String, Int))"),
+        Method("specialCharacters", null, "_ tuple: (UInt, Float)", "func specialCharacters(_ tuple: (UInt, Float))")
     )
   }
 

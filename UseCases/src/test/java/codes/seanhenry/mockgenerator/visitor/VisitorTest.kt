@@ -1,8 +1,6 @@
 package codes.seanhenry.mockgenerator.visitor
 
-import codes.seanhenry.mockgenerator.ast.FunctionType
-import codes.seanhenry.mockgenerator.ast.OptionalType
-import codes.seanhenry.mockgenerator.ast.Type
+import codes.seanhenry.mockgenerator.ast.*
 import junit.framework.TestCase
 
 class VisitorTest: TestCase() {
@@ -28,10 +26,24 @@ class VisitorTest: TestCase() {
   }
 
   fun testShouldVisitOptionalType() {
-    val type = OptionalType("Type?")
+    val type = OptionalType("Type?", Type("Type"), false)
     type.accept(visitor)
     assertTrue(visitor.didVisitType)
     assertTrue(visitor.didVisitOptionalType)
+  }
+
+  fun testShouldVisitBracketType() {
+    val type = BracketType(Type("Type"))
+    type.accept(visitor)
+    assertTrue(visitor.didVisitType)
+    assertTrue(visitor.didVisitBracketType)
+  }
+
+  fun testShouldVisitArrayType() {
+    val type = ArrayType("[Type]", Type("Type"))
+    type.accept(visitor)
+    assertTrue(visitor.didVisitType)
+    assertTrue(visitor.didVisitArrayType)
   }
 
   class VisitorSpy: Visitor() {
@@ -52,6 +64,18 @@ class VisitorTest: TestCase() {
     override fun visitOptionalType(type: OptionalType) {
       super.visitOptionalType(type)
       didVisitOptionalType = true
+    }
+
+    var didVisitBracketType = false
+    override fun visitBracketType(type: BracketType) {
+      super.visitBracketType(type)
+      didVisitBracketType = true
+    }
+
+    var didVisitArrayType = false
+    override fun visitArrayType(type: ArrayType) {
+      super.visitArrayType(type)
+      didVisitArrayType = true
     }
   }
 }

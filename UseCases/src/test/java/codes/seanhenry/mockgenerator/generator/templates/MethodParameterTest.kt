@@ -1,20 +1,20 @@
 package codes.seanhenry.mockgenerator.generator.templates
 
 import codes.seanhenry.mockgenerator.entities.ClosureHelper.Companion.createClosure
-import codes.seanhenry.mockgenerator.entities.ProtocolMethod
+import codes.seanhenry.mockgenerator.ast.Method
 import codes.seanhenry.mockgenerator.generator.MockTransformer
 
 class MethodParameterTest : MockGeneratorTestTemplate {
 
   override fun build(generator: MockTransformer) {
     generator.add(
-        ProtocolMethod("oneParam", null, "param0: Int", "func oneParam(param0: Int)"),
-        ProtocolMethod("twoParam", null, "param0: Int, param1: String", "func twoParam(param0: Int, param1: String)"),
-        ProtocolMethod("optionalParam", null, "param0: Int?", "func optionalParam(param0: Int?)"),
-        ProtocolMethod("iuoParam", null, "param0: Int!", "func iuoParam(param0: Int!)"),
-        ProtocolMethod("noLabelParam", null, "_ name0: Int!", "func noLabelParam(_ name0: Int!)"),
-        ProtocolMethod("nameAndLabelParam", null, "label0 name0: Int!", "func nameAndLabelParam(label0 name0: Int!)"),
-        ProtocolMethod("closureParam", null, createClosure("", "()"), "func closureParam(closure: () -> ())")
+        Method("oneParam", null, "param0: Int", "func oneParam(param0: Int)"),
+        Method("twoParam", null, "param0: Int, param1: String", "func twoParam(param0: Int, param1: String)"),
+        Method("optionalParam", null, "param0: Int?", "func optionalParam(param0: Int?)"),
+        Method("iuoParam", null, "param0: Int!", "func iuoParam(param0: Int!)"),
+        Method("noLabelParam", null, "_ name0: Int!", "func noLabelParam(_ name0: Int!)"),
+        Method("nameAndLabelParam", null, "label0 name0: Int!", "func nameAndLabelParam(label0 name0: Int!)"),
+        Method("closureParam", null, createClosure("", "()"), "func closureParam(closure: () -> ())")
     )
   }
 

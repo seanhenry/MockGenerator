@@ -1,5 +1,8 @@
 package codes.seanhenry.mockgenerator.entities
 
+import codes.seanhenry.mockgenerator.ast.Type
+
+// TODO: DELETE THESE
 class Closure(val name: String,
               val arguments: List<String>, // TODO: make this List<Parameter> ?
               val returnValue: String,

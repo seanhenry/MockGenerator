@@ -1,10 +1,9 @@
 package codes.seanhenry.mockgenerator.generator.templates
 
-import codes.seanhenry.mockgenerator.entities.ClosureHelper
 import codes.seanhenry.mockgenerator.entities.ClosureHelper.Companion.createClosure
 import codes.seanhenry.mockgenerator.entities.Parameter
-import codes.seanhenry.mockgenerator.entities.ProtocolMethod
-import codes.seanhenry.mockgenerator.entities.ProtocolProperty
+import codes.seanhenry.mockgenerator.ast.Method
+import codes.seanhenry.mockgenerator.entities.Property
 import codes.seanhenry.mockgenerator.generator.MockTransformer
 
 class ScopeProtocolTest : MockGeneratorTestTemplate {
@@ -12,11 +11,11 @@ class ScopeProtocolTest : MockGeneratorTestTemplate {
   override fun build(generator: MockTransformer) {
     generator.setScope("open")
     generator.add(
-        ProtocolProperty("variable", "Object", true, "var variable: Object { get set }")
+        Property("variable", "Object", true, "var variable: Object { get set }")
     )
     val param = Parameter("param", "param", "Object", "Object", "param: Object")
     generator.add(
-        ProtocolMethod("method", "Object", listOf(param) + createClosure("", "()"), "func method(param: Object, closure: () -> ()) -> Object")
+        Method("method", "Object", listOf(param) + createClosure("", "()"), "func method(param: Object, closure: () -> ()) -> Object")
     )
   }
 

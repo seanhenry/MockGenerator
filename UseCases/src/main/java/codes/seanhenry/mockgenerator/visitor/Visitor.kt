@@ -1,13 +1,10 @@
 package codes.seanhenry.mockgenerator.visitor
 
-import codes.seanhenry.mockgenerator.ast.FunctionType
-import codes.seanhenry.mockgenerator.ast.OptionalType
-import codes.seanhenry.mockgenerator.ast.Type
+import codes.seanhenry.mockgenerator.ast.*
 
 open class Visitor {
 
   open fun visitType(type: Type) {
-
   }
 
   open fun visitFunctionType(type: FunctionType) {
@@ -15,6 +12,14 @@ open class Visitor {
   }
 
   open fun visitOptionalType(type: OptionalType) {
+    visitType(type)
+  }
+
+  open fun visitBracketType(type: BracketType) {
+    visitType(type)
+  }
+
+  open fun visitArrayType(type: ArrayType) {
     visitType(type)
   }
 }

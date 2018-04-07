@@ -1,50 +1,50 @@
 package codes.seanhenry.mockgenerator.generator.templates
 
-import codes.seanhenry.mockgenerator.entities.ProtocolMethod
-import codes.seanhenry.mockgenerator.entities.ProtocolProperty
+import codes.seanhenry.mockgenerator.ast.Method
+import codes.seanhenry.mockgenerator.entities.Property
 import codes.seanhenry.mockgenerator.generator.MockTransformer
 
 class DefaultValuesTest : MockGeneratorTestTemplate {
 
   override fun build(generator: MockTransformer) {
     generator.add(
-        ProtocolProperty("int", "Int", true, "var int: Int { get set }"),
-        ProtocolProperty("opt", "Optional<Int>", true, "var opt: Optional<Int> { get set }"),
-        ProtocolProperty("shortOptional", "Int?", true, "var shortOptional: Int? { get set }"),
-        ProtocolProperty("doubleOptional", "Int??", true, "var doubleOptional: Int?? { get set }"),
-        ProtocolProperty("iuo", "Int!", true, "var iuo: Int! { get set }")
+        Property("int", "Int", true, "var int: Int { get set }"),
+        Property("opt", "Optional<Int>", true, "var opt: Optional<Int> { get set }"),
+        Property("shortOptional", "Int?", true, "var shortOptional: Int? { get set }"),
+        Property("doubleOptional", "Int??", true, "var doubleOptional: Int?? { get set }"),
+        Property("iuo", "Int!", true, "var iuo: Int! { get set }")
     )
     generator.add(
-        ProtocolMethod("optionalInt", "Int?", "", "func optionalInt() -> Int?"),
-        ProtocolMethod("iuoInt", "Int!", "", "func iuoInt() -> Int!"),
-        ProtocolMethod("double", "Double", "", "func double() -> Double"),
-        ProtocolMethod("float", "Float", "", "func float() -> Float"),
-        ProtocolMethod("int16", "Int16", "", "func int16() -> Int16"),
-        ProtocolMethod("int32", "Int32", "", "func int32() -> Int32"),
-        ProtocolMethod("int64", "Int64", "", "func int64() -> Int64"),
-        ProtocolMethod("int8", "Int8", "", "func int8() -> Int8"),
-        ProtocolMethod("uInt", "UInt", "", "func uInt() -> UInt"),
-        ProtocolMethod("uInt16", "UInt16", "", "func uInt16() -> UInt16"),
-        ProtocolMethod("uInt32", "UInt32", "", "func uInt32() -> UInt32"),
-        ProtocolMethod("uInt64", "UInt64", "", "func uInt64() -> UInt64"),
-        ProtocolMethod("uInt8", "UInt8", "", "func uInt8() -> UInt8"),
-        ProtocolMethod("array", "Array<String>", "", "func array() -> Array<String>"),
-        ProtocolMethod("arrayLiteral", "[String]", "", "func arrayLiteral() -> [String]"),
-        ProtocolMethod("arraySlice", "ArraySlice<String>", "", "func arraySlice() -> ArraySlice<String>"),
-        ProtocolMethod("contiguousArray", "ContiguousArray<String>", "", "func contiguousArray() -> ContiguousArray<String>"),
-        ProtocolMethod("set", "Set<String>", "", "func set() -> Set<String>"),
-        ProtocolMethod("optionalArray", "Optional<Array<String>>", "", "func optionalArray() -> Optional<Array<String>>"),
-        ProtocolMethod("shortOptionalArray", "[String]?", "", "func shortOptionalArray() -> [String]?"),
-        ProtocolMethod("dictionary", "Dictionary<String, String>", "", "func dictionary() -> Dictionary<String, String>"),
-        ProtocolMethod("dictionaryLiteral", "DictionaryLiteral<String, String>", "", "func dictionaryLiteral() -> DictionaryLiteral<String, String>"),
-        ProtocolMethod("dictionaryShorthand", "[String: String]", "", "func dictionaryShorthand() -> [String: String]"),
-        ProtocolMethod("optionalDict", "Optional<Dictionary<String, String>>", "", "func optionalDict() -> Optional<Dictionary<String, String>>"),
-        ProtocolMethod("shortOptionalDict", "[String: String]?", "", "func shortOptionalDict() -> [String: String]?"),
-        ProtocolMethod("bool", "Bool", "", "func bool() -> Bool"),
-        ProtocolMethod("unicodeScalar", "UnicodeScalar", "", "func unicodeScalar() -> UnicodeScalar"),
-        ProtocolMethod("character", "Character", "", "func character() -> Character"),
-        ProtocolMethod("staticString", "StaticString", "", "func staticString() -> StaticString"),
-        ProtocolMethod("string", "String", "", "func string() -> String")
+        Method("optionalInt", "Int?", "", "func optionalInt() -> Int?"),
+        Method("iuoInt", "Int!", "", "func iuoInt() -> Int!"),
+        Method("double", "Double", "", "func double() -> Double"),
+        Method("float", "Float", "", "func float() -> Float"),
+        Method("int16", "Int16", "", "func int16() -> Int16"),
+        Method("int32", "Int32", "", "func int32() -> Int32"),
+        Method("int64", "Int64", "", "func int64() -> Int64"),
+        Method("int8", "Int8", "", "func int8() -> Int8"),
+        Method("uInt", "UInt", "", "func uInt() -> UInt"),
+        Method("uInt16", "UInt16", "", "func uInt16() -> UInt16"),
+        Method("uInt32", "UInt32", "", "func uInt32() -> UInt32"),
+        Method("uInt64", "UInt64", "", "func uInt64() -> UInt64"),
+        Method("uInt8", "UInt8", "", "func uInt8() -> UInt8"),
+        Method("array", "Array<String>", "", "func array() -> Array<String>"),
+        Method("arrayLiteral", "[String]", "", "func arrayLiteral() -> [String]"),
+        Method("arraySlice", "ArraySlice<String>", "", "func arraySlice() -> ArraySlice<String>"),
+        Method("contiguousArray", "ContiguousArray<String>", "", "func contiguousArray() -> ContiguousArray<String>"),
+        Method("set", "Set<String>", "", "func set() -> Set<String>"),
+        Method("optionalArray", "Optional<Array<String>>", "", "func optionalArray() -> Optional<Array<String>>"),
+        Method("shortOptionalArray", "[String]?", "", "func shortOptionalArray() -> [String]?"),
+        Method("dictionary", "Dictionary<String, String>", "", "func dictionary() -> Dictionary<String, String>"),
+        Method("dictionaryLiteral", "DictionaryLiteral<String, String>", "", "func dictionaryLiteral() -> DictionaryLiteral<String, String>"),
+        Method("dictionaryShorthand", "[String: String]", "", "func dictionaryShorthand() -> [String: String]"),
+        Method("optionalDict", "Optional<Dictionary<String, String>>", "", "func optionalDict() -> Optional<Dictionary<String, String>>"),
+        Method("shortOptionalDict", "[String: String]?", "", "func shortOptionalDict() -> [String: String]?"),
+        Method("bool", "Bool", "", "func bool() -> Bool"),
+        Method("unicodeScalar", "UnicodeScalar", "", "func unicodeScalar() -> UnicodeScalar"),
+        Method("character", "Character", "", "func character() -> Character"),
+        Method("staticString", "StaticString", "", "func staticString() -> StaticString"),
+        Method("string", "String", "", "func string() -> String")
     )
   }
 

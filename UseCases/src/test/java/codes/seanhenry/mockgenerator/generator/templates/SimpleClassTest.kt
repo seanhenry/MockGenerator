@@ -1,18 +1,18 @@
 package codes.seanhenry.mockgenerator.generator.templates
 
-import codes.seanhenry.mockgenerator.entities.ProtocolMethod
-import codes.seanhenry.mockgenerator.entities.ProtocolProperty
+import codes.seanhenry.mockgenerator.ast.Method
+import codes.seanhenry.mockgenerator.entities.Property
 import codes.seanhenry.mockgenerator.generator.MockTransformer
 
 class SimpleClassTest: MockGeneratorTestTemplate {
 
   override fun build(generator: MockTransformer) {
     generator.addClassProperties(
-        ProtocolProperty("property", "String?", true, "var property: String?")
+        Property("property", "String?", true, "var property: String?")
     )
     generator.addClassMethods(
-        ProtocolMethod("method", null, "", "func method()"),
-        ProtocolMethod("anotherMethod", null, "", "func anotherMethod()")
+        Method.Builder("method").build(),
+        Method.Builder("anotherMethod").build()
     )
   }
 

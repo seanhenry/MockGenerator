@@ -1,24 +1,24 @@
 package codes.seanhenry.mockgenerator.generator.templates
 
-import codes.seanhenry.mockgenerator.entities.ProtocolMethod
+import codes.seanhenry.mockgenerator.ast.Method
 import codes.seanhenry.mockgenerator.generator.MockTransformer
 
 class ReturnProtocolTest: MockGeneratorTestTemplate {
   override fun build(generator: MockTransformer) {
     generator.add(
-        ProtocolMethod("returnType", "String", "", "func returnType() -> String"),
-        ProtocolMethod("returnTuple", "(String, Int?)", "", "func returnTuple() -> (String, Int?)"),
-        ProtocolMethod("returnLabelledTuple", "(s: String, i: Int?)", "", "func returnLabelledTuple() -> (s: String, i: Int?)"),
-        ProtocolMethod("returnOptional", "Int?", "", "func returnOptional() -> Int?"),
-        ProtocolMethod("returnIUO", "UInt!", "", "func returnIUO() -> UInt!"),
-        ProtocolMethod("returnGeneric", "Optional<String>", "", "func returnGeneric() -> Optional<String>"),
-        ProtocolMethod("returnOptionalGeneric", "Optional<String>?", "", "func returnOptionalGeneric() -> Optional<String>?"),
-        ProtocolMethod("returnClosure", "() -> ()", "", "func returnClosure() -> () -> ()"),
-        ProtocolMethod("returnComplicatedClosure", "((String, Int?) -> (UInt))", "", "func returnComplicatedClosure() -> ((String, Int?) -> (UInt))"),
-        ProtocolMethod("returnOptionalClosure", "(() -> ())?", "", "func returnOptionalClosure() -> (() -> ())?"),
-        ProtocolMethod("returnExplicitVoid", "Void", "", "func returnExplicitVoid() -> Void")
-//        ProtocolMethod("returnClosure", null, ") -> (() -> ()", "func returnClosure() -> (() -> ())")
-//        ProtocolMethod("returnClosureArgs", null, ") -> (Int, String) -> (String", "func returnClosureArgs() -> (Int, String) -> (String)"),
+        Method("returnType", "String", "", "func returnType() -> String"),
+        Method("returnTuple", "(String, Int?)", "", "func returnTuple() -> (String, Int?)"),
+        Method("returnLabelledTuple", "(s: String, i: Int?)", "", "func returnLabelledTuple() -> (s: String, i: Int?)"),
+        Method("returnOptional", "Int?", "", "func returnOptional() -> Int?"),
+        Method("returnIUO", "UInt!", "", "func returnIUO() -> UInt!"),
+        Method("returnGeneric", "Optional<String>", "", "func returnGeneric() -> Optional<String>"),
+        Method("returnOptionalGeneric", "Optional<String>?", "", "func returnOptionalGeneric() -> Optional<String>?"),
+        Method("returnClosure", "() -> ()", "", "func returnClosure() -> () -> ()"),
+        Method("returnComplicatedClosure", "((String, Int?) -> (UInt))", "", "func returnComplicatedClosure() -> ((String, Int?) -> (UInt))"),
+        Method("returnOptionalClosure", "(() -> ())?", "", "func returnOptionalClosure() -> (() -> ())?"),
+        Method("returnExplicitVoid", "Void", "", "func returnExplicitVoid() -> Void")
+//        Method("returnClosure", null, ") -> (() -> ()", "func returnClosure() -> (() -> ())")
+//        Method("returnClosureArgs", null, ") -> (Int, String) -> (String", "func returnClosureArgs() -> (Int, String) -> (String)"),
     )
   }
 
