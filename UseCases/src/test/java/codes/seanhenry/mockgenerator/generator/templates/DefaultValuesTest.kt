@@ -58,17 +58,32 @@ class DefaultValuesTest : MockGeneratorTestTemplate {
         Method.Builder("arrayLiteral")
             .returnType().array { it.type("String") }
             .build(),
-        // TODO: support Generics
         // TODO: support Optional<Int>
-        Method("arraySlice", "ArraySlice<String>", "", "func arraySlice() -> ArraySlice<String>"),
-        Method("contiguousArray", "ContiguousArray<String>", "", "func contiguousArray() -> ContiguousArray<String>"),
-        Method("set", "Set<String>", "", "func set() -> Set<String>"),
+        Method.Builder("arraySlice")
+            .returnType().generic("ArraySlice") { it.argument("String") }
+            .build(),
+        Method.Builder("contiguousArray")
+            .returnType().generic("ContiguousArray") { it.argument("String") }
+            .build(),
+        Method.Builder("set")
+            .returnType().generic("Set") { it.argument("String") }
+            .build(),
         Method("optionalArray", "Optional<Array<String>>", "", "func optionalArray() -> Optional<Array<String>>"),
         Method.Builder("shortOptionalArray")
             .returnType().optional { it.type().array { it.type("String") } }
             .build(),
-        Method("dictionary", "Dictionary<String, String>", "", "func dictionary() -> Dictionary<String, String>"),
-        Method("dictionaryLiteral", "DictionaryLiteral<String, String>", "", "func dictionaryLiteral() -> DictionaryLiteral<String, String>"),
+        Method.Builder("dictionary")
+            .returnType().generic("Dictionary") { gen ->
+              gen.argument("String")
+                  .argument("String")
+            }
+            .build(),
+        Method.Builder("dictionaryLiteral")
+            .returnType().generic("DictionaryLiteral") { gen ->
+              gen.argument("String")
+                  .argument("String")
+            }
+            .build(),
         Method.Builder("dictionaryShorthand")
             .returnType().dictionary { dict ->
               dict.keyType("String")

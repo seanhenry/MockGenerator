@@ -32,4 +32,11 @@ class TypeFactoryTest: TestCase() {
         .build()
     assertEquals("[:]?", optional.text)
   }
+
+  fun testShouldBuildGenericType() {
+    val optional = OptionalType.Builder()
+        .type().generic("Type") {}
+        .build()
+    assertEquals("Type<>?", optional.text)
+  }
 }

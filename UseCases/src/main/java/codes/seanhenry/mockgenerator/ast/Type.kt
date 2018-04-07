@@ -48,6 +48,13 @@ open class Type(val text: String) {
       return previousBuilder
     }
 
+    fun generic(identifier: String, build: (GenericType.Builder) -> Unit): B {
+      val builder = GenericType.Builder(identifier)
+      build(builder)
+      getType(builder.build())
+      return previousBuilder
+    }
+
     fun bracket(): Factory<B> {
       return Factory(previousBuilder) {
         getType(BracketType(it))
