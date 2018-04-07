@@ -77,9 +77,10 @@ class DefaultValuesTest : MockGeneratorTestTemplate {
             .returnType().optional { it.type().array { it.type("String") } }
             .build(),
         Method.Builder("dictionary")
-            .returnType().generic("Dictionary") { gen ->
-              gen.argument("String")
-                  .argument("String")
+            .returnType().dictionary { dict ->
+              dict.keyType("String")
+                  .valueType("String")
+                  .verbose()
             }
             .build(),
         Method.Builder("dictionaryLiteral")

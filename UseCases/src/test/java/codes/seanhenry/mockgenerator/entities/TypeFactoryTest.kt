@@ -30,7 +30,7 @@ class TypeFactoryTest: TestCase() {
     val optional = OptionalType.Builder()
         .type().dictionary {}
         .build()
-    assertEquals("[:]?", optional.text)
+    assertEquals("[: ]?", optional.text)
   }
 
   fun testShouldBuildGenericType() {

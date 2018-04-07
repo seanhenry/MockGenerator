@@ -6,19 +6,19 @@ class DictionaryTypeBuilderTest: TestCase() {
 
   fun testShouldBuildEmptyDictionary() {
     val dictionary = DictionaryType.Builder().build()
-    assertEquals("[:]", dictionary.text)
+    assertEquals("[: ]", dictionary.text)
   }
 
   fun testShouldBuildKeyTypeDictionary() {
     val dictionary = DictionaryType.Builder().keyType("Key").build()
     assertEquals("Key", dictionary.keyType.text)
-    assertEquals("[Key:]", dictionary.text)
+    assertEquals("[Key: ]", dictionary.text)
   }
 
   fun testShouldBuildAnyKeyTypeDictionary() {
     val dictionary = DictionaryType.Builder().keyType().optional { it.type("Type") }.build()
     assertEquals("Type?", dictionary.keyType.text)
-    assertEquals("[Type?:]", dictionary.text)
+    assertEquals("[Type?: ]", dictionary.text)
   }
 
   fun testShouldBuildValueTypeDictionary() {
@@ -41,5 +41,16 @@ class DictionaryTypeBuilderTest: TestCase() {
     assertEquals("Int", dictionary.keyType.text)
     assertEquals("Type?", dictionary.valueType.text)
     assertEquals("[Int: Type?]", dictionary.text)
+  }
+
+  fun testShouldBuildVerboseDictionary() {
+    val dictionary = DictionaryType.Builder()
+        .keyType("Int")
+        .valueType().optional { it.type("Type") }
+        .verbose()
+        .build()
+    assertEquals("Int", dictionary.keyType.text)
+    assertEquals("Type?", dictionary.valueType.text)
+    assertEquals("Dictionary<Int, Type?>", dictionary.text)
   }
 }

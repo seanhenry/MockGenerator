@@ -6,6 +6,7 @@ class DictionaryType(text: String, val keyType: Type, val valueType: Type): Type
 
     private var keyType = Type.EMPTY
     private var valueType = Type.EMPTY
+    private var useVerboseSyntax = false
 
     fun keyType(type: String): Builder {
       keyType = Type(type)
@@ -25,12 +26,23 @@ class DictionaryType(text: String, val keyType: Type, val valueType: Type): Type
       return Type.Factory(this) { this.valueType = it }
     }
 
+    fun verbose(): Builder {
+      useVerboseSyntax = true
+      return this
+    }
+
     fun build(): DictionaryType {
-      var space = ""
-      if (valueType.text.isNotEmpty()) {
-        space = " "
+      return DictionaryType(getText(), keyType, valueType)
+    }
+
+    private fun getText(): String {
+      val key = keyType.text
+      val value = valueType.text
+      if (useVerboseSyntax) {
+        return "Dictionary<$key, $value>"
+      } else {
+        return "[$key: $value]"
       }
-      return DictionaryType("[${keyType.text}:$space${valueType.text}]", keyType, valueType)
     }
   }
 }
