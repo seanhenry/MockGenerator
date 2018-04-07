@@ -9,6 +9,7 @@ class GenericParametersTest: MockGeneratorTestTemplate {
 
   override fun build(generator: MockTransformer) {
     generator.add(
+        // TODO: add visitor to search types for generic parameter
         Method("generic", null, listOf(Parameter("a", "a", MethodType.Builder("T", "T", "Any").build(), "a: T")), "func generic<T>(a: T)"),
         Method("generic", null, listOf(Parameter("array", "array", MethodType.Builder("[T]", "[T]", "[Any]").build(), "a: [T]")), "func generic<T>(array: [T])"),
         Method("generic", null, listOf(Parameter("b", "b", MethodType.Builder("T", "T", "Any").build(), "b: T")), "func generic<T: NSObject>(b: T.Type)"),
