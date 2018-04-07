@@ -20,4 +20,9 @@ class TypeFactoryTest: TestCase() {
     val optional = OptionalType.Builder().type().array { it.type("Type") }.build()
     assertEquals("[Type]?", optional.text)
   }
+
+  fun testShouldBuildBracketType() {
+    val optional = OptionalType.Builder().type().bracket().type("Type").build()
+    assertEquals("(Type)?", optional.text)
+  }
 }

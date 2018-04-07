@@ -6,19 +6,49 @@ import codes.seanhenry.mockgenerator.generator.MockTransformer
 class ReturnProtocolTest: MockGeneratorTestTemplate {
   override fun build(generator: MockTransformer) {
     generator.add(
-        Method("returnType", "String", "", "func returnType() -> String"),
-        Method("returnTuple", "(String, Int?)", "", "func returnTuple() -> (String, Int?)"),
-        Method("returnLabelledTuple", "(s: String, i: Int?)", "", "func returnLabelledTuple() -> (s: String, i: Int?)"),
-        Method("returnOptional", "Int?", "", "func returnOptional() -> Int?"),
-        Method("returnIUO", "UInt!", "", "func returnIUO() -> UInt!"),
+        Method.Builder("returnType")
+            .returnType("String")
+            .build(),
+        Method.Builder("returnTuple")
+            .returnType("(String, Int?)")
+            .build(),
+        Method.Builder("returnLabelledTuple")
+            .returnType("(s: String, i: Int?)")
+            .build(),
+        Method.Builder("returnOptional")
+            .returnType().optional { it.type("Int") }
+            .build(),
+        Method.Builder("returnIUO")
+            .returnType().optional { it.unwrapped().type("UInt") }
+            .build(),
         Method("returnGeneric", "Optional<String>", "", "func returnGeneric() -> Optional<String>"),
         Method("returnOptionalGeneric", "Optional<String>?", "", "func returnOptionalGeneric() -> Optional<String>?"),
-        Method("returnClosure", "() -> ()", "", "func returnClosure() -> () -> ()"),
-        Method("returnComplicatedClosure", "((String, Int?) -> (UInt))", "", "func returnComplicatedClosure() -> ((String, Int?) -> (UInt))"),
-        Method("returnOptionalClosure", "(() -> ())?", "", "func returnOptionalClosure() -> (() -> ())?"),
-        Method("returnExplicitVoid", "Void", "", "func returnExplicitVoid() -> Void")
-//        Method("returnClosure", null, ") -> (() -> ()", "func returnClosure() -> (() -> ())")
-//        Method("returnClosureArgs", null, ") -> (Int, String) -> (String", "func returnClosureArgs() -> (Int, String) -> (String)"),
+        Method.Builder("returnClosure")
+            .returnType().function { }
+            .build(),
+        Method.Builder("returnComplicatedClosure")
+            .returnType().bracket().function { func ->
+              func.argument("String")
+                  .argument().optional { it.type("Int") }
+                  .returnType("(UInt)")
+            }
+            .build(),
+        Method.Builder("returnOptionalClosure")
+            .returnType().optional { it.type().function { } }
+            .build(),
+        Method.Builder("returnExplicitVoid")
+            .returnType("Void")
+            .build(),
+        Method.Builder("returnClosure")
+            .returnType().bracket().function { }
+            .build(),
+        Method.Builder("returnClosureArgs")
+            .returnType().function { func ->
+              func.argument("Int")
+                  .argument("String")
+                  .returnType("(String)")
+            }
+            .build()
     )
   }
 
@@ -112,23 +142,22 @@ class ReturnProtocolTest: MockGeneratorTestTemplate {
     invokedReturnExplicitVoidCount += 1
     return stubbedReturnExplicitVoidResult
     }
+    var invokedReturnClosure = false
+    var invokedReturnClosureCount = 0
+    var stubbedReturnClosureResult: (() -> ())!
+    func returnClosure() -> (() -> ()) {
+    invokedReturnClosure = true
+    invokedReturnClosureCount += 1
+    return stubbedReturnClosureResult
+    }
+    var invokedReturnClosureArgs = false
+    var invokedReturnClosureArgsCount = 0
+    var stubbedReturnClosureArgsResult: ((Int, String) -> (String))!
+    func returnClosureArgs() -> (Int, String) -> (String) {
+    invokedReturnClosureArgs = true
+    invokedReturnClosureArgsCount += 1
+    return stubbedReturnClosureArgsResult
+    }
       """.trimIndent()
   }
 }
-
-//    var invokedReturnClosure = false
-//    var invokedReturnClosureCount = 0
-//    var stubbedReturnClosureResult: (() -> ())!
-//    func returnClosure() -> (() -> ()) {
-//      invokedReturnClosure = true
-//      invokedReturnClosureCount += 1
-//      return stubbedReturnClosureResult
-//    }
-//    var invokedReturnClosureArgs = false
-//    var invokedReturnClosureArgsCount = 0
-//    var stubbedReturnClosureArgsResult: ((Int, String) -> (String))!
-//    func returnClosureArgs() -> (Int, String) -> (String) {
-//    invokedReturnClosureArgs = true
-//    invokedReturnClosureArgsCount += 1
-//    return stubbedReturnClosureArgsResult
-//    }

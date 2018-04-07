@@ -24,21 +24,32 @@ open class Type(val text: String) {
       val builder = FunctionType.Builder()
       build(builder)
       getType(builder.build())
-      return this.previousBuilder
+      return previousBuilder
     }
 
     fun optional(build: (OptionalType.Builder) -> Unit): B {
       val builder = OptionalType.Builder()
       build(builder)
       getType(builder.build())
-      return this.previousBuilder
+      return previousBuilder
     }
 
     fun array(build: (ArrayType.Builder) -> Unit): B {
       val builder = ArrayType.Builder()
       build(builder)
       getType(builder.build())
-      return this.previousBuilder
+      return previousBuilder
+    }
+
+    fun bracket(): Factory<B> {
+      return Factory(previousBuilder) {
+        getType(BracketType(it))
+      }
+    }
+
+    fun type(type: String): B {
+      getType(Type(type))
+      return previousBuilder
     }
   }
 }
