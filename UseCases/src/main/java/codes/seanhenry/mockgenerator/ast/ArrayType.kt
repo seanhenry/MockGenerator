@@ -18,6 +18,10 @@ class ArrayType(text: String, val type: Type): Type(text) {
       return this
     }
 
+    fun type(): Type.Factory<Builder> {
+      return Type.Factory(this) { this.type = it }
+    }
+
     fun verbose(): Builder {
       useVerboseSyntax = true
       return this

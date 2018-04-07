@@ -46,36 +46,20 @@ class VisitorTest: TestCase() {
     assertTrue(visitor.didVisitArrayType)
   }
 
-  class VisitorSpy: Visitor() {
+  fun testShouldVisitDictionaryType() {
+    val type = DictionaryType.Builder()
+        .keyType("Key")
+        .valueType("Value")
+        .build()
+    type.accept(visitor)
+    assertTrue(visitor.didVisitType)
+    assertTrue(visitor.didVisitDictionaryType)
+  }
 
-    var didVisitType = false
-    override fun visitType(type: Type) {
-      super.visitType(type)
-      didVisitType = true
-    }
-
-    var didVisitFunctionType = false
-    override fun visitFunctionType(type: FunctionType) {
-      super.visitFunctionType(type)
-      didVisitFunctionType = true
-    }
-
-    var didVisitOptionalType = false
-    override fun visitOptionalType(type: OptionalType) {
-      super.visitOptionalType(type)
-      didVisitOptionalType = true
-    }
-
-    var didVisitBracketType = false
-    override fun visitBracketType(type: BracketType) {
-      super.visitBracketType(type)
-      didVisitBracketType = true
-    }
-
-    var didVisitArrayType = false
-    override fun visitArrayType(type: ArrayType) {
-      super.visitArrayType(type)
-      didVisitArrayType = true
-    }
+  fun testShouldVisitGenericType() {
+    val type = GenericType.Builder("Type").build()
+    type.accept(visitor)
+    assertTrue(visitor.didVisitType)
+    assertTrue(visitor.didVisitGenericType)
   }
 }

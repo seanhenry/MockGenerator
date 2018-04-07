@@ -22,4 +22,12 @@ open class Visitor {
   open fun visitArrayType(type: ArrayType) {
     visitType(type)
   }
+
+  open fun visitDictionaryType(type: DictionaryType) {
+    visitType(type)
+  }
+
+  open fun visitGenericType(type: GenericType) {
+    visitType(type)
+  }
 }

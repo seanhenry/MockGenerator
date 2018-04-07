@@ -10,6 +10,7 @@ import codes.seanhenry.mockgenerator.usecases.CreateClosureResultPropertyDeclara
 import codes.seanhenry.mockgenerator.usecases.CreateConvenienceInitialiser
 import codes.seanhenry.mockgenerator.usecases.CreateInvokedParameters
 import codes.seanhenry.mockgenerator.util.*
+import codes.seanhenry.mockgenerator.visitor.RecursiveVisitor
 import codes.seanhenry.mockgenerator.visitor.Visitor
 
 class MockViewPresenter(val view: MockView): MockTransformer {
@@ -212,7 +213,7 @@ class MockViewPresenter(val view: MockView): MockTransformer {
 
   private fun transformClosureParameters(method: Method): List<ClosureParameterViewModel> {
     // TODO: extract and test
-    class V(val name: String): Visitor() {
+    class V(val name: String): RecursiveVisitor() {
       var transformed: ClosureParameterViewModel? = null
       var isOptional = false
       override fun visitFunctionType(type: FunctionType) {
@@ -222,16 +223,11 @@ class MockViewPresenter(val view: MockView): MockTransformer {
             transformClosureToTupleDeclaration(type.parameters), // TODO: use same method as method params when closure model is complete
             transformClosureToImplicitTupleAssignment(name, type, isOptional),
             type.parameters.isNotEmpty()) // TODO: require proper closure model so this is done without string parsing
-      }
-
-      override fun visitBracketType(type: BracketType) {
-        type.type.accept(this) // TODO: Make recursive visitor instead
-        super.visitBracketType(type)
+        super.visitFunctionType(type)
       }
 
       override fun visitOptionalType(type: OptionalType) {
         isOptional = true
-        type.type.accept(this) // TODO: Make recursive visitor instead
         super.visitOptionalType(type)
       }
     }

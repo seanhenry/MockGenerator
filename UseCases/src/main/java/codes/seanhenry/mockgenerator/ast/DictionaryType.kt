@@ -1,6 +1,12 @@
 package codes.seanhenry.mockgenerator.ast
 
+import codes.seanhenry.mockgenerator.visitor.Visitor
+
 class DictionaryType(text: String, val keyType: Type, val valueType: Type): Type(text) {
+
+  override fun accept(visitor: Visitor) {
+    visitor.visitDictionaryType(this)
+  }
 
   class Builder {
 
