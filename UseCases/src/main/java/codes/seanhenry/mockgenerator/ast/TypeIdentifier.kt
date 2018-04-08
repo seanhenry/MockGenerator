@@ -2,10 +2,7 @@ package codes.seanhenry.mockgenerator.ast
 
 import codes.seanhenry.mockgenerator.visitor.Visitor
 
-// TODO: rename this to IdentifierType
-// TODO: replace this with BaseType which provides text property to override
-// TODO: do we make this an interface and make all other models data classes?
-class TypeIdentifier(var identifier: String): Type {
+data class TypeIdentifier(var identifier: String): Type {
 
   val isEmpty: Boolean by lazy { EMPTY.text == text }
 

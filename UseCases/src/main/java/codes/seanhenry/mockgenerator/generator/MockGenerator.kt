@@ -248,8 +248,8 @@ class MockGenerator: MockTransformer {
       val name = nameGenerator.getMethodName(toMethodModel(method).id) ?: continue
       val invocationCheck = CreateInvocationCheck().transform(name)
       val invocationCount = CreateInvocationCount().transform(name)
-      val invokedParameters = CreateInvokedParameters().transform(name, method.parametersList)
-      val invokedParametersList = CreateInvokedParametersList().transform(name, method.parametersList)
+      val invokedParameters = CreateInvokedParameters().transform(name, method.parametersList, method.genericParameters)
+      val invokedParametersList = CreateInvokedParametersList().transform(name, method.parametersList, method.genericParameters)
       val closures = CreateClosureCall().transform(method.parametersList)
       val closureProperties = closures.map { CreateClosureResultPropertyDeclaration().transform(name, it) }
       val closureCalls = closureProperties.zip(closures)

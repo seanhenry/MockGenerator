@@ -2,6 +2,8 @@ package codes.seanhenry.mockgenerator.usecases
 
 import codes.seanhenry.mockgenerator.entities.Parameter
 import codes.seanhenry.mockgenerator.entities.TuplePropertyDeclaration
+import codes.seanhenry.mockgenerator.transformer.CopyVisitor
+import codes.seanhenry.mockgenerator.transformer.TypeErasingVisitor
 import codes.seanhenry.mockgenerator.util.ClosureUtil
 import codes.seanhenry.mockgenerator.util.StringDecorator
 
@@ -9,9 +11,9 @@ abstract class CreateParameterTuple {
 
   abstract fun getStringDecorator(): StringDecorator
 
-  fun transform(name: String, parameterList: List<Parameter>): TuplePropertyDeclaration? {
+  fun transform(name: String, parameterList: List<Parameter>, genericIdentifiers: List<String>): TuplePropertyDeclaration? {
     val tupleParameters = parameterList
-        .mapNotNull { transformParameter(it) }
+        .mapNotNull { transformParameter(it, genericIdentifiers) }
     if (validateParameters(parameterList, tupleParameters)) {
       return createProperty(transformName(name), tupleParameters.filter { !isClosure(it) })
     }
@@ -40,11 +42,12 @@ abstract class CreateParameterTuple {
     return ClosureUtil.isClosure(parameter.resolvedType)
   }
 
-  private fun transformParameter(parameter: Parameter): TuplePropertyDeclaration.TupleParameter? {
+  private fun transformParameter(parameter: Parameter, genericIdentifiers: List<String>): TuplePropertyDeclaration.TupleParameter? {
     val name = parameter.name
-    val type = parameter.erasedType
+    val copied = CopyVisitor.copy(parameter.type.originalType)
+    TypeErasingVisitor.erase(copied, genericIdentifiers)
     val resolvedType = parameter.resolvedType
-    return TuplePropertyDeclaration.TupleParameter(name, removeInOut(replaceIUO(type)), resolvedType)
+    return TuplePropertyDeclaration.TupleParameter(name, removeInOut(replaceIUO(copied.text)), resolvedType)
   }
 
   private fun replaceIUO(type: String): String {

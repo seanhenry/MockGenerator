@@ -6,8 +6,10 @@ import codes.seanhenry.mockgenerator.swift.SwiftStringConvenienceInitCall
 import codes.seanhenry.mockgenerator.swift.SwiftStringInitialiserDeclaration
 import codes.seanhenry.mockgenerator.swift.SwiftStringProtocolInitialiserDeclaration
 import codes.seanhenry.mockgenerator.swift.SwiftStringTupleForwardCall
+import codes.seanhenry.mockgenerator.transformer.CopyVisitor
 import codes.seanhenry.mockgenerator.transformer.DefaultValueVisitor
 import codes.seanhenry.mockgenerator.transformer.FunctionParameterTransformer
+import codes.seanhenry.mockgenerator.transformer.TypeErasingVisitor
 import codes.seanhenry.mockgenerator.usecases.CreateConvenienceInitialiser
 import codes.seanhenry.mockgenerator.usecases.CreateInvokedParameters
 import codes.seanhenry.mockgenerator.util.*
@@ -231,21 +233,37 @@ class MockViewPresenter(val view: MockView): MockTransformer {
   private fun transformReturnType(method: Method): ResultTypeViewModel? {
     val type = method.returnType
     if (!TypeIdentifier.isEmpty(type.resolvedType)) {
+      val erased = erase(type.originalType, method.genericParameters)
       return ResultTypeViewModel(
-          getDefaultValueAssignment(type.erasedType),
-          OptionalUtil.removeOptional(type.erasedType.text) + "?",
-          ClosureUtil.surroundClosure(OptionalUtil.removeOptionalRecursively(type.erasedType.text)) + "!",
+          getDefaultValueAssignment(type.resolvedType),
+          OptionalUtil.removeOptional(erased.text) + "?",
+          ClosureUtil.surroundClosure(OptionalUtil.removeOptionalRecursively(erased.text)) + "!",
       // TODO: we need to surround all closures when appending an optional. Write some tests
-        transformReturnCastStatement(type)
+        transformReturnCastStatement(type.originalType, erased)
       )
     }
     return null
   }
 
-  private fun transformReturnCastStatement(returnType: MethodType): String {
-    if (returnType.originalType.text == returnType.erasedType.text) { return "" }
+  private fun erase(type: Type, genericParameters: List<String>): Type {
+    val copied = copy(type)
+    val visitor = TypeErasingVisitor(genericParameters)
+    copied.accept(visitor)
+    return copied
+  }
+
+  private fun copy(type: Type): Type {
+    val copyVisitor = CopyVisitor()
+    type.accept(copyVisitor)
+    return copyVisitor.copy
+  }
+
+  private fun transformReturnCastStatement(originalType: Type, erasedType: Type): String {
+    if (originalType.text == erasedType.text) {
+      return ""
+    }
     var optional = "!"
-    var type = returnType.originalType.text
+    var type = originalType.text
     if (OptionalUtil.isOptional(type)) {
       optional = "?"
       type = OptionalUtil.removeOptional(type)
@@ -257,7 +275,7 @@ class MockViewPresenter(val view: MockView): MockTransformer {
     if (method.parametersList.isEmpty()) {
       return null
     }
-    val declaration = transformToTupleDeclaration(method.parametersList) ?: return null
+    val declaration = transformToTupleDeclaration(method.parametersList, method.genericParameters) ?: return null
     val assignment = transformToTupleAssignment(declaration) ?: return null
     return ParametersViewModel(
         declaration.type,
@@ -265,8 +283,8 @@ class MockViewPresenter(val view: MockView): MockTransformer {
     )
   }
 
-  private fun transformToTupleDeclaration(parameters: List<Parameter>): TuplePropertyDeclaration? {
-    return CreateInvokedParameters().transform("", parameters) // TODO: remove name
+  private fun transformToTupleDeclaration(parameters: List<Parameter>, genericIdentifiers: List<String>): TuplePropertyDeclaration? {
+    return CreateInvokedParameters().transform("", parameters, genericIdentifiers) // TODO: remove name
   }
 
   private fun transformToTupleAssignment(tuple: TuplePropertyDeclaration): String? {

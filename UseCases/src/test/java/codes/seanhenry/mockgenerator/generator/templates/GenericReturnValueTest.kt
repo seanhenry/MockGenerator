@@ -6,12 +6,24 @@ import codes.seanhenry.mockgenerator.generator.MockTransformer
 class GenericReturnValueTest : MockGeneratorTestTemplate {
 
   override fun build(generator: MockTransformer) {
-//    generator.add(
-//        Method("generic1", MethodType.Builder("T", "T", "Any").build(), emptyList(), "func generic1<T>() -> T", false),
-//        Method("generic2", MethodType.Builder("T?", "T?", "Any?").build(), emptyList(), "func generic2<T>() -> T?", false),
-//        Method("generic3", MethodType.Builder("T!", "T!", "Any!").build(), emptyList(), "func generic3<T>() -> T!", false),
-//        Method("genericArray", MethodType.Builder("[T]", "[T]", "[Any]").build(), emptyList(), "func genericArray<T>() -> [T]", false)
-//    )
+    generator.add(
+        Method.Builder("generic1")
+            .genericParameter("T")
+            .returnType("T")
+            .build(),
+        Method.Builder("generic2")
+            .genericParameter("T")
+            .returnType().optional { it.type("T") }
+            .build(),
+        Method.Builder("generic3")
+            .genericParameter("T")
+            .returnType().optional { it.unwrapped().type("T") }
+            .build(),
+        Method.Builder("genericArray")
+            .genericParameter("T")
+            .returnType().array { it.type("T") }
+            .build()
+    )
   }
 
   override fun getExpected(): String {

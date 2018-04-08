@@ -1,8 +1,9 @@
 package codes.seanhenry.mockgenerator.ast
 
+import codes.seanhenry.mockgenerator.transformer.CopyVisitor
 import codes.seanhenry.mockgenerator.visitor.Visitor
 
-class DictionaryType private constructor(val keyType: Type, val valueType: Type, private val useVerboseSyntax: Boolean): Type {
+data class DictionaryType(val keyType: Type, val valueType: Type, private val useVerboseSyntax: Boolean): Type {
 
   override val text: String
     get() { return generateText() }
@@ -10,15 +11,19 @@ class DictionaryType private constructor(val keyType: Type, val valueType: Type,
   private fun generateText(): String {
     val key = keyType.text
     val value = valueType.text
-    if (useVerboseSyntax) {
-      return "Dictionary<$key, $value>"
+    return if (useVerboseSyntax) {
+      "Dictionary<$key, $value>"
     } else {
-      return "[$key: $value]"
+      "[$key: $value]"
     }
   }
 
   override fun accept(visitor: Visitor) {
     visitor.visitDictionaryType(this)
+  }
+
+  fun deepCopy(): DictionaryType {
+    return copy(keyType = CopyVisitor.copy(keyType), valueType = CopyVisitor.copy(valueType))
   }
 
   class Builder {

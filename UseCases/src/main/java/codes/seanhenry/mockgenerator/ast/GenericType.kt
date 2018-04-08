@@ -1,8 +1,9 @@
 package codes.seanhenry.mockgenerator.ast
 
+import codes.seanhenry.mockgenerator.transformer.CopyVisitor
 import codes.seanhenry.mockgenerator.visitor.Visitor
 
-class GenericType private constructor(val identifier: String, val arguments: List<Type>): Type {
+data class GenericType(val identifier: String, val arguments: List<Type>): Type {
 
   override val text: String
     get() { return generateText() }
@@ -14,6 +15,10 @@ class GenericType private constructor(val identifier: String, val arguments: Lis
 
   override fun accept(visitor: Visitor) {
     visitor.visitGenericType(this)
+  }
+
+  fun deepCopy(): GenericType {
+    return copy(arguments = CopyVisitor.copy(arguments))
   }
 
   class Builder(private val identifier: String) {

@@ -1,8 +1,9 @@
 package codes.seanhenry.mockgenerator.ast
 
+import codes.seanhenry.mockgenerator.transformer.CopyVisitor
 import codes.seanhenry.mockgenerator.visitor.Visitor
 
-class OptionalType private constructor(val type: Type, val isImplicitlyUnwrapped: Boolean, val useVerboseSyntax: Boolean, val implicitlyUnwrapped: Boolean): Type {
+data class OptionalType(val type: Type, val isImplicitlyUnwrapped: Boolean, val useVerboseSyntax: Boolean, val implicitlyUnwrapped: Boolean): Type {
 
   override val text: String
     get() { return generateText() }
@@ -18,6 +19,10 @@ class OptionalType private constructor(val type: Type, val isImplicitlyUnwrapped
 
   override fun accept(visitor: Visitor) {
     visitor.visitOptionalType(this)
+  }
+
+  fun deepCopy(): OptionalType {
+    return this.copy(type = CopyVisitor.copy(type))
   }
 
   class Builder {

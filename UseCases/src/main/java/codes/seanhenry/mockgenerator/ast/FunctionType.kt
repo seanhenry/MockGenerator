@@ -1,8 +1,9 @@
 package codes.seanhenry.mockgenerator.ast
 
+import codes.seanhenry.mockgenerator.transformer.CopyVisitor
 import codes.seanhenry.mockgenerator.visitor.Visitor
 
-class FunctionType private constructor(val arguments: List<Type>, val returnType: Type, val throws: Boolean): Type {
+data class FunctionType(val arguments: List<Type>, val returnType: Type, val throws: Boolean): Type {
 
   override val text: String
     get() { return generateText() }
@@ -16,6 +17,10 @@ class FunctionType private constructor(val arguments: List<Type>, val returnType
 
   override fun accept(visitor: Visitor) {
     visitor.visitFunctionType(this)
+  }
+
+  fun deepCopy(): FunctionType {
+    return copy(arguments = CopyVisitor.copy(arguments), returnType = CopyVisitor.copy(returnType))
   }
 
   class Builder {

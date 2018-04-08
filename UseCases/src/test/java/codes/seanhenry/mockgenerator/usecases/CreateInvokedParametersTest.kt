@@ -15,5 +15,5 @@ class CreateInvokedParametersTest: TestCase() {
     assertEquals("invokedLongNameParameters", property?.name)
   }
 
-  private fun transformName(name: String) = CreateInvokedParameters().transform(name, listOf(TEST_PARAMETER))
+  private fun transformName(name: String) = CreateInvokedParameters().transform(name, listOf(TEST_PARAMETER), emptyList())
 }

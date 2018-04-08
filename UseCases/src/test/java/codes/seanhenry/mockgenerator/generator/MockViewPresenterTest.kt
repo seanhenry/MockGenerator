@@ -103,7 +103,7 @@ class MockViewPresenterTest : TestCase() {
   }
 
   fun testGenericReturnValue() {
-//    runTest(GenericReturnValueTest())
+    runTest(GenericReturnValueTest())
   }
 
   private fun runTest(template: MockGeneratorTestTemplate) {

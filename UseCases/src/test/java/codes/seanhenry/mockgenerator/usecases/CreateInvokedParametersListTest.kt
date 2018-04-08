@@ -6,12 +6,12 @@ import junit.framework.TestCase
 class CreateInvokedParametersListTest: TestCase() {
 
   fun testShouldTransformName() {
-    val property = CreateInvokedParametersList().transform("name", listOf(TEST_PARAMETER))
+    val property = CreateInvokedParametersList().transform("name", listOf(TEST_PARAMETER), emptyList())
     assertEquals("invokedNameParametersList", property?.name)
   }
 
   fun testShouldTransformLongName() {
-    val property = CreateInvokedParametersList().transform("longName", listOf(TEST_PARAMETER))
+    val property = CreateInvokedParametersList().transform("longName", listOf(TEST_PARAMETER), emptyList())
     assertEquals("invokedLongNameParametersList", property?.name)
   }
 }

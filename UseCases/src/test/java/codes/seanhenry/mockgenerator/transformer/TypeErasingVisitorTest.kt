@@ -46,8 +46,7 @@ class TypeErasingVisitorTest: TestCase() {
   }
 
   private fun erase(type: Type): Type {
-    val visitor = TypeErasingVisitor(listOf("T", "U"))
-    type.accept(visitor)
+    TypeErasingVisitor.erase(type, listOf("T", "U"))
     return type
   }
 }

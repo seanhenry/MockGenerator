@@ -9,14 +9,22 @@ class GenericParametersTest: MockGeneratorTestTemplate {
 
   override fun build(generator: MockTransformer) {
     generator.add(
-        // TODO: add visitor to search types for generic parameter
-        Method("generic", null, listOf(Parameter("a", "a", MethodType.Builder("T", "T", "Any").build(), "a: T")), "func generic<T>(a: T)"),
-        Method("generic", null, listOf(Parameter("array", "array", MethodType.Builder("[T]", "[T]", "[Any]").build(), "a: [T]")), "func generic<T>(array: [T])"),
+        Method.Builder("generic")
+            .genericParameter("T")
+            .parameter("a") { it.type("T") }
+            .build(),
+        Method.Builder("generic")
+            .genericParameter("T")
+            .parameter("array") { it.type().array { it.type("T") } }
+            .build(),
+        // TODO: support nested types
         Method("generic", null, listOf(Parameter("b", "b", MethodType.Builder("T", "T", "Any").build(), "b: T")), "func generic<T: NSObject>(b: T.Type)"),
-        Method("generic", null, listOf(
-            Parameter("c", "c", MethodType.Builder("T?", "T?", "Any?").build(), "c: T?"),
-            Parameter("d", "d", MethodType.Builder("U!", "U!", "Any!").build(), "c: U!")
-        ), "func generic<T, U>(c: T?, d: U!)")
+        Method.Builder("generic")
+            .genericParameter("T")
+            .genericParameter("U")
+            .parameter("c") { it.type().optional { it.type("T") } }
+            .parameter("d") { it.type().optional { it.unwrapped().type("U") } }
+            .build()
     )
   }
 
