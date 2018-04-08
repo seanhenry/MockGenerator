@@ -2,6 +2,7 @@ package codes.seanhenry.mockgenerator.transformer
 
 import codes.seanhenry.mockgenerator.ast.FunctionType
 import codes.seanhenry.mockgenerator.ast.OptionalType
+import codes.seanhenry.mockgenerator.ast.Type
 import codes.seanhenry.mockgenerator.ast.TypeIdentifier
 import codes.seanhenry.mockgenerator.generator.ClosureParameterViewModel
 import junit.framework.TestCase
@@ -101,7 +102,7 @@ class FunctionParameterTransformerTest: TestCase() {
     return transform(function)!!
   }
 
-  private fun transform(type: TypeIdentifier): ClosureParameterViewModel? {
+  private fun transform(type: Type): ClosureParameterViewModel? {
     val visitor = FunctionParameterTransformer("name")
     type.accept(visitor)
     return visitor.transformed

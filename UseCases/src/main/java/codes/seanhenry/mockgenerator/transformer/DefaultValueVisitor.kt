@@ -7,7 +7,7 @@ class DefaultValueVisitor: Visitor() {
 
   var defaultValue: String? = null
 
-  override fun visitType(type: TypeIdentifier) {
+  override fun visitTypeIdentifier(type: TypeIdentifier) {
     defaultValue = knownTypes[type.text]
   }
 
@@ -37,7 +37,7 @@ class DefaultValueVisitor: Visitor() {
   }
 
   private fun addReturnTypeDefaultValue(value: MutableList<String>, type: FunctionType) {
-    if (type.returnType.isVoid) {
+    if (TypeIdentifier.isVoid(type.returnType)) {
       return
     }
     val visitor = DefaultValueVisitor()

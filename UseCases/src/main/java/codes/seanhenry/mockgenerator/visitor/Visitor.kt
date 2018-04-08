@@ -4,7 +4,11 @@ import codes.seanhenry.mockgenerator.ast.*
 
 open class Visitor {
 
-  open fun visitType(type: TypeIdentifier) {
+  open fun visitType(type: Type) {
+  }
+
+  open fun visitTypeIdentifier(type: TypeIdentifier) {
+    visitType(type)
   }
 
   open fun visitFunctionType(type: FunctionType) {

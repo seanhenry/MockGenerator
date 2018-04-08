@@ -2,7 +2,7 @@ package codes.seanhenry.mockgenerator.ast
 
 import codes.seanhenry.mockgenerator.visitor.Visitor
 
-class BracketType(val type: TypeIdentifier) : TypeIdentifier("") {
+class BracketType(val type: Type): Type {
 
   override var text: String
     set(_) {}

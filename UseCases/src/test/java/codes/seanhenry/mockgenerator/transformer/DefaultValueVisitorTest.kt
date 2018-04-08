@@ -99,7 +99,7 @@ class DefaultValueVisitorTest : TestCase() {
     return getDefaultValue(TypeIdentifier(type))
   }
 
-  private fun getDefaultValue(type: TypeIdentifier): String? {
+  private fun getDefaultValue(type: Type): String? {
     val visitor = DefaultValueVisitor()
     type.accept(visitor)
     return visitor.defaultValue

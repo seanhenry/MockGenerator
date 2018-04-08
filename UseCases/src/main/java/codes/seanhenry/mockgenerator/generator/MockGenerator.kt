@@ -1,6 +1,7 @@
 package codes.seanhenry.mockgenerator.generator
 
 import codes.seanhenry.mockgenerator.ast.Method
+import codes.seanhenry.mockgenerator.ast.TypeIdentifier
 import codes.seanhenry.mockgenerator.entities.*
 import codes.seanhenry.mockgenerator.swift.SwiftStringReturnProperty
 import codes.seanhenry.mockgenerator.swift.*
@@ -262,7 +263,7 @@ class MockGenerator: MockTransformer {
   }
 
   private fun createReturnStub(method: Method, name: String): PropertyDeclaration? {
-    if (!method.returnType.originalType.isEmpty) {
+    if (!TypeIdentifier.isEmpty(method.returnType.originalType)) {
       return CreateMethodReturnStub().transform(name, method.returnType.erasedType.text)
     }
     return null

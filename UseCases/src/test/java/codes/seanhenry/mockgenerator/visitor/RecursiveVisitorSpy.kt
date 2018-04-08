@@ -5,9 +5,9 @@ import codes.seanhenry.mockgenerator.ast.*
 class RecursiveVisitorSpy: RecursiveVisitor() {
 
   var visitedTypes = ArrayList<TypeIdentifier>()
-  override fun visitType(type: TypeIdentifier) {
+  override fun visitTypeIdentifier(type: TypeIdentifier) {
     visitedTypes.add(type)
-    super.visitType(type)
+    super.visitTypeIdentifier(type)
   }
 
   var visitedFunctionTypes = ArrayList<FunctionType>()

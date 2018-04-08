@@ -1,6 +1,7 @@
 package codes.seanhenry.mockgenerator.transformer
 
 import codes.seanhenry.mockgenerator.ast.Method
+import codes.seanhenry.mockgenerator.ast.Type
 import codes.seanhenry.mockgenerator.ast.TypeIdentifier
 import junit.framework.TestCase
 
@@ -44,7 +45,7 @@ class TypeErasingVisitorTest: TestCase() {
     return Method.Builder("method")
   }
 
-  private fun erase(type: TypeIdentifier): TypeIdentifier {
+  private fun erase(type: Type): Type {
     val visitor = TypeErasingVisitor(listOf("T", "U"))
     type.accept(visitor)
     return type

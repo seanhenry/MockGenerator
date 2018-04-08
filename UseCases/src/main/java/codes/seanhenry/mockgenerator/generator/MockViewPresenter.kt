@@ -190,7 +190,7 @@ class MockViewPresenter(val view: MockView): MockTransformer {
     return "$modifiers$declaration"
   }
 
-  private fun getDefaultValueAssignment(type: TypeIdentifier): String {
+  private fun getDefaultValueAssignment(type: Type): String {
     val visitor = DefaultValueVisitor()
     type.accept(visitor)
     val defaultValue = visitor.defaultValue
@@ -230,7 +230,7 @@ class MockViewPresenter(val view: MockView): MockTransformer {
 
   private fun transformReturnType(method: Method): ResultTypeViewModel? {
     val type = method.returnType
-    if (!type.resolvedType.isEmpty) {
+    if (!TypeIdentifier.isEmpty(type.resolvedType)) {
       return ResultTypeViewModel(
           getDefaultValueAssignment(type.erasedType),
           OptionalUtil.removeOptional(type.erasedType.text) + "?",

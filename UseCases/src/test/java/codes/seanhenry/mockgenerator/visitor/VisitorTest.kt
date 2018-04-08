@@ -12,10 +12,11 @@ class VisitorTest: TestCase() {
     visitor = VisitorSpy()
   }
 
-  fun testShouldVisitType() {
+  fun testShouldVisitTypeIdentifier() {
     val type = TypeIdentifier("Type")
     type.accept(visitor)
     assertTrue(visitor.didVisitType)
+    assertTrue(visitor.didVisitTypeIdentifier)
   }
 
   fun testShouldVisitFunctionType() {

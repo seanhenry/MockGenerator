@@ -5,9 +5,15 @@ import codes.seanhenry.mockgenerator.ast.*
 class VisitorSpy: Visitor() {
 
   var didVisitType = false
-  override fun visitType(type: TypeIdentifier) {
+  override fun visitType(type: Type) {
     super.visitType(type)
     didVisitType = true
+  }
+
+  var didVisitTypeIdentifier = false
+  override fun visitTypeIdentifier(type: TypeIdentifier) {
+    super.visitTypeIdentifier(type)
+    didVisitTypeIdentifier = true
   }
 
   var didVisitFunctionType = false
