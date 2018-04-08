@@ -6,9 +6,18 @@ import codes.seanhenry.mockgenerator.generator.MockTransformer
 class SimplestClassInitialiserTest: MockGeneratorTestTemplate {
   override fun build(generator: MockTransformer) {
     generator.setClassInitialisers(
-      Initialiser("a: Int, b: String", false),
-      Initialiser("a: Int, b: String, c: UInt", false),
-      Initialiser("a: String", false)
+        Initialiser.Builder()
+            .parameter("a") { it.type("Int") }
+            .parameter("b") { it.type("String") }
+            .build(),
+        Initialiser.Builder()
+            .parameter("a") { it.type("Int") }
+            .parameter("b") { it.type("String") }
+            .parameter("c") { it.type("UInt") }
+            .build(),
+        Initialiser.Builder()
+            .parameter("a") { it.type("String") }
+            .build()
     )
   }
 

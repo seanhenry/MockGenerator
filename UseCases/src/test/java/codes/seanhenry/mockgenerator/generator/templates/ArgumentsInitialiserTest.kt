@@ -7,7 +7,11 @@ class ArgumentsInitialiserTest : MockGeneratorTestTemplate {
 
   override fun build(generator: MockTransformer) {
     generator.setClassInitialisers(
-        Initialiser("a: Int, b: String, _ c: String?", false)
+        Initialiser.Builder()
+            .parameter("a") { it.type("Int") }
+            .parameter("b") { it.type("String") }
+            .parameter("_", "c") { it.type().optional { it.type("String") } }
+            .build()
     )
   }
 

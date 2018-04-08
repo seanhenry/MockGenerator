@@ -6,7 +6,12 @@ import codes.seanhenry.mockgenerator.generator.MockTransformer
 class ThrowingInitialiserTest: MockGeneratorTestTemplate {
 
   override fun build(generator: MockTransformer) {
-    generator.setClassInitialisers(Initialiser("a: String", false, true))
+    generator.setClassInitialisers(
+        Initialiser.Builder()
+            .parameter("a") { it.type("String") }
+            .throws()
+            .build()
+    )
   }
 
   override fun getExpected(): String {

@@ -7,7 +7,9 @@ class OpenInitialiserTest: MockGeneratorTestTemplate {
 
   override fun build(generator: MockTransformer) {
     generator.setClassInitialisers(
-        Initialiser("a: String?", false, false)
+        Initialiser.Builder()
+            .parameter("a") { it.type().optional { it.type("String") } }
+            .build()
     )
     generator.setScope("open")
   }

@@ -7,10 +7,24 @@ class ProtocolInitialiserTest : MockGeneratorTestTemplate {
 
   override fun build(generator: MockTransformer) {
     generator.add(
-        Initialiser("", false, false, true),
-        Initialiser("a: String", false, false, true),
-        Initialiser("b: String", true, false, true),
-        Initialiser("c: String", true, true, true)
+        Initialiser.Builder()
+            .protocol()
+            .build(),
+        Initialiser.Builder()
+            .parameter("a") { it.type("String") }
+            .protocol()
+            .build(),
+        Initialiser.Builder()
+            .parameter("b") { it.type("String") }
+            .failable()
+            .protocol()
+            .build(),
+        Initialiser.Builder()
+            .parameter("c") { it.type("String") }
+            .failable()
+            .throws()
+            .protocol()
+            .build()
     )
   }
 

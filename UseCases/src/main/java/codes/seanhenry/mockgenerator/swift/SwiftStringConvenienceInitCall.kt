@@ -26,6 +26,8 @@ class SwiftStringConvenienceInitCall {
         val value = getValue(it.label, it.originalType)
         if (it.label == "_") {
           value
+        } else if (it.label.isEmpty()) {
+          it.name + ": " + value
         } else {
           it.label + ": " + value
         }

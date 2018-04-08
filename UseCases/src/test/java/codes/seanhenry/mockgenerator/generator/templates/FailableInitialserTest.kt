@@ -7,7 +7,10 @@ class FailableInitialserTest : MockGeneratorTestTemplate {
 
   override fun build(generator: MockTransformer) {
     generator.setClassInitialisers(
-      Initialiser("a: String", true)
+        Initialiser.Builder()
+            .parameter("a") { it.type("String") }
+            .failable()
+            .build()
     )
   }
 

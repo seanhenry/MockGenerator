@@ -7,7 +7,7 @@ class NoArgumentFailableInitialiserTest: MockGeneratorTestTemplate {
 
   override fun build(generator: MockTransformer) {
     generator.setClassInitialisers(
-        Initialiser("", true)
+        Initialiser.Builder().failable().build()
     )
   }
 
