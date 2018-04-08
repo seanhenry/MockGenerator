@@ -61,14 +61,13 @@ class Method(val name: String, val genericParameters: List<String>, val returnTy
     private fun getDeclarationText(): String {
       var returnString = ""
       var throwString = ""
-      var parametersString = ""
+      val parametersString: String = parameters.map { it.text }.joinToString(", ")
       if (returnType != MethodType.IMPLICIT) {
         returnString = " -> ${returnType.originalType.text}"
       }
       if (throws) {
         throwString = " throws"
       }
-      parametersString = parameters.map { it.text }.joinToString(", ")
       return "func $name${getGenericClauseText()}($parametersString)$throwString$returnString"
     }
 

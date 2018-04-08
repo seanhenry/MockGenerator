@@ -17,8 +17,10 @@ class GenericParametersTest: MockGeneratorTestTemplate {
             .genericParameter("T")
             .parameter("array") { it.type().array { it.type("T") } }
             .build(),
-        // TODO: support nested types
-        Method("generic", null, listOf(Parameter("b", "b", MethodType.Builder("T", "T", "Any").build(), "b: T")), "func generic<T: NSObject>(b: T.Type)"),
+        Method.Builder("generic")
+            .genericParameter("T")
+            .parameter("b") { it.type().typeIdentifier("T") { it.nest("Type") } }
+            .build(),
         Method.Builder("generic")
             .genericParameter("T")
             .genericParameter("U")
@@ -54,7 +56,7 @@ class GenericParametersTest: MockGeneratorTestTemplate {
       var invokedGenericBCount = 0
       var invokedGenericBParameters: (b: Any, Void)?
       var invokedGenericBParametersList = [(b: Any, Void)]()
-      func generic<T: NSObject>(b: T.Type) {
+      func generic<T>(b: T.Type) {
       invokedGenericB = true
       invokedGenericBCount += 1
       invokedGenericBParameters = (b, ())

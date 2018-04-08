@@ -2,12 +2,17 @@ package codes.seanhenry.mockgenerator.ast
 
 import codes.seanhenry.mockgenerator.visitor.Visitor
 
-data class TypeIdentifier(var identifier: String): Type {
+data class TypeIdentifier(var identifiers: MutableList<String>): Type {
+
+  constructor(identifier: String): this(mutableListOf(identifier))
 
   val isEmpty: Boolean by lazy { EMPTY.text == text }
 
+  val firstIdentifier: String
+    get() { return identifiers.first() }
+
   override val text: String
-    get() { return identifier }
+    get() { return identifiers.joinToString(".") }
 
   override fun accept(visitor: Visitor) {
     visitor.visitTypeIdentifier(this)
@@ -26,6 +31,20 @@ data class TypeIdentifier(var identifier: String): Type {
     val EMPTY_TUPLE = TypeIdentifier("()")
     val VOID_TUPLE = TypeIdentifier("(Void)")
     val EMPTY = TypeIdentifier("")
+  }
+
+  class Builder(identifier: String) {
+
+    private val identifiers = arrayListOf(identifier)
+
+    fun nest(identifier: String): Builder {
+      identifiers.add(identifier)
+      return this
+    }
+
+    fun build(): TypeIdentifier {
+      return TypeIdentifier(identifiers)
+    }
   }
 
   // TODO: move me
@@ -74,6 +93,13 @@ data class TypeIdentifier(var identifier: String): Type {
 
     fun type(type: String): B {
       getType(TypeIdentifier(type))
+      return previousBuilder
+    }
+
+    fun typeIdentifier(identifier: String, build: (TypeIdentifier.Builder) -> Unit): B {
+      val builder = TypeIdentifier.Builder(identifier)
+      build(builder)
+      getType(builder.build())
       return previousBuilder
     }
   }

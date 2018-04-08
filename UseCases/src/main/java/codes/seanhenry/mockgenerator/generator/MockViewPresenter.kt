@@ -121,7 +121,7 @@ class MockViewPresenter(val view: MockView): MockTransformer {
     val init = classInitialiser
     val call = flatMap(classInitialiser) { CreateConvenienceInitialiser().transform(it) }
     if (init != null && call != null) {
-      val scope = getClassInitialiserScope(init)
+      val scope = getClassInitialiserScope()
       return listOf(InitializerViewModel(
           scope + SwiftStringInitialiserDeclaration().transform(call),
           SwiftStringConvenienceInitCall().transform(call)
@@ -137,7 +137,7 @@ class MockViewPresenter(val view: MockView): MockTransformer {
     return null
   }
 
-  private fun getClassInitialiserScope(initialiser: Initialiser): String {
+  private fun getClassInitialiserScope(): String {
     return if (scope == "open") {
       "public "
     } else if (scope != null) {

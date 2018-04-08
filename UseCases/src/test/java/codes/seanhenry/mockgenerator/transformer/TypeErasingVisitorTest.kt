@@ -9,6 +9,13 @@ class TypeErasingVisitorTest: TestCase() {
 
   lateinit var method: Method
 
+  fun testShouldEraseNestedType() {
+    method = buildMethod()
+        .parameter("t") { it.type().typeIdentifier("T") { it.nest("Nested") } }
+        .build()
+    assertEquals("Any", erase(method.parametersList[0].type.originalType).text)
+  }
+
   fun testShouldEraseType() {
     method = buildMethod()
         .parameter("t") { it.type("T") }

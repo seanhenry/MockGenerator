@@ -13,9 +13,8 @@ class TypeErasingVisitor(private val genericIdentifiers: List<String>) : Recursi
   }
 
   override fun visitTypeIdentifier(type: TypeIdentifier) {
-    if (genericIdentifiers.contains(type.text)) {
-      type.identifier = "Any"
+    if (genericIdentifiers.contains(type.firstIdentifier)) {
+      type.identifiers = mutableListOf("Any")
     }
-    super.visitTypeIdentifier(type)
   }
 }

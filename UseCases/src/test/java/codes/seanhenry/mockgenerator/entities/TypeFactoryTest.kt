@@ -38,4 +38,11 @@ class TypeFactoryTest: TestCase() {
         .build()
     assertEquals("Type<>?", optional.text)
   }
+
+  fun testShouldBuildTypeIdentifier() {
+    val optional = OptionalType.Builder()
+        .type().typeIdentifier("A") { it.nest("B") }
+        .build()
+    assertEquals("A.B?", optional.text)
+  }
 }
