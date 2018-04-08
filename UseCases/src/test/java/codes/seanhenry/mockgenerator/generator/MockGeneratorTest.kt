@@ -37,7 +37,7 @@ class MockGeneratorTest : TestCase() {
   }
 
   fun testReturnProtocol() {
-    runTest(ReturnProtocolTest())
+//    runTest(ReturnProtocolTest())
   }
 
   fun testScopeProtocol() {

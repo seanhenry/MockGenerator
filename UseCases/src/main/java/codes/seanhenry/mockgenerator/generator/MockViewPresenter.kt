@@ -6,6 +6,7 @@ import codes.seanhenry.mockgenerator.swift.SwiftStringConvenienceInitCall
 import codes.seanhenry.mockgenerator.swift.SwiftStringInitialiserDeclaration
 import codes.seanhenry.mockgenerator.swift.SwiftStringProtocolInitialiserDeclaration
 import codes.seanhenry.mockgenerator.swift.SwiftStringTupleForwardCall
+import codes.seanhenry.mockgenerator.transformer.DefaultValueVisitor
 import codes.seanhenry.mockgenerator.transformer.FunctionParameterTransformer
 import codes.seanhenry.mockgenerator.usecases.CreateConvenienceInitialiser
 import codes.seanhenry.mockgenerator.usecases.CreateInvokedParameters
@@ -170,9 +171,9 @@ class MockViewPresenter(val view: MockView): MockTransformer {
       PropertyViewModel(
           getUniqueName(it).capitalize(),
           it.isWritable,
-          it.type,
-          OptionalUtil.removeOptional(it.type) + "?",
-          OptionalUtil.removeOptionalRecursively(it.type) + "!",
+          it.type.text,
+          OptionalUtil.removeOptional(it.type.text) + "?", // TODO: stop using optUtil and use visitor
+          OptionalUtil.removeOptionalRecursively(it.type.text) + "!", // TODO: same as above
           getDefaultValueAssignment(it.type),
           transformDeclarationText(it.getTrimmedDeclarationText(), isClass))
     }
@@ -189,9 +190,11 @@ class MockViewPresenter(val view: MockView): MockTransformer {
     return "$modifiers$declaration"
   }
 
-  private fun getDefaultValueAssignment(type: String): String {
-    val defaultValue = DefaultValueStore().getDefaultValue(type)
-    if (defaultValue != null) {
+  private fun getDefaultValueAssignment(type: Type): String {
+    val visitor = DefaultValueVisitor()
+    type.accept(visitor)
+    val defaultValue = visitor.defaultValue
+    if (defaultValue != null && defaultValue != "nil") {
       return "= $defaultValue"
     }
     return ""
@@ -229,7 +232,7 @@ class MockViewPresenter(val view: MockView): MockTransformer {
     val type = method.returnType
     if (!type.resolvedType.isEmpty) {
       return ResultTypeViewModel(
-          getDefaultValueAssignment(type.erasedType.text),
+          getDefaultValueAssignment(type.erasedType),
           OptionalUtil.removeOptional(type.erasedType.text) + "?",
           ClosureUtil.surroundClosure(OptionalUtil.removeOptionalRecursively(type.erasedType.text)) + "!",
       // TODO: we need to surround all closures when appending an optional. Write some tests

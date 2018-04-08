@@ -30,7 +30,7 @@ class ReturnProtocolTest: MockGeneratorTestTemplate {
             .returnType().bracket().function { func ->
               func.argument("String")
                   .argument().optional { it.type("Int") }
-                  .returnType("(UInt)")
+                  .returnType().bracket().type("UInt")
             }
             .build(),
         Method.Builder("returnOptionalClosure")
@@ -47,6 +47,30 @@ class ReturnProtocolTest: MockGeneratorTestTemplate {
               func.argument("Int")
                   .argument("String")
                   .returnType("(String)")
+            }
+            .build(),
+        Method.Builder("closureA")
+            .returnType().function { }
+            .build(),
+        Method.Builder("closureB")
+            .returnType().function { func ->
+              func.returnType().bracket().type("Void")
+            }
+            .build(),
+        Method.Builder("closureC")
+            .returnType().function { func ->
+              func.returnType().type("Void")
+            }
+            .build(),
+        Method.Builder("closureD")
+            .returnType().function { func ->
+              func.argument("String")
+                  .argument("Int")
+            }
+            .build(),
+        Method.Builder("closureE")
+            .returnType().function { func ->
+              func.returnType().bracket().type("String")
             }
             .build()
     )
@@ -112,7 +136,7 @@ class ReturnProtocolTest: MockGeneratorTestTemplate {
     }
     var invokedReturnClosure = false
     var invokedReturnClosureCount = 0
-    var stubbedReturnClosureResult: (() -> ())!
+    var stubbedReturnClosureResult: (() -> ())! = { }
     func returnClosure() -> () -> () {
     invokedReturnClosure = true
     invokedReturnClosureCount += 1
@@ -120,7 +144,7 @@ class ReturnProtocolTest: MockGeneratorTestTemplate {
     }
     var invokedReturnComplicatedClosure = false
     var invokedReturnComplicatedClosureCount = 0
-    var stubbedReturnComplicatedClosureResult: ((String, Int?) -> (UInt))!
+    var stubbedReturnComplicatedClosureResult: ((String, Int?) -> (UInt))! = { _, _ in return 0 }
     func returnComplicatedClosure() -> ((String, Int?) -> (UInt)) {
     invokedReturnComplicatedClosure = true
     invokedReturnComplicatedClosureCount += 1
@@ -144,7 +168,7 @@ class ReturnProtocolTest: MockGeneratorTestTemplate {
     }
     var invokedReturnClosure = false
     var invokedReturnClosureCount = 0
-    var stubbedReturnClosureResult: (() -> ())!
+    var stubbedReturnClosureResult: (() -> ())! = { }
     func returnClosure() -> (() -> ()) {
     invokedReturnClosure = true
     invokedReturnClosureCount += 1
@@ -157,6 +181,46 @@ class ReturnProtocolTest: MockGeneratorTestTemplate {
     invokedReturnClosureArgs = true
     invokedReturnClosureArgsCount += 1
     return stubbedReturnClosureArgsResult
+    }
+    var invokedClosureA = false
+    var invokedClosureACount = 0
+    var stubbedClosureAResult: (() -> ())! = { }
+    func closureA() -> () -> () {
+    invokedClosureA = true
+    invokedClosureACount += 1
+    return stubbedClosureAResult
+    }
+    var invokedClosureB = false
+    var invokedClosureBCount = 0
+    var stubbedClosureBResult: (() -> (Void))! = { }
+    func closureB() -> () -> (Void) {
+    invokedClosureB = true
+    invokedClosureBCount += 1
+    return stubbedClosureBResult
+    }
+    var invokedClosureC = false
+    var invokedClosureCCount = 0
+    var stubbedClosureCResult: (() -> Void)! = { }
+    func closureC() -> () -> Void {
+    invokedClosureC = true
+    invokedClosureCCount += 1
+    return stubbedClosureCResult
+    }
+    var invokedClosureD = false
+    var invokedClosureDCount = 0
+    var stubbedClosureDResult: ((String, Int) -> ())! = { _, _ in }
+    func closureD() -> (String, Int) -> () {
+    invokedClosureD = true
+    invokedClosureDCount += 1
+    return stubbedClosureDResult
+    }
+    var invokedClosureE = false
+    var invokedClosureECount = 0
+    var stubbedClosureEResult: (() -> (String))! = { return "" }
+    func closureE() -> () -> (String) {
+    invokedClosureE = true
+    invokedClosureECount += 1
+    return stubbedClosureEResult
     }
       """.trimIndent()
   }

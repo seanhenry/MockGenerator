@@ -157,12 +157,12 @@ class MockGenerator: MockTransformer {
       val setterName = name + "Setter"
       val setterInvocationCheck = CreateInvocationCheck().transform(setterName)
       val setterInvocationCount = CreateInvocationCount().transform(setterName)
-      val invokedProperty = CreateInvokedProperty().transform(name, TransformToOptional().transform(property.type))
-      val invokedPropertyList = CreateInvokedPropertyList().transform(name, property.type)
+      val invokedProperty = CreateInvokedProperty().transform(name, TransformToOptional().transform(property.type.text))
+      val invokedPropertyList = CreateInvokedPropertyList().transform(name, property.type.text)
       val getterName = name + "Getter"
       val getterInvocationCheck = CreateInvocationCheck().transform(getterName)
       val getterInvocationCount = CreateInvocationCount().transform(getterName)
-      val returnStub = CreatePropertyGetterStub().transform(name, property.type)
+      val returnStub = CreatePropertyGetterStub().transform(name, property.type.text)
       addSetterProperties(setterInvocationCheck, setterInvocationCount, invokedProperty, invokedPropertyList, property.isWritable)
       addGetterProperties(property, getterInvocationCheck, getterInvocationCount, returnStub)
       addPropertyDeclaration(property)
@@ -222,7 +222,7 @@ class MockGenerator: MockTransformer {
                                   returnStub: PropertyDeclaration) {
     addScopedLine(SwiftStringImplicitValuePropertyDeclaration().transform(getterInvocationCheck, "false"))
     addScopedLine(SwiftStringImplicitValuePropertyDeclaration().transform(getterInvocationCount, "0"))
-    val defaultValue = DefaultValueStore().getDefaultValue(property.type)
+    val defaultValue = DefaultValueStore().getDefaultValue(property.type.text)
     addScopedLine(SwiftStringDefaultValuePropertyDeclaration().transform(returnStub, defaultValue))
   }
 

@@ -54,7 +54,9 @@ class DefaultValuesTest : MockGeneratorTestTemplate {
         Method.Builder("uInt8")
             .returnType("UInt8")
             .build(),
-        Method("array", "Array<String>", "", "func array() -> Array<String>"),
+        Method.Builder("array")
+            .returnType().generic("Array") { it.argument("String") }
+            .build(),
         Method.Builder("arrayLiteral")
             .returnType().array { it.type("String") }
             .build(),
