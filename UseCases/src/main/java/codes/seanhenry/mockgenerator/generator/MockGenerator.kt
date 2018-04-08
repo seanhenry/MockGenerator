@@ -200,7 +200,7 @@ class MockGenerator: MockTransformer {
   }
 
   private fun addPropertyDeclaration(property: Property) {
-    addOverriddenLine(property.getTrimmedSignature() + " {")
+    addOverriddenLine(property.getTrimmedDeclarationText() + " {")
   }
 
   private fun addSetterProperties(setterInvocationCheck: PropertyDeclaration,

@@ -11,7 +11,6 @@ import codes.seanhenry.mockgenerator.usecases.CreateConvenienceInitialiser
 import codes.seanhenry.mockgenerator.usecases.CreateInvokedParameters
 import codes.seanhenry.mockgenerator.util.*
 import codes.seanhenry.mockgenerator.visitor.RecursiveVisitor
-import codes.seanhenry.mockgenerator.visitor.Visitor
 
 class MockViewPresenter(val view: MockView): MockTransformer {
 
@@ -166,7 +165,7 @@ class MockViewPresenter(val view: MockView): MockTransformer {
           OptionalUtil.removeOptional(it.type) + "?",
           OptionalUtil.removeOptionalRecursively(it.type) + "!",
           getDefaultValueAssignment(it.type),
-          transformDeclarationText(it.getTrimmedSignature(), isClass))
+          transformDeclarationText(it.getTrimmedDeclarationText(), isClass))
     }
   }
 

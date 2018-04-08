@@ -1,6 +1,5 @@
 package codes.seanhenry.mockgenerator.generator.templates
 
-import codes.seanhenry.mockgenerator.entities.Parameter
 import codes.seanhenry.mockgenerator.ast.Method
 import codes.seanhenry.mockgenerator.generator.MockTransformer
 
