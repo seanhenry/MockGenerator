@@ -117,22 +117,32 @@ class MockViewPresenter(val view: MockView): MockTransformer {
 
   private fun transformClassInitializer(): List<InitializerViewModel> {
     val init = classInitialiser
-    if (init == null) {
-      return emptyList()
+    val call = flatMap(classInitialiser) { CreateConvenienceInitialiser().transform(it) }
+    if (init != null && call != null) {
+      val scope = getClassInitialiserScope(init)
+      return listOf(InitializerViewModel(
+          scope + SwiftStringInitialiserDeclaration().transform(call),
+          SwiftStringConvenienceInitCall().transform(call)
+      ))
     }
-    var scope = this.scope
-    if (scope == "open") {
-      scope = "public "
+    return emptyList()
+  }
+
+  private fun <T, R> flatMap(value: T?, transform: (T) -> R): R? {
+    if (value != null) {
+      return transform(value)
+    }
+    return null
+  }
+
+  private fun getClassInitialiserScope(initialiser: Initialiser): String {
+    return if (scope == "open") {
+      "public "
     } else if (scope != null) {
-      scope += " "
+      "${this.scope} "
     } else {
-      scope = ""
+      ""
     }
-    val call = CreateConvenienceInitialiser().transform(init)!!
-    return listOf(InitializerViewModel(
-        scope + SwiftStringInitialiserDeclaration().transform(call),
-        SwiftStringConvenienceInitCall().transform(call)
-    ))
   }
 
   private fun generateOverloadedNames() {
