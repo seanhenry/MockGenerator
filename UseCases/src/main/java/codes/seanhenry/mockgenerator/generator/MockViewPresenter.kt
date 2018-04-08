@@ -6,11 +6,10 @@ import codes.seanhenry.mockgenerator.swift.SwiftStringConvenienceInitCall
 import codes.seanhenry.mockgenerator.swift.SwiftStringInitialiserDeclaration
 import codes.seanhenry.mockgenerator.swift.SwiftStringProtocolInitialiserDeclaration
 import codes.seanhenry.mockgenerator.swift.SwiftStringTupleForwardCall
-import codes.seanhenry.mockgenerator.usecases.CreateClosureResultPropertyDeclaration
+import codes.seanhenry.mockgenerator.transformer.FunctionParameterTransformer
 import codes.seanhenry.mockgenerator.usecases.CreateConvenienceInitialiser
 import codes.seanhenry.mockgenerator.usecases.CreateInvokedParameters
 import codes.seanhenry.mockgenerator.util.*
-import codes.seanhenry.mockgenerator.visitor.RecursiveVisitor
 
 class MockViewPresenter(val view: MockView): MockTransformer {
 
@@ -203,14 +202,14 @@ class MockViewPresenter(val view: MockView): MockTransformer {
   }
 
   private fun transformMethods(methods: List<Method>, isClass: Boolean): List<MethodViewModel> {
-    return methods.map {
+    return methods.map { m ->
       MethodViewModel(
-          getUniqueName(it).capitalize(),
-          transformParameters(it),
-          transformClosureParameters(it),
-          transformReturnType(it),
-          it.throws,
-          transformDeclarationText(it.declarationText, isClass)
+          getUniqueName(m).capitalize(),
+          transformParameters(m),
+          m.parametersList.mapNotNull { transformClosureParameters(it) },
+          transformReturnType(m),
+          m.throws,
+          transformDeclarationText(m.declarationText, isClass)
       )
     }
   }
@@ -220,57 +219,10 @@ class MockViewPresenter(val view: MockView): MockTransformer {
   private fun getUniqueName(property: Property) =
       nameGenerator.getMethodName(toMethodModel(property).id)!!
 
-  private fun transformClosureParameters(method: Method): List<ClosureParameterViewModel> {
-    // TODO: extract and test
-    class V(val name: String): RecursiveVisitor() {
-      var transformed: ClosureParameterViewModel? = null
-      var isOptional = false
-      override fun visitFunctionType(type: FunctionType) {
-        transformed = ClosureParameterViewModel(
-            name.capitalize(),
-            name,
-            transformClosureToTupleDeclaration(type.parameters), // TODO: use same method as method params when closure model is complete
-            transformClosureToImplicitTupleAssignment(name, type, isOptional),
-            type.parameters.isNotEmpty()) // TODO: require proper closure model so this is done without string parsing
-        super.visitFunctionType(type)
-      }
-
-      override fun visitOptionalType(type: OptionalType) {
-        isOptional = true
-        super.visitOptionalType(type)
-      }
-    }
-    return method.parametersList
-        .mapNotNull {
-          val visitor = V(it.name)
-          it.type.resolvedType.accept(visitor)
-          visitor.transformed
-        }
-  }
-
-  private fun transformClosureToTupleDeclaration(parameter: List<Type>): String {
-    val closure = Closure("", parameter.map { it.text }, "", false)
-    return CreateClosureResultPropertyDeclaration()
-        .transform("", closure)?.type ?: ""
-  }
-
-  private fun transformClosureToImplicitTupleAssignment(name: String, closure: FunctionType, isOptional: Boolean): String {
-    var tuple = ""
-    if (!closure.returnType.isVoid) {
-      tuple += "_ = "
-    }
-    if (closure.throws) {
-      tuple += "try? "
-    }
-    tuple += name
-    if (isOptional) {
-      tuple += "?"
-    }
-    tuple += "("
-    tuple += (0 until closure.parameters.size).joinToString(", ") {
-      "result.$it"
-    }
-    return tuple + ")"
+  private fun transformClosureParameters(parameter: Parameter): ClosureParameterViewModel? {
+    val visitor = FunctionParameterTransformer(parameter.name)
+    parameter.type.resolvedType.accept(visitor)
+    return visitor.transformed
   }
 
   private fun transformReturnType(method: Method): ResultTypeViewModel? {
