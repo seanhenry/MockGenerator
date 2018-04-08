@@ -15,9 +15,9 @@ class FunctionParameterTransformer(val name: String): RecursiveVisitor() {
     transformed = ClosureParameterViewModel(
         name.capitalize(),
         name,
-        transformClosureToTupleDeclaration(type.parameters),
+        transformClosureToTupleDeclaration(type.arguments),
         transformClosureToImplicitTupleAssignment(type),
-        type.parameters.isNotEmpty()
+        type.arguments.isNotEmpty()
     )
     super.visitFunctionType(type)
   }
@@ -74,7 +74,7 @@ class FunctionParameterTransformer(val name: String): RecursiveVisitor() {
   }
 
   private fun listParameters(function: FunctionType): String {
-    return (0 until function.parameters.size).joinToString(", ") {
+    return (0 until function.arguments.size).joinToString(", ") {
       "result.$it"
     }
   }

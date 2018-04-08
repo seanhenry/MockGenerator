@@ -2,7 +2,21 @@ package codes.seanhenry.mockgenerator.ast
 
 import codes.seanhenry.mockgenerator.visitor.Visitor
 
-class DictionaryType(text: String, val keyType: Type, val valueType: Type): Type(text) {
+class DictionaryType private constructor(val keyType: Type, val valueType: Type, val useVerboseSyntax: Boolean): Type("") {
+
+  override var text: String
+    set(_) {}
+    get() { return generateText() }
+
+  private fun generateText(): String {
+    val key = keyType.text
+    val value = valueType.text
+    if (useVerboseSyntax) {
+      return "Dictionary<$key, $value>"
+    } else {
+      return "[$key: $value]"
+    }
+  }
 
   override fun accept(visitor: Visitor) {
     visitor.visitDictionaryType(this)
@@ -38,17 +52,7 @@ class DictionaryType(text: String, val keyType: Type, val valueType: Type): Type
     }
 
     fun build(): DictionaryType {
-      return DictionaryType(getText(), keyType, valueType)
-    }
-
-    private fun getText(): String {
-      val key = keyType.text
-      val value = valueType.text
-      if (useVerboseSyntax) {
-        return "Dictionary<$key, $value>"
-      } else {
-        return "[$key: $value]"
-      }
+      return DictionaryType(keyType, valueType, useVerboseSyntax)
     }
   }
 }

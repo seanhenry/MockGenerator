@@ -2,7 +2,19 @@ package codes.seanhenry.mockgenerator.ast
 
 import codes.seanhenry.mockgenerator.visitor.Visitor
 
-class ArrayType(text: String, val type: Type): Type(text) {
+class ArrayType private constructor(val type: Type, var useVerboseSyntax: Boolean): Type("") {
+
+  override var text: String
+    set(_) {}
+    get() { return generateText() }
+
+  private fun generateText(): String {
+    if (useVerboseSyntax) {
+      return "Array<${type.text}>"
+    } else {
+      return "[${type.text}]"
+    }
+  }
 
   override fun accept(visitor: Visitor) {
     visitor.visitArrayType(this)
@@ -28,15 +40,7 @@ class ArrayType(text: String, val type: Type): Type(text) {
     }
 
     fun build(): ArrayType {
-      return ArrayType(getText(), type)
-    }
-
-    private fun getText(): String {
-      if (useVerboseSyntax) {
-        return "Array<${type.text}>"
-      } else {
-        return "[${type.text}]"
-      }
+      return ArrayType(type, useVerboseSyntax)
     }
   }
 }

@@ -5,7 +5,7 @@ import codes.seanhenry.mockgenerator.ast.*
 open class RecursiveVisitor: Visitor() {
 
   override fun visitFunctionType(type: FunctionType) {
-    type.parameters.forEach { it.accept(this) }
+    type.arguments.forEach { it.accept(this) }
     type.returnType.accept(this)
     super.visitFunctionType(type)
   }

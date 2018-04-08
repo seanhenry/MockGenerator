@@ -20,8 +20,8 @@ class RecursiveVisitorTest: TestCase() {
         .build()
     function.accept(visitor)
     assertEquals(visitor.visitedFunctionTypes[0], function)
-    assertEquals(visitor.visitedTypes[0], function.parameters[0])
-    assertEquals(visitor.visitedTypes[1], function.parameters[1])
+    assertEquals(visitor.visitedTypes[0], function.arguments[0])
+    assertEquals(visitor.visitedTypes[1], function.arguments[1])
     assertEquals(visitor.visitedTypes[2], function.returnType)
   }
 

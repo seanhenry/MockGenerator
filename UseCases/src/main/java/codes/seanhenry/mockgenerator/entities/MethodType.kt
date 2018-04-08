@@ -12,7 +12,7 @@ class MethodType(var originalType: Type, var resolvedType: Type, val erasedType:
     val IMPLICIT: MethodType by lazy { MethodType(Type(""), Type(""), Type("")) }
   }
 
-  class Builder(var originalType: Type, var resolvedType: Type, var erasedType: Type) {
+  class Builder(private var originalType: Type, private var resolvedType: Type, private var erasedType: Type) {
 
     constructor(original: String, resolved: String, erased: String): this(Type(original), Type(resolved), Type(erased))
     constructor(type: String): this(Type(type), Type(type), Type(type))

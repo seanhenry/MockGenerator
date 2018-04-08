@@ -1,18 +1,17 @@
 package codes.seanhenry.mockgenerator.generator.templates
 
-import codes.seanhenry.mockgenerator.entities.MethodType
 import codes.seanhenry.mockgenerator.ast.Method
 import codes.seanhenry.mockgenerator.generator.MockTransformer
 
 class GenericReturnValueTest : MockGeneratorTestTemplate {
 
   override fun build(generator: MockTransformer) {
-    generator.add(
-        Method("generic1", MethodType.Builder("T", "T", "Any").build(), emptyList(), "func generic1<T>() -> T", false),
-        Method("generic2", MethodType.Builder("T?", "T?", "Any?").build(), emptyList(), "func generic2<T>() -> T?", false),
-        Method("generic3", MethodType.Builder("T!", "T!", "Any!").build(), emptyList(), "func generic3<T>() -> T!", false),
-        Method("genericArray", MethodType.Builder("[T]", "[T]", "[Any]").build(), emptyList(), "func genericArray<T>() -> [T]", false)
-    )
+//    generator.add(
+//        Method("generic1", MethodType.Builder("T", "T", "Any").build(), emptyList(), "func generic1<T>() -> T", false),
+//        Method("generic2", MethodType.Builder("T?", "T?", "Any?").build(), emptyList(), "func generic2<T>() -> T?", false),
+//        Method("generic3", MethodType.Builder("T!", "T!", "Any!").build(), emptyList(), "func generic3<T>() -> T!", false),
+//        Method("genericArray", MethodType.Builder("[T]", "[T]", "[Any]").build(), emptyList(), "func genericArray<T>() -> [T]", false)
+//    )
   }
 
   override fun getExpected(): String {

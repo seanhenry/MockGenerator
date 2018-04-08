@@ -2,7 +2,16 @@ package codes.seanhenry.mockgenerator.ast
 
 import codes.seanhenry.mockgenerator.visitor.Visitor
 
-class GenericType(text: String, val identifier: String, val arguments: List<Type>): Type(text) {
+class GenericType private constructor(val identifier: String, val arguments: List<Type>): Type("") {
+
+  override var text: String
+    get() { return generateText() }
+    set(_) {}
+
+  private fun generateText(): String {
+    val argumentsList = arguments.joinToString(", ") { it.text }
+    return "$identifier<$argumentsList>"
+  }
 
   override fun accept(visitor: Visitor) {
     visitor.visitGenericType(this)
@@ -22,8 +31,7 @@ class GenericType(text: String, val identifier: String, val arguments: List<Type
     }
 
     fun build(): GenericType {
-      val argumentsList = arguments.joinToString(", ") { it.text }
-      return GenericType("$identifier<$argumentsList>", identifier, arguments)
+      return GenericType(identifier, arguments)
     }
   }
 }

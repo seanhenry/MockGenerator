@@ -1,7 +1,6 @@
 package codes.seanhenry.mockgenerator.entities
 
 import codes.seanhenry.mockgenerator.ast.FunctionType
-import codes.seanhenry.mockgenerator.ast.OptionalType
 import codes.seanhenry.mockgenerator.ast.Type
 import junit.framework.TestCase
 
@@ -9,7 +8,7 @@ class FunctionTypeBuilderTest: TestCase() {
 
   fun testBuildEmptyClosure() {
     val type = FunctionType.Builder().build()
-    assert(type.parameters.isEmpty())
+    assert(type.arguments.isEmpty())
     assertFalse(type.throws)
     assertEquals(Type.EMPTY_TUPLE, type.returnType)
     assertEquals("() -> ()", type.text)
@@ -23,7 +22,7 @@ class FunctionTypeBuilderTest: TestCase() {
 
   fun testArgument() {
     val type = FunctionType.Builder().argument("Type").build()
-    assertEquals("Type", type.parameters[0].text)
+    assertEquals("Type", type.arguments[0].text)
   }
 
   fun testArguments() {
@@ -31,8 +30,8 @@ class FunctionTypeBuilderTest: TestCase() {
         .argument("Type")
         .argument().optional { it.type("Type2") }
         .build()
-    assertEquals("Type", type.parameters[0].text)
-    assertEquals("Type2?", type.parameters[1].text)
+    assertEquals("Type", type.arguments[0].text)
+    assertEquals("Type2?", type.arguments[1].text)
     assertEquals("(Type, Type2?) -> ()", type.text)
   }
 
@@ -49,7 +48,7 @@ class FunctionTypeBuilderTest: TestCase() {
         .argument().optional { opt -> opt.type("Type") }
         .build()
     assertEquals("(Type?) -> ()", type.text)
-    assertEquals("Type?", type.parameters[0].text)
+    assertEquals("Type?", type.arguments[0].text)
     assertEquals("()", type.returnType.text)
   }
 
@@ -58,7 +57,7 @@ class FunctionTypeBuilderTest: TestCase() {
         .argument().array { }
         .build()
     assertEquals("([]) -> ()", type.text)
-    assertEquals("[]", type.parameters[0].text)
+    assertEquals("[]", type.arguments[0].text)
     assertEquals("()", type.returnType.text)
   }
 }

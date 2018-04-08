@@ -2,8 +2,17 @@ package codes.seanhenry.mockgenerator.ast
 
 import codes.seanhenry.mockgenerator.visitor.Visitor
 
-// TODO: Rename parameters to arguments or types
-class FunctionType(text: String, val parameters: List<Type>, val returnType: Type, val throws: Boolean): Type(text) {
+class FunctionType private constructor(val arguments: List<Type>, val returnType: Type, val throws: Boolean): Type("") {
+
+  override var text: String = ""
+    get() { return generateText() }
+
+  private fun generateText(): String {
+    val text = arguments.map { it.text }.joinToString(", ")
+    var throwsText = ""
+    if (throws) throwsText = "throws "
+    return "($text) $throwsText-> ${returnType.text}"
+  }
 
   override fun accept(visitor: Visitor) {
     visitor.visitFunctionType(this)
@@ -39,14 +48,7 @@ class FunctionType(text: String, val parameters: List<Type>, val returnType: Typ
     }
 
     fun build(): FunctionType {
-      return FunctionType(getText(), arguments, returnType, throws)
-    }
-
-    private fun getText(): String {
-      val text = arguments.map { it.text }.joinToString(", ")
-      var throwsText = ""
-      if (throws) throwsText = "throws "
-      return "($text) $throwsText-> ${returnType.text}"
+      return FunctionType(arguments, returnType, throws)
     }
   }
 }

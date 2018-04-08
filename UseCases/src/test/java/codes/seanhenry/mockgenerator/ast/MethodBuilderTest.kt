@@ -55,6 +55,14 @@ class MethodBuilderTest: TestCase() {
     assertEquals("func a(name: Type, name2: Type2)", method.declarationText)
   }
 
+  fun testGenericParameter() {
+    method = Method.Builder("a")
+        .genericParameter("T")
+        .build()
+    assertEquals("T", method.genericParameters[0])
+    assertEquals("func a<T>()", method.declarationText)
+  }
+
   private fun getParameter(index: Int): Parameter {
     return method.parametersList[index]
   }

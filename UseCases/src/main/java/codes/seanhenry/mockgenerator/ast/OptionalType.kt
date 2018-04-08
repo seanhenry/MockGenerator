@@ -2,7 +2,20 @@ package codes.seanhenry.mockgenerator.ast
 
 import codes.seanhenry.mockgenerator.visitor.Visitor
 
-class OptionalType(text: String, val type: Type, val isImplicitlyUnwrapped: Boolean): Type(text) {
+class OptionalType private constructor(val type: Type, val isImplicitlyUnwrapped: Boolean, val useVerboseSyntax: Boolean, val implicitlyUnwrapped: Boolean): Type("") {
+
+  override var text: String
+    set(_) {}
+    get() { return generateText() }
+
+  private fun generateText(): String {
+    val text = type.text
+    return when {
+      useVerboseSyntax -> "Optional<$text>"
+      implicitlyUnwrapped -> "$text!"
+      else -> "$text?"
+    }
+  }
 
   override fun accept(visitor: Visitor) {
     visitor.visitOptionalType(this)
@@ -40,22 +53,7 @@ class OptionalType(text: String, val type: Type, val isImplicitlyUnwrapped: Bool
     }
 
     fun build(): OptionalType {
-      val text = surroundWithOptional(type.text)
-      return OptionalType(text, type, implicitlyUnwrapped)
-    }
-
-    private fun surroundWithOptional(text: String): String {
-      if (useVerboseSyntax) {
-        return surroundWithVerboseOptional(text)
-      } else if(implicitlyUnwrapped) {
-        return "$text!"
-      } else {
-        return "$text?"
-      }
-    }
-
-    private fun surroundWithVerboseOptional(text: String): String {
-      return "Optional<$text>"
+      return OptionalType(type, implicitlyUnwrapped, useVerboseSyntax, implicitlyUnwrapped)
     }
   }
 }

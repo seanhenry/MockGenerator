@@ -2,7 +2,6 @@ package codes.seanhenry.mockgenerator.transformer
 
 import codes.seanhenry.mockgenerator.ast.*
 import codes.seanhenry.mockgenerator.visitor.Visitor
-import java.lang.invoke.MethodType
 
 class DefaultValueVisitor: Visitor() {
 
@@ -30,10 +29,10 @@ class DefaultValueVisitor: Visitor() {
   }
 
   private fun addArgumentWildcards(value: MutableList<String>, type: FunctionType) {
-    if (type.parameters.isEmpty()) {
+    if (type.arguments.isEmpty()) {
       return
     }
-    value.add(type.parameters.joinToString(", ") { "_" })
+    value.add(type.arguments.joinToString(", ") { "_" })
     value.add("in")
   }
 

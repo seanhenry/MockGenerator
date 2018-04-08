@@ -19,14 +19,14 @@ class VisitorTest: TestCase() {
   }
 
   fun testShouldVisitFunctionType() {
-    val type = FunctionType("type", emptyList(), Type.VOID, false)
+    val type = FunctionType.Builder().build()
     type.accept(visitor)
     assertTrue(visitor.didVisitType)
     assertTrue(visitor.didVisitFunctionType)
   }
 
   fun testShouldVisitOptionalType() {
-    val type = OptionalType("Type?", Type("Type"), false)
+    val type = OptionalType.Builder().type("Type").build()
     type.accept(visitor)
     assertTrue(visitor.didVisitType)
     assertTrue(visitor.didVisitOptionalType)
@@ -40,7 +40,7 @@ class VisitorTest: TestCase() {
   }
 
   fun testShouldVisitArrayType() {
-    val type = ArrayType("[Type]", Type("Type"))
+    val type = ArrayType.Builder().type("Type").build()
     type.accept(visitor)
     assertTrue(visitor.didVisitType)
     assertTrue(visitor.didVisitArrayType)

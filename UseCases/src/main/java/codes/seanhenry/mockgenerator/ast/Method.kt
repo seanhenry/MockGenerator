@@ -4,10 +4,10 @@ import codes.seanhenry.mockgenerator.entities.MethodType
 import codes.seanhenry.mockgenerator.entities.Parameter
 import codes.seanhenry.mockgenerator.util.ParameterUtil
 
-class Method(val name: String, val returnType: MethodType, val parametersList: List<Parameter>, val declarationText: String, val throws: Boolean) {
+class Method(val name: String, val genericParameters: List<String>, val returnType: MethodType, val parametersList: List<Parameter>, val declarationText: String, val throws: Boolean) {
 
   // TODO: remove these
-  private constructor(name: String, returnType: String?, parametersList: List<Parameter>, signature: String, throws: Boolean): this(name, MethodType.Builder(returnType ?: "").build(), parametersList, signature, throws)
+  private constructor(name: String, returnType: String?, parametersList: List<Parameter>, signature: String, throws: Boolean): this(name, emptyList(), MethodType.Builder(returnType ?: "").build(), parametersList, signature, throws)
   constructor(name: String, returnType: String?, parameters: String, signature: String): this(name, returnType, ParameterUtil.getParameters(parameters), signature, false)
   constructor(name: String, returnType: String?, parametersList: List<Parameter>, signature: String): this(name, returnType, parametersList, signature, false)
 
@@ -15,10 +15,11 @@ class Method(val name: String, val returnType: MethodType, val parametersList: L
 
     private var returnType = MethodType.IMPLICIT
     private var throws = false
-    internal var parameters = ArrayList<Parameter>()
+    private var parameters = ArrayList<Parameter>()
+    private var genericParameters = ArrayList<String>()
 
     fun build(): Method {
-      return Method(name, returnType, parameters, getDeclarationText(), throws)
+      return Method(name, genericParameters, returnType, parameters, getDeclarationText(), throws)
     }
 
     fun returnType(type: String): Builder {
@@ -52,6 +53,11 @@ class Method(val name: String, val returnType: MethodType, val parametersList: L
       return this
     }
 
+    fun genericParameter(identifier: String): Builder {
+      genericParameters.add(identifier)
+      return this
+    }
+
     private fun getDeclarationText(): String {
       var returnString = ""
       var throwString = ""
@@ -63,7 +69,15 @@ class Method(val name: String, val returnType: MethodType, val parametersList: L
         throwString = " throws"
       }
       parametersString = parameters.map { it.text }.joinToString(", ")
-      return "func $name($parametersString)$throwString$returnString"
+      return "func $name${getGenericClauseText()}($parametersString)$throwString$returnString"
+    }
+
+    private fun getGenericClauseText(): String {
+      if (genericParameters.isEmpty()) {
+        return ""
+      }
+      val list = genericParameters.joinToString(", ")
+      return "<$list>"
     }
   }
 }
