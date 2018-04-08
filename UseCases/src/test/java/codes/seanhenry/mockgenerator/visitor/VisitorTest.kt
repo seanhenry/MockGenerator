@@ -13,7 +13,7 @@ class VisitorTest: TestCase() {
   }
 
   fun testShouldVisitType() {
-    val type = Type("Type")
+    val type = TypeIdentifier("Type")
     type.accept(visitor)
     assertTrue(visitor.didVisitType)
   }
@@ -33,7 +33,7 @@ class VisitorTest: TestCase() {
   }
 
   fun testShouldVisitBracketType() {
-    val type = BracketType(Type("Type"))
+    val type = BracketType(TypeIdentifier("Type"))
     type.accept(visitor)
     assertTrue(visitor.didVisitType)
     assertTrue(visitor.didVisitBracketType)

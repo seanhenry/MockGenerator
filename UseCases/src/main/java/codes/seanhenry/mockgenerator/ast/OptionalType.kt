@@ -2,7 +2,7 @@ package codes.seanhenry.mockgenerator.ast
 
 import codes.seanhenry.mockgenerator.visitor.Visitor
 
-class OptionalType private constructor(val type: Type, val isImplicitlyUnwrapped: Boolean, val useVerboseSyntax: Boolean, val implicitlyUnwrapped: Boolean): Type("") {
+class OptionalType private constructor(val type: TypeIdentifier, val isImplicitlyUnwrapped: Boolean, val useVerboseSyntax: Boolean, val implicitlyUnwrapped: Boolean): TypeIdentifier("") {
 
   override var text: String
     set(_) {}
@@ -23,17 +23,17 @@ class OptionalType private constructor(val type: Type, val isImplicitlyUnwrapped
 
   class Builder {
 
-    private var type = Type.EMPTY
+    private var type = TypeIdentifier.EMPTY
     private var implicitlyUnwrapped = false
     private var useVerboseSyntax = false
 
     fun type(type: String): Builder {
-      this.type = Type(type)
+      this.type = TypeIdentifier(type)
       return this
     }
 
-    fun type(): Type.Factory<Builder> {
-      return Type.Factory(this) {
+    fun type(): TypeIdentifier.Factory<Builder> {
+      return TypeIdentifier.Factory(this) {
         if (it is FunctionType) {
           this.type = BracketType(it)
         } else {

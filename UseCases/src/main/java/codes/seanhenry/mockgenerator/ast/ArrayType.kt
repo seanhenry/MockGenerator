@@ -2,7 +2,7 @@ package codes.seanhenry.mockgenerator.ast
 
 import codes.seanhenry.mockgenerator.visitor.Visitor
 
-class ArrayType private constructor(val type: Type, var useVerboseSyntax: Boolean): Type("") {
+class ArrayType private constructor(val type: TypeIdentifier, var useVerboseSyntax: Boolean): TypeIdentifier("") {
 
   override var text: String
     set(_) {}
@@ -22,16 +22,16 @@ class ArrayType private constructor(val type: Type, var useVerboseSyntax: Boolea
 
   class Builder {
 
-    private var type = Type.EMPTY
+    private var type = TypeIdentifier.EMPTY
     private var useVerboseSyntax = false
 
     fun type(type: String): Builder {
-      this.type = Type(type)
+      this.type = TypeIdentifier(type)
       return this
     }
 
-    fun type(): Type.Factory<Builder> {
-      return Type.Factory(this) { this.type = it }
+    fun type(): TypeIdentifier.Factory<Builder> {
+      return TypeIdentifier.Factory(this) { this.type = it }
     }
 
     fun verbose(): Builder {

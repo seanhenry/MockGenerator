@@ -1,6 +1,6 @@
 package codes.seanhenry.mockgenerator.entities
 
-import codes.seanhenry.mockgenerator.ast.Type
+import codes.seanhenry.mockgenerator.ast.TypeIdentifier
 
 // TODO: change label and name to external/internal name
 // TODO: make externalName optional
@@ -8,8 +8,8 @@ open class Parameter(val label: String, val name: String, val type: MethodType, 
 
   // TODO: REMOVE THESE
   constructor(label: String, name: String, type: MethodType, text: String) : this(label, name, type, text, false)
-  constructor(label: String, name: String, type: String, resolvedType: Type, text: String) : this(label, name, MethodType(Type(type), resolvedType, Type(type)), text, false)
-  constructor(label: String, name: String, type: String, resolvedType: String, text: String) : this(label, name, type, Type(resolvedType), text)
+  constructor(label: String, name: String, type: String, resolvedType: TypeIdentifier, text: String) : this(label, name, MethodType(TypeIdentifier(type), resolvedType, TypeIdentifier(type)), text, false)
+  constructor(label: String, name: String, type: String, resolvedType: String, text: String) : this(label, name, type, TypeIdentifier(resolvedType), text)
   constructor(label: String, name: String, type: String, text: String) : this(label, name, type, type, text)
 
   val originalType = type.originalType.text
@@ -28,17 +28,17 @@ open class Parameter(val label: String, val name: String, val type: MethodType, 
     constructor(name: String): this("", name)
 
     fun type(string: String): Builder {
-      val type = Type(string)
+      val type = TypeIdentifier(string)
       this.type = MethodType(type, type, type)
       return this
     }
 
-    fun type(): Type.Factory<Builder> {
-      return Type.Factory(this) { this.type = MethodType(it, it, it) }
+    fun type(): TypeIdentifier.Factory<Builder> {
+      return TypeIdentifier.Factory(this) { this.type = MethodType(it, it, it) }
     }
 
-    fun resolvedType(): Type.Factory<Builder> {
-      return Type.Factory(this) { this.type.resolvedType = it }
+    fun resolvedType(): TypeIdentifier.Factory<Builder> {
+      return TypeIdentifier.Factory(this) { this.type.resolvedType = it }
     }
 
     fun escaping(): Builder {

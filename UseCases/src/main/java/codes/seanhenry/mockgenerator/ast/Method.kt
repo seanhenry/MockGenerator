@@ -27,8 +27,8 @@ class Method(val name: String, val genericParameters: List<String>, val returnTy
       return this
     }
 
-    fun returnType(): Type.Factory<Builder> {
-      return Type.Factory(this) { returnType = MethodType(it, it, it) }
+    fun returnType(): TypeIdentifier.Factory<Builder> {
+      return TypeIdentifier.Factory(this) { returnType = MethodType(it, it, it) }
     }
 
     fun throws(): Builder {

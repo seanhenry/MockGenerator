@@ -2,7 +2,7 @@ package codes.seanhenry.mockgenerator.ast
 
 import codes.seanhenry.mockgenerator.visitor.Visitor
 
-class FunctionType private constructor(val arguments: List<Type>, val returnType: Type, val throws: Boolean): Type("") {
+class FunctionType private constructor(val arguments: List<TypeIdentifier>, val returnType: TypeIdentifier, val throws: Boolean): TypeIdentifier("") {
 
   override var text: String = ""
     get() { return generateText() }
@@ -20,9 +20,9 @@ class FunctionType private constructor(val arguments: List<Type>, val returnType
 
   class Builder {
 
-    private var returnType = Type.EMPTY_TUPLE
+    private var returnType = TypeIdentifier.EMPTY_TUPLE
     private var throws = false
-    private val arguments = ArrayList<Type>()
+    private val arguments = ArrayList<TypeIdentifier>()
 
     fun throws(): Builder {
       throws = true
@@ -30,21 +30,21 @@ class FunctionType private constructor(val arguments: List<Type>, val returnType
     }
 
     fun argument(type: String): Builder {
-      this.arguments.add(Type(type))
+      this.arguments.add(TypeIdentifier(type))
       return this
     }
 
-    fun argument(): Type.Factory<Builder> {
+    fun argument(): TypeIdentifier.Factory<Builder> {
       return Factory(this) { this.arguments.add(it) }
     }
 
     fun returnType(type: String): Builder {
-      this.returnType = Type(type)
+      this.returnType = TypeIdentifier(type)
       return this
     }
 
-    fun returnType(): Type.Factory<Builder> {
-      return Type.Factory(this) { type -> this.returnType = type }
+    fun returnType(): TypeIdentifier.Factory<Builder> {
+      return TypeIdentifier.Factory(this) { type -> this.returnType = type }
     }
 
     fun build(): FunctionType {

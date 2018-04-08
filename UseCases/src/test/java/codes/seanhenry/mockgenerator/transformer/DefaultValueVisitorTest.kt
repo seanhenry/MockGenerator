@@ -74,7 +74,7 @@ class DefaultValueVisitorTest : TestCase() {
   }
 
   fun testWhenBracketKnownType() {
-    val type = BracketType(Type("Int"))
+    val type = BracketType(TypeIdentifier("Int"))
     assertEquals("0", getDefaultValue(type))
   }
 
@@ -96,10 +96,10 @@ class DefaultValueVisitorTest : TestCase() {
   }
 
   private fun getDefaultValue(type: String): String? {
-    return getDefaultValue(Type(type))
+    return getDefaultValue(TypeIdentifier(type))
   }
 
-  private fun getDefaultValue(type: Type): String? {
+  private fun getDefaultValue(type: TypeIdentifier): String? {
     val visitor = DefaultValueVisitor()
     type.accept(visitor)
     return visitor.defaultValue

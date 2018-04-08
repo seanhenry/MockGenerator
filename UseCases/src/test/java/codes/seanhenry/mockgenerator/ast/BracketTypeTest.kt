@@ -5,7 +5,7 @@ import junit.framework.TestCase
 class BracketTypeTest: TestCase() {
 
   fun testSurroundsTypeWithBrackets() {
-    val type = BracketType(Type("Type"))
+    val type = BracketType(TypeIdentifier("Type"))
     assertEquals("(Type)", type.text)
   }
 }

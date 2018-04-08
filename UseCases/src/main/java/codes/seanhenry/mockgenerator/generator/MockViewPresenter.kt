@@ -190,7 +190,7 @@ class MockViewPresenter(val view: MockView): MockTransformer {
     return "$modifiers$declaration"
   }
 
-  private fun getDefaultValueAssignment(type: Type): String {
+  private fun getDefaultValueAssignment(type: TypeIdentifier): String {
     val visitor = DefaultValueVisitor()
     type.accept(visitor)
     val defaultValue = visitor.defaultValue

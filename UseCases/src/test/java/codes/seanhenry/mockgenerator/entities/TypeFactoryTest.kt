@@ -1,7 +1,6 @@
 package codes.seanhenry.mockgenerator.entities
 
 import codes.seanhenry.mockgenerator.ast.OptionalType
-import codes.seanhenry.mockgenerator.ast.Type
 import junit.framework.TestCase
 
 class TypeFactoryTest: TestCase() {

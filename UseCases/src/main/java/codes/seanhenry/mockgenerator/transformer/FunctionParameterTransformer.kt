@@ -2,7 +2,7 @@ package codes.seanhenry.mockgenerator.transformer
 
 import codes.seanhenry.mockgenerator.ast.FunctionType
 import codes.seanhenry.mockgenerator.ast.OptionalType
-import codes.seanhenry.mockgenerator.ast.Type
+import codes.seanhenry.mockgenerator.ast.TypeIdentifier
 import codes.seanhenry.mockgenerator.generator.ClosureParameterViewModel
 import codes.seanhenry.mockgenerator.visitor.RecursiveVisitor
 
@@ -27,7 +27,7 @@ class FunctionParameterTransformer(val name: String): RecursiveVisitor() {
     super.visitOptionalType(type)
   }
 
-  private fun transformClosureToTupleDeclaration(parameters: List<Type>): String {
+  private fun transformClosureToTupleDeclaration(parameters: List<TypeIdentifier>): String {
     return when {
       parameters.isEmpty() -> "()"
       parameters.size == 1 -> "(${parameters[0].text}, Void)"
@@ -35,7 +35,7 @@ class FunctionParameterTransformer(val name: String): RecursiveVisitor() {
     }
   }
 
-  private fun joinParameters(parameters: List<Type>): String {
+  private fun joinParameters(parameters: List<TypeIdentifier>): String {
     return parameters.joinToString(", ") { it.text }
   }
 

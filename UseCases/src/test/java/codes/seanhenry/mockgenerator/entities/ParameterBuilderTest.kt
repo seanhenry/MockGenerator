@@ -1,6 +1,5 @@
 package codes.seanhenry.mockgenerator.entities
 
-import codes.seanhenry.mockgenerator.ast.Type
 import junit.framework.TestCase
 
 class ParameterBuilderTest: TestCase() {

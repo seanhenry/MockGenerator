@@ -7,7 +7,7 @@ class DefaultValueVisitor: Visitor() {
 
   var defaultValue: String? = null
 
-  override fun visitType(type: Type) {
+  override fun visitType(type: TypeIdentifier) {
     defaultValue = knownTypes[type.text]
   }
 

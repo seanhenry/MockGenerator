@@ -1,6 +1,6 @@
 package codes.seanhenry.mockgenerator.entities
 
-import codes.seanhenry.mockgenerator.ast.Type
+import codes.seanhenry.mockgenerator.ast.TypeIdentifier
 
 class ClosureHelper {
   companion object {
@@ -35,7 +35,7 @@ class ClosureHelper {
           name,
           name,
           typeText,
-          Type(typeText),
+          TypeIdentifier(typeText),
           "$name: $typeText",
           TupleUtil.getParameters(args),
           rtn,

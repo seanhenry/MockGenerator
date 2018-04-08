@@ -2,7 +2,7 @@ package codes.seanhenry.mockgenerator.ast
 
 import codes.seanhenry.mockgenerator.visitor.Visitor
 
-class DictionaryType private constructor(val keyType: Type, val valueType: Type, val useVerboseSyntax: Boolean): Type("") {
+class DictionaryType private constructor(val keyType: TypeIdentifier, val valueType: TypeIdentifier, val useVerboseSyntax: Boolean): TypeIdentifier("") {
 
   override var text: String
     set(_) {}
@@ -24,26 +24,26 @@ class DictionaryType private constructor(val keyType: Type, val valueType: Type,
 
   class Builder {
 
-    private var keyType = Type.EMPTY
-    private var valueType = Type.EMPTY
+    private var keyType = TypeIdentifier.EMPTY
+    private var valueType = TypeIdentifier.EMPTY
     private var useVerboseSyntax = false
 
     fun keyType(type: String): Builder {
-      keyType = Type(type)
+      keyType = TypeIdentifier(type)
       return this
     }
 
-    fun keyType(): Type.Factory<Builder> {
-      return Type.Factory(this) { this.keyType = it }
+    fun keyType(): TypeIdentifier.Factory<Builder> {
+      return TypeIdentifier.Factory(this) { this.keyType = it }
     }
 
     fun valueType(type: String): Builder {
-      valueType = Type(type)
+      valueType = TypeIdentifier(type)
       return this
     }
 
-    fun valueType(): Type.Factory<Builder> {
-      return Type.Factory(this) { this.valueType = it }
+    fun valueType(): TypeIdentifier.Factory<Builder> {
+      return TypeIdentifier.Factory(this) { this.valueType = it }
     }
 
     fun verbose(): Builder {

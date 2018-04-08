@@ -6,7 +6,7 @@ class ArrayTypeBuilderTest: TestCase() {
   fun testShouldBuildEmptyArray() {
     val array = ArrayType.Builder().build()
     assertEquals("[]", array.text)
-    assertEquals(Type.EMPTY, array.type)
+    assertEquals(TypeIdentifier.EMPTY, array.type)
   }
 
   fun testShouldBuildArrayWithType() {

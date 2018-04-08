@@ -1,6 +1,6 @@
 package codes.seanhenry.mockgenerator.entities
 
-import codes.seanhenry.mockgenerator.ast.Type
+import codes.seanhenry.mockgenerator.ast.TypeIdentifier
 
 // TODO: DELETE THESE
 class Closure(val name: String,
@@ -15,7 +15,7 @@ class Closure(val name: String,
 class ClosureParameter(label: String,
                        name: String,
                        type: String,
-                       resolvedType: Type,
+                       resolvedType: TypeIdentifier,
                        text: String,
                        val closureArguments: List<Parameter>,
                        val closureReturnType: String,

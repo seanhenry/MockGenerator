@@ -2,7 +2,7 @@ package codes.seanhenry.mockgenerator.ast
 
 import codes.seanhenry.mockgenerator.visitor.Visitor
 
-class GenericType private constructor(val identifier: String, val arguments: List<Type>): Type("") {
+class GenericType private constructor(val identifier: String, val arguments: List<TypeIdentifier>): TypeIdentifier("") {
 
   override var text: String
     get() { return generateText() }
@@ -19,15 +19,15 @@ class GenericType private constructor(val identifier: String, val arguments: Lis
 
   class Builder(private val identifier: String) {
 
-    private val arguments = ArrayList<Type>()
+    private val arguments = ArrayList<TypeIdentifier>()
 
     fun argument(identifier: String): Builder {
-      arguments.add(Type(identifier))
+      arguments.add(TypeIdentifier(identifier))
       return this
     }
 
-    fun argument(): Type.Factory<Builder> {
-      return Type.Factory(this) { arguments.add(it) }
+    fun argument(): TypeIdentifier.Factory<Builder> {
+      return TypeIdentifier.Factory(this) { arguments.add(it) }
     }
 
     fun build(): GenericType {

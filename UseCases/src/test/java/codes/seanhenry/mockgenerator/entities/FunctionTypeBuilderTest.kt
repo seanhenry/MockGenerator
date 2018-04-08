@@ -1,7 +1,7 @@
 package codes.seanhenry.mockgenerator.entities
 
 import codes.seanhenry.mockgenerator.ast.FunctionType
-import codes.seanhenry.mockgenerator.ast.Type
+import codes.seanhenry.mockgenerator.ast.TypeIdentifier
 import junit.framework.TestCase
 
 class FunctionTypeBuilderTest: TestCase() {
@@ -10,7 +10,7 @@ class FunctionTypeBuilderTest: TestCase() {
     val type = FunctionType.Builder().build()
     assert(type.arguments.isEmpty())
     assertFalse(type.throws)
-    assertEquals(Type.EMPTY_TUPLE, type.returnType)
+    assertEquals(TypeIdentifier.EMPTY_TUPLE, type.returnType)
     assertEquals("() -> ()", type.text)
   }
 
