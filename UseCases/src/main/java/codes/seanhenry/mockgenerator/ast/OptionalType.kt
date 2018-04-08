@@ -4,8 +4,7 @@ import codes.seanhenry.mockgenerator.visitor.Visitor
 
 class OptionalType private constructor(val type: Type, val isImplicitlyUnwrapped: Boolean, val useVerboseSyntax: Boolean, val implicitlyUnwrapped: Boolean): Type {
 
-  override var text: String
-    set(_) {}
+  override val text: String
     get() { return generateText() }
 
   private fun generateText(): String {

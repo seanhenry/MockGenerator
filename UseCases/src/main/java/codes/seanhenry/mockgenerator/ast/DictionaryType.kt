@@ -4,8 +4,7 @@ import codes.seanhenry.mockgenerator.visitor.Visitor
 
 class DictionaryType private constructor(val keyType: Type, val valueType: Type, private val useVerboseSyntax: Boolean): Type {
 
-  override var text: String
-    set(_) {}
+  override val text: String
     get() { return generateText() }
 
   private fun generateText(): String {

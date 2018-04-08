@@ -4,9 +4,8 @@ import codes.seanhenry.mockgenerator.visitor.Visitor
 
 class GenericType private constructor(val identifier: String, val arguments: List<Type>): Type {
 
-  override var text: String
+  override val text: String
     get() { return generateText() }
-    set(_) {}
 
   private fun generateText(): String {
     val argumentsList = arguments.joinToString(", ") { it.text }

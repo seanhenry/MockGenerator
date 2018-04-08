@@ -7,7 +7,7 @@ class TypeErasingVisitor(private val genericIdentifiers: List<String>): Recursiv
 
   override fun visitTypeIdentifier(type: TypeIdentifier) {
     if (genericIdentifiers.contains(type.text)) {
-      type.text = "Any"
+      type.identifier = "Any"
     }
     super.visitTypeIdentifier(type)
   }

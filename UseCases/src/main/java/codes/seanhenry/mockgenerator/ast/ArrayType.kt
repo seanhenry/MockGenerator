@@ -4,8 +4,7 @@ import codes.seanhenry.mockgenerator.visitor.Visitor
 
 class ArrayType private constructor(val type: Type, var useVerboseSyntax: Boolean): Type {
 
-  override var text: String
-    set(_) {}
+  override val text: String
     get() { return generateText() }
 
   private fun generateText(): String {

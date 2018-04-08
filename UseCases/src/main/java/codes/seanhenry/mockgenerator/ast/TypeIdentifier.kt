@@ -5,9 +5,12 @@ import codes.seanhenry.mockgenerator.visitor.Visitor
 // TODO: rename this to IdentifierType
 // TODO: replace this with BaseType which provides text property to override
 // TODO: do we make this an interface and make all other models data classes?
-class TypeIdentifier(override var text: String): Type {
+class TypeIdentifier(var identifier: String): Type {
 
   val isEmpty: Boolean by lazy { EMPTY.text == text }
+
+  override val text: String
+    get() { return identifier }
 
   override fun accept(visitor: Visitor) {
     visitor.visitTypeIdentifier(this)

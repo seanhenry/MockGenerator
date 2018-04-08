@@ -4,8 +4,7 @@ import codes.seanhenry.mockgenerator.visitor.Visitor
 
 class BracketType(val type: Type): Type {
 
-  override var text: String
-    set(_) {}
+  override val text: String
     get() { return "(${type.text})" }
 
   override fun accept(visitor: Visitor) {

@@ -4,7 +4,7 @@ import codes.seanhenry.mockgenerator.visitor.Visitor
 
 class FunctionType private constructor(val arguments: List<Type>, val returnType: Type, val throws: Boolean): Type {
 
-  override var text: String = ""
+  override val text: String
     get() { return generateText() }
 
   private fun generateText(): String {
