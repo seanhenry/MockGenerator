@@ -28,9 +28,9 @@ class PropertyBuilderTest : TestCase() {
     assertEquals("var a: String?", property.declarationText)
   }
 
-  fun testShouldBuildLet() {
+  fun testShouldBuildReadonly() {
     val property = Property.Builder("a")
-        .let()
+        .readonly()
         .type("String")
         .build()
     assertEquals("a", property.name)

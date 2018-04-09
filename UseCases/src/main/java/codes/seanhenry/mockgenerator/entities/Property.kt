@@ -17,7 +17,7 @@ class Property(val name: String, val type: Type, val isWritable: Boolean, val de
     private var type: Type = TypeIdentifier.EMPTY
     private var isWritable = true
 
-    fun let(): Builder {
+    fun readonly(): Builder {
       isWritable = false
       return this
     }
