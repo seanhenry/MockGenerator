@@ -1,11 +1,11 @@
 package codes.seanhenry.mockgenerator.swift
 
-import codes.seanhenry.mockgenerator.entities.Initialiser
+import codes.seanhenry.mockgenerator.entities.Initializer
 
 class SwiftStringProtocolInitialiserDeclaration {
 
-  fun transform(initialiser: Initialiser): String {
-    val parametersString = initialiser.parametersList
+  fun transform(initializer: Initializer): String {
+    val parametersString = initializer.parametersList
         .map { it.text }
         .joinToString(", ")
     return "required init($parametersString)"

@@ -19,14 +19,14 @@ public abstract class SwiftTypeTransformer {
 
   private static final String UNKNOWN_TYPE = "Any";
   private final TypeItemFinder itemFinder;
-  private final List<Initialiser> initialisers;
+  private final List<Initializer> initializers;
   private final List<Method> methods;
   private final List<Property> properties;
   private static final String UNKNOWN_NAME = "_";
 
   SwiftTypeTransformer(TypeItemFinder itemFinder) {
     this.itemFinder = itemFinder;
-    initialisers = new ArrayList<>();
+    initializers = new ArrayList<>();
     methods = new ArrayList<>();
     properties = new ArrayList<>();
   }
@@ -40,8 +40,8 @@ public abstract class SwiftTypeTransformer {
   @Nullable
   private void transformInitialisers(List<SwiftInitializerDeclaration> initialisers) {
     for (SwiftInitializerDeclaration initialiser : initialisers) {
-      this.initialisers.add(
-          new Initialiser(getParameters(initialiser.getParameterClause()), MySwiftPsiUtil.isFailable(initialiser), getThrows(initialiser), isProtocol())
+      this.initializers.add(
+          new Initializer(getParameters(initialiser.getParameterClause()), MySwiftPsiUtil.isFailable(initialiser), getThrows(initialiser), isProtocol())
       );
     }
   }
@@ -162,7 +162,7 @@ public abstract class SwiftTypeTransformer {
     return properties;
   }
 
-  public List<Initialiser> getInitialisers() {
-    return initialisers;
+  public List<Initializer> getInitializers() {
+    return initializers;
   }
 }

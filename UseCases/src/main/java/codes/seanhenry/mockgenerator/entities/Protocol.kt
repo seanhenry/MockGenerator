@@ -1,15 +1,15 @@
 package codes.seanhenry.mockgenerator.entities
 
-class Protocol(val initializers: List<Initialiser>, val properties: List<Property>, val methods: List<Method>) {
+class Protocol(val initializers: List<Initializer>, val properties: List<Property>, val methods: List<Method>) {
 
   class Builder {
 
     private val methods = mutableListOf<Method>()
     private val properties = mutableListOf<Property>()
-    private val initializers = mutableListOf<Initialiser>()
+    private val initializers = mutableListOf<Initializer>()
 
-    fun initializer(build: (Initialiser.Builder) -> Unit): Builder {
-      val builder = Initialiser.Builder()
+    fun initializer(build: (Initializer.Builder) -> Unit): Builder {
+      val builder = Initializer.Builder()
       build(builder)
       initializers.add(builder.build())
       return this

@@ -19,8 +19,8 @@ class MockViewPresenter(val view: MockView): MockTransformer {
   private val classMethods = ArrayList<Method>()
   private val protocolProperties = ArrayList<Property>()
   private val classProperties = ArrayList<Property>()
-  private var classInitialiser: Initialiser? = null
-  private var initialisers = ArrayList<Initialiser>()
+  private var classInitializer: Initializer? = null
+  private var initialisers = ArrayList<Initializer>()
   private var scope: String? = null
   private lateinit var nameGenerator: UniqueMethodNameGenerator
 
@@ -36,8 +36,8 @@ class MockViewPresenter(val view: MockView): MockTransformer {
     protocolProperties.add(property)
   }
 
-  override fun add(vararg initialisers: Initialiser) {
-    addInitialisers(listOf(*initialisers))
+  override fun add(vararg initializers: Initializer) {
+    addInitialisers(listOf(*initializers))
   }
 
   override fun add(vararg methods: Method) {
@@ -48,8 +48,8 @@ class MockViewPresenter(val view: MockView): MockTransformer {
     addProperties(listOf(*properties))
   }
 
-  override fun addInitialisers(initialisers: List<Initialiser>) {
-    for (initialiser in initialisers) {
+  override fun addInitialisers(initializers: List<Initializer>) {
+    for (initialiser in initializers) {
       this.initialisers.add(initialiser)
     }
   }
@@ -66,12 +66,12 @@ class MockViewPresenter(val view: MockView): MockTransformer {
     }
   }
 
-  override fun setClassInitialisers(vararg initialisers: Initialiser) {
-    setClassInitialisers(listOf(*initialisers))
+  override fun setClassInitialisers(vararg initializers: Initializer) {
+    setClassInitialisers(listOf(*initializers))
   }
 
-  override fun setClassInitialisers(initialisers: List<Initialiser>) {
-    classInitialiser = initialisers.minBy {
+  override fun setClassInitialisers(initializers: List<Initializer>) {
+    classInitializer = initializers.minBy {
       it.parametersList.size
     }
   }
@@ -117,8 +117,8 @@ class MockViewPresenter(val view: MockView): MockTransformer {
   }
 
   private fun transformClassInitializer(): List<InitializerViewModel> {
-    val init = classInitialiser
-    val call = flatMap(classInitialiser) { CreateConvenienceInitialiser().transform(it) }
+    val init = classInitializer
+    val call = flatMap(classInitializer) { CreateConvenienceInitialiser().transform(it) }
     if (init != null && call != null) {
       val scope = getClassInitialiserScope()
       return listOf(InitializerViewModel(

@@ -138,7 +138,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     ProtocolDuplicateRemover remover = new ProtocolDuplicateRemover(protocolItemFinder, classItemFinder);
     SwiftTypeTransformer transformer = new SwiftProtocolTransformer(remover);
     transformer.transform();
-    generator.addInitialisers(transformer.getInitialisers());
+    generator.addInitialisers(transformer.getInitializers());
     generator.addProperties(transformer.getProperties());
     generator.addMethods(transformer.getMethods());
   }
@@ -146,7 +146,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   private void transformClassItems(SwiftTypeItemFinder itemFinder, MockGenerator generator) throws Exception {
     SwiftTypeTransformer transformer = new SwiftClassTransformer(itemFinder);
     transformer.transform();
-    generator.setClassInitialisers(transformer.getInitialisers());
+    generator.setClassInitialisers(transformer.getInitializers());
     generator.addClassProperties(transformer.getProperties());
     generator.addClassMethods(transformer.getMethods());
   }

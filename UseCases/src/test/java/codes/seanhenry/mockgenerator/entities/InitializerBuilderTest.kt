@@ -2,10 +2,10 @@ package codes.seanhenry.mockgenerator.entities
 
 import junit.framework.TestCase
 
-class InitialiserBuilderTest: TestCase() {
+class InitializerBuilderTest: TestCase() {
 
   fun testShouldBuildEmptyInitialiser() {
-    val initialiser = Initialiser.Builder().build()
+    val initialiser = Initializer.Builder().build()
     assertTrue(initialiser.parametersList.isEmpty())
     assertFalse(initialiser.isFailable)
     assertFalse(initialiser.throws)
@@ -13,7 +13,7 @@ class InitialiserBuilderTest: TestCase() {
   }
 
   fun testShouldBuildInitialiserWithParameters() {
-    val initialiser = Initialiser.Builder()
+    val initialiser = Initializer.Builder()
         .parameter("a") { it.type("Type") }
         .build()
     assertEquals("a: Type", initialiser.parametersList[0].text)
@@ -24,7 +24,7 @@ class InitialiserBuilderTest: TestCase() {
   }
 
   fun testShouldBuildInitialiserWithLabelledParameters() {
-    val initialiser = Initialiser.Builder()
+    val initialiser = Initializer.Builder()
         .parameter("a", "b") { it.type("Type") }
         .build()
     assertEquals("a b: Type", initialiser.parametersList[0].text)
@@ -36,21 +36,21 @@ class InitialiserBuilderTest: TestCase() {
   }
 
   fun testShouldBuildFailableInitialiser() {
-    val initialiser = Initialiser.Builder()
+    val initialiser = Initializer.Builder()
         .failable()
         .build()
     assertTrue(initialiser.isFailable)
   }
 
   fun testShouldBuildThrowingInitialiser() {
-    val initialiser = Initialiser.Builder()
+    val initialiser = Initializer.Builder()
         .throws()
         .build()
     assertTrue(initialiser.throws)
   }
 
   fun testShouldBuildIsProtocolInitialiser() {
-    val initialiser = Initialiser.Builder()
+    val initialiser = Initializer.Builder()
         .protocol()
         .build()
     assertTrue(initialiser.isProtocol)

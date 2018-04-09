@@ -1,6 +1,5 @@
 package codes.seanhenry.util.finder;
 
-import codes.seanhenry.mockgenerator.entities.Initialiser;
 import codes.seanhenry.util.finder.initialiser.InitialiserChoosingStrategy;
 import codes.seanhenry.util.finder.methods.MethodChoosingStrategy;
 import codes.seanhenry.util.finder.properties.PropertyChoosingStrategy;

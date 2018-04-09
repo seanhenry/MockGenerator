@@ -3,7 +3,7 @@ package codes.seanhenry.mockgenerator.entities
 import codes.seanhenry.mockgenerator.util.ParameterUtil
 
 // TODO: remove isProtocol and get that info from visitor
-class Initialiser(val parametersList: List<Parameter>, val isFailable: Boolean, val throws: Boolean, val isProtocol: Boolean) {
+class Initializer(val parametersList: List<Parameter>, val isFailable: Boolean, val throws: Boolean, val isProtocol: Boolean) {
 
   // TODO: remove these
   constructor(parameters: String, isFailable: Boolean): this(ParameterUtil.getParameters(parameters), isFailable, false, false)
@@ -49,8 +49,8 @@ class Initialiser(val parametersList: List<Parameter>, val isFailable: Boolean, 
       return this
     }
 
-    fun build(): Initialiser {
-      return Initialiser(parameters, isFailable, throws, isProtocol)
+    fun build(): Initializer {
+      return Initializer(parameters, isFailable, throws, isProtocol)
     }
   }
 }

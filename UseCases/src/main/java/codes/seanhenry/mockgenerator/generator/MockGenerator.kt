@@ -20,8 +20,8 @@ class MockGenerator: MockTransformer {
   private var override = false
   private lateinit var nameGenerator: UniqueMethodNameGenerator
   private var lines = ArrayList<String>()
-  private var classInitialiser: Initialiser? = null
-  private var initialisers = ArrayList<Initialiser>()
+  private var classInitializer: Initializer? = null
+  private var initialisers = ArrayList<Initializer>()
 
   override fun setScope(scope: String) {
     this.scope = scope.trim()
@@ -35,8 +35,8 @@ class MockGenerator: MockTransformer {
     protocolProperties.add(property)
   }
 
-  override fun add(vararg initialisers: Initialiser) {
-    addInitialisers(listOf(*initialisers))
+  override fun add(vararg initializers: Initializer) {
+    addInitialisers(listOf(*initializers))
   }
 
   override fun add(vararg methods: Method) {
@@ -47,8 +47,8 @@ class MockGenerator: MockTransformer {
     addProperties(listOf(*properties))
   }
 
-  override fun addInitialisers(initialisers: List<Initialiser>) {
-    for (initialiser in initialisers) {
+  override fun addInitialisers(initializers: List<Initializer>) {
+    for (initialiser in initializers) {
       this.initialisers.add(initialiser)
     }
   }
@@ -65,12 +65,12 @@ class MockGenerator: MockTransformer {
     }
   }
 
-  override fun setClassInitialisers(vararg initialisers: Initialiser) {
-    setClassInitialisers(listOf(*initialisers))
+  override fun setClassInitialisers(vararg initializers: Initializer) {
+    setClassInitialisers(listOf(*initializers))
   }
 
-  override fun setClassInitialisers(initialisers: List<Initialiser>) {
-    classInitialiser = initialisers.minBy {
+  override fun setClassInitialisers(initializers: List<Initializer>) {
+    classInitializer = initializers.minBy {
       it.parametersList.size
     }
   }
@@ -113,7 +113,7 @@ class MockGenerator: MockTransformer {
   }
 
   private fun appendInitialisers() {
-    val classInitialiser = this.classInitialiser
+    val classInitialiser = this.classInitializer
     if (classInitialiser != null) {
       appendClassInitialiser(classInitialiser)
     }
@@ -122,12 +122,12 @@ class MockGenerator: MockTransformer {
     }
   }
 
-  private fun appendProtocolInitialiser(initialiser: Initialiser) {
-    addInitialiserScopedLine(SwiftStringProtocolInitialiserDeclaration().transform(initialiser) + " {\n}")
+  private fun appendProtocolInitialiser(initializer: Initializer) {
+    addInitialiserScopedLine(SwiftStringProtocolInitialiserDeclaration().transform(initializer) + " {\n}")
   }
 
-  private fun appendClassInitialiser(initialiser: Initialiser) {
-    val call = CreateConvenienceInitialiser().transform(initialiser)
+  private fun appendClassInitialiser(initializer: Initializer) {
+    val call = CreateConvenienceInitialiser().transform(initializer)
     if (call != null) {
       addInitialiserScopedLine(SwiftStringInitialiserDeclaration().transform(call) + " {")
       addLine(SwiftStringConvenienceInitCall().transform(call))

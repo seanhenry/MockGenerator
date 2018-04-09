@@ -4,7 +4,7 @@ import codes.seanhenry.mockgenerator.entities.InitialiserCall
 import codes.seanhenry.mockgenerator.entities.Parameter
 import junit.framework.TestCase
 
-class SwiftStringInitialiserDeclarationTest : TestCase() {
+class SwiftStringInitializerDeclarationTest : TestCase() {
 
   fun testShouldReturnConvenienceInitialiserWhenHasArguments() {
     val call = InitialiserCall(listOf(
