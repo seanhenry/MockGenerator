@@ -63,4 +63,28 @@ class VisitorTest: TestCase() {
     assertTrue(visitor.didVisitType)
     assertTrue(visitor.didVisitGenericType)
   }
+
+  fun testShouldVisitMethod() {
+    val declaration = Method.Builder("a").build()
+    declaration.accept(visitor)
+    assertTrue(visitor.didVisitMethod)
+  }
+
+  fun testShouldVisitProperty() {
+    val declaration = Property.Builder("a").build()
+    declaration.accept(visitor)
+    assertTrue(visitor.didVisitProperty)
+  }
+
+  fun testShouldVisitInitializer() {
+    val declaration = Initializer.Builder().build()
+    declaration.accept(visitor)
+    assertTrue(visitor.didVisitInitializer)
+  }
+
+  fun testShouldVisitParameter() {
+    val parameter = Parameter.Builder("_").build()
+    parameter.accept(visitor)
+    assertTrue(visitor.didVisitParameter)
+  }
 }

@@ -51,4 +51,28 @@ class VisitorSpy: Visitor() {
     super.visitGenericType(type)
     didVisitGenericType = true
   }
+
+  var didVisitMethod = false
+  override fun visitMethod(declaration: Method) {
+    super.visitMethod(declaration)
+    didVisitMethod = true
+  }
+
+  var didVisitProperty = false
+  override fun visitProperty(declaration: Property) {
+    super.visitProperty(declaration)
+    didVisitProperty = true
+  }
+
+  var didVisitInitializer = false
+  override fun visitInitializer(declaration: Initializer) {
+    super.visitInitializer(declaration)
+    didVisitInitializer = true
+  }
+
+  var didVisitParameter = false
+  override fun visitParameter(parameter: Parameter) {
+    super.visitParameter(parameter)
+    didVisitParameter = true
+  }
 }

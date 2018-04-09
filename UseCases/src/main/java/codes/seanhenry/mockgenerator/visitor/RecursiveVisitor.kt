@@ -35,4 +35,25 @@ open class RecursiveVisitor: Visitor() {
     type.arguments.forEach { it.accept(this) }
     super.visitGenericType(type)
   }
+
+  override fun visitMethod(declaration: Method) {
+    declaration.parametersList.forEach { it.accept(this) }
+    declaration.returnType.resolvedType.accept(this)
+    super.visitMethod(declaration)
+  }
+
+  override fun visitProperty(declaration: Property) {
+    declaration.type.accept(this)
+    super.visitProperty(declaration)
+  }
+
+  override fun visitInitializer(declaration: Initializer) {
+    declaration.parametersList.forEach { it.accept(this) }
+    super.visitInitializer(declaration)
+  }
+
+  override fun visitParameter(parameter: Parameter) {
+    parameter.type.resolvedType.accept(this)
+    super.visitParameter(parameter)
+  }
 }

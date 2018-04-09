@@ -1,6 +1,12 @@
 package codes.seanhenry.mockgenerator.entities
 
-class Property(val name: String, val type: Type, val isWritable: Boolean, val declarationText: String) {
+import codes.seanhenry.mockgenerator.visitor.Visitor
+
+data class Property(val name: String, val type: Type, val isWritable: Boolean, val declarationText: String): Element {
+
+  override fun accept(visitor: Visitor) {
+    visitor.visitProperty(this)
+  }
 
   // TODO: remove and make builder
   constructor(name: String,
@@ -8,6 +14,7 @@ class Property(val name: String, val type: Type, val isWritable: Boolean, val de
               isWritable: Boolean,
               declarationText: String) : this(name, TypeIdentifier(type), isWritable, declarationText)
 
+  // TODO: remove
   fun getTrimmedDeclarationText(): String {
     return declarationText.split("{")[0].trimEnd(' ', '\t', '\n')
   }

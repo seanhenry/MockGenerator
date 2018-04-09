@@ -1,14 +1,30 @@
 package codes.seanhenry.mockgenerator.entities
 
 import codes.seanhenry.mockgenerator.util.ParameterUtil
+import codes.seanhenry.mockgenerator.visitor.Visitor
 
 // TODO: remove isProtocol and get that info from visitor
-class Initializer(val parametersList: List<Parameter>, val isFailable: Boolean, val throws: Boolean, val isProtocol: Boolean) {
+class Initializer(val parametersList: List<Parameter>,
+                  val isFailable: Boolean,
+                  val throws: Boolean,
+                  val isProtocol: Boolean) : Element {
 
   // TODO: remove these
-  constructor(parameters: String, isFailable: Boolean): this(ParameterUtil.getParameters(parameters), isFailable, false, false)
-  constructor(parameters: String, isFailable: Boolean, throws: Boolean): this(ParameterUtil.getParameters(parameters), isFailable, throws, false)
-  constructor(parameters: String, isFailable: Boolean, throws: Boolean, isProtocol: Boolean): this(ParameterUtil.getParameters(parameters), isFailable, throws, isProtocol)
+  constructor(parameters: String,
+              isFailable: Boolean) : this(ParameterUtil.getParameters(parameters), isFailable, false, false)
+
+  constructor(parameters: String,
+              isFailable: Boolean,
+              throws: Boolean) : this(ParameterUtil.getParameters(parameters), isFailable, throws, false)
+
+  constructor(parameters: String,
+              isFailable: Boolean,
+              throws: Boolean,
+              isProtocol: Boolean) : this(ParameterUtil.getParameters(parameters), isFailable, throws, isProtocol)
+
+  override fun accept(visitor: Visitor) {
+    visitor.visitInitializer(this)
+  }
 
   class Builder {
 

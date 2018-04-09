@@ -45,4 +45,28 @@ class RecursiveVisitorSpy: RecursiveVisitor() {
     visitedGenericTypes.add(type)
     super.visitGenericType(type)
   }
+
+  var visitedMethods = ArrayList<Method>()
+  override fun visitMethod(declaration: Method) {
+    visitedMethods.add(declaration)
+    super.visitMethod(declaration)
+  }
+
+  var visitedProperties = ArrayList<Property>()
+  override fun visitProperty(declaration: Property) {
+    visitedProperties.add(declaration)
+    super.visitProperty(declaration)
+  }
+
+  var visitedInitializers = ArrayList<Initializer>()
+  override fun visitInitializer(declaration: Initializer) {
+    visitedInitializers.add(declaration)
+    super.visitInitializer(declaration)
+  }
+
+  var visitedParameters = ArrayList<Parameter>()
+  override fun visitParameter(parameter: Parameter) {
+    visitedParameters.add(parameter)
+    super.visitParameter(parameter)
+  }
 }

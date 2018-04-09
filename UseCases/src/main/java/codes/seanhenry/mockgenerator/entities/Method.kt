@@ -1,6 +1,12 @@
 package codes.seanhenry.mockgenerator.entities
 
-class Method(val name: String, val genericParameters: List<String>, val returnType: MethodType, val parametersList: List<Parameter>, val declarationText: String, val throws: Boolean) {
+import codes.seanhenry.mockgenerator.visitor.Visitor
+
+data class Method(val name: String, val genericParameters: List<String>, val returnType: MethodType, val parametersList: List<Parameter>, val declarationText: String, val throws: Boolean): Element {
+
+  override fun accept(visitor: Visitor) {
+    visitor.visitMethod(this)
+  }
 
   class Builder(val name: String) {
 

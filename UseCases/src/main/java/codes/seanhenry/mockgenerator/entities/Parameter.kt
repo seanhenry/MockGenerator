@@ -1,8 +1,10 @@
 package codes.seanhenry.mockgenerator.entities
 
+import codes.seanhenry.mockgenerator.visitor.Visitor
+
 // TODO: change label and name to external/internal name
 // TODO: make externalName optional
-open class Parameter(val label: String, val name: String, val type: MethodType, val text: String, val isEscaping: Boolean) {
+open class Parameter(val label: String, val name: String, val type: MethodType, val text: String, val isEscaping: Boolean): Element {
 
   // TODO: REMOVE THESE
   constructor(label: String, name: String, type: String, resolvedType: String, text: String) : this(label, name, MethodType(TypeIdentifier(type), TypeIdentifier(resolvedType), TypeIdentifier(type)), text, false)
@@ -11,6 +13,10 @@ open class Parameter(val label: String, val name: String, val type: MethodType, 
   // TODO: remove? text?
   val originalType = type.originalType.text
   val resolvedType = type.resolvedType.text
+
+  override fun accept(visitor: Visitor) {
+    visitor.visitParameter(this)
+  }
 
   class Builder(private val externalName: String, private val internalName: String) {
 

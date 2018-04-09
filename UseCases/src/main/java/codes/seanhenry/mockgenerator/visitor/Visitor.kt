@@ -34,4 +34,16 @@ open class Visitor {
   open fun visitGenericType(type: GenericType) {
     visitType(type)
   }
+
+  open fun visitMethod(declaration: Method) {
+  }
+
+  open fun visitProperty(declaration: Property) {
+  }
+
+  open fun visitInitializer(declaration: Initializer) {
+  }
+
+  open fun visitParameter(parameter: Parameter) {
+  }
 }

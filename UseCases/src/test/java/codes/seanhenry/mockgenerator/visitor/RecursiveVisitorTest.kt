@@ -59,7 +59,7 @@ class RecursiveVisitorTest: TestCase() {
     assertEquals(visitor.visitedTypes[1], dictionary.valueType)
   }
 
-  fun testShouldVisitGenericArgumentTypes() {
+  fun testShouldVisitGenericTypes() {
     val generic = GenericType.Builder("Type")
         .argument("T")
         .argument("U")
@@ -68,5 +68,44 @@ class RecursiveVisitorTest: TestCase() {
     assertEquals(visitor.visitedGenericTypes[0], generic)
     assertEquals(visitor.visitedTypes[0], generic.arguments[0])
     assertEquals(visitor.visitedTypes[1], generic.arguments[1])
+  }
+
+  fun testShouldVisitMethodChildren() {
+    val declaration = Method.Builder("method")
+        .parameter("a") { it.type("Int") }
+        .returnType("String")
+        .build()
+    declaration.accept(visitor)
+    assertEquals(visitor.visitedMethods[0], declaration)
+    assertEquals(visitor.visitedParameters[0], declaration.parametersList[0])
+    assertEquals(visitor.visitedTypes[0], declaration.parametersList[0].type.resolvedType)
+    assertEquals(visitor.visitedTypes[1], declaration.returnType.resolvedType)
+  }
+
+  fun testShouldVisitPropertyChildren() {
+    val declaration = Property.Builder("prop")
+        .type("String")
+        .build()
+    declaration.accept(visitor)
+    assertEquals(visitor.visitedProperties[0], declaration)
+    assertEquals(visitor.visitedTypes[0], declaration.type)
+  }
+
+  fun testShouldVisitInitializerChildren() {
+    val declaration = Initializer.Builder()
+        .parameter("a") { it.type("Int") }
+        .build()
+    declaration.accept(visitor)
+    assertEquals(visitor.visitedInitializers[0], declaration)
+    assertEquals(visitor.visitedParameters[0], declaration.parametersList[0])
+  }
+
+  fun testShouldVisitParameterChildren() {
+    val parameter = Parameter.Builder("a")
+        .type("Int")
+        .build()
+    parameter.accept(visitor)
+    assertEquals(visitor.visitedParameters[0], parameter)
+    assertEquals(visitor.visitedTypes[0], parameter.type.resolvedType)
   }
 }
