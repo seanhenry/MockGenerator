@@ -1,6 +1,6 @@
 package codes.seanhenry.mockgenerator.entities
 
-import codes.seanhenry.mockgenerator.transformer.CopyVisitor
+import codes.seanhenry.mockgenerator.algorithms.CopyVisitor
 import codes.seanhenry.mockgenerator.visitor.Visitor
 
 data class OptionalType(val type: Type, val isImplicitlyUnwrapped: Boolean, val useVerboseSyntax: Boolean, val implicitlyUnwrapped: Boolean): Type {

@@ -1,6 +1,6 @@
 package codes.seanhenry.mockgenerator.entities
 
-import codes.seanhenry.mockgenerator.transformer.CopyVisitor
+import codes.seanhenry.mockgenerator.algorithms.CopyVisitor
 import codes.seanhenry.mockgenerator.visitor.Visitor
 
 data class GenericType(val identifier: String, val arguments: List<Type>): Type {

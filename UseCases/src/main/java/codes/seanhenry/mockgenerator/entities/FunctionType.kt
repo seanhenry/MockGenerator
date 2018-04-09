@@ -1,6 +1,6 @@
 package codes.seanhenry.mockgenerator.entities
 
-import codes.seanhenry.mockgenerator.transformer.CopyVisitor
+import codes.seanhenry.mockgenerator.algorithms.CopyVisitor
 import codes.seanhenry.mockgenerator.visitor.Visitor
 
 data class FunctionType(val arguments: List<Type>, val returnType: Type, val throws: Boolean): Type {

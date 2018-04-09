@@ -2,8 +2,8 @@ package codes.seanhenry.mockgenerator.usecases
 
 import codes.seanhenry.mockgenerator.entities.Parameter
 import codes.seanhenry.mockgenerator.entities.TuplePropertyDeclaration
-import codes.seanhenry.mockgenerator.transformer.CopyVisitor
-import codes.seanhenry.mockgenerator.transformer.TypeErasingVisitor
+import codes.seanhenry.mockgenerator.algorithms.CopyVisitor
+import codes.seanhenry.mockgenerator.algorithms.TypeErasingVisitor
 import codes.seanhenry.mockgenerator.util.ClosureUtil
 import codes.seanhenry.mockgenerator.util.StringDecorator
 

@@ -1,4 +1,4 @@
-package codes.seanhenry.mockgenerator.transformer
+package codes.seanhenry.mockgenerator.algorithms
 
 import codes.seanhenry.mockgenerator.entities.Method
 import codes.seanhenry.mockgenerator.entities.Type

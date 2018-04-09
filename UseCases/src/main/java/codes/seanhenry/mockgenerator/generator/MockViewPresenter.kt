@@ -5,10 +5,10 @@ import codes.seanhenry.mockgenerator.swift.SwiftStringConvenienceInitCall
 import codes.seanhenry.mockgenerator.swift.SwiftStringInitialiserDeclaration
 import codes.seanhenry.mockgenerator.swift.SwiftStringProtocolInitialiserDeclaration
 import codes.seanhenry.mockgenerator.swift.SwiftStringTupleForwardCall
-import codes.seanhenry.mockgenerator.transformer.CopyVisitor
-import codes.seanhenry.mockgenerator.transformer.DefaultValueVisitor
-import codes.seanhenry.mockgenerator.transformer.FunctionParameterTransformer
-import codes.seanhenry.mockgenerator.transformer.TypeErasingVisitor
+import codes.seanhenry.mockgenerator.algorithms.CopyVisitor
+import codes.seanhenry.mockgenerator.algorithms.DefaultValueVisitor
+import codes.seanhenry.mockgenerator.algorithms.FunctionParameterTransformer
+import codes.seanhenry.mockgenerator.algorithms.TypeErasingVisitor
 import codes.seanhenry.mockgenerator.usecases.CreateConvenienceInitialiser
 import codes.seanhenry.mockgenerator.usecases.CreateInvokedParameters
 import codes.seanhenry.mockgenerator.util.*
