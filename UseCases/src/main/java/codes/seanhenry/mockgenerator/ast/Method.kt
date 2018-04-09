@@ -2,14 +2,8 @@ package codes.seanhenry.mockgenerator.ast
 
 import codes.seanhenry.mockgenerator.entities.MethodType
 import codes.seanhenry.mockgenerator.entities.Parameter
-import codes.seanhenry.mockgenerator.util.ParameterUtil
 
 class Method(val name: String, val genericParameters: List<String>, val returnType: MethodType, val parametersList: List<Parameter>, val declarationText: String, val throws: Boolean) {
-
-  // TODO: remove these
-  private constructor(name: String, returnType: String?, parametersList: List<Parameter>, signature: String, throws: Boolean): this(name, emptyList(), MethodType.Builder(returnType ?: "").build(), parametersList, signature, throws)
-  constructor(name: String, returnType: String?, parameters: String, signature: String): this(name, returnType, ParameterUtil.getParameters(parameters), signature, false)
-  constructor(name: String, returnType: String?, parametersList: List<Parameter>, signature: String): this(name, returnType, parametersList, signature, false)
 
   class Builder(val name: String) {
 

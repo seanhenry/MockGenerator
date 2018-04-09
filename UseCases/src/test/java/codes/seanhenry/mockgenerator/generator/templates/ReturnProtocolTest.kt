@@ -21,8 +21,12 @@ class ReturnProtocolTest: MockGeneratorTestTemplate {
         Method.Builder("returnIUO")
             .returnType().optional { it.unwrapped().type("UInt") }
             .build(),
-        Method("returnGeneric", "Optional<String>", "", "func returnGeneric() -> Optional<String>"),
-        Method("returnOptionalGeneric", "Optional<String>?", "", "func returnOptionalGeneric() -> Optional<String>?"),
+        Method.Builder("returnGeneric")
+            .returnType().optional { it.verbose().type("String") }
+            .build(),
+        Method.Builder("returnOptionalGeneric")
+            .returnType().optional { it.type().optional { it.verbose().type("String") } }
+            .build(),
         Method.Builder("returnClosure")
             .returnType().function { }
             .build(),

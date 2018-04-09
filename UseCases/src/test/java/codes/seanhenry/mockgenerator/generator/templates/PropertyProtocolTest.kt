@@ -15,7 +15,7 @@ class PropertyProtocolTest : MockGeneratorTestTemplate {
         Property("tuple", "(Int, String?)?", true, "var tuple: (Int, String?)? { get set }")
     )
     generator.add(
-        Method("method", null, "", "func method()")
+        Method.Builder("method").build()
     )
   }
 
