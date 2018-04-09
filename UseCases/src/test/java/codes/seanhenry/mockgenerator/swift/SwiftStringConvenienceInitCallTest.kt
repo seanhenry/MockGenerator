@@ -13,45 +13,45 @@ class SwiftStringConvenienceInitCallTest : TestCase() {
   }
 
   fun testShouldReturnCallWithTemplateWhenParameterHasNoDefaultValue() {
-    val call = InitialiserCall(listOf(Parameter("a", "a", "Type", "a: Type")), false)
+    val call = InitialiserCall(listOf(Parameter.Builder("a", "a").type("Type").build()), false)
     assertEquals("self.init(a: <#a#>)", SwiftStringConvenienceInitCall().transform(call))
   }
 
   fun testShouldReturnCallWithTemplateWhenParametersHaveNoDefaultValues() {
     val call = InitialiserCall(listOf(
-        Parameter("a", "a", "Type", "a: Type"),
-        Parameter("b", "b", "Type", "b: Type")
+        Parameter.Builder("a", "a").type("Type").build(),
+        Parameter.Builder("b", "b").type("Type").build()
     ), false)
     assertEquals("self.init(a: <#a#>, b: <#b#>)", SwiftStringConvenienceInitCall().transform(call))
   }
 
   fun testShouldReturnCallWithDefaultValues() {
     val call = InitialiserCall(listOf(
-        Parameter("a", "a", "String", "a: String"),
-        Parameter("b", "b", "Int", "b: Int")
+        Parameter.Builder("a", "a").type("String").build(),
+        Parameter.Builder("b", "b").type("Int").build()
     ), false)
     assertEquals("self.init(a: \"\", b: 0)", SwiftStringConvenienceInitCall().transform(call))
   }
 
   fun testShouldReturnCallWithDefaultValuesForOptionals() {
     val call = InitialiserCall(listOf(
-        Parameter("a", "a", "String?", "a: String?"),
-        Parameter("b", "b", "Int?", "a: Int?"),
-        Parameter("c", "c", "Object?", "c: Object?")
+        Parameter.Builder("a", "a").type().optional { it.type("String") }.build(),
+        Parameter.Builder("b", "b").type().optional { it.type("Int") }.build(),
+        Parameter.Builder("c", "c").type().optional { it.type("Object") }.build()
     ), false)
     assertEquals("self.init(a: nil, b: nil, c: nil)", SwiftStringConvenienceInitCall().transform(call))
   }
 
   fun testShouldReturnCallWithWildcard() {
     val call = InitialiserCall(listOf(
-        Parameter("_", "a", "String?", "a: String?")
+        Parameter.Builder("_", "a").type().optional { it.type("String") }.build()
     ), false)
     assertEquals("self.init(nil)", SwiftStringConvenienceInitCall().transform(call))
   }
 
   fun testShouldForceUnrwapCallWithOptionalInitialiser() {
     val call = InitialiserCall(listOf(
-        Parameter("a", "a", "String?", "a: String?")
+        Parameter.Builder("a", "a").type().optional { it.type("String") }.build()
     ), true)
     assertEquals("self.init(a: nil)!", SwiftStringConvenienceInitCall().transform(call))
   }

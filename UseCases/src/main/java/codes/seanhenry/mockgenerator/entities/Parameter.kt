@@ -7,15 +7,12 @@ import codes.seanhenry.mockgenerator.ast.TypeIdentifier
 open class Parameter(val label: String, val name: String, val type: MethodType, val text: String, val isEscaping: Boolean) {
 
   // TODO: REMOVE THESE
-  constructor(label: String, name: String, type: MethodType, text: String) : this(label, name, type, text, false)
-  constructor(label: String, name: String, type: String, resolvedType: TypeIdentifier, text: String) : this(label, name, MethodType(TypeIdentifier(type), resolvedType, TypeIdentifier(type)), text, false)
-  constructor(label: String, name: String, type: String, resolvedType: String, text: String) : this(label, name, type, TypeIdentifier(resolvedType), text)
+  constructor(label: String, name: String, type: String, resolvedType: String, text: String) : this(label, name, MethodType(TypeIdentifier(type), TypeIdentifier(resolvedType), TypeIdentifier(type)), text, false)
   constructor(label: String, name: String, type: String, text: String) : this(label, name, type, type, text)
 
+  // TODO: remove? text?
   val originalType = type.originalType.text
   val resolvedType = type.resolvedType.text
-  // TODO: remove
-  val erasedType = type.erasedType.text
 
   class Builder(private val externalName: String, private val internalName: String) {
 

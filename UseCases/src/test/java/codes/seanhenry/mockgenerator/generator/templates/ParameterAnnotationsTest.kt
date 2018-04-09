@@ -1,6 +1,5 @@
 package codes.seanhenry.mockgenerator.generator.templates
 
-import codes.seanhenry.mockgenerator.entities.ClosureHelper.Companion.createClosure
 import codes.seanhenry.mockgenerator.ast.Method
 import codes.seanhenry.mockgenerator.generator.MockTransformer
 
