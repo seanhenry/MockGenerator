@@ -1,9 +1,9 @@
 package codes.seanhenry.mockgenerator.transformer
 
-import codes.seanhenry.mockgenerator.ast.FunctionType
-import codes.seanhenry.mockgenerator.ast.OptionalType
-import codes.seanhenry.mockgenerator.ast.Type
-import codes.seanhenry.mockgenerator.ast.TypeIdentifier
+import codes.seanhenry.mockgenerator.entities.FunctionType
+import codes.seanhenry.mockgenerator.entities.OptionalType
+import codes.seanhenry.mockgenerator.entities.Type
+import codes.seanhenry.mockgenerator.entities.TypeIdentifier
 import codes.seanhenry.mockgenerator.generator.ClosureParameterViewModel
 import codes.seanhenry.mockgenerator.visitor.RecursiveVisitor
 

@@ -1,7 +1,7 @@
 package codes.seanhenry.mockgenerator.generator
 
-import codes.seanhenry.mockgenerator.ast.Method
-import codes.seanhenry.mockgenerator.ast.TypeIdentifier
+import codes.seanhenry.mockgenerator.entities.Method
+import codes.seanhenry.mockgenerator.entities.TypeIdentifier
 import codes.seanhenry.mockgenerator.entities.*
 import codes.seanhenry.mockgenerator.swift.SwiftStringReturnProperty
 import codes.seanhenry.mockgenerator.swift.*

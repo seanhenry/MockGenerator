@@ -1,4 +1,4 @@
-package codes.seanhenry.mockgenerator.ast
+package codes.seanhenry.mockgenerator.entities
 
 import codes.seanhenry.mockgenerator.transformer.CopyVisitor
 import codes.seanhenry.mockgenerator.visitor.Visitor

@@ -1,6 +1,5 @@
 package codes.seanhenry.mockgenerator.entities
 
-import codes.seanhenry.mockgenerator.ast.GenericType
 import junit.framework.TestCase
 
 class GenericTypeTest: TestCase() {

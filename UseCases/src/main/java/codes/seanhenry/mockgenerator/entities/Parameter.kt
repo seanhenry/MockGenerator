@@ -1,7 +1,5 @@
 package codes.seanhenry.mockgenerator.entities
 
-import codes.seanhenry.mockgenerator.ast.TypeIdentifier
-
 // TODO: change label and name to external/internal name
 // TODO: make externalName optional
 open class Parameter(val label: String, val name: String, val type: MethodType, val text: String, val isEscaping: Boolean) {

@@ -1,6 +1,5 @@
 package codes.seanhenry.mockgenerator.generator
 
-import codes.seanhenry.mockgenerator.ast.*
 import codes.seanhenry.mockgenerator.entities.*
 import codes.seanhenry.mockgenerator.swift.SwiftStringConvenienceInitCall
 import codes.seanhenry.mockgenerator.swift.SwiftStringInitialiserDeclaration

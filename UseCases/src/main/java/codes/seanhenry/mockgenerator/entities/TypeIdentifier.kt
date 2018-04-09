@@ -1,4 +1,4 @@
-package codes.seanhenry.mockgenerator.ast
+package codes.seanhenry.mockgenerator.entities
 
 import codes.seanhenry.mockgenerator.visitor.Visitor
 
@@ -96,8 +96,8 @@ data class TypeIdentifier(var identifiers: MutableList<String>): Type {
       return previousBuilder
     }
 
-    fun typeIdentifier(identifier: String, build: (TypeIdentifier.Builder) -> Unit): B {
-      val builder = TypeIdentifier.Builder(identifier)
+    fun typeIdentifier(identifier: String, build: (Builder) -> Unit): B {
+      val builder = Builder(identifier)
       build(builder)
       getType(builder.build())
       return previousBuilder

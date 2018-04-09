@@ -1,6 +1,6 @@
 package codes.seanhenry.mockgenerator.transformer
 
-import codes.seanhenry.mockgenerator.ast.*
+import codes.seanhenry.mockgenerator.entities.*
 import codes.seanhenry.mockgenerator.visitor.Visitor
 
 class DefaultValueVisitor: Visitor() {

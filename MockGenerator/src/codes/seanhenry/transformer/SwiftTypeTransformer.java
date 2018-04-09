@@ -1,6 +1,6 @@
 package codes.seanhenry.transformer;
 
-import codes.seanhenry.mockgenerator.ast.Method;
+import codes.seanhenry.mockgenerator.entities.Method;
 import codes.seanhenry.mockgenerator.entities.*;
 import codes.seanhenry.mockgenerator.util.ParameterUtil;
 import codes.seanhenry.util.MySwiftPsiUtil;

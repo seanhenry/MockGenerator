@@ -1,7 +1,5 @@
 package codes.seanhenry.mockgenerator.entities
 
-import codes.seanhenry.mockgenerator.ast.FunctionType
-import codes.seanhenry.mockgenerator.ast.TypeIdentifier
 import junit.framework.TestCase
 
 class FunctionTypeBuilderTest: TestCase() {

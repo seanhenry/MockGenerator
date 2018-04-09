@@ -1,7 +1,5 @@
 package codes.seanhenry.mockgenerator.entities
 
-import codes.seanhenry.mockgenerator.ast.TypeIdentifier
-
 class Property(val name: String, val type: TypeIdentifier, val isWritable: Boolean, val declarationText: String) {
 
   // TODO: remove and make builder

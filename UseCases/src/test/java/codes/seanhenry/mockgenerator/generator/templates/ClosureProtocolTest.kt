@@ -1,6 +1,6 @@
 package codes.seanhenry.mockgenerator.generator.templates
 
-import codes.seanhenry.mockgenerator.ast.*
+import codes.seanhenry.mockgenerator.entities.Method
 import codes.seanhenry.mockgenerator.generator.MockTransformer
 
 class ClosureProtocolTest : MockGeneratorTestTemplate {

@@ -1,6 +1,5 @@
 package codes.seanhenry.mockgenerator.swift
 
-import codes.seanhenry.mockgenerator.entities.Initialiser
 import codes.seanhenry.mockgenerator.entities.InitialiserCall
 import codes.seanhenry.mockgenerator.entities.Parameter
 import junit.framework.TestCase

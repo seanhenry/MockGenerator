@@ -1,7 +1,5 @@
-package codes.seanhenry.mockgenerator.ast
+package codes.seanhenry.mockgenerator.entities
 
-import codes.seanhenry.mockgenerator.entities.MethodType
-import codes.seanhenry.mockgenerator.entities.Parameter
 import junit.framework.TestCase
 
 class MethodBuilderTest: TestCase() {

@@ -1,4 +1,4 @@
-package codes.seanhenry.mockgenerator.ast
+package codes.seanhenry.mockgenerator.entities
 import junit.framework.TestCase
 
 class ArrayTypeBuilderTest: TestCase() {

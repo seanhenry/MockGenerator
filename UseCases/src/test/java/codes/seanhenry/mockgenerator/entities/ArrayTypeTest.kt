@@ -1,6 +1,5 @@
 package codes.seanhenry.mockgenerator.entities
 
-import codes.seanhenry.mockgenerator.ast.ArrayType
 import junit.framework.TestCase
 
 class ArrayTypeTest: TestCase() {

@@ -1,6 +1,7 @@
 package codes.seanhenry.mockgenerator.transformer
 
-import codes.seanhenry.mockgenerator.ast.*
+import codes.seanhenry.mockgenerator.entities.Type
+import codes.seanhenry.mockgenerator.entities.TypeIdentifier
 import codes.seanhenry.mockgenerator.visitor.RecursiveVisitor
 
 class TypeErasingVisitor(private val genericIdentifiers: List<String>) : RecursiveVisitor() {

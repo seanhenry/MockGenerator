@@ -1,7 +1,5 @@
 package codes.seanhenry.mockgenerator.entities
 
-import codes.seanhenry.mockgenerator.ast.BracketType
-import codes.seanhenry.mockgenerator.ast.TypeIdentifier
 import junit.framework.TestCase
 
 class BracketTypeTest: TestCase() {
@@ -12,5 +10,10 @@ class BracketTypeTest: TestCase() {
     assertTrue(original == copied)
     assertFalse(original === copied)
     assertFalse(original.type === copied.type)
+  }
+
+  fun testSurroundsTypeWithBrackets() {
+    val type = BracketType(TypeIdentifier("Type"))
+    assertEquals("(Type)", type.text)
   }
 }

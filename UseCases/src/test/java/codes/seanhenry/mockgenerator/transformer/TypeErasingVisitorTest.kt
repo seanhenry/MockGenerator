@@ -1,8 +1,7 @@
 package codes.seanhenry.mockgenerator.transformer
 
-import codes.seanhenry.mockgenerator.ast.Method
-import codes.seanhenry.mockgenerator.ast.Type
-import codes.seanhenry.mockgenerator.ast.TypeIdentifier
+import codes.seanhenry.mockgenerator.entities.Method
+import codes.seanhenry.mockgenerator.entities.Type
 import junit.framework.TestCase
 
 class TypeErasingVisitorTest: TestCase() {

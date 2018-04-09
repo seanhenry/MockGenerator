@@ -1,7 +1,7 @@
 package codes.seanhenry.mockgenerator.generator
 
 import codes.seanhenry.mockgenerator.entities.Initialiser
-import codes.seanhenry.mockgenerator.ast.Method
+import codes.seanhenry.mockgenerator.entities.Method
 import codes.seanhenry.mockgenerator.entities.Property
 
 interface MockTransformer {

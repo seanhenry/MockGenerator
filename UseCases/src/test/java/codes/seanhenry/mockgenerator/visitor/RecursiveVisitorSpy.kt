@@ -1,6 +1,6 @@
 package codes.seanhenry.mockgenerator.visitor
 
-import codes.seanhenry.mockgenerator.ast.*
+import codes.seanhenry.mockgenerator.entities.*
 
 class RecursiveVisitorSpy: RecursiveVisitor() {
 

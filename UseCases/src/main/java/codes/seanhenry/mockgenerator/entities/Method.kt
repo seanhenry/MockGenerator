@@ -1,7 +1,4 @@
-package codes.seanhenry.mockgenerator.ast
-
-import codes.seanhenry.mockgenerator.entities.MethodType
-import codes.seanhenry.mockgenerator.entities.Parameter
+package codes.seanhenry.mockgenerator.entities
 
 class Method(val name: String, val genericParameters: List<String>, val returnType: MethodType, val parametersList: List<Parameter>, val declarationText: String, val throws: Boolean) {
 
