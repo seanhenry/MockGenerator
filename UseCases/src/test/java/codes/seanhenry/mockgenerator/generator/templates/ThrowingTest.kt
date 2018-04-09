@@ -1,15 +1,11 @@
 package codes.seanhenry.mockgenerator.generator.templates
 
-import codes.seanhenry.mockgenerator.entities.ClosureHelper.Companion.createClosure
-import codes.seanhenry.mockgenerator.entities.Parameter
 import codes.seanhenry.mockgenerator.ast.Method
 import codes.seanhenry.mockgenerator.generator.MockTransformer
 
 class ThrowingTest: MockGeneratorTestTemplate {
 
   override fun build(generator: MockTransformer) {
-    val empty = emptyList<Parameter>()
-    val noReturnType: String? = null
     generator.add(
         Method.Builder("throwingMethod")
             .throws()

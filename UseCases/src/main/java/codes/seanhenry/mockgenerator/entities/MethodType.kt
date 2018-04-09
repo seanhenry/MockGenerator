@@ -1,7 +1,7 @@
 package codes.seanhenry.mockgenerator.entities
 
 import codes.seanhenry.mockgenerator.ast.Type
-import codes.seanhenry.mockgenerator.ast.TypeIdentifier;
+import codes.seanhenry.mockgenerator.ast.TypeIdentifier
 
 // TODO: remove erased type - this will be done by a visitor instead of the client now :)
 // TODO: rename to ResolvedType
