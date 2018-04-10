@@ -1,5 +1,6 @@
 package codes.seanhenry.mockgenerator.generator
 
+import codes.seanhenry.mockgenerator.generator.templates.protocol.DiamondInheritanceTest
 import codes.seanhenry.mockgenerator.generator.templates.protocol.GeneratorTestTemplate
 import codes.seanhenry.mockgenerator.generator.templates.protocol.MultipleProtocolTest
 import junit.framework.TestCase
@@ -8,6 +9,10 @@ class GeneratorTest : TestCase() {
 
   fun testMultipleProtocols() {
     runTest(MultipleProtocolTest())
+  }
+
+  fun testDiamondInheritanceProtocols() {
+    runTest(DiamondInheritanceTest())
   }
 
   private fun runTest(template: GeneratorTestTemplate) {

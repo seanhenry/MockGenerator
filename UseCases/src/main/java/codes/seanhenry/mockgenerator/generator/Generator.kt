@@ -1,6 +1,7 @@
 package codes.seanhenry.mockgenerator.generator
 
-import codes.seanhenry.mockgenerator.entities.Protocol
+import codes.seanhenry.mockgenerator.algorithms.SignatureGenerator
+import codes.seanhenry.mockgenerator.entities.*
 
 class Generator(private val view: MockView) {
 
@@ -16,9 +17,24 @@ class Generator(private val view: MockView) {
 
   fun generate(): String {
     val presenter = MockViewPresenter(view)
-    protocols.forEach { presenter.addInitialisers(it.initializers) }
-    protocols.forEach { presenter.addProperties(it.properties) }
-    protocols.forEach { presenter.addMethods(it.methods) }
+    presenter.addInitialisers(getInitializersRemovingDuplicates())
+    presenter.addProperties(getPropertiesRemovingDuplicates())
+    presenter.addMethods(getMethodsRemovingDuplicates())
     return presenter.generate()
+  }
+
+  private fun getInitializersRemovingDuplicates(): List<Initializer> {
+    return protocols.flatMap { it.initializers }
+        .distinctBy { SignatureGenerator.signature(it) }
+  }
+
+  private fun getPropertiesRemovingDuplicates(): List<Property> {
+    return protocols.flatMap { it.properties }
+        .distinctBy { SignatureGenerator.signature(it) }
+  }
+
+  private fun getMethodsRemovingDuplicates(): List<Method> {
+    return protocols.flatMap { it.methods}
+        .distinctBy { SignatureGenerator.signature(it) }
   }
 }
