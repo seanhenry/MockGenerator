@@ -8,5 +8,6 @@ class CallbackMockView(private val callback: (MockViewModel) -> String): MockVie
     result = callback(model)
         .split("\n")
         .filter { it.isNotBlank() }
+        .map { it.trim() }
   }
 }
