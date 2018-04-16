@@ -21,7 +21,9 @@ class TypeErasingVisitor(private val genericIdentifiers: List<String>) : Recursi
   }
 
   override fun visitDictionaryType(type: DictionaryType) {
-    type.keyType = TypeIdentifier.Builder("AnyHashable").build()
+    if (genericIdentifiers.contains(type.keyType.text)) {
+      type.keyType = TypeIdentifier.Builder("AnyHashable").build()
+    }
     super.visitDictionaryType(type)
   }
 }

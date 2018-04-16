@@ -67,6 +67,16 @@ class TypeErasingVisitorTest: TestCase() {
     assertEquals("[AnyHashable: Any]", erase(method.parametersList[0].type.originalType).text)
   }
 
+  fun testShouldNotEraseDictionaryKeyWhenNotGeneric() {
+    method = buildMethod()
+        .parameter("t") { it.type().dictionary { dict ->
+          dict.keyType("Key")
+              .valueType("Value")
+        } }
+        .build()
+    assertEquals("[Key: Value]", erase(method.parametersList[0].type.originalType).text)
+  }
+
   private fun buildMethod(): Method.Builder {
     return Method.Builder("method")
   }
