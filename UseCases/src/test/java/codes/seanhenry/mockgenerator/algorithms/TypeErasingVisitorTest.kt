@@ -57,6 +57,16 @@ class TypeErasingVisitorTest: TestCase() {
     assertEquals("(Any, Int)", erase(method.parametersList[0].type.originalType).text)
   }
 
+  fun testShouldEraseDictionaryKeyToAnyHashable() {
+    method = buildMethod()
+        .parameter("t") { it.type().dictionary { dict ->
+          dict.keyType("T")
+              .valueType("U")
+        } }
+        .build()
+    assertEquals("[AnyHashable: Any]", erase(method.parametersList[0].type.originalType).text)
+  }
+
   private fun buildMethod(): Method.Builder {
     return Method.Builder("method")
   }
