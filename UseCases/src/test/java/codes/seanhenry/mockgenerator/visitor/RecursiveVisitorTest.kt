@@ -32,13 +32,13 @@ class RecursiveVisitorTest: TestCase() {
     assertEquals(visitor.visitedTypes[0], optional.type)
   }
 
-  fun testShouldVisitBracketInnerType() {
+  fun testShouldVisitTupleInnerType() {
     val optional = OptionalType.Builder().type().bracket().type("Type").build()
-    val bracket = optional.type as BracketType
+    val tuple = optional.type as TupleType
     optional.accept(visitor)
     assertEquals(visitor.visitedOptionalTypes[0], optional)
-    assertEquals(visitor.visitedBracketTypes[0], bracket)
-    assertEquals(visitor.visitedTypes[0], bracket.type)
+    assertEquals(visitor.visitedTupleTypes[0], tuple)
+    assertEquals(visitor.visitedTypes[0], tuple.elements[0])
   }
 
   fun testShouldVisitArrayInnerType() {
@@ -107,5 +107,15 @@ class RecursiveVisitorTest: TestCase() {
     parameter.accept(visitor)
     assertEquals(visitor.visitedParameters[0], parameter)
     assertEquals(visitor.visitedTypes[0], parameter.type.resolvedType)
+  }
+
+  fun testShouldVisitTupleTypes() {
+    val tuple = TupleType.Builder()
+        .element("A")
+        .element("B")
+        .build()
+    tuple.accept(visitor)
+    assertEquals(tuple.elements[0], visitor.visitedTypes[0])
+    assertEquals(tuple.elements[1], visitor.visitedTypes[1])
   }
 }

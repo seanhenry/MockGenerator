@@ -19,7 +19,7 @@ class TypeFactoryTest: TestCase() {
     assertEquals("[Type]?", optional.text)
   }
 
-  fun testShouldBuildBracketType() {
+  fun testShouldBuildTupleType() {
     val optional = OptionalType.Builder().type().bracket().type("Type").build()
     assertEquals("(Type)?", optional.text)
   }
@@ -43,5 +43,12 @@ class TypeFactoryTest: TestCase() {
         .type().typeIdentifier("A") { it.nest("B") }
         .build()
     assertEquals("A.B?", optional.text)
+  }
+
+  fun testShouldBuildTuple() {
+    val optional = OptionalType.Builder()
+        .type().tuple { it.element("B") }
+        .build()
+    assertEquals("(B)?", optional.text)
   }
 }

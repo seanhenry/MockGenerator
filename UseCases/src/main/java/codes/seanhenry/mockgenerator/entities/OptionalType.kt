@@ -39,7 +39,7 @@ data class OptionalType(val type: Type, val isImplicitlyUnwrapped: Boolean, val 
     fun type(): TypeIdentifier.Factory<Builder> {
       return TypeIdentifier.Factory(this) {
         if (it is FunctionType) {
-          this.type = BracketType(it)
+          this.type = TupleType.Builder().element(it).build()
         } else {
           this.type = it
         }

@@ -47,6 +47,16 @@ class TypeErasingVisitorTest: TestCase() {
     assertEquals("(Any) -> Any", erase(method.parametersList[0].type.originalType).text)
   }
 
+  fun testShouldEraseTuple() {
+    method = buildMethod()
+        .parameter("t") { it.type().tuple { tuple ->
+          tuple.element("T")
+              .element("Int")
+        } }
+        .build()
+    assertEquals("(Any, Int)", erase(method.parametersList[0].type.originalType).text)
+  }
+
   private fun buildMethod(): Method.Builder {
     return Method.Builder("method")
   }

@@ -22,10 +22,10 @@ class RecursiveVisitorSpy: RecursiveVisitor() {
     super.visitOptionalType(type)
   }
 
-  var visitedBracketTypes = ArrayList<BracketType>()
-  override fun visitBracketType(type: BracketType) {
-    visitedBracketTypes.add(type)
-    super.visitBracketType(type)
+  var visitedTupleTypes = ArrayList<TupleType>()
+  override fun visitTupleType(type: TupleType) {
+    visitedTupleTypes.add(type)
+    super.visitTupleType(type)
   }
 
   var visitedArrayTypes = ArrayList<ArrayType>()

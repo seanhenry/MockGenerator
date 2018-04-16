@@ -28,10 +28,10 @@ class VisitorSpy: Visitor() {
     didVisitOptionalType = true
   }
 
-  var didVisitBracketType = false
-  override fun visitBracketType(type: BracketType) {
-    super.visitBracketType(type)
-    didVisitBracketType = true
+  var didVisitTupleType = false
+  override fun visitTupleType(type: TupleType) {
+    super.visitTupleType(type)
+    didVisitTupleType = true
   }
 
   var didVisitArrayType = false

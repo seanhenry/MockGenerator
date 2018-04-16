@@ -192,9 +192,7 @@ class MockViewPresenter(val view: MockView): MockTransformer {
   }
 
   private fun getDefaultValueAssignment(type: Type): String {
-    val visitor = DefaultValueVisitor()
-    type.accept(visitor)
-    val defaultValue = visitor.defaultValue
+    val defaultValue = DefaultValueVisitor.getDefaultValue(type)
     if (defaultValue != null && defaultValue != "nil") {
       return "= $defaultValue"
     }

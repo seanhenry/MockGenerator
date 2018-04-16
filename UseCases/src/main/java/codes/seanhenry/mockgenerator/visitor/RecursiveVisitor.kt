@@ -15,9 +15,9 @@ open class RecursiveVisitor: Visitor() {
     super.visitOptionalType(type)
   }
 
-  override fun visitBracketType(type: BracketType) {
-    type.type.accept(this)
-    super.visitBracketType(type)
+  override fun visitTupleType(type: TupleType) {
+    type.elements.forEach { it.accept(this) }
+    super.visitTupleType(type)
   }
 
   override fun visitArrayType(type: ArrayType) {

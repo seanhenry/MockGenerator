@@ -31,7 +31,7 @@ class CopyVisitor: Visitor() {
     copy = type.deepCopy()
   }
 
-  override fun visitBracketType(type: BracketType) {
+  override fun visitTupleType(type: TupleType) {
     copy = type.deepCopy()
   }
 

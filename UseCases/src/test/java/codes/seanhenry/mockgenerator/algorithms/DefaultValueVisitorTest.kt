@@ -73,9 +73,36 @@ class DefaultValueVisitorTest : TestCase() {
     assertEquals("nil", getDefaultValue(optional))
   }
 
-  fun testWhenBracketKnownType() {
-    val type = BracketType(TypeIdentifier("Int"))
+  fun testWhenKnownTypeSurroundedInBracket() {
+    val type = TupleType.Builder().element("Int").build()
     assertEquals("0", getDefaultValue(type))
+  }
+
+  fun testWhenUnknownTypeSurroundedInBracket() {
+    val type = TupleType.Builder().element("Unknown").build()
+    assertNull(getDefaultValue(type))
+  }
+
+  fun testWhenEmptyTuple() {
+    val type = TupleType.Builder().build()
+    assertEquals("()", getDefaultValue(type))
+  }
+
+  fun testWhenTupleOfKnownValues() {
+    val type = TupleType.Builder()
+        .element("Int")
+        .element("String")
+        .build()
+    assertEquals("(0, \"\")", getDefaultValue(type))
+  }
+
+  fun testWhenTupleOfMixedKnownAndUnknownValues() {
+    val type = TupleType.Builder()
+        .element("Int")
+        .element("String")
+        .element("Unknown")
+        .build()
+    assertNull(getDefaultValue(type))
   }
 
   fun testWhenArray() {
@@ -100,8 +127,6 @@ class DefaultValueVisitorTest : TestCase() {
   }
 
   private fun getDefaultValue(type: Type): String? {
-    val visitor = DefaultValueVisitor()
-    type.accept(visitor)
-    return visitor.defaultValue
+    return DefaultValueVisitor.getDefaultValue(type)
   }
 }

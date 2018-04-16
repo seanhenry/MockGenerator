@@ -9,7 +9,7 @@ class CopyVisitorTest: TestCase() {
     assertCopied(TypeIdentifier("Type"))
     assertCopied(FunctionType.Builder().build())
     assertCopied(OptionalType.Builder().build())
-    assertCopied(BracketType(TypeIdentifier("Type")))
+    assertCopied(TupleType.Builder().element("Type").build())
     assertCopied(ArrayType.Builder().build())
     assertCopied(DictionaryType.Builder().build())
     assertCopied(GenericType.Builder("Type").build())

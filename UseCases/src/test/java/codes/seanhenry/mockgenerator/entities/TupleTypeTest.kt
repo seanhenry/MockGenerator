@@ -2,18 +2,18 @@ package codes.seanhenry.mockgenerator.entities
 
 import junit.framework.TestCase
 
-class BracketTypeTest: TestCase() {
+class TupleTypeTest: TestCase() {
 
   fun testShouldDeepCopy() {
-    val original = BracketType(TypeIdentifier("Type"))
+    val original = TupleType(listOf(TypeIdentifier("Type")))
     val copied = original.deepCopy()
     assertTrue(original == copied)
     assertFalse(original === copied)
-    assertFalse(original.type === copied.type)
+    assertFalse(original.elements[0] === copied.elements[0])
   }
 
   fun testSurroundsTypeWithBrackets() {
-    val type = BracketType(TypeIdentifier("Type"))
+    val type = TupleType(listOf(TypeIdentifier("Type")))
     assertEquals("(Type)", type.text)
   }
 }

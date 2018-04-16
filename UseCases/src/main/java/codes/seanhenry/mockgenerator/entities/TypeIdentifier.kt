@@ -87,7 +87,7 @@ data class TypeIdentifier(var identifiers: MutableList<String>): Type {
 
     fun bracket(): Factory<B> {
       return Factory(previousBuilder) {
-        getType(BracketType(it))
+        getType(TupleType.Builder().element(it).build())
       }
     }
 
@@ -98,6 +98,13 @@ data class TypeIdentifier(var identifiers: MutableList<String>): Type {
 
     fun typeIdentifier(identifier: String, build: (Builder) -> Unit): B {
       val builder = Builder(identifier)
+      build(builder)
+      getType(builder.build())
+      return previousBuilder
+    }
+
+    fun tuple(build: (TupleType.Builder) -> Unit): B {
+      val builder = TupleType.Builder()
       build(builder)
       getType(builder.build())
       return previousBuilder

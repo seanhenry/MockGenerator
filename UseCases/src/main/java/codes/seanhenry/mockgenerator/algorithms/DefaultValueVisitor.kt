@@ -5,6 +5,14 @@ import codes.seanhenry.mockgenerator.visitor.Visitor
 
 class DefaultValueVisitor: Visitor() {
 
+  companion object {
+    fun getDefaultValue(element: Element): String? {
+      val visitor = DefaultValueVisitor()
+      element.accept(visitor)
+      return visitor.defaultValue
+    }
+  }
+
   var defaultValue: String? = null
 
   override fun visitTypeIdentifier(type: TypeIdentifier) {
@@ -40,9 +48,7 @@ class DefaultValueVisitor: Visitor() {
     if (TypeIdentifier.isVoid(type.returnType)) {
       return
     }
-    val visitor = DefaultValueVisitor()
-    type.returnType.accept(visitor)
-    val defaultValue = visitor.defaultValue
+    val defaultValue = DefaultValueVisitor.getDefaultValue(type.returnType)
     if (defaultValue != null) {
       value.add("return")
       value.add(defaultValue)
@@ -55,8 +61,22 @@ class DefaultValueVisitor: Visitor() {
     defaultValue = "nil"
   }
 
-  override fun visitBracketType(type: BracketType) {
-    type.type.accept(this)
+  override fun visitTupleType(type: TupleType) {
+    if (type.elements.isEmpty()) {
+      defaultValue = "()"
+    } else if (type.elements.size == 1) {
+      type.elements[0].accept(this)
+    } else {
+      defaultValue = createDefaultTuple(type)
+    }
+  }
+
+  private fun createDefaultTuple(type: TupleType): String? {
+    val defaults = type.elements.mapNotNull { getDefaultValue(it) }
+    if (defaults.size == type.elements.size) {
+      return "(${defaults.joinToString(", ")})"
+    }
+    return null
   }
 
   override fun visitArrayType(type: ArrayType) {

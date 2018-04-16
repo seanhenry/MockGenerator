@@ -19,7 +19,7 @@ open class Visitor {
     visitType(type)
   }
 
-  open fun visitBracketType(type: BracketType) {
+  open fun visitTupleType(type: TupleType) {
     visitType(type)
   }
 
