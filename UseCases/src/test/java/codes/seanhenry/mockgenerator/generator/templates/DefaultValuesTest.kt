@@ -389,7 +389,7 @@ class DefaultValuesTest : MockGeneratorTestTemplate {
     }
     var invokedOptionalArray = false
     var invokedOptionalArrayCount = 0
-    var stubbedOptionalArrayResult: Optional<Array<String>>!
+    var stubbedOptionalArrayResult: Array<String>!
     func optionalArray() -> Optional<Array<String>> {
     invokedOptionalArray = true
     invokedOptionalArrayCount += 1
@@ -429,7 +429,7 @@ class DefaultValuesTest : MockGeneratorTestTemplate {
     }
     var invokedOptionalDict = false
     var invokedOptionalDictCount = 0
-    var stubbedOptionalDictResult: Optional<Dictionary<String, String>>!
+    var stubbedOptionalDictResult: Dictionary<String, String>!
     func optionalDict() -> Optional<Dictionary<String, String>> {
     invokedOptionalDict = true
     invokedOptionalDictCount += 1

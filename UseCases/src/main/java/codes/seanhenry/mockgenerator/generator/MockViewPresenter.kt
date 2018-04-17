@@ -171,7 +171,7 @@ class MockViewPresenter(val view: MockView): MockTransformer {
           it.isWritable,
           it.type.text,
           removeOptional(it.type).text + "?",
-          OptionalUtil.removeOptionalRecursively(it.type.text) + "!", // TODO: same as above
+          removeOptionalRecursively(it.type).text + "!",
           getDefaultValueAssignment(it.type),
           transformDeclarationText(it.getTrimmedDeclarationText(), isClass))
     }
@@ -179,6 +179,10 @@ class MockViewPresenter(val view: MockView): MockTransformer {
 
   private fun removeOptional(type: Type): Type {
     return RemoveOptionalVisitor.removeOptional(type)
+  }
+
+  private fun removeOptionalRecursively(type: Type): Type {
+    return RecursiveRemoveOptionalVisitor.removeOptional(type)
   }
 
   private fun transformDeclarationText(declaration: String, isOverriding: Boolean): String {
@@ -235,7 +239,7 @@ class MockViewPresenter(val view: MockView): MockTransformer {
       return ResultTypeViewModel(
           getDefaultValueAssignment(type.resolvedType),
           removeOptional(erased).text + "?",
-          ClosureUtil.surroundClosure(OptionalUtil.removeOptionalRecursively(erased.text)) + "!",
+          ClosureUtil.surroundClosure(removeOptionalRecursively(erased).text) + "!",
       // TODO: we need to surround all closures when appending an optional. Write some tests
         transformReturnCastStatement(type.originalType, erased)
       )
@@ -262,9 +266,9 @@ class MockViewPresenter(val view: MockView): MockTransformer {
     }
     var optional = "!"
     var type = originalType.text
-    if (OptionalUtil.isOptional(type)) {
+    if (originalType is OptionalType) {
       optional = "?"
-      type = OptionalUtil.removeOptional(type)
+      type = removeOptional(originalType).text
     }
     return " as$optional $type"
   }

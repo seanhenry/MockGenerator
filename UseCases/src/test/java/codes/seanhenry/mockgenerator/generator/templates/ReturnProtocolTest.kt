@@ -124,7 +124,7 @@ class ReturnProtocolTest: MockGeneratorTestTemplate {
     }
     var invokedReturnGeneric = false
     var invokedReturnGenericCount = 0
-    var stubbedReturnGenericResult: Optional<String>!
+    var stubbedReturnGenericResult: String!
     func returnGeneric() -> Optional<String> {
     invokedReturnGeneric = true
     invokedReturnGenericCount += 1
@@ -132,7 +132,7 @@ class ReturnProtocolTest: MockGeneratorTestTemplate {
     }
     var invokedReturnOptionalGeneric = false
     var invokedReturnOptionalGenericCount = 0
-    var stubbedReturnOptionalGenericResult: Optional<String>!
+    var stubbedReturnOptionalGenericResult: String!
     func returnOptionalGeneric() -> Optional<String>? {
     invokedReturnOptionalGeneric = true
     invokedReturnOptionalGenericCount += 1
