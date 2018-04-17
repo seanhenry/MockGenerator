@@ -170,8 +170,8 @@ class MockViewPresenter(val view: MockView): MockTransformer {
           getUniqueName(it).capitalize(),
           it.isWritable,
           it.type.text,
-          removeOptional(it.type).text + "?",
-          removeOptionalRecursively(it.type).text + "!",
+          surroundWithOptional(removeOptional(it.type), false).text,
+          surroundWithOptional(removeOptionalRecursively(it.type), true).text,
           getDefaultValueAssignment(it.type),
           transformDeclarationText(it.getTrimmedDeclarationText(), isClass))
     }
@@ -183,6 +183,10 @@ class MockViewPresenter(val view: MockView): MockTransformer {
 
   private fun removeOptionalRecursively(type: Type): Type {
     return RecursiveRemoveOptionalVisitor.removeOptional(type)
+  }
+
+  private fun surroundWithOptional(type: Type, unwrapped: Boolean): Type {
+    return SurroundOptionalVisitor.surround(type, unwrapped)
   }
 
   private fun transformDeclarationText(declaration: String, isOverriding: Boolean): String {
@@ -238,10 +242,9 @@ class MockViewPresenter(val view: MockView): MockTransformer {
       val erased = erase(type.originalType, method.genericParameters)
       return ResultTypeViewModel(
           getDefaultValueAssignment(type.resolvedType),
-          removeOptional(erased).text + "?",
-          ClosureUtil.surroundClosure(removeOptionalRecursively(erased).text) + "!",
-      // TODO: we need to surround all closures when appending an optional. Write some tests
-        transformReturnCastStatement(type.originalType, erased)
+          surroundWithOptional(removeOptional(erased), false).text,
+          surroundWithOptional(removeOptionalRecursively(erased), true).text,
+          transformReturnCastStatement(type.originalType, erased)
       )
     }
     return null

@@ -36,6 +36,11 @@ data class OptionalType(val type: Type, val isImplicitlyUnwrapped: Boolean, val 
       return this
     }
 
+    fun type(type: Type): Builder {
+      this.type = type
+      return this
+    }
+
     fun type(): TypeIdentifier.Factory<Builder> {
       return TypeIdentifier.Factory(this) {
         if (it is FunctionType) {

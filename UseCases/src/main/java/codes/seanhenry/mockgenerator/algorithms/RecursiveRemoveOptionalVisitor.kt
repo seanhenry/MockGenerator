@@ -14,7 +14,7 @@ class RecursiveRemoveOptionalVisitor : Visitor() {
     }
   }
 
-  var transformed: Type? = null
+  private var transformed: Type? = null
 
   override fun visitOptionalType(type: OptionalType) {
     transformed = type.type

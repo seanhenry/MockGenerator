@@ -30,4 +30,9 @@ class OptionalTypeBuilderTest: TestCase() {
     val optional = OptionalType.Builder().type("Type").verbose().build()
     assertEquals("Optional<Type>", optional.text)
   }
+
+  fun testBuildAlreadyBuiltType() {
+    val optional = OptionalType.Builder().type(TypeIdentifier.EMPTY_TUPLE).build()
+    assertEquals(TypeIdentifier.EMPTY_TUPLE, optional.type)
+  }
 }
