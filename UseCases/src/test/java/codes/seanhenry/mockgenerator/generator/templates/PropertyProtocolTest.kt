@@ -7,13 +7,28 @@ import codes.seanhenry.mockgenerator.generator.MockTransformer
 class PropertyProtocolTest : MockGeneratorTestTemplate {
   override fun build(generator: MockTransformer) {
     generator.add(
-        Property("readWrite", "String", true, "var readWrite: String { set get }"),
-        Property("readOnly", "Int", false, "var readOnly: Int { get }"),
-        Property("optional", "UInt?", true, "var optional: UInt? { get set }"),
-        Property("unwrapped", "String!", true, "var unwrapped: String! { get set }"),
-        Property("weakVar", "AnyObject?", true, "weak var weakVar: AnyObject? { get set }"),
-        Property("tuple", "(Int, String?)?", true, "var tuple: (Int, String?)? { get set }")
-    )
+        Property.Builder("readWrite")
+            .type("String")
+            .build(),
+        Property.Builder("readOnly")
+            .type("Int")
+            .readonly()
+            .build(),
+        Property.Builder("optional")
+            .type().optional { it.type("UInt") }
+            .build(),
+        Property.Builder("unwrapped")
+            .type().optional { it.unwrapped().type("String") }
+            .build(),
+            Property.Builder ("tuple")
+            .type().optional { opt ->
+                  opt.type().tuple { tuple ->
+                    tuple.element("Int")
+                        .element().optional { it.type("String") }
+                  }
+                }
+            .build()
+        )
     generator.add(
         Method.Builder("method").build()
     )
@@ -87,26 +102,6 @@ class PropertyProtocolTest : MockGeneratorTestTemplate {
     invokedUnwrappedGetter = true
     invokedUnwrappedGetterCount += 1
     return stubbedUnwrapped
-    }
-    }
-    var invokedWeakVarSetter = false
-    var invokedWeakVarSetterCount = 0
-    var invokedWeakVar: AnyObject?
-    var invokedWeakVarList = [AnyObject?]()
-    var invokedWeakVarGetter = false
-    var invokedWeakVarGetterCount = 0
-    var stubbedWeakVar: AnyObject!
-    weak var weakVar: AnyObject? {
-    set {
-    invokedWeakVarSetter = true
-    invokedWeakVarSetterCount += 1
-    invokedWeakVar = newValue
-    invokedWeakVarList.append(newValue)
-    }
-    get {
-    invokedWeakVarGetter = true
-    invokedWeakVarGetterCount += 1
-    return stubbedWeakVar
     }
     }
     var invokedTupleSetter = false

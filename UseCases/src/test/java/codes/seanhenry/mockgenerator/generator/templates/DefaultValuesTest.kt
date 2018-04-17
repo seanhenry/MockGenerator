@@ -8,11 +8,21 @@ class DefaultValuesTest : MockGeneratorTestTemplate {
 
   override fun build(generator: MockTransformer) {
     generator.add(
-        Property("int", "Int", true, "var int: Int { get set }"),
-        Property("opt", "Optional<Int>", true, "var opt: Optional<Int> { get set }"),
-        Property("shortOptional", "Int?", true, "var shortOptional: Int? { get set }"),
-        Property("doubleOptional", "Int??", true, "var doubleOptional: Int?? { get set }"),
-        Property("iuo", "Int!", true, "var iuo: Int! { get set }")
+        Property.Builder("int")
+            .type("Int")
+            .build(),
+        Property.Builder("opt")
+            .type().optional { it.verbose().type("Int") }
+            .build(),
+        Property.Builder("shortOptional")
+            .type().optional { it.type("Int") }
+            .build(),
+        Property.Builder("doubleOptional")
+            .type().optional { it.type().optional { it.type("Int") } }
+            .build(),
+        Property.Builder("iuo")
+            .type().optional { it.unwrapped().type("Int") }
+            .build()
     )
     generator.add(
         Method.Builder("optionalInt")
@@ -155,11 +165,11 @@ class DefaultValuesTest : MockGeneratorTestTemplate {
     }
     var invokedOptSetter = false
     var invokedOptSetterCount = 0
-    var invokedOpt: Optional<Int>?
+    var invokedOpt: Int?
     var invokedOptList = [Optional<Int>]()
     var invokedOptGetter = false
     var invokedOptGetterCount = 0
-    var stubbedOpt: Optional<Int>!
+    var stubbedOpt: Int!
     var opt: Optional<Int> {
     set {
     invokedOptSetter = true

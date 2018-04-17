@@ -8,7 +8,9 @@ class SimpleClassTest: MockGeneratorTestTemplate {
 
   override fun build(generator: MockTransformer) {
     generator.addClassProperties(
-        Property("property", "String?", true, "var property: String?")
+        Property.Builder("property")
+            .type().optional { it.type("String") }
+            .build()
     )
     generator.addClassMethods(
         Method.Builder("method").build(),

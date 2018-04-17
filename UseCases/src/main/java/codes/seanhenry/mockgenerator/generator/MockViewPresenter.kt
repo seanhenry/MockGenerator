@@ -1,14 +1,11 @@
 package codes.seanhenry.mockgenerator.generator
 
+import codes.seanhenry.mockgenerator.algorithms.*
 import codes.seanhenry.mockgenerator.entities.*
 import codes.seanhenry.mockgenerator.swift.SwiftStringConvenienceInitCall
 import codes.seanhenry.mockgenerator.swift.SwiftStringInitialiserDeclaration
 import codes.seanhenry.mockgenerator.swift.SwiftStringProtocolInitialiserDeclaration
 import codes.seanhenry.mockgenerator.swift.SwiftStringTupleForwardCall
-import codes.seanhenry.mockgenerator.algorithms.CopyVisitor
-import codes.seanhenry.mockgenerator.algorithms.DefaultValueVisitor
-import codes.seanhenry.mockgenerator.algorithms.FunctionParameterTransformer
-import codes.seanhenry.mockgenerator.algorithms.TypeErasingVisitor
 import codes.seanhenry.mockgenerator.usecases.CreateConvenienceInitialiser
 import codes.seanhenry.mockgenerator.usecases.CreateInvokedParameters
 import codes.seanhenry.mockgenerator.util.*
@@ -173,11 +170,15 @@ class MockViewPresenter(val view: MockView): MockTransformer {
           getUniqueName(it).capitalize(),
           it.isWritable,
           it.type.text,
-          OptionalUtil.removeOptional(it.type.text) + "?", // TODO: stop using optUtil and use visitor
+          removeOptional(it.type).text + "?",
           OptionalUtil.removeOptionalRecursively(it.type.text) + "!", // TODO: same as above
           getDefaultValueAssignment(it.type),
           transformDeclarationText(it.getTrimmedDeclarationText(), isClass))
     }
+  }
+
+  private fun removeOptional(type: Type): Type {
+    return RemoveOptionalVisitor.removeOptional(type)
   }
 
   private fun transformDeclarationText(declaration: String, isOverriding: Boolean): String {
@@ -233,7 +234,7 @@ class MockViewPresenter(val view: MockView): MockTransformer {
       val erased = erase(type.originalType, method.genericParameters)
       return ResultTypeViewModel(
           getDefaultValueAssignment(type.resolvedType),
-          OptionalUtil.removeOptional(erased.text) + "?",
+          removeOptional(erased).text + "?",
           ClosureUtil.surroundClosure(OptionalUtil.removeOptionalRecursively(erased.text)) + "!",
       // TODO: we need to surround all closures when appending an optional. Write some tests
         transformReturnCastStatement(type.originalType, erased)
