@@ -3,7 +3,9 @@ package codes.seanhenry.mockgenerator.entities
 import codes.seanhenry.mockgenerator.algorithms.CopyVisitor
 import codes.seanhenry.mockgenerator.visitor.Visitor
 
-data class OptionalType(val type: Type, val isImplicitlyUnwrapped: Boolean, val useVerboseSyntax: Boolean, val implicitlyUnwrapped: Boolean): Type {
+data class OptionalType(val type: Type,
+                        val isImplicitlyUnwrapped: Boolean,
+                        val useVerboseSyntax: Boolean): Type {
 
   override val text: String
     get() { return generateText() }
@@ -12,7 +14,7 @@ data class OptionalType(val type: Type, val isImplicitlyUnwrapped: Boolean, val 
     val text = type.text
     return when {
       useVerboseSyntax -> "Optional<$text>"
-      implicitlyUnwrapped -> "$text!"
+      isImplicitlyUnwrapped -> "$text!"
       else -> "$text?"
     }
   }
@@ -62,7 +64,7 @@ data class OptionalType(val type: Type, val isImplicitlyUnwrapped: Boolean, val 
     }
 
     fun build(): OptionalType {
-      return OptionalType(type, implicitlyUnwrapped, useVerboseSyntax, implicitlyUnwrapped)
+      return OptionalType(type, implicitlyUnwrapped, useVerboseSyntax)
     }
   }
 }
