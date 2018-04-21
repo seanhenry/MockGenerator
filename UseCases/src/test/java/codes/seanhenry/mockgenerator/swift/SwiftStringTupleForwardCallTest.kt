@@ -2,12 +2,11 @@ package codes.seanhenry.mockgenerator.swift
 
 import codes.seanhenry.mockgenerator.entities.TuplePropertyDeclaration
 import junit.framework.TestCase
-import kotlin.test.assertEquals
 
 class SwiftStringTupleForwardCallTest : TestCase() {
 
   fun testTransformsToTuple() {
-    val property = TuplePropertyDeclaration("name", listOf(
+    val property = TuplePropertyDeclaration(listOf(
         TuplePropertyDeclaration.TupleParameter("param1", "Type1"),
         TuplePropertyDeclaration.TupleParameter("param2", "Type2")
     ))
@@ -15,7 +14,7 @@ class SwiftStringTupleForwardCallTest : TestCase() {
   }
 
   fun testTransformsVoidIntoShorthand() {
-    val property = TuplePropertyDeclaration("name", listOf(
+    val property = TuplePropertyDeclaration(listOf(
         TuplePropertyDeclaration.TupleParameter("param1", "Type1"),
         TuplePropertyDeclaration.TupleParameter("param2", "Void")
     ))
@@ -23,7 +22,7 @@ class SwiftStringTupleForwardCallTest : TestCase() {
   }
 
   fun testTransformsVoidShorthandIntoShorthandParameter() {
-    val property = TuplePropertyDeclaration("name", listOf(
+    val property = TuplePropertyDeclaration(listOf(
         TuplePropertyDeclaration.TupleParameter("param1", "Type1"),
         TuplePropertyDeclaration.TupleParameter("param2", "()")
     ))
@@ -31,7 +30,7 @@ class SwiftStringTupleForwardCallTest : TestCase() {
   }
 
   fun testTransformsEmptyTuple() {
-    val property = TuplePropertyDeclaration("name", emptyList())
+    val property = TuplePropertyDeclaration(emptyList())
     assertEquals("()", SwiftStringTupleForwardCall().transform(property))
   }
 
@@ -95,7 +94,7 @@ class SwiftStringTupleForwardCallTest : TestCase() {
   }
 
   private fun assertEscapesKeyword(keyword: String) {
-    val property = TuplePropertyDeclaration("name", listOf(
+    val property = TuplePropertyDeclaration(listOf(
         TuplePropertyDeclaration.TupleParameter(keyword, "Type"),
         TuplePropertyDeclaration.TupleParameter("param2", "()")
     ))

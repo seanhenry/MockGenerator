@@ -125,23 +125,23 @@ class CreateParameterTupleTest: TestCase() {
     assertTuple("(param0: Int, inout: Int)", parameters, "param0: inout Int, inout: Int")
   }
 
-  private fun transformParameters(parameters: String) = CreateInvokedParameters().transform("name", ParameterUtil.getParameters(parameters), emptyList())
+  private fun transformParameters(parameters: String) = CreateInvokedParameters().transform(ParameterUtil.getParameters(parameters), emptyList())
 
-  private fun transformParameters(vararg parameters: Parameter) = CreateInvokedParameters().transform("name", listOf(*parameters), emptyList())
+  private fun transformParameters(vararg parameters: Parameter) = CreateInvokedParameters().transform(listOf(*parameters), emptyList())
 
   private fun assertTuple(expectedType: String, expectedParameters: Array<TuplePropertyDeclaration.TupleParameter>, methodParameters: String) {
     val property = transformParameters(methodParameters)
     assertEquals(expectedParameters.map { it.type }, property?.parameters?.map { it.type })
     assertEquals(expectedParameters.map { it.name }, property?.parameters?.map { it.name })
-    assertEquals(expectedType, property?.type)
+    assertEquals(expectedType, property?.text)
   }
 
   private fun assertTuple(expectedType: String,
                           expectedParameters: Array<TuplePropertyDeclaration.TupleParameter>,
                           parameters: List<Parameter>) {
-    val property = CreateInvokedParameters().transform("name", parameters, emptyList())
+    val property = CreateInvokedParameters().transform(parameters, emptyList())
     assertEquals(expectedParameters.map { it.type }, property?.parameters?.map { it.type })
     assertEquals(expectedParameters.map { it.name }, property?.parameters?.map { it.name })
-    assertEquals(expectedType, property?.type)
+    assertEquals(expectedType, property?.text)
   }
 }

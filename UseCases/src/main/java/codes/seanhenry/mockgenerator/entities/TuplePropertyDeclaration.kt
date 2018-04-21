@@ -1,6 +1,9 @@
 package codes.seanhenry.mockgenerator.entities
 
-class TuplePropertyDeclaration(name: String, val parameters: List<TupleParameter>): PropertyDeclaration(name, createType(parameters)) {
+class TuplePropertyDeclaration(val parameters: List<TupleParameter>, val text: String) {
+
+  constructor(parameters: List<TupleParameter>): this(parameters, createType(parameters))
+
   class TupleParameter(val name: String, val type: String, val resolvedType: String) {
     constructor(name: String, type: String): this(name, type, type)
   }

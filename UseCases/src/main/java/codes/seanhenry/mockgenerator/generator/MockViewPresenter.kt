@@ -283,13 +283,13 @@ class MockViewPresenter(val view: MockView): MockTransformer {
     val declaration = transformToTupleDeclaration(method.parametersList, method.genericParameters) ?: return null
     val assignment = transformToTupleAssignment(declaration) ?: return null
     return ParametersViewModel(
-        declaration.type,
+        declaration.text,
         assignment
     )
   }
 
   private fun transformToTupleDeclaration(parameters: List<Parameter>, genericIdentifiers: List<String>): TuplePropertyDeclaration? {
-    return CreateInvokedParameters().transform("", parameters, genericIdentifiers) // TODO: remove name
+    return CreateInvokedParameters().transform(parameters, genericIdentifiers)
   }
 
   private fun transformToTupleAssignment(tuple: TuplePropertyDeclaration): String? {

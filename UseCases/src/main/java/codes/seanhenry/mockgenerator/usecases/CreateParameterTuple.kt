@@ -11,11 +11,12 @@ abstract class CreateParameterTuple {
 
   abstract fun getStringDecorator(): StringDecorator
 
-  fun transform(name: String, parameterList: List<Parameter>, genericIdentifiers: List<String>): TuplePropertyDeclaration? {
+  fun transform(parameterList: List<Parameter>,
+                genericIdentifiers: List<String>): TuplePropertyDeclaration? {
     val tupleParameters = parameterList
         .mapNotNull { transformParameter(it, genericIdentifiers) }
     if (validateParameters(parameterList, tupleParameters)) {
-      return createProperty(transformName(name), tupleParameters.filter { !isClosure(it) })
+      return createProperty(tupleParameters.filter { !isClosure(it) })
     }
     return null
   }
@@ -27,15 +28,15 @@ abstract class CreateParameterTuple {
   private fun validateParameters(parameterList: List<Any>, tupleParameters: List<Any>) =
       parameterList.size == tupleParameters.size
 
-  private fun createProperty(name: String, tupleParameters: List<TuplePropertyDeclaration.TupleParameter>): TuplePropertyDeclaration? {
+  private fun createProperty(tupleParameters: List<TuplePropertyDeclaration.TupleParameter>): TuplePropertyDeclaration? {
     if (tupleParameters.isEmpty()) {
       return null
     } else if (tupleParameters.size == 1) {
       val mutable = tupleParameters.toMutableList()
       mutable.add(TuplePropertyDeclaration.TupleParameter("", "Void"))
-      return TuplePropertyDeclaration(name, mutable.toList())
+      return TuplePropertyDeclaration(mutable.toList())
     }
-    return TuplePropertyDeclaration(name, tupleParameters)
+    return TuplePropertyDeclaration(tupleParameters)
   }
 
   private fun isClosure(parameter: TuplePropertyDeclaration.TupleParameter): Boolean {
