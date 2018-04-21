@@ -2,7 +2,7 @@ package codes.seanhenry.mockgenerator.entities
 
 import codes.seanhenry.mockgenerator.visitor.Visitor
 
-data class Method(val name: String, val genericParameters: List<String>, val returnType: MethodType, val parametersList: List<Parameter>, val declarationText: String, val throws: Boolean): Element {
+data class Method(val name: String, val genericParameters: List<String>, val returnType: ResolvedType, val parametersList: List<Parameter>, val declarationText: String, val throws: Boolean): Element {
 
   override fun accept(visitor: Visitor) {
     visitor.visitMethod(this)
@@ -10,7 +10,7 @@ data class Method(val name: String, val genericParameters: List<String>, val ret
 
   class Builder(val name: String) {
 
-    private var returnType = MethodType.IMPLICIT
+    private var returnType = ResolvedType.IMPLICIT
     private var throws = false
     private var parameters = ArrayList<Parameter>()
     private var genericParameters = ArrayList<String>()
@@ -20,12 +20,12 @@ data class Method(val name: String, val genericParameters: List<String>, val ret
     }
 
     fun returnType(type: String): Builder {
-      returnType = MethodType.Builder(type).build()
+      returnType = ResolvedType.Builder(type).build()
       return this
     }
 
     fun returnType(): TypeIdentifier.Factory<Builder> {
-      return TypeIdentifier.Factory(this) { returnType = MethodType(it, it, it) }
+      return TypeIdentifier.Factory(this) { returnType = ResolvedType(it, it) }
     }
 
     fun throws(): Builder {
@@ -59,7 +59,7 @@ data class Method(val name: String, val genericParameters: List<String>, val ret
       var returnString = ""
       var throwString = ""
       val parametersString: String = parameters.map { it.text }.joinToString(", ")
-      if (returnType != MethodType.IMPLICIT) {
+      if (returnType != ResolvedType.IMPLICIT) {
         returnString = " -> ${returnType.originalType.text}"
       }
       if (throws) {

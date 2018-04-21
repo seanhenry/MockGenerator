@@ -9,7 +9,7 @@ class MethodBuilderTest: TestCase() {
   fun testShouldBuildDefaultMethod() {
     method = Method.Builder("name").build()
     assertEquals("name", method.name)
-    assertEquals(MethodType.IMPLICIT, method.returnType)
+    assertEquals(ResolvedType.IMPLICIT, method.returnType)
     assertTrue(method.parametersList.isEmpty())
     assertFalse(method.throws)
     assertEquals("func name()", method.declarationText)
@@ -19,7 +19,6 @@ class MethodBuilderTest: TestCase() {
     method = Method.Builder("name").returnType("Type").build()
     assertEquals("Type", method.returnType.originalType.text)
     assertEquals("Type", method.returnType.resolvedType.text)
-    assertEquals("Type", method.returnType.erasedType.text)
     assertEquals("func name() -> Type", method.declarationText)
   }
 

@@ -8,7 +8,7 @@ class ParameterBuilderTest: TestCase() {
     val param = Parameter.Builder("name").build()
     assertEquals("name", param.name)
     assertEquals("", param.label) // TODO: should be nil
-    assertEquals(MethodType.IMPLICIT, param.type)
+    assertEquals(ResolvedType.IMPLICIT, param.type)
     assertEquals("name: ", param.text)
   }
 
@@ -16,7 +16,7 @@ class ParameterBuilderTest: TestCase() {
     val param = Parameter.Builder("external", "internal").build()
     assertEquals("internal", param.name)
     assertEquals("external", param.label)
-    assertEquals(MethodType.IMPLICIT, param.type)
+    assertEquals(ResolvedType.IMPLICIT, param.type)
     assertEquals("external internal: ", param.text)
   }
 

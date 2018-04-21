@@ -4,10 +4,10 @@ import codes.seanhenry.mockgenerator.visitor.Visitor
 
 // TODO: change label and name to external/internal name
 // TODO: make externalName optional
-open class Parameter(val label: String, val name: String, val type: MethodType, val text: String, val isEscaping: Boolean): Element {
+open class Parameter(val label: String, val name: String, val type: ResolvedType, val text: String, val isEscaping: Boolean): Element {
 
   // TODO: REMOVE THESE
-  constructor(label: String, name: String, type: String, resolvedType: String, text: String) : this(label, name, MethodType(TypeIdentifier(type), TypeIdentifier(resolvedType), TypeIdentifier(type)), text, false)
+  constructor(label: String, name: String, type: String, resolvedType: String, text: String) : this(label, name, ResolvedType(TypeIdentifier(type), TypeIdentifier(resolvedType)), text, false)
   constructor(label: String, name: String, type: String, text: String) : this(label, name, type, type, text)
 
   // TODO: remove? text?
@@ -20,7 +20,7 @@ open class Parameter(val label: String, val name: String, val type: MethodType, 
 
   class Builder(private val externalName: String, private val internalName: String) {
 
-    private var type = MethodType.IMPLICIT
+    private var type = ResolvedType.IMPLICIT
     private var isEscaping = false
     private val annotations = ArrayList<String>()
     private var isInout = false
@@ -30,12 +30,12 @@ open class Parameter(val label: String, val name: String, val type: MethodType, 
 
     fun type(string: String): Builder {
       val type = TypeIdentifier(string)
-      this.type = MethodType(type, type, type)
+      this.type = ResolvedType(type, type)
       return this
     }
 
     fun type(): TypeIdentifier.Factory<Builder> {
-      return TypeIdentifier.Factory(this) { this.type = MethodType(it, it, it) }
+      return TypeIdentifier.Factory(this) { this.type = ResolvedType(it, it) }
     }
 
     fun resolvedType(): TypeIdentifier.Factory<Builder> {
