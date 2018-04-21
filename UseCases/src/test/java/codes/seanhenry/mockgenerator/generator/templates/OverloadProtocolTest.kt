@@ -8,7 +8,9 @@ class OverloadProtocolTest : MockGeneratorTestTemplate {
 
   override fun build(generator: MockTransformer) {
     generator.add(
-        Property("int", "Int", true, "var int: Int { get set }")
+        Property.Builder("int")
+            .type("Int")
+            .build()
     )
     generator.add(
         Method.Builder("int")

@@ -9,7 +9,9 @@ class ScopeProtocolTest : MockGeneratorTestTemplate {
   override fun build(generator: MockTransformer) {
     generator.setScope("open")
     generator.add(
-        Property("variable", "Object", true, "var variable: Object { get set }")
+        Property.Builder("variable")
+            .type("Object")
+            .build()
     )
     generator.add(
         Method.Builder("method")

@@ -8,7 +8,9 @@ class KeywordsProtocolTest: MockGeneratorTestTemplate {
 
   override fun build(generator: MockTransformer) {
     generator.add(
-        Property("`class`", "String", true, "var `class`: String { get set }")
+        Property.Builder("`class`")
+            .type("String")
+            .build()
     )
     generator.add(
         Method.Builder("run")

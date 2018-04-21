@@ -8,13 +8,6 @@ data class Property(val name: String, val type: Type, val isWritable: Boolean, v
     visitor.visitProperty(this)
   }
 
-  // TODO: remove and make builder
-  constructor(name: String,
-              type: String,
-              isWritable: Boolean,
-              declarationText: String) : this(name, TypeIdentifier(type), isWritable, declarationText)
-
-  // TODO: remove
   fun getTrimmedDeclarationText(): String {
     return declarationText.split("{")[0].trimEnd(' ', '\t', '\n')
   }
