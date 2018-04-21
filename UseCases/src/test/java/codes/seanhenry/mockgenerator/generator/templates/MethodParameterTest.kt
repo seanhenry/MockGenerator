@@ -96,10 +96,13 @@ class MethodParameterTest : MockGeneratorTestTemplate {
     }
     var invokedClosureParam = false
     var invokedClosureParamCount = 0
+    var shouldInvokeClosureParamClosure = false
     func closureParam(closure: () -> ()) {
     invokedClosureParam = true
     invokedClosureParamCount += 1
+    if shouldInvokeClosureParamClosure {
     closure()
+    }
     }
       """.trimIndent()
   }

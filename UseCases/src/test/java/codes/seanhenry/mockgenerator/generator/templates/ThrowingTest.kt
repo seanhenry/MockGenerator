@@ -57,10 +57,13 @@ class ThrowingTest: MockGeneratorTestTemplate {
       }
       var invokedThrowingClosure = false
       var invokedThrowingClosureCount = 0
+      var shouldInvokeThrowingClosureClosure = false
       func throwingClosure(closure: () throws -> ()) {
       invokedThrowingClosure = true
       invokedThrowingClosureCount += 1
+      if shouldInvokeThrowingClosureClosure {
       try? closure()
+      }
       }
       var invokedThrowingClosureArgument = false
       var invokedThrowingClosureArgumentCount = 0
