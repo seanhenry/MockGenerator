@@ -8,14 +8,18 @@ class SwiftStringInitializerDeclarationTest : TestCase() {
 
   fun testShouldReturnConvenienceInitialiserWhenHasArguments() {
     val call = InitialiserCall(listOf(
-        Parameter("_", "a", "String?", "a: String?")
+        Parameter.Builder("_", "a")
+            .type().optional { it.type("String") }
+            .build()
     ), false)
     assertEquals("convenience init()", SwiftStringInitialiserDeclaration().transform(call))
   }
 
   fun testShouldReturnConvenienceInitialiserWhenHasArgumentsAndFailable() {
     val call = InitialiserCall(listOf(
-        Parameter("_", "a", "String?", "a: String?")
+        Parameter.Builder("_", "a")
+            .type().optional { it.type("String") }
+            .build()
     ), true)
     assertEquals("convenience init()", SwiftStringInitialiserDeclaration().transform(call))
   }

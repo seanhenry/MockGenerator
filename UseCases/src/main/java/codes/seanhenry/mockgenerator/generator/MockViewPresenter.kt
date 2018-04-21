@@ -231,7 +231,7 @@ class MockViewPresenter(val view: MockView): MockTransformer {
       nameGenerator.getMethodName(toMethodModel(property).id)!!
 
   private fun transformClosureParameters(parameter: Parameter): ClosureParameterViewModel? {
-    val visitor = FunctionParameterTransformer(parameter.name)
+    val visitor = FunctionParameterTransformer(parameter.internalName)
     parameter.type.resolvedType.accept(visitor)
     return visitor.transformed
   }

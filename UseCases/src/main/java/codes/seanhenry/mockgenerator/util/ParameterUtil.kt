@@ -1,6 +1,8 @@
 package codes.seanhenry.mockgenerator.util
 
 import codes.seanhenry.mockgenerator.entities.Parameter
+import codes.seanhenry.mockgenerator.entities.ResolvedType
+import codes.seanhenry.mockgenerator.entities.TypeIdentifier
 
 class ParameterUtil {
 
@@ -25,7 +27,7 @@ class ParameterUtil {
       val label = components[0]
       val name = components[1]
       val type = cleanType(components[2])
-      return Parameter(label, name, type, parameter)
+      return Parameter(label, name, ResolvedType(TypeIdentifier(type), TypeIdentifier(type)), parameter, false)
     }
 
     private fun cleanType(type: String): String {

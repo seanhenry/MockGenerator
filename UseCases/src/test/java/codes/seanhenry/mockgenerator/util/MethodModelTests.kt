@@ -129,7 +129,11 @@ class MethodModelTests : TestCase() {
   }
 
   private fun createModel(parameterCount: Int) {
-    val parameters = (0 until parameterCount).map { Parameter("param$it", "name$it", "Type$it", "param$it name$it: Type$it") }
+    val parameters = (0 until parameterCount).map {
+      Parameter.Builder("param$it", "name$it")
+        .type("Type$it")
+        .build()
+    }
     model = MethodModel("method", parameters)
   }
 

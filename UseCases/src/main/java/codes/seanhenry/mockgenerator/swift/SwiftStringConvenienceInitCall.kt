@@ -23,13 +23,13 @@ class SwiftStringConvenienceInitCall {
 
   private fun transformParameters(call: InitialiserCall) =
       call.parameters.map {
-        val value = getValue(it.label, it.originalType)
-        if (it.label == "_") {
+        val value = getValue(it.externalName ?: it.internalName, it.originalTypeText)
+        if (it.externalName == "_") {
           value
-        } else if (it.label.isEmpty()) {
-          it.name + ": " + value
+        } else if (it.externalName == null || it.externalName.isEmpty()) {
+          it.internalName + ": " + value
         } else {
-          it.label + ": " + value
+          it.externalName + ": " + value
         }
       }
 

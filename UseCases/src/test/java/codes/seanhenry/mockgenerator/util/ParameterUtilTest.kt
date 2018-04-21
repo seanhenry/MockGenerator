@@ -1,7 +1,6 @@
 package codes.seanhenry.mockgenerator.util
 
 import junit.framework.TestCase
-import kotlin.test.assertEquals
 
 class ParameterUtilTest: TestCase() {
 
@@ -163,15 +162,15 @@ class ParameterUtilTest: TestCase() {
 
   private fun assertParameter(expectedLabel: String, expectedName: String, expectedType: String, expectedText: String, parameters: String, index: Int = 0) {
     val parameter = ParameterUtil.getParameters(parameters)[index]
-    assertEquals(expectedLabel, parameter.label)
-    assertEquals(expectedName, parameter.name)
-    assertEquals(expectedType, parameter.originalType)
+    assertEquals(expectedLabel, parameter.externalName)
+    assertEquals(expectedName, parameter.internalName)
+    assertEquals(expectedType, parameter.originalTypeText)
     assertEquals(expectedText, parameter.text)
   }
 
   private fun assertType(expectedType: String, parameters: String, index: Int = 0) {
     val parameter = ParameterUtil.getParameters(parameters)[index]
-    assertEquals(expectedType, parameter.originalType)
+    assertEquals(expectedType, parameter.originalTypeText)
   }
 
   private fun assertNullParameter(parameters: String) {

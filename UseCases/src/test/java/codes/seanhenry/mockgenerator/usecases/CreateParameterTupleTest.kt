@@ -102,7 +102,10 @@ class CreateParameterTupleTest: TestCase() {
   }
 
   fun testShouldIgnoreClosureTypealiasParameter() {
-    val tuple = transformParameters(Parameter("param", "name", "Completion", "() -> ()", "param name: Completion"))
+    val tuple = transformParameters(Parameter.Builder("param", "name")
+        .type("Completion")
+        .resolvedType().function {}
+        .build())
     assertNull(tuple)
   }
 

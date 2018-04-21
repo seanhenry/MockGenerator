@@ -35,11 +35,11 @@ class MethodModel(private val methodName: String, paramLabels: List<Parameter>) 
 
 
     namesAndTypes = paramLabels.map {
-      var label = it.label
+      var label = it.externalName ?: it.internalName
       if (label.isEmpty()) {
-        label = it.name
+        label = it.internalName
       }
-      NameTypeTuple(label, removeSpecialCharacters(it.originalType))
+      NameTypeTuple(label, removeSpecialCharacters(it.originalTypeText))
     }
   }
 

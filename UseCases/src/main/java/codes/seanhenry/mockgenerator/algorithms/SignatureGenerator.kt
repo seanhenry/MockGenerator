@@ -40,10 +40,10 @@ class SignatureGenerator: Visitor() {
   }
 
   override fun visitParameter(parameter: Parameter) {
-    val name = if (parameter.label.isEmpty()) {
-      parameter.name
+    val name = if (parameter.externalName == null || parameter.externalName.isEmpty()) {
+      parameter.internalName
     } else {
-      parameter.label
+      parameter.externalName
     }
     signature = "$name:${parameter.type.resolvedType.text}"
   }

@@ -24,12 +24,12 @@ class TupleUtil {
         if (parameter == "Void") {
           return null
         }
-        return Parameter("", "", components[0], parameter)
+        return Parameter(null, "", ResolvedType(TypeIdentifier(components[0]), TypeIdentifier(components[0])), parameter, false)
       }
       val label = components[0]
       val name = components[1]
       val type = cleanType(components[2])
-      return Parameter(label, name, type, parameter)
+      return Parameter(label, name, ResolvedType(TypeIdentifier(type), TypeIdentifier(type)), parameter, false)
     }
 
     private fun cleanType(type: String): String {

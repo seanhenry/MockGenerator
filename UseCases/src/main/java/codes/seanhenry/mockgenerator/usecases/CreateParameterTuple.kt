@@ -43,10 +43,10 @@ abstract class CreateParameterTuple {
   }
 
   private fun transformParameter(parameter: Parameter, genericIdentifiers: List<String>): TuplePropertyDeclaration.TupleParameter? {
-    val name = parameter.name
+    val name = parameter.internalName
     val copied = CopyVisitor.copy(parameter.type.originalType)
     TypeErasingVisitor.erase(copied, genericIdentifiers)
-    val resolvedType = parameter.resolvedType
+    val resolvedType = parameter.resolvedTypeText
     return TuplePropertyDeclaration.TupleParameter(name, removeInOut(replaceIUO(copied.text)), resolvedType)
   }
 

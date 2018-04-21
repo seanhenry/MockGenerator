@@ -17,7 +17,7 @@ class InitializerBuilderTest: TestCase() {
         .parameter("a") { it.type("Type") }
         .build()
     assertEquals("a: Type", initializer.parametersList[0].text)
-    assertEquals("a", initializer.parametersList[0].name)
+    assertEquals("a", initializer.parametersList[0].internalName)
     assertFalse(initializer.isFailable)
     assertFalse(initializer.throws)
     assertFalse(initializer.isProtocol)
@@ -28,8 +28,8 @@ class InitializerBuilderTest: TestCase() {
         .parameter("a", "b") { it.type("Type") }
         .build()
     assertEquals("a b: Type", initializer.parametersList[0].text)
-    assertEquals("a", initializer.parametersList[0].label)
-    assertEquals("b", initializer.parametersList[0].name)
+    assertEquals("a", initializer.parametersList[0].externalName)
+    assertEquals("b", initializer.parametersList[0].internalName)
     assertFalse(initializer.isFailable)
     assertFalse(initializer.throws)
     assertFalse(initializer.isProtocol)

@@ -2,31 +2,23 @@ package codes.seanhenry.mockgenerator.entities
 
 import codes.seanhenry.mockgenerator.visitor.Visitor
 
-// TODO: change label and name to external/internal name
-// TODO: make externalName optional
-open class Parameter(val label: String, val name: String, val type: ResolvedType, val text: String, val isEscaping: Boolean): Element {
+open class Parameter(val externalName: String?, val internalName: String, val type: ResolvedType, val text: String, val isEscaping: Boolean): Element {
 
-  // TODO: REMOVE THESE
-  constructor(label: String, name: String, type: String, resolvedType: String, text: String) : this(label, name, ResolvedType(TypeIdentifier(type), TypeIdentifier(resolvedType)), text, false)
-  constructor(label: String, name: String, type: String, text: String) : this(label, name, type, type, text)
-
-  // TODO: remove? text?
-  val originalType = type.originalType.text
-  val resolvedType = type.resolvedType.text
+  val originalTypeText = type.originalType.text
+  val resolvedTypeText = type.resolvedType.text
 
   override fun accept(visitor: Visitor) {
     visitor.visitParameter(this)
   }
 
-  class Builder(private val externalName: String, private val internalName: String) {
+  class Builder(private val externalName: String?, private val internalName: String) {
 
     private var type = ResolvedType.IMPLICIT
     private var isEscaping = false
     private val annotations = ArrayList<String>()
     private var isInout = false
 
-    // TODO: external should start nil
-    constructor(name: String): this("", name)
+    constructor(name: String): this(null, name)
 
     fun type(string: String): Builder {
       val type = TypeIdentifier(string)
@@ -63,7 +55,7 @@ open class Parameter(val label: String, val name: String, val type: ResolvedType
 
     private fun getText(): String {
       var labels = internalName
-      if (externalName.isNotEmpty()) {
+      if (externalName != null && externalName.isNotEmpty()) {
         labels = "$externalName $labels"
       }
       var annotations = ""

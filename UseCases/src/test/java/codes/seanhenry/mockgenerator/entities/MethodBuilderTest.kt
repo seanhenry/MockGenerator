@@ -35,7 +35,7 @@ class MethodBuilderTest: TestCase() {
 
   fun testParameter() {
     method = Method.Builder("a").parameter("name") { it.type("Type") }.build()
-    assertEquals("name", getParameter(0).name)
+    assertEquals("name", getParameter(0).internalName)
     assertEquals("Type", getParameter(0).type.originalType.text)
     assertEquals("func a(name: Type)", method.declarationText)
   }
@@ -45,9 +45,9 @@ class MethodBuilderTest: TestCase() {
         .parameter("name") { it.type("Type") }
         .parameter("name2") { it.type("Type2") }
         .build()
-    assertEquals("name", getParameter(0).name)
+    assertEquals("name", getParameter(0).internalName)
     assertEquals("Type", getParameter(0).type.originalType.text)
-    assertEquals("name2", getParameter(1).name)
+    assertEquals("name2", getParameter(1).internalName)
     assertEquals("Type2", getParameter(1).type.originalType.text)
     assertEquals("func a(name: Type, name2: Type2)", method.declarationText)
   }
