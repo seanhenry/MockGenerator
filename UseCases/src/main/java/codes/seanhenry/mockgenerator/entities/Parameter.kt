@@ -26,12 +26,12 @@ open class Parameter(val externalName: String?, val internalName: String, val ty
       return this
     }
 
-    fun type(): TypeIdentifier.Factory<Builder> {
-      return TypeIdentifier.Factory(this) { this.type = ResolvedType(it, it) }
+    fun type(): TypeFactory<Builder> {
+      return TypeFactory(this) { this.type = ResolvedType(it, it) }
     }
 
-    fun resolvedType(): TypeIdentifier.Factory<Builder> {
-      return TypeIdentifier.Factory(this) { this.type.resolvedType = it }
+    fun resolvedType(): TypeFactory<Builder> {
+      return TypeFactory(this) { this.type.resolvedType = it }
     }
 
     fun escaping(): Builder {

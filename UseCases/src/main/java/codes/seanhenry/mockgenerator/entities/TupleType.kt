@@ -30,8 +30,8 @@ data class TupleType(val elements: List<Type>): Type {
       return this
     }
 
-    fun element(): TypeIdentifier.Factory<Builder> {
-      return TypeIdentifier.Factory(this) { elements.add(it) }
+    fun element(): TypeFactory<Builder> {
+      return TypeFactory(this) { elements.add(it) }
     }
 
     fun build(): TupleType {

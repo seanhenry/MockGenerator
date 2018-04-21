@@ -43,8 +43,8 @@ data class OptionalType(val type: Type,
       return this
     }
 
-    fun type(): TypeIdentifier.Factory<Builder> {
-      return TypeIdentifier.Factory(this) {
+    fun type(): TypeFactory<Builder> {
+      return TypeFactory(this) {
         if (it is FunctionType) {
           this.type = TupleType.Builder().element(it).build()
         } else {

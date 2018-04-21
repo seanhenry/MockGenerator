@@ -30,8 +30,8 @@ data class GenericType(val identifier: String, val arguments: List<Type>): Type 
       return this
     }
 
-    fun argument(): TypeIdentifier.Factory<Builder> {
-      return TypeIdentifier.Factory(this) { arguments.add(it) }
+    fun argument(): TypeFactory<Builder> {
+      return TypeFactory(this) { arguments.add(it) }
     }
 
     fun build(): GenericType {

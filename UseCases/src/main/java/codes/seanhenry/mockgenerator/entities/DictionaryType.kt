@@ -37,8 +37,8 @@ data class DictionaryType(var keyType: Type, val valueType: Type, private val us
       return this
     }
 
-    fun keyType(): TypeIdentifier.Factory<Builder> {
-      return TypeIdentifier.Factory(this) { this.keyType = it }
+    fun keyType(): TypeFactory<Builder> {
+      return TypeFactory(this) { this.keyType = it }
     }
 
     fun valueType(type: String): Builder {
@@ -46,8 +46,8 @@ data class DictionaryType(var keyType: Type, val valueType: Type, private val us
       return this
     }
 
-    fun valueType(): TypeIdentifier.Factory<Builder> {
-      return TypeIdentifier.Factory(this) { this.valueType = it }
+    fun valueType(): TypeFactory<Builder> {
+      return TypeFactory(this) { this.valueType = it }
     }
 
     fun verbose(): Builder {

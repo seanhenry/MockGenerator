@@ -24,8 +24,8 @@ data class Method(val name: String, val genericParameters: List<String>, val ret
       return this
     }
 
-    fun returnType(): TypeIdentifier.Factory<Builder> {
-      return TypeIdentifier.Factory(this) { returnType = ResolvedType(it, it) }
+    fun returnType(): TypeFactory<Builder> {
+      return TypeFactory(this) { returnType = ResolvedType(it, it) }
     }
 
     fun throws(): Builder {

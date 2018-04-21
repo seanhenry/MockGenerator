@@ -34,8 +34,8 @@ data class ArrayType(val type: Type, var useVerboseSyntax: Boolean): Type {
       return this
     }
 
-    fun type(): TypeIdentifier.Factory<Builder> {
-      return TypeIdentifier.Factory(this) { this.type = it }
+    fun type(): TypeFactory<Builder> {
+      return TypeFactory(this) { this.type = it }
     }
 
     fun verbose(): Builder {

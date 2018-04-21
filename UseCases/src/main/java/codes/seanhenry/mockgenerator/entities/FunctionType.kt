@@ -39,8 +39,8 @@ data class FunctionType(val arguments: List<Type>, val returnType: Type, val thr
       return this
     }
 
-    fun argument(): TypeIdentifier.Factory<Builder> {
-      return TypeIdentifier.Factory(this) { this.arguments.add(it) }
+    fun argument(): TypeFactory<Builder> {
+      return TypeFactory(this) { this.arguments.add(it) }
     }
 
     fun returnType(type: String): Builder {
@@ -48,8 +48,8 @@ data class FunctionType(val arguments: List<Type>, val returnType: Type, val thr
       return this
     }
 
-    fun returnType(): TypeIdentifier.Factory<Builder> {
-      return TypeIdentifier.Factory(this) { type -> this.returnType = type }
+    fun returnType(): TypeFactory<Builder> {
+      return TypeFactory(this) { type -> this.returnType = type }
     }
 
     fun build(): FunctionType {
