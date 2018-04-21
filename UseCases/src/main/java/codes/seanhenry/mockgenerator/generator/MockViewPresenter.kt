@@ -46,8 +46,8 @@ class MockViewPresenter(val view: MockView): MockTransformer {
   }
 
   override fun addInitialisers(initializers: List<Initializer>) {
-    for (initialiser in initializers) {
-      this.initialisers.add(initialiser)
+    for (initializer in initializers) {
+      this.initialisers.add(initializer)
     }
   }
 

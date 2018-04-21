@@ -6,22 +6,35 @@ import junit.framework.TestCase
 class SwiftStringProtocolInitializerDeclarationTest: TestCase() {
 
   fun testShouldCreateRequiredEmptyInitialiser() {
-    val initialiser = Initializer("", false, false, true)
-    assertEquals("required init()", SwiftStringProtocolInitialiserDeclaration().transform(initialiser))
+    val initializer = Initializer.Builder()
+        .protocol()
+        .build()
+    assertEquals("required init()", SwiftStringProtocolInitialiserDeclaration().transform(initializer))
   }
 
   fun testShouldCopyInitialiserSignature() {
-    val initialiser = Initializer("a: String?, b: Int, c: () -> ()", false, false, true)
-    assertEquals("required init(a: String?, b: Int, c: () -> ())", SwiftStringProtocolInitialiserDeclaration().transform(initialiser))
+    val initializer = Initializer.Builder()
+        .parameter("a") { it.type().optional { it.type("String") } }
+        .parameter("b") { it.type("Int") }
+        .parameter("c") { it.type().function { } }
+        .protocol()
+        .build()
+    assertEquals("required init(a: String?, b: Int, c: () -> ())", SwiftStringProtocolInitialiserDeclaration().transform(initializer))
   }
 
   fun testShouldRemoveFailableDeclaration() {
-    val initialiser = Initializer("", true, false, true)
-    assertEquals("required init()", SwiftStringProtocolInitialiserDeclaration().transform(initialiser))
+    val initializer = Initializer.Builder()
+        .failable()
+        .protocol()
+        .build()
+    assertEquals("required init()", SwiftStringProtocolInitialiserDeclaration().transform(initializer))
   }
 
   fun testShouldRemoveThrowsClause() {
-    val initialiser = Initializer("", false, true, true)
-    assertEquals("required init()", SwiftStringProtocolInitialiserDeclaration().transform(initialiser))
+    val initializer = Initializer.Builder()
+        .throws()
+        .protocol()
+        .build()
+    assertEquals("required init()", SwiftStringProtocolInitialiserDeclaration().transform(initializer))
   }
 }

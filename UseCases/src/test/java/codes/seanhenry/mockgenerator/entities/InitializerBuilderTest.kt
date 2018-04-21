@@ -5,54 +5,54 @@ import junit.framework.TestCase
 class InitializerBuilderTest: TestCase() {
 
   fun testShouldBuildEmptyInitialiser() {
-    val initialiser = Initializer.Builder().build()
-    assertTrue(initialiser.parametersList.isEmpty())
-    assertFalse(initialiser.isFailable)
-    assertFalse(initialiser.throws)
-    assertFalse(initialiser.isProtocol)
+    val initializer = Initializer.Builder().build()
+    assertTrue(initializer.parametersList.isEmpty())
+    assertFalse(initializer.isFailable)
+    assertFalse(initializer.throws)
+    assertFalse(initializer.isProtocol)
   }
 
   fun testShouldBuildInitialiserWithParameters() {
-    val initialiser = Initializer.Builder()
+    val initializer = Initializer.Builder()
         .parameter("a") { it.type("Type") }
         .build()
-    assertEquals("a: Type", initialiser.parametersList[0].text)
-    assertEquals("a", initialiser.parametersList[0].name)
-    assertFalse(initialiser.isFailable)
-    assertFalse(initialiser.throws)
-    assertFalse(initialiser.isProtocol)
+    assertEquals("a: Type", initializer.parametersList[0].text)
+    assertEquals("a", initializer.parametersList[0].name)
+    assertFalse(initializer.isFailable)
+    assertFalse(initializer.throws)
+    assertFalse(initializer.isProtocol)
   }
 
   fun testShouldBuildInitialiserWithLabelledParameters() {
-    val initialiser = Initializer.Builder()
+    val initializer = Initializer.Builder()
         .parameter("a", "b") { it.type("Type") }
         .build()
-    assertEquals("a b: Type", initialiser.parametersList[0].text)
-    assertEquals("a", initialiser.parametersList[0].label)
-    assertEquals("b", initialiser.parametersList[0].name)
-    assertFalse(initialiser.isFailable)
-    assertFalse(initialiser.throws)
-    assertFalse(initialiser.isProtocol)
+    assertEquals("a b: Type", initializer.parametersList[0].text)
+    assertEquals("a", initializer.parametersList[0].label)
+    assertEquals("b", initializer.parametersList[0].name)
+    assertFalse(initializer.isFailable)
+    assertFalse(initializer.throws)
+    assertFalse(initializer.isProtocol)
   }
 
   fun testShouldBuildFailableInitialiser() {
-    val initialiser = Initializer.Builder()
+    val initializer = Initializer.Builder()
         .failable()
         .build()
-    assertTrue(initialiser.isFailable)
+    assertTrue(initializer.isFailable)
   }
 
   fun testShouldBuildThrowingInitialiser() {
-    val initialiser = Initializer.Builder()
+    val initializer = Initializer.Builder()
         .throws()
         .build()
-    assertTrue(initialiser.throws)
+    assertTrue(initializer.throws)
   }
 
   fun testShouldBuildIsProtocolInitialiser() {
-    val initialiser = Initializer.Builder()
+    val initializer = Initializer.Builder()
         .protocol()
         .build()
-    assertTrue(initialiser.isProtocol)
+    assertTrue(initializer.isProtocol)
   }
 }

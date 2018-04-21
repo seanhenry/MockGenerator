@@ -6,33 +6,45 @@ import junit.framework.TestCase
 class CreateConvenienceInitializerTest: TestCase() {
 
   fun testShouldReturnNilForInitialiserWithNoArguments() {
-    val initialiser = Initializer("", false)
-    assertNull(CreateConvenienceInitialiser().transform(initialiser))
+    val initializer = Initializer.Builder().build()
+    assertNull(CreateConvenienceInitialiser().transform(initializer))
   }
 
   fun testShouldReturnNilForThrowingInitialiserWithNoArguments() {
-    val initialiser = Initializer("", false, true)
-    assertNull(CreateConvenienceInitialiser().transform(initialiser))
+    val initializer = Initializer.Builder()
+        .throws()
+        .build()
+    assertNull(CreateConvenienceInitialiser().transform(initializer))
   }
 
   fun testShouldReturnOriginalInitialiserWith1Argument() {
-    val initialiser = Initializer("a: String", false)
-    assertEquals(initialiser.parametersList, CreateConvenienceInitialiser().transform(initialiser)?.parameters)
+    val initializer = Initializer.Builder()
+        .parameter("a") { it.type("String") }
+        .build()
+    assertEquals(initializer.parametersList, CreateConvenienceInitialiser().transform(initializer)?.parameters)
   }
 
   fun testShouldReturnFailableInitialiserWhenFailable() {
-    val initialiser = Initializer("a: String", true)
-    assertEquals(true, CreateConvenienceInitialiser().transform(initialiser)?.isFailable)
+    val initializer = Initializer.Builder()
+        .parameter("a") { it.type("A") }
+        .failable()
+        .build()
+    assertEquals(true, CreateConvenienceInitialiser().transform(initializer)?.isFailable)
   }
 
   fun testShouldReturnThrowingInitialiserWhenThrows() {
-    val initialiser = Initializer("a: String", false, true)
-    assertEquals(true, CreateConvenienceInitialiser().transform(initialiser)?.throws)
+    val initializer = Initializer.Builder()
+        .parameter("a") { it.type("String") }
+        .throws()
+        .build()
+    assertEquals(true, CreateConvenienceInitialiser().transform(initializer)?.throws)
   }
 
   fun testShouldReturnFailableInitialiserWhenFailableAndNoArguments() {
-    val initialiser = Initializer("", true)
-    assertEquals(true, CreateConvenienceInitialiser().transform(initialiser)?.isFailable)
-    assertEquals(initialiser.parametersList, CreateConvenienceInitialiser().transform(initialiser)?.parameters)
+    val initializer = Initializer.Builder()
+        .failable()
+        .build()
+    assertEquals(true, CreateConvenienceInitialiser().transform(initializer)?.isFailable)
+    assertEquals(initializer.parametersList, CreateConvenienceInitialiser().transform(initializer)?.parameters)
   }
 }
