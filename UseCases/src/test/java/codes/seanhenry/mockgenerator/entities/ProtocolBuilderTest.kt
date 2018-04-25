@@ -9,6 +9,7 @@ class ProtocolBuilderTest: TestCase() {
     assertTrue(protocol.initializers.isEmpty())
     assertTrue(protocol.properties.isEmpty())
     assertTrue(protocol.methods.isEmpty())
+    assertTrue(protocol.protocols.isEmpty())
   }
 
   fun testShouldBuildProtocolWithMethods() {
@@ -35,5 +36,13 @@ class ProtocolBuilderTest: TestCase() {
         .initializer { }
         .build()
     assertEquals(2, protocol.initializers.size)
+  }
+
+  fun testShouldBuildClassWithInheritedProtocols() {
+    val c = Protocol.Builder()
+        .protocol { }
+        .protocol { }
+        .build()
+    assertEquals(2, c.protocols.size)
   }
 }

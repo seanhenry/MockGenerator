@@ -1,6 +1,6 @@
 package codes.seanhenry.mockgenerator.entities
 
-class Protocol(initializers: List<Initializer>, properties: List<Property>, methods: List<Method>, protocols: List<Protocol>): TypeDeclaration(initializers, properties, methods, protocols) {
+class Class(initializers: List<Initializer>, properties: List<Property>, methods: List<Method>, val superclass: Class?, protocols: List<Protocol>): TypeDeclaration(initializers, properties, methods, protocols) {
 
   class Builder {
 
@@ -8,6 +8,7 @@ class Protocol(initializers: List<Initializer>, properties: List<Property>, meth
     private val properties = mutableListOf<Property>()
     private val initializers = mutableListOf<Initializer>()
     private val protocols = mutableListOf<Protocol>()
+    private var superclass: Class? = null
 
     fun initializer(build: (Initializer.Builder) -> Unit): Builder {
       val builder = Initializer.Builder()
@@ -30,6 +31,13 @@ class Protocol(initializers: List<Initializer>, properties: List<Property>, meth
       return this
     }
 
+    fun superclass(build: (Builder) -> Unit): Builder {
+      val builder = Builder()
+      build(builder)
+      superclass = builder.build()
+      return this
+    }
+
     fun protocol(build: (Protocol.Builder) -> Unit): Builder {
       val builder = Protocol.Builder()
       build(builder)
@@ -37,8 +45,8 @@ class Protocol(initializers: List<Initializer>, properties: List<Property>, meth
       return this
     }
 
-    fun build(): Protocol {
-      return Protocol(initializers, properties, methods, protocols)
+    fun build(): Class {
+      return Class(initializers, properties, methods, superclass, protocols)
     }
   }
 }
