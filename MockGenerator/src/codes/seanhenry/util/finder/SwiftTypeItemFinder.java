@@ -71,8 +71,10 @@ public class SwiftTypeItemFinder implements TypeItemFinder {
     if (inheritanceClause == null) {
       return Collections.emptyList();
     }
-    List<SwiftTypeDeclaration> results = inheritanceClause.getReferenceTypeElementList()
+    List<SwiftTypeDeclaration> results = inheritanceClause.getTypeElementList()
         .stream()
+        .filter((e) -> e instanceof SwiftReferenceTypeElement)
+        .map((e) -> (SwiftReferenceTypeElement) e)
         .map(this::getResolvedType)
         .filter(Objects::nonNull)
         .collect(Collectors.toList());
