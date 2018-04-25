@@ -7,12 +7,11 @@ class Generator(private val view: MockView) {
 
   private val protocols = mutableListOf<Protocol>()
 
-  fun add(protocol: Protocol) {
-    protocols.add(protocol)
-    protocol.protocols.forEach { add(it) }
+  fun add(c: Class) {
+    add(c.protocols)
   }
 
-  fun add(vararg protocols: Protocol) {
+  private fun add(protocols: List<Protocol>) {
     protocols.forEach { this.protocols.add(it) }
     protocols.forEach { it.protocols.forEach { this.protocols.add(it) } }
   }

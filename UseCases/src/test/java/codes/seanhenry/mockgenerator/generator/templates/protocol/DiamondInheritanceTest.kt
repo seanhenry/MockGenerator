@@ -1,32 +1,32 @@
 package codes.seanhenry.mockgenerator.generator.templates.protocol
 
-import codes.seanhenry.mockgenerator.entities.Protocol
+import codes.seanhenry.mockgenerator.entities.Class
 import codes.seanhenry.mockgenerator.generator.Generator
 
 class DiamondInheritanceTest: GeneratorTestTemplate {
 
   override fun build(generator: Generator) {
     generator.add(
-        Protocol.Builder()
-            .initializer { it.parameter("i1") { it.type("Int") } }
-            .property("p1") { it.type("Int").readonly() }
-            .method("m1") {}
+        Class.Builder()
             .protocol {
               it.initializer { it.parameter("i1") { it.type("Int") } }
-                  .property("p2") { it.type("Int").readonly() }
-                  .method("m3") {}
-                  .build()
+                  .property("p1") { it.type("Int").readonly() }
+                  .method("m1") {}
+                  .protocol {
+                    it.initializer { it.parameter("i1") { it.type("Int") } }
+                        .property("p2") { it.type("Int").readonly() }
+                        .method("m3") {}
+                  }
             }
-            .build(),
-        Protocol.Builder()
-            .initializer { it.parameter("i3") { it.type("Int") } }
-            .property("p3") { it.type("Int").readonly() }
-            .method("m3") {}
             .protocol {
-              it.initializer { it.parameter("i2") { it.type("Int") } }
-                  .property("p2") { it.type("Int").readonly() }
-                  .method("m2") {}
-                  .build()
+              it.initializer { it.parameter("i3") { it.type("Int") } }
+                .property("p3") { it.type("Int").readonly() }
+                .method("m3") {}
+                .protocol {
+                  it.initializer { it.parameter("i2") { it.type("Int") } }
+                      .property("p2") { it.type("Int").readonly() }
+                      .method("m2") {}
+                }
             }
             .build()
     )

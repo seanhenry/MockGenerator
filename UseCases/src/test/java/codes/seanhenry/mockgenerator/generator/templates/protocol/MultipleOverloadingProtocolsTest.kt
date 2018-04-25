@@ -1,5 +1,6 @@
 package codes.seanhenry.mockgenerator.generator.templates.protocol
 
+import codes.seanhenry.mockgenerator.entities.Class
 import codes.seanhenry.mockgenerator.entities.Protocol
 import codes.seanhenry.mockgenerator.generator.Generator
 
@@ -7,12 +8,14 @@ class MultipleOverloadingProtocolsTest : GeneratorTestTemplate {
 
   override fun build(generator: Generator) {
     generator.add(
-        Protocol.Builder()
-            .method("inheriting") {}
-            .method("inherited") { it.parameter("overloaded") { it.type("Int") } }
-            .build(),
-        Protocol.Builder()
-            .method("inherited") { it.parameter("method") { it.type("String") } }
+        Class.Builder()
+            .protocol {
+              it.method("inheriting") {}
+                  .method("inherited") { it.parameter("overloaded") { it.type("Int") } }
+            }
+            .protocol {
+              it.method("inherited") { it.parameter("method") { it.type("String") } }
+            }
             .build()
     )
   }
