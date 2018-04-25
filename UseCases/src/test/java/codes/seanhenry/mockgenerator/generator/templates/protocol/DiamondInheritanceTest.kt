@@ -10,22 +10,24 @@ class DiamondInheritanceTest: GeneratorTestTemplate {
         Protocol.Builder()
             .initializer { it.parameter("i1") { it.type("Int") } }
             .property("p1") { it.type("Int").readonly() }
-            .method("m1"){}
-            .build(),
-        Protocol.Builder()
-            .initializer { it.parameter("i1") { it.type("Int") } }
-            .property("p2") { it.type("Int").readonly() }
-            .method("m3"){}
-            .build(),
-        Protocol.Builder()
-            .initializer { it.parameter("i2") { it.type("Int") } }
-            .property("p2") { it.type("Int").readonly() }
-            .method("m2"){}
+            .method("m1") {}
+            .protocol {
+              it.initializer { it.parameter("i1") { it.type("Int") } }
+                  .property("p2") { it.type("Int").readonly() }
+                  .method("m3") {}
+                  .build()
+            }
             .build(),
         Protocol.Builder()
             .initializer { it.parameter("i3") { it.type("Int") } }
             .property("p3") { it.type("Int").readonly() }
-            .method("m3"){}
+            .method("m3") {}
+            .protocol {
+              it.initializer { it.parameter("i2") { it.type("Int") } }
+                  .property("p2") { it.type("Int").readonly() }
+                  .method("m2") {}
+                  .build()
+            }
             .build()
     )
   }
@@ -34,9 +36,9 @@ class DiamondInheritanceTest: GeneratorTestTemplate {
       return """
     required init(i1: Int) {
     }
-    required init(i2: Int) {
-    }
     required init(i3: Int) {
+    }
+    required init(i2: Int) {
     }
     var invokedP1Getter = false
     var invokedP1GetterCount = 0
@@ -46,14 +48,6 @@ class DiamondInheritanceTest: GeneratorTestTemplate {
     invokedP1GetterCount += 1
     return stubbedP1
     }
-    var invokedP2Getter = false
-    var invokedP2GetterCount = 0
-    var stubbedP2: Int! = 0
-    var p2: Int {
-    invokedP2Getter = true
-    invokedP2GetterCount += 1
-    return stubbedP2
-    }
     var invokedP3Getter = false
     var invokedP3GetterCount = 0
     var stubbedP3: Int! = 0
@@ -61,6 +55,14 @@ class DiamondInheritanceTest: GeneratorTestTemplate {
     invokedP3Getter = true
     invokedP3GetterCount += 1
     return stubbedP3
+    }
+    var invokedP2Getter = false
+    var invokedP2GetterCount = 0
+    var stubbedP2: Int! = 0
+    var p2: Int {
+    invokedP2Getter = true
+    invokedP2GetterCount += 1
+    return stubbedP2
     }
     var invokedM1 = false
     var invokedM1Count = 0

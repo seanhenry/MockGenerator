@@ -9,10 +9,12 @@ class Generator(private val view: MockView) {
 
   fun add(protocol: Protocol) {
     protocols.add(protocol)
+    protocol.protocols.forEach { add(it) }
   }
 
-  fun add(vararg protocol: Protocol) {
-    protocols.addAll(listOf(*protocol))
+  fun add(vararg protocols: Protocol) {
+    protocols.forEach { this.protocols.add(it) }
+    protocols.forEach { it.protocols.forEach { this.protocols.add(it) } }
   }
 
   fun generate(): String {
