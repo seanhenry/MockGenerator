@@ -11,6 +11,7 @@ class ClassBuilderTest: TestCase() {
     assertTrue(c.methods.isEmpty())
     assertTrue(c.protocols.isEmpty())
     assertNull(c.superclass)
+    assertNull(c.scope)
   }
 
   fun testShouldBuildClassWithMethods() {
@@ -52,5 +53,12 @@ class ClassBuilderTest: TestCase() {
         .protocol { }
         .build()
     assertEquals(2, c.protocols.size)
+  }
+
+  fun testShouldSetScope() {
+    val c = Class.Builder()
+        .scope("public")
+        .build()
+    assertEquals("public", c.scope)
   }
 }

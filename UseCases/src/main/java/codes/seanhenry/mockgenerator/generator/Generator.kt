@@ -5,10 +5,12 @@ import codes.seanhenry.mockgenerator.entities.*
 
 class Generator(private val view: MockView) {
 
+  private var mockClass: Class? = null
   private val classes = mutableListOf<Class>()
   private val protocols = mutableListOf<Protocol>()
 
   fun add(c: Class) {
+    mockClass = c
     var superclass = c.superclass
     while (superclass != null) {
       classes.add(superclass)
@@ -24,6 +26,7 @@ class Generator(private val view: MockView) {
 
   fun generate(): String {
     val presenter = MockViewPresenter(view)
+    setScope(presenter)
     presenter.setClassInitialisers(getClassInitializersRemovingDuplicates())
     presenter.addClassProperties(getClassPropertiesRemovingDuplicates())
     presenter.addClassMethods(getClassMethodsRemovingDuplicates())
@@ -32,6 +35,14 @@ class Generator(private val view: MockView) {
     presenter.addMethods(getMethodsRemovingDuplicates())
     return presenter.generate()
   }
+
+  private fun setScope(presenter: MockViewPresenter) {
+    val mockClass = this.mockClass
+    if (mockClass?.scope != null) {
+      presenter.setScope(mockClass.scope)
+    }
+  }
+
   private fun getClassInitializersRemovingDuplicates(): List<Initializer> {
     return classes.flatMap { it.initializers }
   }
