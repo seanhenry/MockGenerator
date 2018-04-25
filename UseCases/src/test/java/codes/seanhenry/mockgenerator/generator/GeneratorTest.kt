@@ -29,6 +29,10 @@ class GeneratorTest : TestCase() {
     runTest(SuperclassTest())
   }
 
+  fun testDeepProtocolInheritance() {
+    runTest(DeepProtocolInheritanceTest())
+  }
+
   private fun runTest(template: GeneratorTestTemplate) {
     val view = MustacheMockView()
     val generator = Generator(view)

@@ -21,7 +21,7 @@ class Generator(private val view: MockView) {
 
   private fun add(protocols: List<Protocol>) {
     protocols.forEach { this.protocols.add(it) }
-    protocols.forEach { it.protocols.forEach { this.protocols.add(it) } }
+    protocols.forEach { add(it.protocols) }
   }
 
   fun generate(): String {
