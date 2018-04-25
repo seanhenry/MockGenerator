@@ -30,6 +30,7 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/UseCases/pom.xml" />
+        <option value="$PROJECT_DIR$/MockGenerator/pom.xml" />
       </list>
     </option>
   </component>

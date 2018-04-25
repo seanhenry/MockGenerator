@@ -62,7 +62,7 @@ public abstract class SwiftTypeTransformer {
       if (type == null) {
         type = UNKNOWN_TYPE;
       }
-      this.properties.add(new Property(name, type, isWritable(property), getSignature(property).trim()));
+//      this.properties.add(new Property(name, type, isWritable(property), getSignature(property).trim()));
     }
   }
 
@@ -82,14 +82,14 @@ public abstract class SwiftTypeTransformer {
         name = UNKNOWN_NAME;
       }
       String returnType = getReturnType(method);
-      this.methods.add(new Method(
-          name,
-          returnType,
-          getResolvedReturnType(method, returnType),
-          getParameters(method.getParameterClause()),
-          getSignature(method).trim(),
-          getThrows(method)
-      ));
+//      this.methods.add(new Method(
+//          name,
+//          returnType,
+//          getResolvedReturnType(method, returnType),
+//          getParameters(method.getParameterClause()),
+//          getSignature(method).trim(),
+//          getThrows(method)
+//      ));
     }
   }
 
@@ -109,9 +109,10 @@ public abstract class SwiftTypeTransformer {
     }
     PsiElement resolved = reference.resolve();
     if (resolved != null && resolved.getContext() instanceof SwiftGenericParameterClause) {
-      return new GenericType(returnType);
+//      return new GenericType(returnType);
     }
-    return new Type(returnType);
+//    return new Type(returnType);
+    return null;
   }
 
   @NotNull
@@ -132,26 +133,28 @@ public abstract class SwiftTypeTransformer {
   @NotNull
   Parameter transformParameter(SwiftParameter parameter) {
     Parameter p = ParameterUtil.Companion.getParameters(parameter.getText()).get(0);
-    return new Parameter(
-        p.getLabel(),
-        p.getName(),
-        p.getType(),
-        getResolvedType(parameter, p.getType()),
-        p.getText()
-    );
+//    return new Parameter(
+//        p.getLabel(),
+//        p.getName(),
+//        p.getType(),
+//        getResolvedType(parameter, p.getType()),
+//        p.getText()
+//    );
+    return null;
   }
 
   private Type getResolvedType(SwiftParameter parameter, String type) {
-    SwiftReferenceTypeElement reference = PsiTreeUtil.findChildOfType(parameter.getTypeAnnotation(), SwiftReferenceTypeElement.class);
-    if (reference != null) {
-      PsiElement resolved = reference.resolve();
-      if (resolved instanceof SwiftTypeAliasDeclaration) {
-        return new Type(parameter.getSwiftType().resolveType().getPresentableText());
-      } else if (resolved != null && resolved.getContext() instanceof SwiftGenericParameterClause) {
-        return new GenericType(type);
-      }
-    }
-    return new Type(type);
+    return null;
+//    SwiftReferenceTypeElement reference = PsiTreeUtil.findChildOfType(parameter.getTypeAnnotation(), SwiftReferenceTypeElement.class);
+//    if (reference != null) {
+//      PsiElement resolved = reference.resolve();
+//      if (resolved instanceof SwiftTypeAliasDeclaration) {
+//        return new Type(parameter.getSwiftType().resolveType().getPresentableText());
+//      } else if (resolved != null && resolved.getContext() instanceof SwiftGenericParameterClause) {
+//        return new GenericType(type);
+//      }
+//    }
+//    return new Type(type);
   }
 
   public List<Method> getMethods() {

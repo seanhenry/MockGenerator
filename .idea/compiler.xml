@@ -22,10 +22,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="MockGenerator" />
         <module name="MockGeneratorUseCases" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="MockGenerator" target="1.8" />
       <module name="MockGeneratorUseCases" target="1.5" />
     </bytecodeTargetLevel>
   </component>

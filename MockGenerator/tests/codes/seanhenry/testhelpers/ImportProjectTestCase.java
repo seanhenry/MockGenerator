@@ -85,7 +85,7 @@ public abstract class ImportProjectTestCase extends UsefulTestCase {
       String actualPath = testResultPath + "/" + actualFileName;
       Files.write(Paths.get(actualPath), getOpenFile().getText().getBytes());
       showDiff(expectedPath, actualPath);
-      fail();
+      fail("/usr/bin/opendiff " + actualPath + " " + expectedPath);
     }
   }
 

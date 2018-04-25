@@ -26,6 +26,7 @@ open class MockOpenProtocol: OpenProtocol {
     open var invokedMethodCount = 0
     open var invokedMethodParameters: (param: Object, Void)?
     open var invokedMethodParametersList = [(param: Object, Void)]()
+    open var shouldInvokeMethodClosure = false
     open var stubbedMethodResult: Object!
 
     open func method(param: Object, closure: () -> ()) -> Object {
@@ -33,7 +34,9 @@ open class MockOpenProtocol: OpenProtocol {
         invokedMethodCount += 1
         invokedMethodParameters = (param, ())
         invokedMethodParametersList.append((param, ()))
-        closure()
+        if shouldInvokeMethodClosure {
+            closure()
+        }
         return stubbedMethodResult
     }
 }

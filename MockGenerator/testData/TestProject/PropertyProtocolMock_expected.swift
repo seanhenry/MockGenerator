@@ -70,26 +70,6 @@ class MockPropertyProtocol: PropertyProtocol {
             return stubbedUnwrapped
         }
     }
-    var invokedWeakVarSetter = false
-    var invokedWeakVarSetterCount = 0
-    var invokedWeakVar: AnyObject?
-    var invokedWeakVarList = [AnyObject?]()
-    var invokedWeakVarGetter = false
-    var invokedWeakVarGetterCount = 0
-    var stubbedWeakVar: AnyObject!
-    weak var weakVar: AnyObject? {
-        set {
-            invokedWeakVarSetter = true
-            invokedWeakVarSetterCount += 1
-            invokedWeakVar = newValue
-            invokedWeakVarList.append(newValue)
-        }
-        get {
-            invokedWeakVarGetter = true
-            invokedWeakVarGetterCount += 1
-            return stubbedWeakVar
-        }
-    }
     var invokedTupleSetter = false
     var invokedTupleSetterCount = 0
     var invokedTuple: (Int, String?)?

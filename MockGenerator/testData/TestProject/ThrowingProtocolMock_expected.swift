@@ -16,11 +16,14 @@ class ThrowingProtocolMock: ThrowingProtocol {
 
     var invokedThrowingClosure = false
     var invokedThrowingClosureCount = 0
+    var shouldInvokeThrowingClosureClosure = false
 
     func throwingClosure(closure: () throws -> ()) {
         invokedThrowingClosure = true
         invokedThrowingClosureCount += 1
-        try? closure()
+        if shouldInvokeThrowingClosureClosure {
+            try? closure()
+        }
     }
 
     var invokedThrowingClosureArgument = false
@@ -37,10 +40,13 @@ class ThrowingProtocolMock: ThrowingProtocol {
 
     var invokedRethrowsMethod = false
     var invokedRethrowsMethodCount = 0
+    var shouldInvokeRethrowsMethodClosure = false
 
     func rethrowsMethod(closure: () throws -> ()) rethrows {
         invokedRethrowsMethod = true
         invokedRethrowsMethodCount += 1
-        try? closure()
+        if shouldInvokeRethrowsMethodClosure {
+            try? closure()
+        }
     }
 }

@@ -26,6 +26,7 @@ public class MockPublicProtocol: PublicProtocol {
     public var invokedMethodCount = 0
     public var invokedMethodParameters: (param: String, Void)?
     public var invokedMethodParametersList = [(param: String, Void)]()
+    public var shouldInvokeMethodClosure = false
     public var stubbedMethodResult: Object!
 
     public func method(param: String, closure: () -> ()) -> Object {
@@ -33,7 +34,9 @@ public class MockPublicProtocol: PublicProtocol {
         invokedMethodCount += 1
         invokedMethodParameters = (param, ())
         invokedMethodParametersList.append((param, ()))
-        closure()
+        if shouldInvokeMethodClosure {
+            closure()
+        }
         return stubbedMethodResult
     }
 }

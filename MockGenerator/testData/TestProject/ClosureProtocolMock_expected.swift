@@ -5,20 +5,26 @@ class MockClosureProtocol: ClosureProtocol {
 
     var invokedMap = false
     var invokedMapCount = 0
+    var shouldInvokeMapClosure = false
 
     func map(closure: () -> ()) {
         invokedMap = true
         invokedMapCount += 1
-        closure()
+        if shouldInvokeMapClosure {
+            closure()
+        }
     }
 
     var invokedFlatMap = false
     var invokedFlatMapCount = 0
+    var shouldInvokeFlatMapClosure = false
 
     func flatMap(closure: () -> Void) {
         invokedFlatMap = true
         invokedFlatMapCount += 1
-        closure()
+        if shouldInvokeFlatMapClosure {
+            closure()
+        }
     }
 
     var invokedFilter = false
@@ -67,11 +73,14 @@ class MockClosureProtocol: ClosureProtocol {
 
     var invokedEscaping = false
     var invokedEscapingCount = 0
+    var shouldInvokeEscapingClosure = false
 
     func escaping(closure: @escaping () -> ()) {
         invokedEscaping = true
         invokedEscapingCount += 1
-        closure()
+        if shouldInvokeEscapingClosure {
+            closure()
+        }
     }
 
     var invokedInOut = false
@@ -88,25 +97,32 @@ class MockClosureProtocol: ClosureProtocol {
 
     var invokedAutoclosure = false
     var invokedAutoclosureCount = 0
+    var shouldInvokeAutoclosureClosure = false
 
     func autoclosure(closure: @autoclosure () -> ()) {
         invokedAutoclosure = true
         invokedAutoclosureCount += 1
-        closure()
+        if shouldInvokeAutoclosureClosure {
+            closure()
+        }
     }
 
     var invokedConvention = false
     var invokedConventionCount = 0
+    var shouldInvokeConventionClosure = false
 
     func convention(closure: @convention(swift) () -> ()) {
         invokedConvention = true
         invokedConventionCount += 1
-        closure()
+        if shouldInvokeConventionClosure {
+            closure()
+        }
     }
 
     var invokedReturnClosure = false
     var invokedReturnClosureCount = 0
-    var stubbedReturnClosureResult: (() -> ())!
+    var stubbedReturnClosureResult: (() -> ())! = {
+    }
 
     func returnClosure() -> (() -> ()) {
         invokedReturnClosure = true
@@ -116,7 +132,9 @@ class MockClosureProtocol: ClosureProtocol {
 
     var invokedReturnClosureArgs = false
     var invokedReturnClosureArgsCount = 0
-    var stubbedReturnClosureArgsResult: ((Int, String) -> (String))!
+    var stubbedReturnClosureArgsResult: ((Int, String) -> (String))! = { _, _ in
+        return ""
+    }
 
     func returnClosureArgs() -> (Int, String) -> (String) {
         invokedReturnClosureArgs = true
@@ -174,64 +192,85 @@ class MockClosureProtocol: ClosureProtocol {
 
     var invokedDoNotSuppressWarning1 = false
     var invokedDoNotSuppressWarning1Count = 0
+    var shouldInvokeDoNotSuppressWarning1Closure = false
 
     func doNotSuppressWarning1(_ closure: () -> ()) {
         invokedDoNotSuppressWarning1 = true
         invokedDoNotSuppressWarning1Count += 1
-        closure()
+        if shouldInvokeDoNotSuppressWarning1Closure {
+            closure()
+        }
     }
 
     var invokedDoNotSuppressWarning2 = false
     var invokedDoNotSuppressWarning2Count = 0
+    var shouldInvokeDoNotSuppressWarning2Closure = false
 
     func doNotSuppressWarning2(_ closure: () -> Void) {
         invokedDoNotSuppressWarning2 = true
         invokedDoNotSuppressWarning2Count += 1
-        closure()
+        if shouldInvokeDoNotSuppressWarning2Closure {
+            closure()
+        }
     }
 
     var invokedDoNotSuppressWarning3 = false
     var invokedDoNotSuppressWarning3Count = 0
+    var shouldInvokeDoNotSuppressWarning3Closure = false
 
     func doNotSuppressWarning3(_ closure: () -> (Void)) {
         invokedDoNotSuppressWarning3 = true
         invokedDoNotSuppressWarning3Count += 1
-        closure()
+        if shouldInvokeDoNotSuppressWarning3Closure {
+            closure()
+        }
     }
 
     var invokedSuppressWarning1 = false
     var invokedSuppressWarning1Count = 0
+    var shouldInvokeSuppressWarning1Closure = false
 
     func suppressWarning1(_ closure: () -> String) {
         invokedSuppressWarning1 = true
         invokedSuppressWarning1Count += 1
-        _ = closure()
+        if shouldInvokeSuppressWarning1Closure {
+            _ = closure()
+        }
     }
 
     var invokedSuppressWarning2 = false
     var invokedSuppressWarning2Count = 0
+    var shouldInvokeSuppressWarning2Closure = false
 
     func suppressWarning2(_ closure: () -> (String)) {
         invokedSuppressWarning2 = true
         invokedSuppressWarning2Count += 1
-        _ = closure()
+        if shouldInvokeSuppressWarning2Closure {
+            _ = closure()
+        }
     }
 
     var invokedSuppressWarning3 = false
     var invokedSuppressWarning3Count = 0
+    var shouldInvokeSuppressWarning3Closure = false
 
     func suppressWarning3(_ closure: () -> String?) {
         invokedSuppressWarning3 = true
         invokedSuppressWarning3Count += 1
-        _ = closure()
+        if shouldInvokeSuppressWarning3Closure {
+            _ = closure()
+        }
     }
 
     var invokedSuppressWarning4 = false
     var invokedSuppressWarning4Count = 0
+    var shouldInvokeSuppressWarning4Closure = false
 
     func suppressWarning4(_ closure: () -> String!) {
         invokedSuppressWarning4 = true
         invokedSuppressWarning4Count += 1
-        _ = closure()
+        if shouldInvokeSuppressWarning4Closure {
+            _ = closure()
+        }
     }
 }

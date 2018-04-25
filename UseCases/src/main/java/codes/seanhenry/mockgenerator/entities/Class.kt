@@ -1,5 +1,8 @@
 package codes.seanhenry.mockgenerator.entities
 
+// TODO: create MockClass
+// toDO: remove protocols from here only needed nin mock class
+// TODO: remove scope only needed in mock class
 class Class(initializers: List<Initializer>, properties: List<Property>, methods: List<Method>, val superclass: Class?, protocols: List<Protocol>, val scope: String?): TypeDeclaration(initializers, properties, methods, protocols) {
 
   class Builder {
