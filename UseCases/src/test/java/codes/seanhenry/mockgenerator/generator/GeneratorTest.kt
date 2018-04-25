@@ -21,6 +21,14 @@ class GeneratorTest : TestCase() {
     runTest(ClassAndProtocolTest())
   }
 
+  fun testRemovesDuplicatesFromOverriddenClasses() {
+    runTest(ClassOverridingTest())
+  }
+
+  fun testMocksSuperclasses() {
+    runTest(SuperclassTest())
+  }
+
   private fun runTest(template: GeneratorTestTemplate) {
     val view = MustacheMockView()
     val generator = Generator(view)

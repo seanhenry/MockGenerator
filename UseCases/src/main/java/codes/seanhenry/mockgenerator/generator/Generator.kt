@@ -9,10 +9,11 @@ class Generator(private val view: MockView) {
   private val protocols = mutableListOf<Protocol>()
 
   fun add(c: Class) {
-    if (c.superclass != null) {
-      classes.add(c.superclass)
+    var superclass = c.superclass
+    while (superclass != null) {
+      classes.add(superclass)
+      superclass = superclass.superclass
     }
-    // TODO: add all superclasses
     add(c.protocols)
   }
 
@@ -32,22 +33,20 @@ class Generator(private val view: MockView) {
     return presenter.generate()
   }
   private fun getClassInitializersRemovingDuplicates(): List<Initializer> {
-    return classes.flatMap { it.initializers } // TODO: test for remove dupes
-//        .distinctBy { SignatureGenerator.signature(it) }
+    return classes.flatMap { it.initializers }
   }
 
   private fun getClassPropertiesRemovingDuplicates(): List<Property> {
-    return classes.flatMap { it.properties } // TODO: test for remove dupes
-//        .distinctBy { SignatureGenerator.signature(it) }
+    return classes.flatMap { it.properties }
+        .distinctBy { SignatureGenerator.signature(it) }
   }
 
   private fun getClassMethodsRemovingDuplicates(): List<Method> {
-    return classes.flatMap { it.methods } // TODO: test for remove dupes
-//        .distinctBy { SignatureGenerator.signature(it) }
+    return classes.flatMap { it.methods }
+        .distinctBy { SignatureGenerator.signature(it) }
   }
 
   private fun getInitializersRemovingDuplicates(): List<Initializer> {
-    // TODO: filter class dupes
     return protocols.flatMap { it.initializers }
         .distinctBy { SignatureGenerator.signature(it) }
   }
