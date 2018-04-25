@@ -1,9 +1,6 @@
 package codes.seanhenry.mockgenerator.generator
 
-import codes.seanhenry.mockgenerator.generator.templates.protocol.DiamondInheritanceTest
-import codes.seanhenry.mockgenerator.generator.templates.protocol.GeneratorTestTemplate
-import codes.seanhenry.mockgenerator.generator.templates.protocol.MultipleOverloadingProtocolsTest
-import codes.seanhenry.mockgenerator.generator.templates.protocol.MultipleProtocolTest
+import codes.seanhenry.mockgenerator.generator.templates.protocol.*
 import junit.framework.TestCase
 
 class GeneratorTest : TestCase() {
@@ -18,6 +15,10 @@ class GeneratorTest : TestCase() {
 
   fun testMultipleOverloadingProtocols() {
     runTest(MultipleOverloadingProtocolsTest())
+  }
+
+  fun testPrefersClassOverloadedItems() {
+    runTest(ClassAndProtocolTest())
   }
 
   private fun runTest(template: GeneratorTestTemplate) {
