@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>codes.seanhenry.mockgenerator</id>
     <name>Swift Mock Generator for AppCode</name>
-    <version>11</version>
+    <version>12</version>
     <vendor email="hello@seanhenry.codes" url="https://github.com/seanhenry/MockGenerator">Sean Henry</vendor>
 
     <description><![CDATA[
@@ -66,14 +66,13 @@ class MockDataStore: DataStore {
 
     <change-notes><![CDATA[
       <ul>
-        <li>Supports capturing of generic method parameters.</li>
-        <li>Supports capturing of generic method return values.</li>
+        <li>Fixes missing method error in AppCode 2018.1.2.</li>
       </ul>
     ]]>
     </change-notes>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-    <idea-version since-build="173.2463"/>
+    <idea-version since-build="181.4668"/>
 
     <actions>
     </actions>

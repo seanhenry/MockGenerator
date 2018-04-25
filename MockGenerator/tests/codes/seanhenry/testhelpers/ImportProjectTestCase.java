@@ -1,51 +1,52 @@
 package codes.seanhenry.testhelpers;
 
 import com.intellij.codeInsight.intention.IntentionAction;
+import com.intellij.idea.IdeaTestApplication;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.newvfs.impl.VfsRootAccess;
+import com.intellij.openapi.vfs.newvfs.persistent.PersistentFS;
+import com.intellij.openapi.vfs.newvfs.persistent.PersistentFSImpl;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.impl.source.tree.injected.InjectedLanguageUtil;
-import com.intellij.testFramework.PlatformTestCase;
+import com.intellij.testFramework.UsefulTestCase;
 import com.intellij.testFramework.fixtures.CodeInsightTestFixture;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-public abstract class ImportProjectTestCase extends PlatformTestCase {
+public abstract class ImportProjectTestCase extends UsefulTestCase {
 
   private Path testResultPath;
   private CodeInsightTestFixture fixture;
 
   @Override
   protected void tearDown() throws Exception {
-    try {
       fixture.tearDown();
-    } catch (Throwable e) {
-      e.printStackTrace();
-    } finally {
       fixture = null;
-      try {
-        super.tearDown();
-      } catch (Throwable e) {
-        e.printStackTrace();
-      }
-    }
+      super.tearDown();
   }
 
   @Override
   protected void setUp() throws Exception {
     allowAccessToXcodeDirectory();
     testResultPath = Files.createTempDirectory("codes.seanhenry.mockgenerator");
-    try {
-      super.setUp();
-    } catch (Throwable e) {
-      e.printStackTrace();
-    }
+    super.setUp();
+    this.initApplication();
+    fixture = ImportProjectTestFixtureFactory.getFixtureFactory().createCodeInsightFixture(getDataPath(), getProjectFileName());
+    fixture.setUp();
+  }
+
+  private void initApplication() throws Exception {
+     IdeaTestApplication.getInstance(null);
+        ((PersistentFSImpl)PersistentFS.getInstance()).cleanPersistedContents();
   }
 
   private void allowAccessToXcodeDirectory() throws IOException {
@@ -58,13 +59,6 @@ public abstract class ImportProjectTestCase extends PlatformTestCase {
     BufferedReader input = new BufferedReader(new
         InputStreamReader(result));
     return input.lines().collect(Collectors.joining());
-  }
-
-  @Override
-  protected void setUpProject() throws Exception {
-    super.setUpProject();
-    fixture = ImportProjectTestFixtureFactory.getFixtureFactory().createCodeInsightFixture(getDataPath(), getProjectFileName());
-    fixture.setUp();
   }
 
   protected abstract String getDataPath();
