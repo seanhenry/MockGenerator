@@ -75,7 +75,7 @@ A protocol called Animator that we wish to mock:
 
 ```
 protocol Animator {
-    func animate(duration: TimeInterval, animations: () -> (), completion: (Bool) -> ()) -> Bool
+  func animate(duration: TimeInterval, animations: () -> (), completion: (Bool) -> ()) -> Bool
 }
 ```
 Create a mock class conforming to a protocol:
@@ -88,24 +88,24 @@ Generate the mock:
 ```
 class MockAnimator: Animator {  
   
-    var invokedAnimate = false
-    var invokedAnimateCount = 0
-    var invokedAnimateParameters: (duration: TimeInterval, Void)?
-    var invokedAnimateParametersList = [(duration: TimeInterval, Void)]()
-    var stubbedAnimateCompletionResult: (Bool, Void)?
-    var stubbedAnimateResult: Bool! = false
+  var invokedAnimate = false
+  var invokedAnimateCount = 0
+  var invokedAnimateParameters: (duration: TimeInterval, Void)?
+  var invokedAnimateParametersList = [(duration: TimeInterval, Void)]()
+  var stubbedAnimateCompletionResult: (Bool, Void)?
+  var stubbedAnimateResult: Bool! = false
   
-    func animate(duration: TimeInterval, animations: () -> (), completion: (Bool) -> ()) -> Bool {
-        invokedAnimate = true
-        invokedAnimateCount += 1
-        invokedAnimateParameters = (duration, ())
-        invokedAnimateParametersList.append((duration, ()))
-        animations()
-        if let result = stubbedAnimateCompletionResult {
-            completion(result.0)
-        }
-        return stubbedAnimateResult
+  func animate(duration: TimeInterval, animations: () -> (), completion: (Bool) -> ()) -> Bool {
+    invokedAnimate = true
+    invokedAnimateCount += 1
+    invokedAnimateParameters = (duration, ())
+    invokedAnimateParametersList.append((duration, ()))
+    animations()
+    if let result = stubbedAnimateCompletionResult {
+      completion(result.0)
     }
+    return stubbedAnimateResult
+  }
 }
 ```
 Inject the mock into the class you wish to test:
@@ -118,53 +118,53 @@ Test if animate method was invoked:
 
 ```
 func test_mockCanVerifyInvokedMethod() {
-    object.myMethod()
-    XCTAssertTrue(mockAnimator.invokedAnimate)
+  object.myMethod()
+  XCTAssertTrue(mockAnimator.invokedAnimate)
 }
 ```
 Test the correct parameter was passed to the animate method:
 
 ```
 func test_mockCanVerifyInvokedParameters() {
-    object.myMethod()
-    XCTAssertEqual(mockAnimator.invokedAnimateParameters?.duration, 5)
+  object.myMethod()
+  XCTAssertEqual(mockAnimator.invokedAnimateParameters?.duration, 5)
 }
 ```
 Test the number of times animate was invoked:
 
 ```
 func test_mockCanVerifyInvokedMethodCount() {
-    object.myMethod()
-    object.myMethod()
-    XCTAssertEqual(mockAnimator.invokedAnimateCount, 2)
+  object.myMethod()
+  object.myMethod()
+  XCTAssertEqual(mockAnimator.invokedAnimateCount, 2)
 }
 ```
 Test the parameters passed into each call of the animate method:
 
 ```
 func test_mockCanVerifyMultipleInvokedMethodParameters() {
-    object.myMethod()
-    object.myMethod()
-    XCTAssertEqual(mockAnimator.invokedAnimateParametersList[0].duration, 5)
-    XCTAssertEqual(mockAnimator.invokedAnimateParametersList[1].duration, 5)
+  object.myMethod()
+  object.myMethod()
+  XCTAssertEqual(mockAnimator.invokedAnimateParametersList[0].duration, 5)
+  XCTAssertEqual(mockAnimator.invokedAnimateParametersList[1].duration, 5)
 }
 ```
 Stub a return value for the animate method:
 
 ```
 func test_mockCanReturnAStubbedValue() {
-    mockAnimator.stubbedAnimateResult = true
-    let result = object.myMethod()
-    XCTAssertTrue(result)
+  mockAnimator.stubbedAnimateResult = true
+  let result = object.myMethod()
+  XCTAssertTrue(result)
 }
 ```
 Stub the value for the completion closure in the animate method:
 
 ```
 func test_mockCanCallClosure_withStubbedValue() {
-    mockAnimator.stubbedAnimateCompletionResult = (false, ())
-    object.myMethod()
-    XCTAssertFalse(object.animationDidComplete)
+  mockAnimator.stubbedAnimateCompletionResult = (false, ())
+  object.myMethod()
+  XCTAssertFalse(object.animationDidComplete)
 }
 ```
 
