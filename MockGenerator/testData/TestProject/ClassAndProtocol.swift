@@ -1,16 +1,16 @@
 protocol ClassAndProtocolMockProtocol {
-    var classAndProtocolMockProtocolProperty: String? { get }
-    func classAndProtocolMockProtocolMethod()
+    var protocolOnlyProperty: String? { get }
+    func protocolOnlyMethod()
 }
 
 protocol ClassAndProtocolProtocol {
-    var classAndProtocolProtocolProperty: String? { get }
-    func classAndProtocolProtocolMethod()
+    init(shared: Int)
+    var sharedProperty: String? { get }
+    func sharedMethod()
 }
 
 class ClassAndProtocol: ClassAndProtocolProtocol {
-    var classAndProtocolProtocolProperty: String? { return nil }
-    func classAndProtocolProtocolMethod() { }
-    var classAndProtocolMockProtocolProperty: String? { return nil }
-    func classAndProtocolMockProtocolMethod() { }
+    required init(shared: Int) {}
+    var sharedProperty: String? { return nil }
+    func sharedMethod() { }
 }

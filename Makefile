@@ -1,8 +1,8 @@
 APPCODE_BUILD=181.4445
 
-.PHONY: bootstrap downloadcommunity updateandroid updateandroidtools buildcommunity ant
+.PHONY: bootstrap downloadcommunity updateandroid updateandroidtools buildcommunity ant maven
 
-bootstrap: downloadcommunity updateandroid updateandroidtools buildcommunity
+bootstrap: downloadcommunity updateandroid updateandroidtools buildcommunity maven
 
 # 1 - path to repo
 # 2 - remote url
@@ -38,3 +38,6 @@ ant:
         brew install ant; \
     fi
 
+maven:
+	cd UseCases; \
+	mvn install;

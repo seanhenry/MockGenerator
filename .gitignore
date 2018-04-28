@@ -5,8 +5,7 @@ MockGenerator/testData/TestProject/.idea/workspace.xml
 /build
 MockGenerator.zip
 MockGenerator.jar
-MockGenerator/target
-UseCases/target
+MockGenerator/target/*
 
 ## Various settings
 *.pbxuser
@@ -26,3 +25,6 @@ xcuserdata/
 
 /ruby/swift
 /ruby/output
+
+# maven build files
+/UseCases/target

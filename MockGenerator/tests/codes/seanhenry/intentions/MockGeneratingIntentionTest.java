@@ -1,18 +1,26 @@
 package codes.seanhenry.intentions;
 
 import codes.seanhenry.analytics.Tracker;
+import codes.seanhenry.error.ErrorPresenterSpy;
 import codes.seanhenry.testhelpers.ImportProjectTestCase;
+import com.google.common.collect.Lists;
 import com.intellij.psi.PsiFile;
+import kotlin.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Assert;
 
 import java.io.IOException;
+import java.util.List;
 
 public class MockGeneratingIntentionTest extends ImportProjectTestCase {
+
+  private ErrorPresenterSpy errorPresenterSpy;
 
   @Override
   protected void setUp() throws Exception {
     super.setUp();
+    errorPresenterSpy = new ErrorPresenterSpy();
+    MockGeneratingIntention.errorPresenter = errorPresenterSpy;
     MockGeneratingIntention.tracker = new TrackerSpy();
   }
 
@@ -27,6 +35,17 @@ public class MockGeneratingIntentionTest extends ImportProjectTestCase {
   }
 
   public void testAll() throws Exception {
+    List<Pair<String, String>> fileErrors = Lists.newArrayList();
+    fileErrors.add(new Pair<>("NoInheritanceError", "Mock class does not inherit from anything."));
+    fileErrors.add(new Pair<>("NothingResolvedError", "NothingHere could not be resolved."));
+    fileErrors.add(new Pair<>("MultiNothingResolvedError", "NothingHere, OrHere could not be resolved."));
+    fileErrors.add(new Pair<>("InheritUnexpectedTypeError", null));
+    for (Pair<String, String> fileError: fileErrors) {
+      errorPresenterSpy.invokedErrorMessage = null;
+      runErrorTest(fileError.getFirst());
+      assertEquals(fileError.getSecond(), errorPresenterSpy.invokedErrorMessage);
+    }
+
     String[] fileNames = {
       "SimpleProtocol",
       "OptionalProtocol",
@@ -51,7 +70,6 @@ public class MockGeneratingIntentionTest extends ImportProjectTestCase {
 
       "SimpleClass",
       "UnoverridableClass",
-      "FinalClass",
       "InferredTypeClass",
       "PropertyClass",
       "ArgumentInitialiserClass",
@@ -65,6 +83,8 @@ public class MockGeneratingIntentionTest extends ImportProjectTestCase {
       "PublicClass",
       "AvailableClass",
       "ThrowingClass",
+      "PrivateInitializerClass",
+      "MultipleVariable",
 
       "Delete",
       "ClassAndProtocol",
@@ -74,6 +94,7 @@ public class MockGeneratingIntentionTest extends ImportProjectTestCase {
       runTest(fileName);
     }
     Assert.assertFalse(isIntentionAvailable("NotAvailableInProductionCodeTarget"));
+    Assert.assertFalse(isIntentionAvailable("ClassNotFoundError"));
     runSuccessAnalyticsTest();
   }
 
@@ -101,6 +122,12 @@ public class MockGeneratingIntentionTest extends ImportProjectTestCase {
   @NotNull
   private PsiFile configureFile(String mockFileName) {
     return getFixture().configureByFile(mockFileName);
+  }
+
+  private void runErrorTest(String fileName) {
+    String mockFileName = fileName + ".swift";
+    PsiFile targetFile = configureFile(mockFileName);
+    invokeIntention("Generate mock", targetFile);
   }
 
   private class TrackerSpy implements Tracker {

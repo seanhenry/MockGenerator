@@ -3,6 +3,7 @@ package codes.seanhenry.util;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiNamedElement;
 import com.jetbrains.swift.psi.*;
+import com.jetbrains.swift.symbols.swiftoc.translator.ProtocolDeclaration;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -18,22 +19,66 @@ public class AssociatedTypeGenericConverter {
     this.classDeclaration = classDeclaration;
   }
 
-  public void convert(List<SwiftTypeDeclaration> types) {
-
-    List<SwiftAssociatedTypeDeclaration> associatedTypes = types
-        .stream()
-        .flatMap(t -> getAssociatedTypes(t).stream())
-        .collect(Collectors.toList());
+  public void convert() {
+    List<SwiftProtocolDeclaration> protocols = getProtocols();
+    List<String> associatedTypes = getAssociatedTypeNames(protocols);
     addGenericParametersToClass(removeDuplicates(associatedTypes));
   }
 
-  private static List<SwiftAssociatedTypeDeclaration> getAssociatedTypes(PsiElement type) {
-    ElementGatheringVisitor<SwiftAssociatedTypeDeclaration> visitor = new ElementGatheringVisitor<>(SwiftAssociatedTypeDeclaration.class);
-    type.accept(visitor);
-    return visitor.getElements();
+  private List<String> getAssociatedTypeNames(List<SwiftProtocolDeclaration> protocols) {
+    AssociatedTypeVisitor visitor = new AssociatedTypeVisitor();
+    protocols.stream().flatMap(p -> p.getStatementList().stream()).forEach(s -> s.accept(visitor));
+    return visitor.typeNames;
   }
 
-  private void addGenericParametersToClass(List<SwiftAssociatedTypeDeclaration> associatedTypes) {
+  private List<SwiftProtocolDeclaration> getProtocols() {
+    if (classDeclaration.getTypeInheritanceClause() == null) {
+      return new ArrayList<>();
+    }
+    return classDeclaration.getTypeInheritanceClause().getTypeElementList().stream()
+        .flatMap(t -> ProtocolResolvingVisitor.resolve(t).stream())
+        .collect(Collectors.toList());
+  }
+
+  private class AssociatedTypeVisitor extends SwiftVisitor {
+
+    private List<String> typeNames = new ArrayList<>();
+
+    @Override
+    public void visitAssociatedTypeDeclaration(@NotNull SwiftAssociatedTypeDeclaration element) {
+      typeNames.add(element.getName());
+    }
+  }
+
+  private static class ProtocolResolvingVisitor extends SwiftVisitor {
+
+    private List<SwiftProtocolDeclaration> protocols = new ArrayList<>();
+
+    private static List<SwiftProtocolDeclaration> resolve(PsiElement element) {
+      ProtocolResolvingVisitor resolver = new ProtocolResolvingVisitor();
+      element.accept(resolver);
+      return resolver.protocols;
+    }
+
+    @Override
+    public void visitReferenceTypeElement(@NotNull SwiftReferenceTypeElement element) {
+      PsiElement resolved = element.resolve();
+      if (resolved != null) {
+        resolved.accept(this);
+      }
+    }
+
+    @Override
+    public void visitProtocolDeclaration(@NotNull SwiftProtocolDeclaration element) {
+      protocols.add(element);
+      SwiftTypeInheritanceClause clause = element.getTypeInheritanceClause();
+      if (clause != null) {
+        clause.getTypeElementList().forEach(t -> protocols.addAll(resolve(t)));
+      }
+    }
+  }
+
+  private void addGenericParametersToClass(List<String> associatedTypes) {
     if (associatedTypes.isEmpty()) {
       return;
     }
@@ -41,7 +86,7 @@ public class AssociatedTypeGenericConverter {
       classDeclaration.getGenericParameterClause().delete();
     }
     String literal = "<";
-    literal += associatedTypes.stream().map(PsiNamedElement::getName).collect(Collectors.joining(", "));
+    literal += associatedTypes.stream().collect(Collectors.joining(", "));
     literal += ">";
     SwiftStatement statement = getElementFactory().createStatement(literal);
     classDeclaration.addBefore(statement, classDeclaration.getTypeInheritanceClause());

@@ -1,0 +1,3 @@
+class NothingResolvedError: NothingHere {
+<caret>
+}

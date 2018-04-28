@@ -2,35 +2,39 @@
 
 class ClassAndProtocolMock: ClassAndProtocol, ClassAndProtocolMockProtocol {
 
-    var invokedClassAndProtocolProtocolPropertyGetter = false
-    var invokedClassAndProtocolProtocolPropertyGetterCount = 0
-    var stubbedClassAndProtocolProtocolProperty: String!
-    override var classAndProtocolProtocolProperty: String? {
-        invokedClassAndProtocolProtocolPropertyGetter = true
-        invokedClassAndProtocolProtocolPropertyGetterCount += 1
-        return stubbedClassAndProtocolProtocolProperty
-    }
-    var invokedClassAndProtocolMockProtocolPropertyGetter = false
-    var invokedClassAndProtocolMockProtocolPropertyGetterCount = 0
-    var stubbedClassAndProtocolMockProtocolProperty: String!
-    override var classAndProtocolMockProtocolProperty: String? {
-        invokedClassAndProtocolMockProtocolPropertyGetter = true
-        invokedClassAndProtocolMockProtocolPropertyGetterCount += 1
-        return stubbedClassAndProtocolMockProtocolProperty
-    }
-    var invokedClassAndProtocolProtocolMethod = false
-    var invokedClassAndProtocolProtocolMethodCount = 0
-
-    override func classAndProtocolProtocolMethod() {
-        invokedClassAndProtocolProtocolMethod = true
-        invokedClassAndProtocolProtocolMethodCount += 1
+    convenience init() {
+        self.init(shared: 0)
     }
 
-    var invokedClassAndProtocolMockProtocolMethod = false
-    var invokedClassAndProtocolMockProtocolMethodCount = 0
+    var invokedSharedPropertyGetter = false
+    var invokedSharedPropertyGetterCount = 0
+    var stubbedSharedProperty: String!
+    override var sharedProperty: String? {
+        invokedSharedPropertyGetter = true
+        invokedSharedPropertyGetterCount += 1
+        return stubbedSharedProperty
+    }
+    var invokedProtocolOnlyPropertyGetter = false
+    var invokedProtocolOnlyPropertyGetterCount = 0
+    var stubbedProtocolOnlyProperty: String!
+    var protocolOnlyProperty: String? {
+        invokedProtocolOnlyPropertyGetter = true
+        invokedProtocolOnlyPropertyGetterCount += 1
+        return stubbedProtocolOnlyProperty
+    }
+    var invokedSharedMethod = false
+    var invokedSharedMethodCount = 0
 
-    override func classAndProtocolMockProtocolMethod() {
-        invokedClassAndProtocolMockProtocolMethod = true
-        invokedClassAndProtocolMockProtocolMethodCount += 1
+    override func sharedMethod() {
+        invokedSharedMethod = true
+        invokedSharedMethodCount += 1
+    }
+
+    var invokedProtocolOnlyMethod = false
+    var invokedProtocolOnlyMethodCount = 0
+
+    func protocolOnlyMethod() {
+        invokedProtocolOnlyMethod = true
+        invokedProtocolOnlyMethodCount += 1
     }
 }
