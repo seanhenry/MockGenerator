@@ -9,7 +9,6 @@ class InitializerBuilderTest: TestCase() {
     assertTrue(initializer.parametersList.isEmpty())
     assertFalse(initializer.isFailable)
     assertFalse(initializer.throws)
-    assertFalse(initializer.isProtocol)
   }
 
   fun testShouldBuildInitialiserWithParameters() {
@@ -20,7 +19,6 @@ class InitializerBuilderTest: TestCase() {
     assertEquals("a", initializer.parametersList[0].internalName)
     assertFalse(initializer.isFailable)
     assertFalse(initializer.throws)
-    assertFalse(initializer.isProtocol)
   }
 
   fun testShouldBuildInitialiserWithLabelledParameters() {
@@ -32,7 +30,6 @@ class InitializerBuilderTest: TestCase() {
     assertEquals("b", initializer.parametersList[0].internalName)
     assertFalse(initializer.isFailable)
     assertFalse(initializer.throws)
-    assertFalse(initializer.isProtocol)
   }
 
   fun testShouldBuildFailableInitialiser() {
@@ -47,12 +44,5 @@ class InitializerBuilderTest: TestCase() {
         .throws()
         .build()
     assertTrue(initializer.throws)
-  }
-
-  fun testShouldBuildIsProtocolInitialiser() {
-    val initializer = Initializer.Builder()
-        .protocol()
-        .build()
-    assertTrue(initializer.isProtocol)
   }
 }

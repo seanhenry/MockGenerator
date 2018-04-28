@@ -21,7 +21,7 @@ class InitializerTransformer: SwiftVisitor() {
   override fun visitInitializerDeclaration(element: SwiftInitializerDeclaration) {
     if (shouldOverride(element)) {
       val parameters = ParametersTransformer.transform(element.parameterClause)
-      transformedDeclaration = Initializer(parameters, MySwiftPsiUtil.isFailable(element), element.isThrowing, true)
+      transformedDeclaration = Initializer(parameters, MySwiftPsiUtil.isFailable(element), element.isThrowing)
     }
   }
 

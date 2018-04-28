@@ -35,10 +35,9 @@ public class AssociatedTypeGenericConverter {
     if (classDeclaration.getTypeInheritanceClause() == null) {
       return new ArrayList<>();
     }
-    ProtocolResolvingVisitor visitor = new ProtocolResolvingVisitor();
-    classDeclaration.getTypeInheritanceClause().getTypeElementList()
-        .forEach(p -> p.accept(visitor));
-    return visitor.protocols;
+    return classDeclaration.getTypeInheritanceClause().getTypeElementList().stream()
+        .flatMap(t -> ProtocolResolvingVisitor.resolve(t).stream())
+        .collect(Collectors.toList());
   }
 
   private class AssociatedTypeVisitor extends SwiftVisitor {
@@ -51,9 +50,15 @@ public class AssociatedTypeGenericConverter {
     }
   }
 
-  private class ProtocolResolvingVisitor extends SwiftVisitor {
+  private static class ProtocolResolvingVisitor extends SwiftVisitor {
 
     private List<SwiftProtocolDeclaration> protocols = new ArrayList<>();
+
+    private static List<SwiftProtocolDeclaration> resolve(PsiElement element) {
+      ProtocolResolvingVisitor resolver = new ProtocolResolvingVisitor();
+      element.accept(resolver);
+      return resolver.protocols;
+    }
 
     @Override
     public void visitReferenceTypeElement(@NotNull SwiftReferenceTypeElement element) {
@@ -66,6 +71,10 @@ public class AssociatedTypeGenericConverter {
     @Override
     public void visitProtocolDeclaration(@NotNull SwiftProtocolDeclaration element) {
       protocols.add(element);
+      SwiftTypeInheritanceClause clause = element.getTypeInheritanceClause();
+      if (clause != null) {
+        clause.getTypeElementList().forEach(t -> protocols.addAll(resolve(t)));
+      }
     }
   }
 

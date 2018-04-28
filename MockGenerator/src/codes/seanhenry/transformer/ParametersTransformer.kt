@@ -17,7 +17,7 @@ class ParametersTransformer {
     }
 
     private fun toParameter(it: SwiftParameter) =
-        Parameter(it.externalNameIdentifier!!.text,
+        Parameter(it.externalNameIdentifier?.text,
             it.nameIdentifier.text,
             TypeTransformer.transformResolvedType(it.typeAnnotation!!.typeElement!!),
             it.text,

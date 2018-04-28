@@ -2,11 +2,9 @@ package codes.seanhenry.mockgenerator.entities
 
 import codes.seanhenry.mockgenerator.visitor.Visitor
 
-// TODO: remove isProtocol and get that info from visitor
 class Initializer(val parametersList: List<Parameter>,
                   val isFailable: Boolean,
-                  val throws: Boolean,
-                  val isProtocol: Boolean) : Element {
+                  val throws: Boolean) : Element {
 
   override fun accept(visitor: Visitor) {
     visitor.visitInitializer(this)
@@ -17,7 +15,6 @@ class Initializer(val parametersList: List<Parameter>,
     private val parameters = ArrayList<Parameter>()
     private var isFailable = false
     private var throws = false
-    private var isProtocol = false
 
     fun failable(): Builder {
       isFailable = true
@@ -26,11 +23,6 @@ class Initializer(val parametersList: List<Parameter>,
 
     fun throws(): Builder {
       throws = true
-      return this
-    }
-
-    fun protocol(): Builder {
-      isProtocol = true
       return this
     }
 
@@ -52,7 +44,7 @@ class Initializer(val parametersList: List<Parameter>,
     }
 
     fun build(): Initializer {
-      return Initializer(parameters, isFailable, throws, isProtocol)
+      return Initializer(parameters, isFailable, throws)
     }
   }
 }

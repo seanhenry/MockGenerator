@@ -36,7 +36,7 @@ class ClassTransformer : SwiftVisitor() {
   }
 
   private fun transformNSObject() {
-    val defaultInit = Initializer(emptyList(), false, false, false)
+    val defaultInit = Initializer(emptyList(), false, false)
     transformedClass = Class(listOf(defaultInit), emptyList(), emptyList(), null)
   }
 }
