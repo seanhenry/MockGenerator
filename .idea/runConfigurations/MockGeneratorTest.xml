@@ -2,7 +2,7 @@
   <configuration default="false" name="MockGeneratorTest" type="JUnit" factoryName="JUnit" singleton="true">
     <module name="MockGenerator" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
-    <option name="ALTERNATIVE_JRE_PATH" value="OC-181.4445" />
+    <option name="ALTERNATIVE_JRE_PATH" value="OC-181.4668" />
     <option name="PACKAGE_NAME" value="" />
     <option name="MAIN_CLASS_NAME" value="" />
     <option name="METHOD_NAME" value="" />
