@@ -73,7 +73,7 @@ class MockDataStore: DataStore {
       </ul>
       <p><b>Breaking changes</b></p>
       <ul>
-        <li>Closures with no arguments are no longer called automatically. You must now set <pre>shouldInvokeMethodClosure</pre> to <pre>true</pre>.</li>
+        <li>Closures with no arguments are no longer called automatically. You must now set <code>shouldInvokeMethodClosure</code> to <code>true</code>.</li>
       </ul>
     ]]>
     </change-notes>
