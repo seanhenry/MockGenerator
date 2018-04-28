@@ -1,13 +1,13 @@
 package codes.seanhenry.mockgenerator.generator.templates.protocol
 
-import codes.seanhenry.mockgenerator.entities.Class
+import codes.seanhenry.mockgenerator.entities.MockClass
 import codes.seanhenry.mockgenerator.generator.Generator
 
 class SuperclassTest : GeneratorTestTemplate {
 
   override fun build(generator: Generator) {
-    generator.add(
-        Class.Builder()
+    generator.set(
+        MockClass.Builder()
             .superclass {
               it.initializer {
                 it.parameter("a1") { it.type("Int") }

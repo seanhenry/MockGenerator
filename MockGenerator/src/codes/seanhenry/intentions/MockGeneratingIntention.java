@@ -91,7 +91,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     try {
       validateClass();
       validateMockClassInheritance();
-      generator.add(transformMockClass());
+      generator.set(transformMockClass());
       deleteClassStatements();
       addGenericClauseToMock();
       generateMock(generator, view);

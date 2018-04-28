@@ -1,14 +1,13 @@
 package codes.seanhenry.mockgenerator.generator.templates.protocol
 
-import codes.seanhenry.mockgenerator.entities.Class
-import codes.seanhenry.mockgenerator.entities.Protocol
+import codes.seanhenry.mockgenerator.entities.MockClass
 import codes.seanhenry.mockgenerator.generator.Generator
 
 class MultipleOverloadingProtocolsTest : GeneratorTestTemplate {
 
   override fun build(generator: Generator) {
-    generator.add(
-        Class.Builder()
+    generator.set(
+        MockClass.Builder()
             .protocol {
               it.method("inheriting") {}
                   .method("inherited") { it.parameter("overloaded") { it.type("Int") } }

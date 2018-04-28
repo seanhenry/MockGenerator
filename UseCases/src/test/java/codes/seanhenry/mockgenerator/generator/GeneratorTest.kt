@@ -17,10 +17,6 @@ class GeneratorTest : TestCase() {
     runTest(MultipleOverloadingProtocolsTest())
   }
 
-  fun testPrefersClassOverloadedItems() {
-    runTest(ClassAndProtocolTest())
-  }
-
   fun testRemovesDuplicatesFromOverriddenClasses() {
     runTest(ClassOverridingTest())
   }

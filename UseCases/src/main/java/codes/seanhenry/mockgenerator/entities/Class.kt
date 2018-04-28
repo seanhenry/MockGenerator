@@ -1,18 +1,13 @@
 package codes.seanhenry.mockgenerator.entities
 
-// TODO: create MockClass
-// toDO: remove protocols from here only needed nin mock class
-// TODO: remove scope only needed in mock class
-class Class(initializers: List<Initializer>, properties: List<Property>, methods: List<Method>, val superclass: Class?, protocols: List<Protocol>, val scope: String?): TypeDeclaration(initializers, properties, methods, protocols) {
+class Class(initializers: List<Initializer>, properties: List<Property>, methods: List<Method>, val superclass: Class?): TypeDeclaration(initializers, properties, methods, emptyList()) {
 
   class Builder {
 
     private val methods = mutableListOf<Method>()
     private val properties = mutableListOf<Property>()
     private val initializers = mutableListOf<Initializer>()
-    private val protocols = mutableListOf<Protocol>()
     private var superclass: Class? = null
-    private var scope: String? = null
 
     fun initializer(build: (Initializer.Builder) -> Unit): Builder {
       val builder = Initializer.Builder()
@@ -42,20 +37,8 @@ class Class(initializers: List<Initializer>, properties: List<Property>, methods
       return this
     }
 
-    fun protocol(build: (Protocol.Builder) -> Unit): Builder {
-      val builder = Protocol.Builder()
-      build(builder)
-      protocols.add(builder.build())
-      return this
-    }
-
-    fun scope(scope: String): Builder {
-      this.scope = scope
-      return this
-    }
-
     fun build(): Class {
-      return Class(initializers, properties, methods, superclass, protocols, scope)
+      return Class(initializers, properties, methods, superclass)
     }
   }
 }

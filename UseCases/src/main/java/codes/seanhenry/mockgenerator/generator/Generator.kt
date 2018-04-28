@@ -5,11 +5,11 @@ import codes.seanhenry.mockgenerator.entities.*
 
 class Generator(private val view: MockView) {
 
-  private var mockClass: Class? = null
+  private var mockClass: MockClass? = null
   private val classes = mutableListOf<Class>()
   private val protocols = mutableListOf<Protocol>()
 
-  fun add(c: Class) {
+  fun set(c: MockClass) {
     mockClass = c
     var superclass = c.superclass
     while (superclass != null) {
