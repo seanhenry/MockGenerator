@@ -2,10 +2,12 @@ package codes.seanhenry.intentions;
 
 import codes.seanhenry.analytics.GoogleAnalyticsTracker;
 import codes.seanhenry.analytics.Tracker;
+import codes.seanhenry.error.DefaultErrorPresenter;
+import codes.seanhenry.error.ErrorPresenter;
+import codes.seanhenry.error.MockGeneratorException;
 import codes.seanhenry.mockgenerator.entities.Class;
 import codes.seanhenry.mockgenerator.entities.MockClass;
 import codes.seanhenry.mockgenerator.entities.Protocol;
-import codes.seanhenry.mockgenerator.generator.CallbackMockView;
 import codes.seanhenry.mockgenerator.generator.Generator;
 import codes.seanhenry.template.MustacheView;
 import codes.seanhenry.transformer.ClassTransformer;
@@ -13,9 +15,6 @@ import codes.seanhenry.transformer.ProtocolTransformer;
 import codes.seanhenry.transformer.Resolver;
 import codes.seanhenry.util.AssociatedTypeGenericConverter;
 import codes.seanhenry.util.MySwiftPsiUtil;
-import com.github.mustachejava.DefaultMustacheFactory;
-import com.github.mustachejava.Mustache;
-import com.intellij.codeInsight.hint.HintManager;
 import com.intellij.codeInsight.intention.IntentionAction;
 import com.intellij.codeInsight.intention.PsiElementBaseIntentionAction;
 import com.intellij.openapi.components.ProjectComponent;
@@ -34,22 +33,21 @@ import com.jetbrains.cidr.xcode.model.PBXTarget;
 import com.jetbrains.cidr.xcode.model.XcodeMetaData;
 import com.jetbrains.swift.SwiftLanguage;
 import com.jetbrains.swift.psi.SwiftClassDeclaration;
+import com.jetbrains.swift.psi.SwiftTypeElement;
 import com.jetbrains.swift.psi.SwiftTypeInheritanceClause;
-import one.util.streamex.Joining;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
-import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class MockGeneratingIntention extends PsiElementBaseIntentionAction implements IntentionAction, ProjectComponent {
 
   private SwiftClassDeclaration classDeclaration;
   static Tracker tracker = new GoogleAnalyticsTracker();
+  static ErrorPresenter errorPresenter = new DefaultErrorPresenter();
 
   @Override
   public boolean isAvailable(@NotNull Project project, Editor editor, @NotNull PsiElement psiElement) {
@@ -81,32 +79,68 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     MustacheView view = new MustacheView();
     Generator generator = new Generator(view);
     try {
-      validateClass();
       validateMockClassInheritance();
-      generator.set(transformMockClass());
+      List<PsiElement> resolved = resolveInheritanceClause(editor);
+      generator.set(transformMockClass(resolved));
       deleteClassStatements();
       addGenericClauseToMock();
       generateMock(generator, view);
       track("generated");
-    } catch (Exception e) {
-      e.printStackTrace();
+    } catch (MockGeneratorException e) {
       showErrorMessage(e.getMessage(), editor);
       track(e.getMessage());
+    } catch (Exception e) {
+      track(e.getMessage());
+      throw e;
     }
   }
 
-  private MockClass transformMockClass() {
-    // TODO: test cannot resolve
-    // TODO: test no inheritance type (show error)
-    // TODO: test cannot transform, maybe incorrectly add struct as inherited type?
-    // TODO: test NSObjectProtocol
-    List<PsiElement> resolved = classDeclaration.getTypeInheritanceClause().getTypeElementList().stream().map(e -> Resolver.Companion.resolve(e)).collect(Collectors.toList());
-    List<Protocol> protocols = resolved.stream().map(r -> ProtocolTransformer.Companion.transform(r)).filter(it -> it != null).collect(Collectors.toList());
+  private List<PsiElement> resolveInheritanceClause(Editor editor) {
+    SwiftTypeInheritanceClause inheritanceClause = classDeclaration.getTypeInheritanceClause();
+    List<PsiElement> resolved = new ArrayList<>();
+    List<SwiftTypeElement> unresolved = new ArrayList<>();
+    for (SwiftTypeElement e: inheritanceClause.getTypeElementList()) {
+      PsiElement r = Resolver.Companion.resolve(e);
+      if (r != null) {
+        resolved.add(r);
+      } else {
+        unresolved.add(e);
+      }
+    }
+    reportResolveInheritanceClauseError(resolved, unresolved, editor);
+    return resolved;
+  }
+
+  private void reportResolveInheritanceClauseError(List<PsiElement> resolved, List<SwiftTypeElement> unresolved, Editor editor) {
+    String errorMessage = listTypeNames(unresolved) + " could not be resolved.";
+    if (!unresolved.isEmpty()) {
+      if (resolved.isEmpty()) {
+        throw new MockGeneratorException(errorMessage);
+      } else {
+        showErrorMessage(errorMessage, editor);
+      }
+    }
+  }
+
+  private String listTypeNames(List<SwiftTypeElement> types) {
+    return types.stream().map(PsiElement::getText).collect(Collectors.joining(", "));
+  }
+
+  private MockClass transformMockClass(List<PsiElement> resolved) {
+    List<Protocol> protocols = transformProtocols(resolved);
     Class superclass = null;
     if (resolved.size() > 0) {
-     superclass = ClassTransformer.Companion.transform(resolved.get(0));
+     superclass = transformSuperclass(resolved.get(0));
     }
     return new MockClass(superclass, protocols, getMockScope());
+  }
+
+  private Class transformSuperclass(PsiElement firstType) {
+    return ClassTransformer.Companion.transform(firstType);
+  }
+
+  private List<Protocol> transformProtocols(List<PsiElement> resolved) {
+    return resolved.stream().map(ProtocolTransformer.Companion::transform).filter(Objects::nonNull).collect(Collectors.toList());
   }
 
   private String getMockScope() {
@@ -118,16 +152,10 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     return "";
   }
 
-  private void validateClass() throws Exception {
-    if (classDeclaration == null) {
-      throw new Exception("Could not find a class to mock.");
-    }
-  }
-
-  private void validateMockClassInheritance() throws Exception {
+  private void validateMockClassInheritance() {
     SwiftTypeInheritanceClause inheritanceClause = classDeclaration.getTypeInheritanceClause();
     if (inheritanceClause == null) {
-      throw new Exception("Mock class does not inherit from anything.");
+      throw new MockGeneratorException("Mock class does not inherit from anything.");
     }
   }
 
@@ -157,7 +185,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     return classDeclaration.getStatementList().get(classDeclaration.getStatementList().size() - 1);
   }
 
-  private void generateMock(Generator generator, MustacheView view) throws Exception {
+  private void generateMock(Generator generator, MustacheView view) {
     generator.generate();
     String string = view.getResult();
     try {
@@ -167,7 +195,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
       }
     }
     catch (PsiInvalidElementAccessException e) {
-      throw new Exception("An unexpected error occurred: " + e.getMessage());
+      throw new MockGeneratorException("An unexpected error occurred: " + e.getMessage());
     }
   }
 
@@ -179,7 +207,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     if (message == null) {
       message = "An unknown error occurred.";
     }
-    HintManager.getInstance().showErrorHint(editor, message);
+    errorPresenter.show(message, editor);
   }
 
   private void track(String action) {
