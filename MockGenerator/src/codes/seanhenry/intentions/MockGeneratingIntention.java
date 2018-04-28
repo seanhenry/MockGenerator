@@ -3,9 +3,11 @@ package codes.seanhenry.intentions;
 import codes.seanhenry.analytics.GoogleAnalyticsTracker;
 import codes.seanhenry.analytics.Tracker;
 import codes.seanhenry.mockgenerator.entities.Class;
+import codes.seanhenry.mockgenerator.entities.MockClass;
 import codes.seanhenry.mockgenerator.entities.Protocol;
 import codes.seanhenry.mockgenerator.generator.CallbackMockView;
 import codes.seanhenry.mockgenerator.generator.Generator;
+import codes.seanhenry.template.MustacheView;
 import codes.seanhenry.transformer.ClassTransformer;
 import codes.seanhenry.transformer.ProtocolTransformer;
 import codes.seanhenry.transformer.Resolver;
@@ -76,17 +78,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   @Override
   public void invoke(@NotNull Project project, Editor editor, @NotNull PsiElement psiElement) throws IncorrectOperationException {
     classDeclaration = findClassUnderCaret(psiElement);
-    CallbackMockView view = new CallbackMockView((model) -> {
-      StringWriter writer = new StringWriter();
-      DefaultMustacheFactory mf = new DefaultMustacheFactory();
-      Mustache mustache = mf.compile("mock.mustache");
-      try {
-        mustache.execute(writer, model).flush();
-      } catch (IOException ignored) {}
-      String[] lines = new String(writer.getBuffer()).split("\n");
-      // TODO: make own class and just return string
-      return Arrays.stream(lines).map(String::trim).filter(it -> !it.isEmpty()).collect(Collectors.joining("\n"));
-    });
+    MustacheView view = new MustacheView();
     Generator generator = new Generator(view);
     try {
       validateClass();
@@ -103,7 +95,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     }
   }
 
-  private Class transformMockClass() {
+  private MockClass transformMockClass() {
     // TODO: test cannot resolve
     // TODO: test no inheritance type (show error)
     // TODO: test cannot transform, maybe incorrectly add struct as inherited type?
@@ -114,7 +106,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     if (resolved.size() > 0) {
      superclass = ClassTransformer.Companion.transform(resolved.get(0));
     }
-    return new Class(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), superclass, protocols, getMockScope());
+    return new MockClass(superclass, protocols, getMockScope());
   }
 
   private String getMockScope() {
@@ -165,9 +157,9 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     return classDeclaration.getStatementList().get(classDeclaration.getStatementList().size() - 1);
   }
 
-  private void generateMock(Generator generator, CallbackMockView view) throws Exception {
+  private void generateMock(Generator generator, MustacheView view) throws Exception {
     generator.generate();
-    String string = view.getResult().stream().collect(Joining.with("\n"));
+    String string = view.getResult();
     try {
       PsiFile file = PsiFileFactory.getInstance(classDeclaration.getProject()).createFileFromText(SwiftLanguage.INSTANCE, string);
       for (PsiElement child : file.getChildren()) {

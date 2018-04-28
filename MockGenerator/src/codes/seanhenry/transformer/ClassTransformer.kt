@@ -33,12 +33,11 @@ class ClassTransformer : SwiftVisitor() {
       resolved = element.typeInheritanceClause!!.typeElementList.mapNotNull { Resolver.resolve(it) }
     }
     val superclass = resolved.firstOrNull()?.let { ClassTransformer.transform(it) }
-    val protocols = resolved.mapNotNull { ProtocolTransformer.transform(it) }
-    transformedClass = Class(initializers, properties, methods, superclass, protocols, null)
+    transformedClass = Class(initializers, properties, methods, superclass)
   }
 
   private fun transformNSObject() {
     val defaultInit = Initializer(emptyList(), false, false, false)
-    transformedClass = Class(listOf(defaultInit), emptyList(), emptyList(), null, emptyList(), null)
+    transformedClass = Class(listOf(defaultInit), emptyList(), emptyList(), null)
   }
 }
