@@ -105,4 +105,12 @@ class TypeTransformer : SwiftVisitor() {
       transformedType = transform(type)
     }
   }
+
+  override fun visitAnyTypeElement(element: SwiftAnyTypeElement) {
+    transformedType = TypeIdentifier("Any")
+  }
+
+  override fun visitTypeElement(element: SwiftTypeElement) {
+    transformedType = TypeIdentifier(element.text)
+  }
 }
