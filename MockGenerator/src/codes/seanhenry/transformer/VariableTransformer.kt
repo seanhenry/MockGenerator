@@ -1,8 +1,6 @@
 package codes.seanhenry.transformer
 
 import codes.seanhenry.mockgenerator.entities.Property
-import codes.seanhenry.mockgenerator.entities.Type
-import codes.seanhenry.mockgenerator.entities.TypeIdentifier
 import codes.seanhenry.util.MySwiftPsiUtil
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.PsiTreeUtil
@@ -22,7 +20,7 @@ class VariableTransformer: SwiftVisitor() {
 
   override fun visitVariableDeclaration(element: SwiftVariableDeclaration) {
     val patternInitializer = element.patternInitializerList[0]
-    val type = TypePatternVisitor.transform(patternInitializer)
+    val type = TypePatternTransformer.transform(patternInitializer)
     if (shouldNotOverride(element) || type == null) {
       return
     }

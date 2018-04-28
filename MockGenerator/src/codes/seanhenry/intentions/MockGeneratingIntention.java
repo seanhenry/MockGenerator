@@ -2,20 +2,17 @@ package codes.seanhenry.intentions;
 
 import codes.seanhenry.analytics.GoogleAnalyticsTracker;
 import codes.seanhenry.analytics.Tracker;
-import codes.seanhenry.mockgenerator.entities.*;
 import codes.seanhenry.mockgenerator.entities.Class;
+import codes.seanhenry.mockgenerator.entities.Protocol;
 import codes.seanhenry.mockgenerator.generator.CallbackMockView;
 import codes.seanhenry.mockgenerator.generator.Generator;
 import codes.seanhenry.transformer.ClassTransformer;
 import codes.seanhenry.transformer.ProtocolTransformer;
 import codes.seanhenry.transformer.Resolver;
-import codes.seanhenry.transformer.TypeTransformer;
 import codes.seanhenry.util.AssociatedTypeGenericConverter;
 import codes.seanhenry.util.MySwiftPsiUtil;
-import codes.seanhenry.util.finder.SwiftTypeItemFinder;
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
-import com.google.common.collect.Lists;
 import com.intellij.codeInsight.hint.HintManager;
 import com.intellij.codeInsight.intention.IntentionAction;
 import com.intellij.codeInsight.intention.PsiElementBaseIntentionAction;
@@ -24,22 +21,27 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.*;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiFileFactory;
+import com.intellij.psi.PsiInvalidElementAccessException;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
 import com.jetbrains.cidr.xcode.model.PBXProjectFile;
 import com.jetbrains.cidr.xcode.model.PBXTarget;
 import com.jetbrains.cidr.xcode.model.XcodeMetaData;
 import com.jetbrains.swift.SwiftLanguage;
-import com.jetbrains.swift.psi.*;
+import com.jetbrains.swift.psi.SwiftClassDeclaration;
+import com.jetbrains.swift.psi.SwiftTypeInheritanceClause;
 import one.util.streamex.Joining;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class MockGeneratingIntention extends PsiElementBaseIntentionAction implements IntentionAction, ProjectComponent {
@@ -86,18 +88,10 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
       return Arrays.stream(lines).map(String::trim).filter(it -> !it.isEmpty()).collect(Collectors.joining("\n"));
     });
     Generator generator = new Generator(view);
-//    generator.setScope(getMockScope());
-    SwiftTypeItemFinder protocolItemFinder;
-    SwiftTypeItemFinder classItemFinder;
     try {
       validateClass();
       validateMockClassInheritance();
       generator.add(transformMockClass());
-//      protocolItemFinder = getProtocolItemFinder();
-//      classItemFinder = getClassItemFinder();
-//      validateItems(classItemFinder, protocolItemFinder);
-//      transformProtocolItems(protocolItemFinder, classItemFinder, generator);
-//      transformClassItems(classItemFinder, generator);
       deleteClassStatements();
       addGenericClauseToMock();
       generateMock(generator, view);
@@ -113,6 +107,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     // TODO: test cannot resolve
     // TODO: test no inheritance type (show error)
     // TODO: test cannot transform, maybe incorrectly add struct as inherited type?
+    // TODO: test NSObjectProtocol
     List<PsiElement> resolved = classDeclaration.getTypeInheritanceClause().getTypeElementList().stream().map(e -> Resolver.Companion.resolve(e)).collect(Collectors.toList());
     List<Protocol> protocols = resolved.stream().map(r -> ProtocolTransformer.Companion.transform(r)).filter(it -> it != null).collect(Collectors.toList());
     Class superclass = null;
@@ -144,42 +139,6 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
     }
   }
 
-//  @NotNull
-//  private SwiftTypeItemFinder getProtocolItemFinder() {
-//    SwiftTypeItemFinder itemFinder = new SwiftTypeItemFinder(new ProtocolTypeChoosingStrategy(), new ClassTypeInitialiserChoosingStrategy(), new ProtocolPropertyChoosingStrategy(), new ProtocolMethodChoosingStrategy());
-//    itemFinder.findItems(classDeclaration);
-//    return itemFinder;
-//  }
-//
-//  private SwiftTypeItemFinder getClassItemFinder() {
-//    SwiftTypeItemFinder itemFinder = new SwiftTypeItemFinder(new ClassTypeChoosingStrategy(), new ClassTypeInitialiserChoosingStrategy(), new ClassPropertyChoosingStrategy(), new ClassMethodChoosingStrategy());
-//    itemFinder.findItems(classDeclaration);
-//    return itemFinder;
-//  }
-//
-//  private void validateItems(SwiftTypeItemFinder classItemFinder, SwiftTypeItemFinder protocolItemFinder) throws Exception {
-//    if (classItemFinder.getTypes().isEmpty() && protocolItemFinder.getTypes().isEmpty()) {
-//      throw new Exception("Could not find an inherited type to mock.");
-//    }
-//  }
-//
-//  private void transformProtocolItems(SwiftTypeItemFinder protocolItemFinder, SwiftTypeItemFinder classItemFinder, MockGenerator generator) throws Exception {
-//    ProtocolDuplicateRemover remover = new ProtocolDuplicateRemover(protocolItemFinder, classItemFinder);
-//    SwiftTypeTransformer transformer = new SwiftProtocolTransformer(remover);
-//    transformer.transform();
-//    generator.addInitialisers(transformer.getInitializers());
-//    generator.addProperties(transformer.getProperties());
-//    generator.addMethods(transformer.getMethods());
-//  }
-//
-//  private void transformClassItems(SwiftTypeItemFinder itemFinder, MockGenerator generator) throws Exception {
-//    SwiftTypeTransformer transformer = new SwiftClassTransformer(itemFinder);
-//    transformer.transform();
-//    generator.setClassInitialisers(transformer.getInitializers());
-//    generator.addClassProperties(transformer.getProperties());
-//    generator.addClassMethods(transformer.getMethods());
-//  }
-//
   private void addGenericClauseToMock() {
     new AssociatedTypeGenericConverter(classDeclaration).convert();
   }

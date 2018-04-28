@@ -5,6 +5,11 @@ class NSObject {
     func shouldNotBeMocked() {}
 }
 
+protocol NSObjectProtocol {
+    var shouldNotBeMockedProperty: String? { get set }
+    func shouldNotBeMocked()
+}
+
 class NSObjectClass: NSObject {
 
     init(a: String?) {}

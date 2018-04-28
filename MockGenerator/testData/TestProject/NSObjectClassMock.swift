@@ -1,5 +1,5 @@
 @testable import MockableTypes
 
-class NSObjectClassMock: NSObjectClass {
+class NSObjectClassMock: NSObjectClass, NSObjectProtocol {
 <caret>
 }

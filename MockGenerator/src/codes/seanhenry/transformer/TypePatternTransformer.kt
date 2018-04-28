@@ -5,11 +5,11 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.util.PsiTreeUtil
 import com.jetbrains.swift.psi.*
 
-class TypePatternVisitor : SwiftVisitor() {
+class TypePatternTransformer : SwiftVisitor() {
 
   companion object {
     fun transform(element: PsiElement): Type? {
-      val visitor = TypePatternVisitor()
+      val visitor = TypePatternTransformer()
       element.accept(visitor)
       return visitor.transformedType
     }

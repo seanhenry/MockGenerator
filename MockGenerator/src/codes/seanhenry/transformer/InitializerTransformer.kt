@@ -19,7 +19,14 @@ class InitializerTransformer: SwiftVisitor() {
   private var transformedDeclaration: Initializer? = null
 
   override fun visitInitializerDeclaration(element: SwiftInitializerDeclaration) {
-    val parameters = ParametersTransformer.transform(element.parameterClause)
-    transformedDeclaration = Initializer(parameters, MySwiftPsiUtil.isFailable(element), element.isThrowing, true)
+    if (shouldOverride(element)) {
+      val parameters = ParametersTransformer.transform(element.parameterClause)
+      transformedDeclaration = Initializer(parameters, MySwiftPsiUtil.isFailable(element), element.isThrowing, true)
+    }
+  }
+
+  private fun shouldOverride(element: SwiftInitializerDeclaration): Boolean {
+    return !MySwiftPsiUtil.isFilePrivate(element)
+        && !MySwiftPsiUtil.isPrivate(element)
   }
 }

@@ -18,6 +18,9 @@ class ProtocolTransformer: SwiftVisitor() {
   private var transformedProtocol: Protocol? = null
 
   override fun visitProtocolDeclaration(element: SwiftProtocolDeclaration) {
+    if (element.name == "NSObjectProtocol") {
+      return
+    }
     val items = element.statementList
     val initializers = items.mapNotNull { InitializerTransformer.transform(it) }
     val methods = items.mapNotNull { FunctionTransformer.transform(it) }
