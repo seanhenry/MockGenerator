@@ -9,22 +9,27 @@ import com.jetbrains.swift.psi.*
 class VariableTransformer: SwiftVisitor() {
 
   companion object {
-    fun transform(element: PsiElement): Property? {
+    fun transform(element: PsiElement): List<Property> {
       val visitor = VariableTransformer()
       element.accept(visitor)
-      return visitor.transformedDeclaration
+      return visitor.transformedDeclarations
     }
   }
 
-  private var transformedDeclaration: Property? = null
+  private var transformedDeclarations = emptyList<Property>()
 
   override fun visitVariableDeclaration(element: SwiftVariableDeclaration) {
-    val patternInitializer = element.patternInitializerList[0]
-    val type = TypePatternTransformer.transform(patternInitializer)
-    if (shouldNotOverride(element) || type == null) {
-      return
-    }
-    transformedDeclaration = Property(patternInitializer.pattern.variables[0].name!!, type, isWritable(element), getDeclarationText(element, type.text))
+    if (shouldNotOverride(element)) {
+          return
+        }
+    val isWritable = isWritable(element)
+    transformedDeclarations = element.patternInitializerList.mapNotNull { transformVariable(it, isWritable) }
+  }
+
+  private fun transformVariable(patternInitializer: SwiftPatternInitializer, isWritable: Boolean): Property? {
+    val type = TypePatternTransformer.transform(patternInitializer) ?: return null
+    val name = patternInitializer.variables[0].name!!
+    return Property(name, type, isWritable, getDeclarationText(patternInitializer, type.text))
   }
 
   private fun shouldNotOverride(element: SwiftVariableDeclaration): Boolean {
@@ -43,25 +48,9 @@ class VariableTransformer: SwiftVisitor() {
     }
   }
 
-  private fun getDeclarationText(element: SwiftVariableDeclaration, type: String): String {
-    val startOffset = getStartOffset(element)
-    val endOffset = getEndOffset(element)
-    val signature = element.containingFile.text.substring(startOffset, endOffset)
-    return if (MySwiftPsiUtil.hasExplicitType(element)) {
-      signature
-    } else "$signature: $type"
-  }
-
-  private fun getStartOffset(property: SwiftVariableDeclaration): Int {
-    return property.textOffset + property.attributes.textLength
-  }
-
-  private fun getEndOffset(property: SwiftVariableDeclaration): Int {
-    val initializer = PsiTreeUtil.findChildOfType(property, SwiftInitializer::class.java)
-    var endOffset = property.textOffset + property.textLength
-    if (initializer != null) {
-      endOffset = initializer.textOffset
-    }
-    return endOffset
+  private fun getDeclarationText(patternInitializer: SwiftPatternInitializer, type: String): String {
+    val name = patternInitializer.variables[0].nameIdentifier?.text
+        ?: patternInitializer.variables[0].text
+    return "var $name: $type"
   }
 }

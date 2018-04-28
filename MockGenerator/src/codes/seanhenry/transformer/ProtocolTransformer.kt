@@ -24,8 +24,7 @@ class ProtocolTransformer: SwiftVisitor() {
     val items = element.statementList
     val initializers = items.mapNotNull { InitializerTransformer.transform(it) }
     val methods = items.mapNotNull { FunctionTransformer.transform(it) }
-    val properties = items.mapNotNull { VariableTransformer.transform(it) }
-    // TODO: test cannot resolve
+    val properties = items.flatMap { VariableTransformer.transform(it) }
     var resolved = emptyList<PsiElement>()
     val clause = element.typeInheritanceClause
     if (clause != null) {

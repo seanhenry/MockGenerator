@@ -84,6 +84,7 @@ public class MockGeneratingIntentionTest extends ImportProjectTestCase {
       "AvailableClass",
       "ThrowingClass",
       "PrivateInitializerClass",
+      "MultipleVariable",
 
       "Delete",
       "ClassAndProtocol",

@@ -1,6 +1,8 @@
 package codes.seanhenry.util;
 
-import com.jetbrains.swift.psi.*;
+import com.jetbrains.swift.psi.SwiftAttributesHolder;
+import com.jetbrains.swift.psi.SwiftInitializerDeclaration;
+import com.jetbrains.swift.psi.SwiftVariableDeclaration;
 import com.jetbrains.swift.symbols.SwiftDeclarationSpecifiers;
 import com.jetbrains.swift.symbols.SwiftFailableStatus;
 
@@ -39,18 +41,6 @@ public class MySwiftPsiUtil {
       return false;
     }
     return property.getPatternInitializerList().get(0).isComputed();
-  }
-
-  public static boolean hasExplicitType(SwiftVariableDeclaration property) {
-    if (property.getPatternInitializerList().isEmpty()) {
-      return false;
-    }
-    SwiftPattern pattern = property.getPatternInitializerList().get(0).getPattern();
-    if (pattern instanceof SwiftTypeAnnotatedPattern) {
-      SwiftTypeAnnotatedPattern annotation = (SwiftTypeAnnotatedPattern)pattern;
-      return annotation.getTypeAnnotation().getTypeElement() != null;
-    }
-    return false;
   }
 
   public static boolean isFailable(SwiftInitializerDeclaration initializer) {
