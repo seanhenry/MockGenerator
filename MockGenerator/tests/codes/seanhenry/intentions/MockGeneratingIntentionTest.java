@@ -51,7 +51,6 @@ public class MockGeneratingIntentionTest extends ImportProjectTestCase {
 
       "SimpleClass",
       "UnoverridableClass",
-      "FinalClass",
       "InferredTypeClass",
       "PropertyClass",
       "ArgumentInitialiserClass",

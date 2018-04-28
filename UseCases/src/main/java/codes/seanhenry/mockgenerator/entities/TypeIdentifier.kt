@@ -28,8 +28,8 @@ data class TypeIdentifier(var identifiers: MutableList<String>): Type {
     }
 
     val VOID = TypeIdentifier("Void")
-    val EMPTY_TUPLE = TypeIdentifier("()")
-    val VOID_TUPLE = TypeIdentifier("(Void)")
+    val EMPTY_TUPLE = TupleType.Builder().build()
+    val VOID_TUPLE = TupleType.Builder().element(VOID).build()
     val EMPTY = TypeIdentifier("")
   }
 
