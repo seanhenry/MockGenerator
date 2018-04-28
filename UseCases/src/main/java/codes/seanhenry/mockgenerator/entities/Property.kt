@@ -9,7 +9,7 @@ data class Property(val name: String, val type: Type, val isWritable: Boolean, v
   }
 
   fun getTrimmedDeclarationText(): String {
-    return declarationText.split("{")[0].trimEnd(' ', '\t', '\n')
+    return declarationText.split("{")[0].trim()
   }
 
   class Builder(private val name: String) {

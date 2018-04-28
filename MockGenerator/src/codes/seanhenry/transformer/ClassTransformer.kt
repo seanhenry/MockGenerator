@@ -1,6 +1,7 @@
 package codes.seanhenry.transformer
 
 import codes.seanhenry.mockgenerator.entities.Class
+import codes.seanhenry.mockgenerator.entities.Initializer
 import com.intellij.psi.PsiElement
 import com.jetbrains.swift.psi.SwiftClassDeclaration
 import com.jetbrains.swift.psi.SwiftVisitor
@@ -18,6 +19,10 @@ class ClassTransformer : SwiftVisitor() {
   private var transformedClass: Class? = null
 
   override fun visitClassDeclaration(element: SwiftClassDeclaration) {
+    if (element.name == "NSObject") {
+      transformNSObject()
+      return
+    }
     val items = element.statementList
     val initializers = items.mapNotNull { InitializerTransformer.transform(it) }
     val methods = items.mapNotNull { FunctionTransformer.transform(it) }
@@ -27,7 +32,13 @@ class ClassTransformer : SwiftVisitor() {
     if (element.typeInheritanceClause != null) {
       resolved = element.typeInheritanceClause!!.typeElementList.mapNotNull { Resolver.resolve(it) }
     }
+    val superclass = resolved.firstOrNull()?.let { ClassTransformer.transform(it) }
     val protocols = resolved.mapNotNull { ProtocolTransformer.transform(it) }
-    transformedClass = Class(initializers, properties, methods, null, protocols, null)
+    transformedClass = Class(initializers, properties, methods, superclass, protocols, null)
+  }
+
+  private fun transformNSObject() {
+    val defaultInit = Initializer(emptyList(), false, false, false)
+    transformedClass = Class(listOf(defaultInit), emptyList(), emptyList(), null, emptyList(), null)
   }
 }

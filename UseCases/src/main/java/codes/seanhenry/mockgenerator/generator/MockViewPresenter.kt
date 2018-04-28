@@ -191,11 +191,11 @@ class MockViewPresenter(val view: MockView): MockTransformer {
 
   private fun transformDeclarationText(declaration: String, isOverriding: Boolean): String {
     var modifiers = ""
-    if (isOverriding) {
-      modifiers = "override "
-    }
     if (scope != null) {
       modifiers += "$scope "
+    }
+    if (isOverriding) {
+      modifiers += "override "
     }
     return "$modifiers$declaration"
   }
@@ -220,7 +220,7 @@ class MockViewPresenter(val view: MockView): MockTransformer {
           m.parametersList.mapNotNull { transformClosureParameters(it) },
           transformReturnType(m),
           m.throws,
-          transformDeclarationText(m.declarationText, isClass)
+          transformDeclarationText(m.declarationText.trim(), isClass)
       )
     }
   }
