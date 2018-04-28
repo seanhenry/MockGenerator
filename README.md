@@ -45,6 +45,7 @@ To regenerate the mock, place the cursor anywhere inside the mock and select ‘
 | Records multiple invocations of properties.|✅|
 | Captures invoked method parameters.|✅|
 | Records multiple invocations of method parameters.|✅|
+| Supports multiple properties in the same declaration.|✅|
 | **Stubbing return values and closures** |
 | Stubs values for your mocks to return.|✅|
 | Stubs a default value for return values where possible.|✅|

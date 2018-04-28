@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>codes.seanhenry.mockgenerator</id>
     <name>Swift Mock Generator for AppCode</name>
-    <version>12</version>
+    <version>13</version>
     <vendor email="hello@seanhenry.codes" url="https://github.com/seanhenry/MockGenerator">Sean Henry</vendor>
 
     <description><![CDATA[
@@ -15,13 +15,14 @@
         <li>Records multiple invocations of properties.</li>
         <li>Captures invoked method parameters.</li>
         <li>Records multiple invocations of method parameters.</li>
+        <li>Supports multiple properties in the same declaration.</li>
         <li>Stubs values for your mocks to return.</li>
         <li>Stubs a default value for return values where possible.</li>
         <li>Automatically calls closure parameters with stubbed values.</li>
         <li>Generates convenience initializers requiring no parameters.</li>
         <li>Supports initializers with arguments.</li>
-        <li>Supports failable initialzers.</li>
-        <li>Supports required initialzers.</li>
+        <li>Supports failable initializers.</li>
+        <li>Supports required initializers.</li>
         <li>Stub an error for your mock method to throw.</li>
         <li>Supports throwing initializers.</li>
         <li>Supports throwing closures.</li>
@@ -66,7 +67,13 @@ class MockDataStore: DataStore {
 
     <change-notes><![CDATA[
       <ul>
-        <li>Fixes missing method error in AppCode 2018.1.2.</li>
+        <li>Supports multiple properties in the same declaration.</li>
+        <li>Improved inferred types in properties.</li>
+        <li>Improved error handling.</li>
+      </ul>
+      <p><b>Breaking changes</b></p>
+      <ul>
+        <li>Closures with no arguments are no longer called automatically. You must now set <pre>shouldInvokeMethodClosure</pre> to <pre>true</pre>.</li>
       </ul>
     ]]>
     </change-notes>
