@@ -1,0 +1,7 @@
+class MockDataStore: DataStore {
+    var stubbedSaveResult: Bool! = false
+
+    func save(_ data: Data, to file: URL) throws -> Bool {
+        return stubbedSaveResult
+    }
+}
