@@ -49,6 +49,8 @@ public abstract class BaseGeneratingIntention extends PsiElementBaseIntentionAct
   static Tracker tracker = new GoogleAnalyticsTracker();
   static ErrorPresenter errorPresenter = new DefaultErrorPresenter();
 
+  protected abstract String getMockType();
+
   @Override
   public boolean isAvailable(@NotNull Project project, Editor editor, @NotNull PsiElement psiElement) {
     SwiftClassDeclaration classDeclaration = findClassUnderCaret(psiElement);
@@ -76,7 +78,7 @@ public abstract class BaseGeneratingIntention extends PsiElementBaseIntentionAct
   @Override
   public void invoke(@NotNull Project project, Editor editor, @NotNull PsiElement psiElement) throws IncorrectOperationException {
     classDeclaration = findClassUnderCaret(psiElement);
-    MustacheView view = new MustacheView(mustacheFileName());
+    MustacheView view = new MustacheView(getMockType());
     Generator generator = new Generator(view);
     try {
       validateMockClassInheritance();
@@ -85,17 +87,15 @@ public abstract class BaseGeneratingIntention extends PsiElementBaseIntentionAct
       deleteClassStatements();
       addGenericClauseToMock();
       generateMock(generator, view);
-      track("generated");
+      track("generated", view.getLineCount());
     } catch (MockGeneratorException e) {
       showErrorMessage(e.getMessage(), editor);
-      track(e.getMessage());
+      track(e.getMessage(), 0);
     } catch (Exception e) {
-      track(e.getMessage());
+      track(e.getMessage(), 0);
       throw e;
     }
   }
-
-  protected abstract String mustacheFileName();
 
   private List<PsiElement> resolveInheritanceClause(Editor editor) {
     SwiftTypeInheritanceClause inheritanceClause = classDeclaration.getTypeInheritanceClause();
@@ -212,8 +212,9 @@ public abstract class BaseGeneratingIntention extends PsiElementBaseIntentionAct
     errorPresenter.show(message, editor);
   }
 
-  private void track(String action) {
-    ProgressManager.getInstance().executeNonCancelableSection(() -> tracker.track(action));
+  private void track(String action, int lines) {
+    String linesString = Integer.toString(lines);
+    ProgressManager.getInstance().executeNonCancelableSection(() -> tracker.track(getMockType(), action, linesString));
   }
 
   @Nls

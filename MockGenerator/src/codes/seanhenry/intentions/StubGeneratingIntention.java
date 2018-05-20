@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class StubGeneratingIntention extends BaseGeneratingIntention {
   @Override
-  protected String mustacheFileName() {
+  protected String getMockType() {
     return "stub";
   }
 

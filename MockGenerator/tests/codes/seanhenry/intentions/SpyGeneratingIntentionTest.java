@@ -103,7 +103,9 @@ public class SpyGeneratingIntentionTest extends ImportProjectTestCase {
     TrackerSpy trackerSpy = new TrackerSpy();
     BaseGeneratingIntention.tracker = trackerSpy;
     runTest("SimpleProtocol");
-    Assert.assertEquals("generated", trackerSpy.invokedTrackAction);
+    Assert.assertEquals("spy", trackerSpy.invokedCategory);
+    Assert.assertEquals("generated", trackerSpy.invokedAction);
+    Assert.assertEquals("38", trackerSpy.invokedValue);
   }
 
   private boolean isIntentionAvailable(String fileName) {
@@ -133,11 +135,15 @@ public class SpyGeneratingIntentionTest extends ImportProjectTestCase {
 
   private class TrackerSpy implements Tracker {
 
-    String invokedTrackAction;
+    String invokedCategory;
+    String invokedAction;
+    String invokedValue;
 
     @Override
-    public void track(String action) {
-      invokedTrackAction = action;
+    public void track(String category, String action, String value) {
+      invokedCategory = category;
+      invokedAction = action;
+      invokedValue = value;
     }
   }
 }

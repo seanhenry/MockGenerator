@@ -16,7 +16,7 @@ public class GoogleAnalyticsTracker implements Tracker {
   private final String tid = "UA-114749580-2";
 //  private final String tid = "UA-114749580-1"; // Debug
 
-  public void track(String action) {
+  public void track(String category, String action, String value) {
     try {
       HttpClient httpclient = HttpClients.createDefault();
       HttpPost httppost = new HttpPost("https://www.google-analytics.com/collect");
@@ -25,8 +25,9 @@ public class GoogleAnalyticsTracker implements Tracker {
       params.add(new BasicNameValuePair("tid", tid));
       params.add(new BasicNameValuePair("cid", "AppCode"));
       params.add(new BasicNameValuePair("t", "event"));
-      params.add(new BasicNameValuePair("ec", "spy"));
+      params.add(new BasicNameValuePair("ec", category));
       params.add(new BasicNameValuePair("ea", action));
+      params.add(new BasicNameValuePair("ev", value));
       httppost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
       httpclient.execute(httppost);
     } catch (IOException ignored) {}

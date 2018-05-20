@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class SpyGeneratingIntention extends BaseGeneratingIntention {
   @Override
-  protected String mustacheFileName() {
+  protected String getMockType() {
     return "spy";
   }
 
