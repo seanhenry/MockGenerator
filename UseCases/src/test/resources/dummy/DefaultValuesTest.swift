@@ -1,8 +1,38 @@
-var int: Int = 0
-var opt: Optional<Int> = nil
-var shortOptional: Int? = nil
-var doubleOptional: Int?? = nil
-var iuo: Int! = nil
+var int: Int {
+set {
+}
+get {
+return 0
+}
+}
+var opt: Optional<Int> {
+set {
+}
+get {
+return nil
+}
+}
+var shortOptional: Int? {
+set {
+}
+get {
+return nil
+}
+}
+var doubleOptional: Int?? {
+set {
+}
+get {
+return nil
+}
+}
+var iuo: Int! {
+set {
+}
+get {
+return nil
+}
+}
 func optionalInt() -> Int? {
 return nil
 }

@@ -1,4 +1,10 @@
-var `class`: String = ""
+var `class`: String {
+set {
+}
+get {
+return ""
+}
+}
 func run(for: Int) {
 }
 func `for`(in: String) {

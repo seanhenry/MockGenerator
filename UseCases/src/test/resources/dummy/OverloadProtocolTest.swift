@@ -1,4 +1,10 @@
-var int: Int = 0
+var int: Int {
+set {
+}
+get {
+return 0
+}
+}
 func int(adding: Int) -> Int {
 return 0
 }

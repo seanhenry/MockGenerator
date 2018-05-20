@@ -56,9 +56,9 @@ abstract class ViewPresenterTest: TestCase() {
     runTest(ParameterAnnotationsTest())
   }
 
-//  fun testTypeAlias() {
-//    runTest(TypealiasProtocolTest())
-//  }
+  fun testTypeAlias() {
+    runTest(TypealiasProtocolTest())
+  }
 
   fun testKeywords() {
     runTest(KeywordsProtocolTest())

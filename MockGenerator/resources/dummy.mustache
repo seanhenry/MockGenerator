@@ -9,7 +9,13 @@
 
     {{#hasSetter}}
 
-        {{{declarationText}}} = {{{defaultValue}}}
+        {{{declarationText}}} {
+            set {
+            }
+            get {
+                return {{{defaultValue}}}
+            }
+        }
 
     {{/hasSetter}}
     {{^hasSetter}}
