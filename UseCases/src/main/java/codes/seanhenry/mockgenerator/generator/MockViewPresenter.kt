@@ -173,6 +173,7 @@ class MockViewPresenter(val view: MockView): MockTransformer {
           surroundWithOptional(removeOptional(it.type), false).text,
           surroundWithOptional(removeOptionalRecursively(it.type), true).text,
           getDefaultValueAssignment(it.type),
+          getDefaultValue(it.type),
           transformDeclarationText(it.getTrimmedDeclarationText(), isClass))
     }
   }
@@ -206,6 +207,10 @@ class MockViewPresenter(val view: MockView): MockTransformer {
       return "= $defaultValue"
     }
     return ""
+  }
+
+  private fun getDefaultValue(type: Type): String {
+    return DefaultValueVisitor.getDefaultValue(type) ?: "<#PLACEHOLDER#>"
   }
 
   private fun transformMethods(): List<MethodViewModel> {
@@ -242,6 +247,7 @@ class MockViewPresenter(val view: MockView): MockTransformer {
       val erased = erase(type.originalType, method.genericParameters)
       return ResultTypeViewModel(
           getDefaultValueAssignment(type.resolvedType),
+          getDefaultValue(type.resolvedType),
           surroundWithOptional(removeOptional(erased), false).text,
           surroundWithOptional(removeOptionalRecursively(erased), true).text,
           transformReturnCastStatement(type.originalType, erased)

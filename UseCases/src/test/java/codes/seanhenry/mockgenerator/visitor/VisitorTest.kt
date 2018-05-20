@@ -34,7 +34,7 @@ class VisitorTest: TestCase() {
   }
 
   fun testShouldVisitTupleType() {
-    val type = TupleType(listOf(TypeIdentifier("Type")))
+    val type = TupleType.Builder().element("Type").build()
     type.accept(visitor)
     assertTrue(visitor.didVisitType)
     assertTrue(visitor.didVisitTupleType)

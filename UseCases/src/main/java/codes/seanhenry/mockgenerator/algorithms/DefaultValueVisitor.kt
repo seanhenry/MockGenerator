@@ -62,18 +62,18 @@ class DefaultValueVisitor: Visitor() {
   }
 
   override fun visitTupleType(type: TupleType) {
-    if (type.elements.isEmpty()) {
+    if (type.types.isEmpty()) {
       defaultValue = "()"
-    } else if (type.elements.size == 1) {
-      type.elements[0].accept(this)
+    } else if (type.types.size == 1) {
+      type.types[0].accept(this)
     } else {
       defaultValue = createDefaultTuple(type)
     }
   }
 
   private fun createDefaultTuple(type: TupleType): String? {
-    val defaults = type.elements.mapNotNull { getDefaultValue(it) }
-    if (defaults.size == type.elements.size) {
+    val defaults = type.types.mapNotNull { getDefaultValue(it) }
+    if (defaults.size == type.types.size) {
       return "(${defaults.joinToString(", ")})"
     }
     return null
@@ -108,7 +108,8 @@ class DefaultValueVisitor: Visitor() {
       Pair("UnicodeScalar", "\"!\""),
       Pair("Character", "\"!\""),
       Pair("StaticString", "\"\""),
-      Pair("String", "\"\"")
+      Pair("String", "\"\""),
+      Pair("Void", "()")
   )
 
   private val knownGenericTypes: Map<String, String> = mapOf(

@@ -8,7 +8,7 @@ return stubbedReturnTypeResult
 }
 var invokedReturnTuple = false
 var invokedReturnTupleCount = 0
-var stubbedReturnTupleResult: (String, Int?)!
+var stubbedReturnTupleResult: (String, Int?)! = ("", nil)
 func returnTuple() -> (String, Int?) {
 invokedReturnTuple = true
 invokedReturnTupleCount += 1
@@ -16,7 +16,7 @@ return stubbedReturnTupleResult
 }
 var invokedReturnLabelledTuple = false
 var invokedReturnLabelledTupleCount = 0
-var stubbedReturnLabelledTupleResult: (s: String, i: Int?)!
+var stubbedReturnLabelledTupleResult: (s: String, i: Int?)! = ("", nil)
 func returnLabelledTuple() -> (s: String, i: Int?) {
 invokedReturnLabelledTuple = true
 invokedReturnLabelledTupleCount += 1
@@ -80,7 +80,7 @@ return stubbedReturnOptionalClosureResult
 }
 var invokedReturnExplicitVoid = false
 var invokedReturnExplicitVoidCount = 0
-var stubbedReturnExplicitVoidResult: Void!
+var stubbedReturnExplicitVoidResult: Void! = ()
 func returnExplicitVoid() -> Void {
 invokedReturnExplicitVoid = true
 invokedReturnExplicitVoidCount += 1
@@ -96,7 +96,7 @@ return stubbedReturnClosureResult
 }
 var invokedReturnClosureArgs = false
 var invokedReturnClosureArgsCount = 0
-var stubbedReturnClosureArgsResult: ((Int, String) -> (String))!
+var stubbedReturnClosureArgsResult: ((Int, String) -> (String))! = { _, _ in return "" }
 func returnClosureArgs() -> (Int, String) -> (String) {
 invokedReturnClosureArgs = true
 invokedReturnClosureArgsCount += 1

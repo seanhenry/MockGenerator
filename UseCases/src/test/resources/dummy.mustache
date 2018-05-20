@@ -1,0 +1,34 @@
+{{#initializer}}
+    {{{declarationText}}} {
+      {{{initializerCall}}}
+    }
+{{/initializer}}
+
+{{#property}}
+
+
+    {{#hasSetter}}
+
+        {{{declarationText}}} = {{{defaultValue}}}
+
+    {{/hasSetter}}
+    {{^hasSetter}}
+
+        {{{declarationText}}} {
+            return {{{defaultValue}}}
+        }
+
+    {{/hasSetter}}
+
+{{/property}}
+
+{{#method}}
+
+    {{{declarationText}}} {
+
+    {{#resultType}}
+        return {{{defaultValue}}}
+    {{/resultType}}
+
+    }
+{{/method}}

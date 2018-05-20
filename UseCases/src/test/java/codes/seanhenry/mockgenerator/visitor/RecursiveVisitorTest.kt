@@ -38,7 +38,7 @@ class RecursiveVisitorTest: TestCase() {
     optional.accept(visitor)
     assertEquals(visitor.visitedOptionalTypes[0], optional)
     assertEquals(visitor.visitedTupleTypes[0], tuple)
-    assertEquals(visitor.visitedTypes[0], tuple.elements[0])
+    assertEquals(visitor.visitedTypes[0], tuple.types[0])
   }
 
   fun testShouldVisitArrayInnerType() {
@@ -115,7 +115,7 @@ class RecursiveVisitorTest: TestCase() {
         .element("B")
         .build()
     tuple.accept(visitor)
-    assertEquals(tuple.elements[0], visitor.visitedTypes[0])
-    assertEquals(tuple.elements[1], visitor.visitedTypes[1])
+    assertEquals(tuple.types[0], visitor.visitedTypes[0])
+    assertEquals(tuple.types[1], visitor.visitedTypes[1])
   }
 }

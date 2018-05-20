@@ -11,6 +11,7 @@ class PropertyViewModel(var capitalizedUniqueName: String,
                         var optionalType: String,
                         var iuoType: String,
                         var defaultValueAssignment: String,
+                        var defaultValue: String,
                         var declarationText: String
 )
 
@@ -22,6 +23,7 @@ class MethodViewModel(var capitalizedUniqueName: String,
                       var declarationText: String)
 
 class ResultTypeViewModel(var defaultValueAssignment: String,
+                          var defaultValue: String,
                           var optionalType: String,
                           var iuoType: String,
                           var returnCastStatement: String

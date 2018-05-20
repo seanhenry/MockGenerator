@@ -2,11 +2,11 @@ var stubbedReturnTypeResult: String! = ""
 func returnType() -> String {
 return stubbedReturnTypeResult
 }
-var stubbedReturnTupleResult: (String, Int?)!
+var stubbedReturnTupleResult: (String, Int?)! = ("", nil)
 func returnTuple() -> (String, Int?) {
 return stubbedReturnTupleResult
 }
-var stubbedReturnLabelledTupleResult: (s: String, i: Int?)!
+var stubbedReturnLabelledTupleResult: (s: String, i: Int?)! = ("", nil)
 func returnLabelledTuple() -> (s: String, i: Int?) {
 return stubbedReturnLabelledTupleResult
 }
@@ -38,7 +38,7 @@ var stubbedReturnOptionalClosureResult: (() -> ())!
 func returnOptionalClosure() -> (() -> ())? {
 return stubbedReturnOptionalClosureResult
 }
-var stubbedReturnExplicitVoidResult: Void!
+var stubbedReturnExplicitVoidResult: Void! = ()
 func returnExplicitVoid() -> Void {
 return stubbedReturnExplicitVoidResult
 }
@@ -46,7 +46,7 @@ var stubbedReturnClosureResult: (() -> ())! = { }
 func returnClosure() -> (() -> ()) {
 return stubbedReturnClosureResult
 }
-var stubbedReturnClosureArgsResult: ((Int, String) -> (String))!
+var stubbedReturnClosureArgsResult: ((Int, String) -> (String))! = { _, _ in return "" }
 func returnClosureArgs() -> (Int, String) -> (String) {
 return stubbedReturnClosureArgsResult
 }

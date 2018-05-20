@@ -7,7 +7,7 @@ class TupleTypeBuilderTest : TestCase() {
   fun testShouldBuildEmptyTuple() {
     val tuple = TupleType.Builder().build()
     assertEquals("()", tuple.text)
-    assertTrue(tuple.elements.isEmpty())
+    assertTrue(tuple.types.isEmpty())
   }
 
   fun testShouldBuildSimpleTypeTuple() {
@@ -15,7 +15,7 @@ class TupleTypeBuilderTest : TestCase() {
         .element("Int")
         .build()
     assertEquals("(Int)", tuple.text)
-    assertEquals("Int", tuple.elements[0].text)
+    assertEquals("Int", tuple.types[0].text)
   }
 
   fun testShouldBuildComplexTypeTuple() {
@@ -24,8 +24,8 @@ class TupleTypeBuilderTest : TestCase() {
         .element().array { it.type("B") }
         .build()
     assertEquals("(A?, [B])", tuple.text)
-    assertEquals("A?", tuple.elements[0].text)
-    assertEquals("[B]", tuple.elements[1].text)
+    assertEquals("A?", tuple.types[0].text)
+    assertEquals("[B]", tuple.types[1].text)
   }
 
   fun testShouldBuildAlreadyBuiltElement() {
@@ -33,6 +33,18 @@ class TupleTypeBuilderTest : TestCase() {
         .element(TypeIdentifier("A"))
         .build()
     assertEquals("(A)", tuple.text)
-    assertEquals("A", tuple.elements[0].text)
+    assertEquals("A", tuple.types[0].text)
+  }
+
+  fun testShouldBuildTupleWithArguments() {
+    val tuple = TupleType.Builder()
+        .labelledElement("a", "A")
+        .labelledElement("b").optional { it.type("B") }
+        .build()
+    assertEquals("(a: A, b: B?)", tuple.text)
+    assertEquals("A", tuple.types[0].text)
+    assertEquals("B?", tuple.types[1].text)
+    assertEquals("a", tuple.labels[0])
+    assertEquals("b", tuple.labels[1])
   }
 }

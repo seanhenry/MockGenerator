@@ -118,6 +118,21 @@ class DefaultValueVisitorTest : TestCase() {
     assertEquals("[:]", getDefaultValue(type))
   }
 
+  fun testWhenVoid() {
+    val type = TypeIdentifier("Void")
+    assertEquals("()", getDefaultValue(type))
+  }
+
+  fun testWhenVoidTuple() {
+    val type = TupleType.Builder().element("Void").build()
+    assertEquals("()", getDefaultValue(type))
+  }
+
+  fun testWhenEmpty() {
+    val type = TypeIdentifier("")
+    assertNull(getDefaultValue(type))
+  }
+
   private fun getDefaultValueForGeneric(type: String): String? {
     return getDefaultValue(GenericType.Builder(type).build())
   }

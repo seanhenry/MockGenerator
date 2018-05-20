@@ -16,7 +16,7 @@ open class RecursiveVisitor: Visitor() {
   }
 
   override fun visitTupleType(type: TupleType) {
-    type.elements.forEach { it.accept(this) }
+    type.types.forEach { it.accept(this) }
     super.visitTupleType(type)
   }
 

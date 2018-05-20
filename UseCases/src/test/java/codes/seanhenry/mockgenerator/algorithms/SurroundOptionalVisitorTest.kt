@@ -23,8 +23,8 @@ class SurroundOptionalVisitorTest : TestCase() {
     val optional = transformed as OptionalType
     assertTrue(optional.type is TupleType)
     val tuple = optional.type as TupleType
-    assertEquals(1, tuple.elements.size)
-    assertEquals(type, tuple.elements[0])
+    assertEquals(1, tuple.types.size)
+    assertEquals(type, tuple.types[0])
   }
 
   fun testShouldSurroundTypeWithIUO() {

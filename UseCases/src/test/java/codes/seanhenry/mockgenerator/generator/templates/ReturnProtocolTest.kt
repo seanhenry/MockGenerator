@@ -10,10 +10,16 @@ class ReturnProtocolTest: MockGeneratorTestTemplate() {
             .returnType("String")
             .build(),
         Method.Builder("returnTuple")
-            .returnType("(String, Int?)")
+            .returnType().tuple {
+              it.element("String")
+                  .element().optional { it.type("Int") }
+            }
             .build(),
         Method.Builder("returnLabelledTuple")
-            .returnType("(s: String, i: Int?)")
+            .returnType().tuple {
+              it.labelledElement("s", "String")
+                  .labelledElement("i").optional { it.type("Int") }
+            }
             .build(),
         Method.Builder("returnOptional")
             .returnType().optional { it.type("Int") }
@@ -50,7 +56,7 @@ class ReturnProtocolTest: MockGeneratorTestTemplate() {
             .returnType().function { func ->
               func.argument("Int")
                   .argument("String")
-                  .returnType("(String)")
+                  .returnType().bracket().type("String")
             }
             .build(),
         Method.Builder("closureA")
