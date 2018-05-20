@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>codes.seanhenry.mockgenerator</id>
     <name>Swift Mock Generator for AppCode</name>
-    <version>13</version>
+    <version>14</version>
     <vendor email="hello@seanhenry.codes" url="https://github.com/seanhenry/MockGenerator">Sean Henry</vendor>
 
     <description><![CDATA[
@@ -67,13 +67,9 @@ class MockDataStore: DataStore {
 
     <change-notes><![CDATA[
       <ul>
-        <li>Supports multiple properties in the same declaration.</li>
-        <li>Improved inferred types in properties.</li>
-        <li>Improved error handling.</li>
-      </ul>
-      <p><b>Breaking changes</b></p>
-      <ul>
-        <li>Closures with no arguments are no longer called automatically. You must now set <code>shouldInvokeMethodClosure</code> to <code>true</code>.</li>
+        <li>'Generate mock' has been renamed to 'Generate spy'.</li>
+        <li>Can now generate a simpler test double when only stubbing is required. Choose 'Generate stub'.</li>
+        <li>Can now generate the simplest possible test double; a dummy. Choose 'Generate dummy'.</li>
       </ul>
     ]]>
     </change-notes>
