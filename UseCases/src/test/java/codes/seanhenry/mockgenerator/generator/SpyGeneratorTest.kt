@@ -1,7 +1,7 @@
 package codes.seanhenry.mockgenerator.generator;
 
-class MockGeneratorTest: GeneratorTest() {
+class SpyGeneratorTest: GeneratorTest() {
   override fun getType(): String {
-    return "mock"
+    return "spy"
   }
 }

@@ -117,6 +117,6 @@ class TypePatternTransformer : SwiftVisitor() {
 
   override fun visitParenthesizedExpression(element: SwiftParenthesizedExpression) {
     val elements = element.argumentList.argumentList.mapNotNull { it.expression?.let { transform(it) } }
-    transformedType = TupleType(elements)
+    transformedType = TupleType(elements.map { TupleType.TupleElement(null, it) })
   }
 }

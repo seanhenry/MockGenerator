@@ -1,7 +1,7 @@
 package codes.seanhenry.mockgenerator.generator
 
-class MockViewPresenterTest : ViewPresenterTest() {
+class SpyViewPresenterTest : ViewPresenterTest() {
   override fun getType(): String {
-    return "mock"
+    return "spy"
   }
 }

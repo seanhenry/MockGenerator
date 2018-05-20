@@ -43,7 +43,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class MockGeneratingIntention extends PsiElementBaseIntentionAction implements IntentionAction, ProjectComponent {
+public abstract class BaseGeneratingIntention extends PsiElementBaseIntentionAction implements IntentionAction, ProjectComponent {
 
   private SwiftClassDeclaration classDeclaration;
   static Tracker tracker = new GoogleAnalyticsTracker();
@@ -76,7 +76,7 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   @Override
   public void invoke(@NotNull Project project, Editor editor, @NotNull PsiElement psiElement) throws IncorrectOperationException {
     classDeclaration = findClassUnderCaret(psiElement);
-    MustacheView view = new MustacheView();
+    MustacheView view = new MustacheView(mustacheFileName());
     Generator generator = new Generator(view);
     try {
       validateMockClassInheritance();
@@ -94,6 +94,8 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
       throw e;
     }
   }
+
+  protected abstract String mustacheFileName();
 
   private List<PsiElement> resolveInheritanceClause(Editor editor) {
     SwiftTypeInheritanceClause inheritanceClause = classDeclaration.getTypeInheritanceClause();
@@ -219,12 +221,6 @@ public class MockGeneratingIntention extends PsiElementBaseIntentionAction imple
   @Override
   public String getFamilyName() {
     return getText();
-  }
-
-  @NotNull
-  @Override
-  public String getText() {
-    return "Generate mock";
   }
 
   @Override

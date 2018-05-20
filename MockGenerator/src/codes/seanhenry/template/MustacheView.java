@@ -14,12 +14,17 @@ import java.util.stream.Collectors;
 public class MustacheView implements MockView {
 
   private String result = "";
+  private final String fileName;
+
+  public MustacheView(String fileName) {
+    this.fileName = fileName;
+  }
 
   @Override
   public void render(@NotNull MockViewModel model) {
     StringWriter writer = new StringWriter();
     DefaultMustacheFactory mf = new DefaultMustacheFactory();
-    Mustache mustache = mf.compile("mock.mustache");
+    Mustache mustache = mf.compile(fileName + ".mustache");
     try {
       mustache.execute(writer, model).flush();
     } catch (IOException ignored) {}

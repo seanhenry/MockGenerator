@@ -88,13 +88,23 @@ class MockDataStore: DataStore {
 
     <project-components>
         <component>
-            <implementation-class>codes.seanhenry.intentions.MockGeneratingIntention</implementation-class>
+            <implementation-class>codes.seanhenry.intentions.SpyGeneratingIntention</implementation-class>
+            <implementation-class>codes.seanhenry.intentions.StubGeneratingIntention</implementation-class>
+            <implementation-class>codes.seanhenry.intentions.DummyGeneratingIntention</implementation-class>
         </component>
     </project-components>
 
     <extensions defaultExtensionNs="com.intellij">
         <intentionAction>
-            <className>codes.seanhenry.intentions.MockGeneratingIntention</className>
+            <className>codes.seanhenry.intentions.SpyGeneratingIntention</className>
+            <category>Swift</category>
+        </intentionAction>
+        <intentionAction>
+            <className>codes.seanhenry.intentions.StubGeneratingIntention</className>
+            <category>Swift</category>
+        </intentionAction>
+        <intentionAction>
+            <className>codes.seanhenry.intentions.DummyGeneratingIntention</className>
             <category>Swift</category>
         </intentionAction>
     </extensions>

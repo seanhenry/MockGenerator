@@ -66,6 +66,7 @@ class TypeTransformer : SwiftVisitor() {
   override fun visitTupleTypeElement(element: SwiftTupleTypeElement) {
     val elements = element.tupleTypeItemList
         .mapNotNull { transform(it.typeElement) }
+        .map { TupleType.TupleElement(null, it) }
     transformedType = TupleType(elements)
   }
 

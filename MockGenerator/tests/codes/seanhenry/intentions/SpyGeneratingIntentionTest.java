@@ -12,7 +12,7 @@ import org.junit.Assert;
 import java.io.IOException;
 import java.util.List;
 
-public class MockGeneratingIntentionTest extends ImportProjectTestCase {
+public class SpyGeneratingIntentionTest extends ImportProjectTestCase {
 
   private ErrorPresenterSpy errorPresenterSpy;
 
@@ -20,8 +20,8 @@ public class MockGeneratingIntentionTest extends ImportProjectTestCase {
   protected void setUp() throws Exception {
     super.setUp();
     errorPresenterSpy = new ErrorPresenterSpy();
-    MockGeneratingIntention.errorPresenter = errorPresenterSpy;
-    MockGeneratingIntention.tracker = new TrackerSpy();
+    BaseGeneratingIntention.errorPresenter = errorPresenterSpy;
+    BaseGeneratingIntention.tracker = new TrackerSpy();
   }
 
   @Override
@@ -67,6 +67,7 @@ public class MockGeneratingIntentionTest extends ImportProjectTestCase {
       "TypealiasProtocol",
       "InitialiserProtocol",
       "GenericMethod",
+      "TupleProtocol",
 
       "SimpleClass",
       "UnoverridableClass",
@@ -100,14 +101,14 @@ public class MockGeneratingIntentionTest extends ImportProjectTestCase {
 
   private void runSuccessAnalyticsTest() throws Exception {
     TrackerSpy trackerSpy = new TrackerSpy();
-    MockGeneratingIntention.tracker = trackerSpy;
+    BaseGeneratingIntention.tracker = trackerSpy;
     runTest("SimpleProtocol");
     Assert.assertEquals("generated", trackerSpy.invokedTrackAction);
   }
 
   private boolean isIntentionAvailable(String fileName) {
     configureFile(fileName + ".swift");
-    return getFixture().filterAvailableIntentions("Generate mock").size() > 0;
+    return getFixture().filterAvailableIntentions("Generate spy").size() > 0;
   }
 
   private void runTest(String fileName) throws IOException {
@@ -115,7 +116,7 @@ public class MockGeneratingIntentionTest extends ImportProjectTestCase {
     String mockFileName = fileName + "Mock.swift";
     System.out.println("Running test for " + fileName);
     PsiFile targetFile = configureFile(mockFileName);
-    invokeIntention("Generate mock", targetFile);
+    invokeIntention("Generate spy", targetFile);
     assertFilesEqual(expectedFileName, mockFileName);
   }
 
@@ -127,7 +128,7 @@ public class MockGeneratingIntentionTest extends ImportProjectTestCase {
   private void runErrorTest(String fileName) {
     String mockFileName = fileName + ".swift";
     PsiFile targetFile = configureFile(mockFileName);
-    invokeIntention("Generate mock", targetFile);
+    invokeIntention("Generate spy", targetFile);
   }
 
   private class TrackerSpy implements Tracker {

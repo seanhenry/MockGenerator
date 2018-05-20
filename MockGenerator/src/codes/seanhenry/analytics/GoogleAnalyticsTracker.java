@@ -25,7 +25,7 @@ public class GoogleAnalyticsTracker implements Tracker {
       params.add(new BasicNameValuePair("tid", tid));
       params.add(new BasicNameValuePair("cid", "AppCode"));
       params.add(new BasicNameValuePair("t", "event"));
-      params.add(new BasicNameValuePair("ec", "mock"));
+      params.add(new BasicNameValuePair("ec", "spy"));
       params.add(new BasicNameValuePair("ea", action));
       httppost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
       httpclient.execute(httppost);
