@@ -3,7 +3,9 @@ package codes.seanhenry.mockgenerator.generator
 import codes.seanhenry.mockgenerator.generator.templates.protocol.*
 import junit.framework.TestCase
 
-class GeneratorTest : TestCase() {
+abstract class GeneratorTest : TestCase() {
+
+  abstract fun getType(): String
 
   fun testMultipleProtocols() {
     runTest(MultipleProtocolTest())
@@ -30,10 +32,10 @@ class GeneratorTest : TestCase() {
   }
 
   private fun runTest(template: GeneratorTestTemplate) {
-    val view = MustacheMockView()
+    val view = MustacheMockView(getType())
     val generator = Generator(view)
     template.build(generator)
     generator.generate()
-    assertEquals(template.getExpected(), view.rendered)
+    assertEquals(template.getExpected(getType()), view.rendered)
   }
 }

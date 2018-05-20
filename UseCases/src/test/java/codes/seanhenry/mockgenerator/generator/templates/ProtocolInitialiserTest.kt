@@ -3,7 +3,7 @@ package codes.seanhenry.mockgenerator.generator.templates
 import codes.seanhenry.mockgenerator.entities.Initializer
 import codes.seanhenry.mockgenerator.generator.MockTransformer
 
-class ProtocolInitialiserTest : MockGeneratorTestTemplate {
+class ProtocolInitialiserTest : MockGeneratorTestTemplate() {
 
   override fun build(generator: MockTransformer) {
     generator.add(
@@ -22,18 +22,5 @@ class ProtocolInitialiserTest : MockGeneratorTestTemplate {
             .throws()
             .build()
     )
-  }
-
-  override fun getExpected(): String {
-    return """
-      required init() {
-      }
-      required init(a: String) {
-      }
-      required init(b: String) {
-      }
-      required init(c: String) {
-      }
-      """.trimIndent()
   }
 }
