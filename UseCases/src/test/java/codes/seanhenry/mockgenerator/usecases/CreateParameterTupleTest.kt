@@ -125,6 +125,14 @@ class CreateParameterTupleTest: TestCase() {
     assertTuple("(param0: Int, inout: Int)", parameters, "param0: inout Int, inout: Int")
   }
 
+  fun testShouldReplaceEmptyTupleWithVoid() {
+    val parameters = arrayOf(
+        TuplePropertyDeclaration.TupleParameter("param0", "Void"),
+        TuplePropertyDeclaration.TupleParameter("", "Void")
+    )
+    assertTuple("(param0: Void, Void)", parameters, "param0: ()")
+  }
+
   private fun transformParameters(parameters: String) = CreateInvokedParameters().transform(ParameterUtil.getParameters(parameters), emptyList())
 
   private fun transformParameters(vararg parameters: Parameter) = CreateInvokedParameters().transform(listOf(*parameters), emptyList())

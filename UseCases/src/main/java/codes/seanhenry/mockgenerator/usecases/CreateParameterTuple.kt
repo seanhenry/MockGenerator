@@ -48,12 +48,19 @@ abstract class CreateParameterTuple {
     val copied = CopyVisitor.copy(parameter.type.originalType)
     TypeErasingVisitor.erase(copied, genericIdentifiers)
     val resolvedType = parameter.resolvedTypeText
-    return TuplePropertyDeclaration.TupleParameter(name, removeInOut(replaceIUO(copied.text)), resolvedType)
+    return TuplePropertyDeclaration.TupleParameter(name, replaceEmptyTuple(removeInOut(replaceIUO(copied.text))), resolvedType)
   }
 
   private fun replaceIUO(type: String): String {
     if (type.endsWith("!")) {
       return type.removeSuffix("!") + "?"
+    }
+    return type
+  }
+
+  private fun replaceEmptyTuple(type: String): String {
+    if (type == "()") {
+      return "Void"
     }
     return type
   }

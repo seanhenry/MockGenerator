@@ -108,6 +108,10 @@ abstract class ViewPresenterTest: TestCase() {
     runTest(GenericReturnValueTest())
   }
 
+  fun testTuple() {
+    runTest(TupleTest())
+  }
+
   private fun runTest(template: MockGeneratorTestTemplate) {
     template.build(generator)
     generator.generate()

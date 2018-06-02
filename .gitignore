@@ -6,6 +6,7 @@ MockGenerator/testData/TestProject/.idea/workspace.xml
 MockGenerator.zip
 MockGenerator.jar
 MockGenerator/target/*
+MockGenerator/test_results
 
 ## Various settings
 *.pbxuser

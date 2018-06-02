@@ -82,9 +82,13 @@ public abstract class ImportProjectTestCase extends UsefulTestCase {
     byte[] expectedBytes = Files.readAllBytes(Paths.get(expectedPath));
     byte[] actualBytes = getOpenFile().getText().getBytes();
     if (!Arrays.equals(actualBytes, expectedBytes)) {
-      String actualPath = testResultPath + "/" + actualFileName;
-      Files.write(Paths.get(actualPath), getOpenFile().getText().getBytes());
-      showDiff(expectedPath, actualPath);
+      Path resultDirectory = Paths.get("test_results");
+      if (!Files.isDirectory(resultDirectory)) {
+        Files.createDirectory(resultDirectory);
+      }
+      String actualFilePath = "test_results/" + actualFileName;
+      Files.write(Paths.get(actualFilePath), getOpenFile().getText().getBytes());
+      showDiff(expectedPath, actualFilePath);
       fail();
     }
   }

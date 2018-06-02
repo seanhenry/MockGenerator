@@ -68,6 +68,7 @@ public class SpyGeneratingIntentionTest extends ImportProjectTestCase {
       "InitialiserProtocol",
       "GenericMethod",
       "TupleProtocol",
+      "ParameterAnnotation",
 
       "SimpleClass",
       "UnoverridableClass",

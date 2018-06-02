@@ -4,8 +4,8 @@ class TupleProtocolMock: TupleProtocol {
 
     var invokedTupleA = false
     var invokedTupleACount = 0
-    var invokedTupleAParameters: (a: (), Void)?
-    var invokedTupleAParametersList = [(a: (), Void)]()
+    var invokedTupleAParameters: (a: Void, Void)?
+    var invokedTupleAParametersList = [(a: Void, Void)]()
 
     func tuple(a: ()) {
         invokedTupleA = true
@@ -40,8 +40,8 @@ class TupleProtocolMock: TupleProtocol {
 
     var invokedTupleD = false
     var invokedTupleDCount = 0
-    var invokedTupleDParameters: (d: (String, Int), Void)?
-    var invokedTupleDParametersList = [(d: (String, Int), Void)]()
+    var invokedTupleDParameters: (d: (d0: String, d1: Int), Void)?
+    var invokedTupleDParametersList = [(d: (d0: String, d1: Int), Void)]()
 
     func tuple(d: (d0: String, d1: Int)) {
         invokedTupleD = true
@@ -52,8 +52,8 @@ class TupleProtocolMock: TupleProtocol {
 
     var invokedTupleE = false
     var invokedTupleECount = 0
-    var invokedTupleEParameters: (e: (String, Int), Void)?
-    var invokedTupleEParametersList = [(e: (String, Int), Void)]()
+    var invokedTupleEParameters: (e: (e0: String, Int), Void)?
+    var invokedTupleEParametersList = [(e: (e0: String, Int), Void)]()
 
     func tuple(e: (e0: String, Int)) {
         invokedTupleE = true
@@ -94,7 +94,7 @@ class TupleProtocolMock: TupleProtocol {
 
     var invokedReturnLabelled = false
     var invokedReturnLabelledCount = 0
-    var stubbedReturnLabelledResult: (String, Int)! = ("", 0)
+    var stubbedReturnLabelledResult: (a: String, b: Int)! = ("", 0)
 
     func returnLabelled() -> (a: String, b: Int) {
         invokedReturnLabelled = true
@@ -104,7 +104,7 @@ class TupleProtocolMock: TupleProtocol {
 
     var invokedReturnPartiallyLabelled = false
     var invokedReturnPartiallyLabelledCount = 0
-    var stubbedReturnPartiallyLabelledResult: (String, Int)! = ("", 0)
+    var stubbedReturnPartiallyLabelledResult: (a: String, b: Int)! = ("", 0)
 
     func returnPartiallyLabelled() -> (a: String, b: Int) {
         invokedReturnPartiallyLabelled = true
