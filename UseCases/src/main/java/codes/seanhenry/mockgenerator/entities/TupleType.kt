@@ -16,11 +16,11 @@ data class TupleType(val tupleElements: List<TupleElement>): Type {
       get() { return label?.plus(": ").orEmpty() + type.text}
 
     fun deepCopy(): TupleElement {
-      var labelCopy: String? = null
-      if (label != null) {
-        labelCopy = String(label.toByteArray())
-      }
-      return TupleElement(labelCopy, CopyVisitor.copy(type))
+      return TupleElement(copyLabel(), CopyVisitor.copy(type))
+    }
+
+    private fun copyLabel(): String? {
+      return label?.let { it + "" }
     }
   }
 
