@@ -29,7 +29,8 @@ class ResultTypeViewModel(var defaultValueAssignment: String,
                           var returnCastStatement: String
 )
 
-class ParametersViewModel(var tupleRepresentation: String, var tupleAssignment: String)
+class ParametersViewModel(var tupleRepresentation: String,
+                          var tupleAssignment: String)
 
 class ClosureParameterViewModel(var capitalizedName: String,
                                 var name: String,
@@ -37,4 +38,5 @@ class ClosureParameterViewModel(var capitalizedName: String,
                                 var implicitClosureCall: String,
                                 var hasArguments: Boolean)
 
-class InitializerViewModel(var declarationText: String, var initializerCall: String)
+class InitializerViewModel(var declarationText: String,
+                           var initializerCall: String)
