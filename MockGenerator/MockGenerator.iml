@@ -11,22 +11,23 @@
       <sourceFolder url="file://$MODULE_DIR$/testData" type="java-test-resource" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
-    <orderEntry type="jdk" jdkName="2018.1.3" jdkType="IDEA JDK" />
+    <orderEntry type="jdk" jdkName="AppCode OC-182.2757.9" jdkType="IDEA JDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library" scope="TEST">
-      <library>
-        <CLASSES>
-          <root url="file://$MODULE_DIR$/../community/out/production/testFramework" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.jetbrains.kotlin:kotlin-stdlib:1.2.40" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.jetbrains:annotations:13.0" level="project" />
     <orderEntry type="module" module-name="MockGeneratorUseCases" />
     <orderEntry type="library" name="Maven: com.github.spullara.mustache.java:compiler:0.9.5" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.12" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:1.3" level="project" />
+    <orderEntry type="module-library">
+      <library name="Test Framework Classes">
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/../community/out/idea-ce/classes/production/intellij.platform.testFramework" />
+          <root url="file://$MODULE_DIR$/../community/out/idea-ce/classes/production/intellij.platform.testFramework.core" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>

@@ -90,21 +90,24 @@ class AnimatorSpy: Animator {
 Generate the spy:
 
 ```
-class AnimatorSpy: Animator {  
-  
+class AnimatorSpy: Animator {
+
   var invokedAnimate = false
   var invokedAnimateCount = 0
   var invokedAnimateParameters: (duration: TimeInterval, Void)?
   var invokedAnimateParametersList = [(duration: TimeInterval, Void)]()
+  var shouldInvokeAnimateAnimations = false
   var stubbedAnimateCompletionResult: (Bool, Void)?
   var stubbedAnimateResult: Bool! = false
-  
+
   func animate(duration: TimeInterval, animations: () -> (), completion: (Bool) -> ()) -> Bool {
     invokedAnimate = true
     invokedAnimateCount += 1
     invokedAnimateParameters = (duration, ())
     invokedAnimateParametersList.append((duration, ()))
-    animations()
+    if shouldInvokeAnimateAnimations {
+      animations()
+    }
     if let result = stubbedAnimateCompletionResult {
       completion(result.0)
     }

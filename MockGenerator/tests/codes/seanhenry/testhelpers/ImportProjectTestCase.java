@@ -1,8 +1,12 @@
 package codes.seanhenry.testhelpers;
 
+import com.intellij.codeInsight.daemon.impl.DaemonCodeAnalyzerEx;
+import com.intellij.codeInsight.daemon.impl.FileStatusMap;
+import com.intellij.codeInsight.highlighting.HighlightManager;
 import com.intellij.codeInsight.intention.IntentionAction;
 import com.intellij.idea.IdeaTestApplication;
 import com.intellij.openapi.command.WriteCommandAction;
+import com.intellij.openapi.fileEditor.impl.text.AsyncHighlighterUpdater;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.newvfs.impl.VfsRootAccess;
 import com.intellij.openapi.vfs.newvfs.persistent.PersistentFS;
@@ -11,6 +15,8 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.impl.source.tree.injected.InjectedLanguageUtil;
 import com.intellij.testFramework.UsefulTestCase;
 import com.intellij.testFramework.fixtures.CodeInsightTestFixture;
+import com.intellij.testFramework.fixtures.impl.CodeInsightTestFixtureImpl;
+import com.jetbrains.cidr.lang.symbols.symtable.FileSymbolTablesCache;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,9 +28,10 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
+import static com.jetbrains.cidr.lang.symbols.symtable.FileSymbolTablesCache.SymbolsProperties.SymbolsKind.ONLY_USED;
+
 public abstract class ImportProjectTestCase extends UsefulTestCase {
 
-  private Path testResultPath;
   private CodeInsightTestFixture fixture;
 
   @Override
@@ -37,16 +44,16 @@ public abstract class ImportProjectTestCase extends UsefulTestCase {
   @Override
   protected void setUp() throws Exception {
     allowAccessToXcodeDirectory();
-    testResultPath = Files.createTempDirectory("codes.seanhenry.mockgenerator");
     super.setUp();
     this.initApplication();
+    FileSymbolTablesCache.setShouldBuildTablesInTests(new FileSymbolTablesCache.SymbolsProperties(ONLY_USED, false, false));
     fixture = ImportProjectTestFixtureFactory.getFixtureFactory().createCodeInsightFixture(getDataPath(), getProjectFileName());
     fixture.setUp();
   }
 
-  private void initApplication() throws Exception {
+  private void initApplication() {
      IdeaTestApplication.getInstance(null);
-        ((PersistentFSImpl)PersistentFS.getInstance()).cleanPersistedContents();
+     ((PersistentFSImpl)PersistentFS.getInstance()).cleanPersistedContents();
   }
 
   private void allowAccessToXcodeDirectory() throws IOException {
@@ -65,6 +72,7 @@ public abstract class ImportProjectTestCase extends UsefulTestCase {
   protected abstract String getProjectFileName();
 
   protected void invokeIntention(String intentionName, PsiFile file) {
+    ((CodeInsightTestFixtureImpl)getFixture()).canChangeDocumentDuringHighlighting(true);
     IntentionAction action = fixture.findSingleIntention(intentionName);
     WriteCommandAction.runWriteCommandAction(getFixtureProject(), () -> action.invoke(getFixtureProject(), fixture.getEditor(), file));
   }
