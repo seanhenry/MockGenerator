@@ -6,7 +6,8 @@ data class TypeIdentifier(var identifiers: MutableList<String>): Type {
 
   constructor(identifier: String): this(mutableListOf(identifier))
 
-  val isEmpty: Boolean by lazy { EMPTY.text == text }
+  val isEmpty: Boolean
+    get() { return text.isEmpty() }
 
   val firstIdentifier: String
     get() { return identifiers.first() }
