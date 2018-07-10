@@ -10,7 +10,7 @@ class MockClassBuilderTest : TestCase() {
     assertTrue(c.properties.isEmpty())
     assertTrue(c.methods.isEmpty())
     assertTrue(c.protocols.isEmpty())
-    assertNull(c.superclass)
+    assertNull(c.inheritedClass)
     assertNull(c.scope)
   }
 
@@ -18,7 +18,7 @@ class MockClassBuilderTest : TestCase() {
     val c = MockClass.Builder()
         .superclass { }
         .build()
-    assertNotNull(c.superclass)
+    assertNotNull(c.inheritedClass)
   }
 
   fun testShouldBuildClassWithInheritedProtocols() {

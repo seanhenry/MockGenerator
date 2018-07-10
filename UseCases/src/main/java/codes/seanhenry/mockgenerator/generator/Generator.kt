@@ -11,10 +11,10 @@ class Generator(private val view: MockView) {
 
   fun set(c: MockClass) {
     mockClass = c
-    var superclass = c.superclass
+    var superclass = c.inheritedClass
     while (superclass != null) {
       classes.add(superclass)
-      superclass = superclass.superclass
+      superclass = superclass.inheritedClass
     }
     add(c.protocols)
   }
