@@ -1,0 +1,24 @@
+class DataStorePartialSpy: DataStore {
+
+    var invokedSave = false
+    var invokedSaveCount = 0
+    var invokedSaveParameters: (data: Data, file: URL)?
+    var invokedSaveParametersList = [(data: Data, file: URL)]()
+    var stubbedSaveError: Error?
+    var stubbedSaveResult: Bool! = false
+    var forwardToOriginalSave = false
+
+    func save(_ data: Data, to file: URL) throws -> Bool {
+        invokedSave = true
+        invokedSaveCount += 1
+        invokedSaveParameters = (data, file)
+        invokedSaveParametersList.append((data, file))
+        if forwardToOriginalSave {
+            return super.save(data, to: file)
+        }
+        if let error = stubbedSaveError {
+            throw error
+        }
+        return stubbedSaveResult
+    }
+}

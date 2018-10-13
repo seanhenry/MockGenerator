@@ -5,29 +5,32 @@ class MockViewModel(var initializer: List<InitializerViewModel>,
                     var method: List<MethodViewModel>,
                     var scope: String?)
 
-class PropertyViewModel(var capitalizedUniqueName: String,
+class PropertyViewModel(var name: String,
+                        var capitalizedUniqueName: String,
                         var hasSetter: Boolean,
                         var type: String,
                         var optionalType: String,
                         var iuoType: String,
                         var defaultValueAssignment: String,
-                        var defaultValue: String,
-                        var declarationText: String
-)
+                        var defaultValue: String?,
+                        var isImplemented: Boolean,
+                        var declarationText: String)
 
 class MethodViewModel(var capitalizedUniqueName: String,
                       var escapingParameters: ParametersViewModel?,
                       var closureParameter: List<ClosureParameterViewModel>,
                       var resultType: ResultTypeViewModel?,
+                      var functionCall: String?,
                       var throws: Boolean,
+                      var rethrows: Boolean,
+                      var isImplemented: Boolean,
                       var declarationText: String)
 
 class ResultTypeViewModel(var defaultValueAssignment: String,
-                          var defaultValue: String,
+                          var defaultValue: String?,
                           var optionalType: String,
                           var iuoType: String,
-                          var returnCastStatement: String
-)
+                          var returnCastStatement: String)
 
 class ParametersViewModel(var tupleRepresentation: String,
                           var tupleAssignment: String)

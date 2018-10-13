@@ -1,7 +1,6 @@
 @testable import MockableTypes
 
 class DeleteMock<T>: SimpleClass where T: Any {
-
     var invokedMethod = false
     var invokedMethodCount = 0
 

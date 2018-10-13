@@ -167,6 +167,7 @@ class MockViewPresenter(val view: MockView): MockTransformer {
   private fun transformProperties(properties: List<Property>, isClass: Boolean): List<PropertyViewModel> {
     return properties.map {
       PropertyViewModel(
+          it.name,
           getUniqueName(it).capitalize(),
           it.isWritable,
           it.type.text,
@@ -174,6 +175,7 @@ class MockViewPresenter(val view: MockView): MockTransformer {
           surroundWithOptional(removeOptionalRecursively(it.type), true).text,
           getDefaultValueAssignment(it.type),
           getDefaultValue(it.type),
+          isClass,
           transformDeclarationText(it.getTrimmedDeclarationText(), isClass))
     }
   }
@@ -209,8 +211,8 @@ class MockViewPresenter(val view: MockView): MockTransformer {
     return ""
   }
 
-  private fun getDefaultValue(type: Type): String {
-    return DefaultValueVisitor.getDefaultValue(type) ?: "<#PLACEHOLDER#>"
+  private fun getDefaultValue(type: Type): String? {
+    return DefaultValueVisitor.getDefaultValue(type)
   }
 
   private fun transformMethods(): List<MethodViewModel> {
@@ -224,7 +226,10 @@ class MockViewPresenter(val view: MockView): MockTransformer {
           transformParameters(m),
           m.parametersList.mapNotNull { transformClosureParameters(it) },
           transformReturnType(m),
+          MakeFunctionCallVisitor.make(m),
           m.throws,
+          m.rethrows,
+          isClass,
           transformDeclarationText(m.declarationText.trim(), isClass)
       )
     }

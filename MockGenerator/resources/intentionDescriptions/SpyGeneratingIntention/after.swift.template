@@ -1,4 +1,4 @@
-class MockDataStore: DataStore {
+class DataStoreSpy: DataStore {
 
     var invokedSave = false
     var invokedSaveCount = 0

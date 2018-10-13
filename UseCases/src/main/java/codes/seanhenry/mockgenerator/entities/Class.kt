@@ -1,6 +1,6 @@
 package codes.seanhenry.mockgenerator.entities
 
-class Class(initializers: List<Initializer>, properties: List<Property>, methods: List<Method>, val superclass: Class?): TypeDeclaration(initializers, properties, methods, emptyList()) {
+class Class(initializers: List<Initializer>, properties: List<Property>, methods: List<Method>, val inheritedClass: Class?): TypeDeclaration(initializers, properties, methods, emptyList()) {
 
   class Builder {
 

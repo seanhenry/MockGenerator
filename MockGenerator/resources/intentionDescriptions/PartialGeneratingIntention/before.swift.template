@@ -1,0 +1,3 @@
+class DataStorePartialSpy: DataStore {
+  <spot></spot>
+}

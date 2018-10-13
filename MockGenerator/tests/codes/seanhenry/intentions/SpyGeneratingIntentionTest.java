@@ -93,8 +93,9 @@ public class SpyGeneratingIntentionTest extends ImportProjectTestCase {
     };
 
     for (String fileName : fileNames) {
-      runTest(fileName);
+      runTest(fileName, "spy");
     }
+    runTest("PartialSpyClass", "partial spy");
     Assert.assertFalse(isIntentionAvailable("NotAvailableInProductionCodeTarget"));
     Assert.assertFalse(isIntentionAvailable("ClassNotFoundError"));
     runSuccessAnalyticsTest();
@@ -103,7 +104,7 @@ public class SpyGeneratingIntentionTest extends ImportProjectTestCase {
   private void runSuccessAnalyticsTest() throws Exception {
     TrackerSpy trackerSpy = new TrackerSpy();
     BaseGeneratingIntention.tracker = trackerSpy;
-    runTest("SimpleProtocol");
+    runTest("SimpleProtocol", "spy");
     Assert.assertEquals("spy", trackerSpy.invokedCategory);
     Assert.assertEquals("generated", trackerSpy.invokedAction);
     Assert.assertEquals("38", trackerSpy.invokedValue);
@@ -114,12 +115,12 @@ public class SpyGeneratingIntentionTest extends ImportProjectTestCase {
     return getFixture().filterAvailableIntentions("Generate spy").size() > 0;
   }
 
-  private void runTest(String fileName) throws IOException {
+  private void runTest(String fileName, String type) throws IOException {
     String expectedFileName = fileName + "Mock_expected.swift";
     String mockFileName = fileName + "Mock.swift";
     System.out.println("Running test for " + fileName);
     PsiFile targetFile = configureFile(mockFileName);
-    invokeIntention("Generate spy", targetFile);
+    invokeIntention("Generate " + type, targetFile);
     assertFilesEqual(expectedFileName, mockFileName);
   }
 

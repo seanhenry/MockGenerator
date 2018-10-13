@@ -2,7 +2,7 @@ package codes.seanhenry.mockgenerator.entities
 
 import codes.seanhenry.mockgenerator.visitor.Visitor
 
-data class Method(val name: String, val genericParameters: List<String>, val returnType: ResolvedType, val parametersList: List<Parameter>, val declarationText: String, val throws: Boolean): Element {
+data class Method(val name: String, val genericParameters: List<String>, val returnType: ResolvedType, val parametersList: List<Parameter>, val declarationText: String, val throws: Boolean, val rethrows: Boolean): Element {
 
   override fun accept(visitor: Visitor) {
     visitor.visitMethod(this)
@@ -12,11 +12,12 @@ data class Method(val name: String, val genericParameters: List<String>, val ret
 
     private var returnType = ResolvedType.IMPLICIT
     private var throws = false
+    private var rethrows = false
     private var parameters = ArrayList<Parameter>()
     private var genericParameters = ArrayList<String>()
 
     fun build(): Method {
-      return Method(name, genericParameters, returnType, parameters, getDeclarationText(), throws)
+      return Method(name, genericParameters, returnType, parameters, getDeclarationText(), throws, rethrows)
     }
 
     fun returnType(type: String): Builder {
@@ -30,6 +31,11 @@ data class Method(val name: String, val genericParameters: List<String>, val ret
 
     fun throws(): Builder {
       throws = true
+      return this
+    }
+
+    fun rethrows(): Builder {
+      rethrows = true
       return this
     }
 
@@ -64,6 +70,8 @@ data class Method(val name: String, val genericParameters: List<String>, val ret
       }
       if (throws) {
         throwString = " throws"
+      } else if (rethrows) {
+        throwString = " rethrows"
       }
       return "func $name${getGenericClauseText()}($parametersString)$throwString$returnString"
     }

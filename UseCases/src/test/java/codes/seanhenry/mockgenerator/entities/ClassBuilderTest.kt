@@ -10,7 +10,7 @@ class ClassBuilderTest: TestCase() {
     assertTrue(c.properties.isEmpty())
     assertTrue(c.methods.isEmpty())
     assertTrue(c.protocols.isEmpty())
-    assertNull(c.superclass)
+    assertNull(c.inheritedClass)
   }
 
   fun testShouldBuildClassWithMethods() {
@@ -43,6 +43,6 @@ class ClassBuilderTest: TestCase() {
     val c = Class.Builder()
         .superclass { }
         .build()
-    assertNotNull(c.superclass)
+    assertNotNull(c.inheritedClass)
   }
 }
