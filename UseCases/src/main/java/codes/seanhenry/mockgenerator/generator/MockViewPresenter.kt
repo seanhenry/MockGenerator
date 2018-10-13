@@ -211,8 +211,8 @@ class MockViewPresenter(val view: MockView): MockTransformer {
     return ""
   }
 
-  private fun getDefaultValue(type: Type): String {
-    return DefaultValueVisitor.getDefaultValue(type) ?: "<#PLACEHOLDER#>"
+  private fun getDefaultValue(type: Type): String? {
+    return DefaultValueVisitor.getDefaultValue(type)
   }
 
   private fun transformMethods(): List<MethodViewModel> {

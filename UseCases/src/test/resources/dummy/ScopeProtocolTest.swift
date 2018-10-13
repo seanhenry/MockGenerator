@@ -2,9 +2,9 @@ open var variable: Object {
 set {
 }
 get {
-return <#PLACEHOLDER#>
+fatalError("Dummy implementation")
 }
 }
 open func method(param: Object, closure: () -> ()) -> Object {
-return <#PLACEHOLDER#>
+fatalError("Dummy implementation")
 }

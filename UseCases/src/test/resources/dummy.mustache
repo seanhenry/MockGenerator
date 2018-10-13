@@ -13,7 +13,8 @@
             set {
             }
             get {
-                return {{{defaultValue}}}
+                {{#defaultValue}}return {{{defaultValue}}}{{/defaultValue}}
+                {{^defaultValue}}fatalError("Dummy implementation"){{/defaultValue}}
             }
         }
 
@@ -21,7 +22,8 @@
     {{^hasSetter}}
 
         {{{declarationText}}} {
-            return {{{defaultValue}}}
+            {{#defaultValue}}return {{{defaultValue}}}{{/defaultValue}}
+            {{^defaultValue}}fatalError("Dummy implementation"){{/defaultValue}}
         }
 
     {{/hasSetter}}
@@ -33,7 +35,8 @@
     {{{declarationText}}} {
 
     {{#resultType}}
-        return {{{defaultValue}}}
+        {{#defaultValue}}return {{{defaultValue}}}{{/defaultValue}}
+        {{^defaultValue}}fatalError("Dummy implementation"){{/defaultValue}}
     {{/resultType}}
 
     }

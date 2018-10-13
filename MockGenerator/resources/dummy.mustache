@@ -1,6 +1,6 @@
 {{#initializer}}
     {{{declarationText}}} {
-      {{{initializerCall}}}
+    {{{initializerCall}}}
     }
 {{/initializer}}
 
@@ -10,18 +10,20 @@
     {{#hasSetter}}
 
         {{{declarationText}}} {
-            set {
-            }
-            get {
-                return {{{defaultValue}}}
-            }
+        set {
+        }
+        get {
+        {{#defaultValue}}return {{{defaultValue}}}{{/defaultValue}}
+        {{^defaultValue}}fatalError("Dummy implementation"){{/defaultValue}}
+        }
         }
 
     {{/hasSetter}}
     {{^hasSetter}}
 
         {{{declarationText}}} {
-            return {{{defaultValue}}}
+        {{#defaultValue}}return {{{defaultValue}}}{{/defaultValue}}
+        {{^defaultValue}}fatalError("Dummy implementation"){{/defaultValue}}
         }
 
     {{/hasSetter}}
@@ -33,7 +35,8 @@
     {{{declarationText}}} {
 
     {{#resultType}}
-        return {{{defaultValue}}}
+        {{#defaultValue}}return {{{defaultValue}}}{{/defaultValue}}
+        {{^defaultValue}}fatalError("Dummy implementation"){{/defaultValue}}
     {{/resultType}}
 
     }

@@ -1,5 +1,5 @@
 func generic1<T>() -> T {
-return <#PLACEHOLDER#>
+fatalError("Dummy implementation")
 }
 func generic2<T>() -> T? {
 return nil
