@@ -33,6 +33,17 @@ class MethodBuilderTest: TestCase() {
     assertEquals("func name() throws -> Type", method.declarationText)
   }
 
+  fun testRethrows() {
+    method = Method.Builder("name").rethrows().build()
+    assertTrue(method.rethrows)
+    assertEquals("func name() rethrows", method.declarationText)
+  }
+
+  fun testRethrowsAndReturns() {
+    method = Method.Builder("name").rethrows().returnType("Type").build()
+    assertEquals("func name() rethrows -> Type", method.declarationText)
+  }
+
   fun testParameter() {
     method = Method.Builder("a").parameter("name") { it.type("Type") }.build()
     assertEquals("name", getParameter(0).internalName)

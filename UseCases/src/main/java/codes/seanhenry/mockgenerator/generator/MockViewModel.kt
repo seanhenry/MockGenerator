@@ -20,6 +20,7 @@ class MethodViewModel(var capitalizedUniqueName: String,
                       var resultType: ResultTypeViewModel?,
                       var functionCall: String?,
                       var throws: Boolean,
+                      var rethrows: Boolean,
                       var isImplemented: Boolean,
                       var declarationText: String)
 

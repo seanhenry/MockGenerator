@@ -23,6 +23,10 @@ class ForwardToSuperTest : MockGeneratorTestTemplate() {
         Method.Builder("throwing")
             .throws()
             .returnType("Int")
+            .build(),
+        Method.Builder("rethrowing")
+            .rethrows()
+            .returnType("Int")
             .build()
     )
     generator.add(Method.Builder("protocolMethod").build())

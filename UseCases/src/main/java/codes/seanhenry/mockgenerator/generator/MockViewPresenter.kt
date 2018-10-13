@@ -226,6 +226,7 @@ class MockViewPresenter(val view: MockView): MockTransformer {
           transformReturnType(m),
           MakeFunctionCallVisitor.make(m),
           m.throws,
+          m.rethrows,
           isClass,
           transformDeclarationText(m.declarationText.trim(), isClass)
       )

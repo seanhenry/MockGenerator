@@ -83,7 +83,7 @@
 
     {{#isImplemented}}
     if forwardToOriginal{{capitalizedUniqueName}} {
-    {{#resultType}}return {{/resultType}}{{#throws}}try {{/throws}}super.{{functionCall}}
+    {{#resultType}}return {{/resultType}}{{#throws}}try {{/throws}}{{#rethrows}}try {{/rethrows}}super.{{functionCall}}
     {{^resultType}}return{{/resultType}}
     }
     {{/isImplemented}}

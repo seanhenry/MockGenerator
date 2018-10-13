@@ -71,6 +71,18 @@ throw error
 }
 return stubbedThrowingResult
 }
+var invokedRethrowing = false
+var invokedRethrowingCount = 0
+var stubbedRethrowingResult: Int! = 0
+var forwardToOriginalRethrowing = false
+override func rethrowing() rethrows -> Int {
+invokedRethrowing = true
+invokedRethrowingCount += 1
+if forwardToOriginalRethrowing {
+return try super.rethrowing()
+}
+return stubbedRethrowingResult
+}
 var invokedProtocolMethod = false
 var invokedProtocolMethodCount = 0
 func protocolMethod() {
