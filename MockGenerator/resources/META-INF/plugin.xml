@@ -69,6 +69,7 @@ class DataStoreSpy: DataStore {
     <change-notes><![CDATA[
       <ul>
         <li>Can now generate a 'partial spy'. A partial spy offers the option to forward invocations to the original implementation. Only works for test doubles which inherit from a class.</li>
+        <li>Dummies now generate a fatal error when a default value cannot be derived since dummies are only really meant as placeholders.</li>
       </ul>
     ]]>
     </change-notes>
