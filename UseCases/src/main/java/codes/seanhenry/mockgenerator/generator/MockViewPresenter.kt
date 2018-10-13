@@ -224,7 +224,9 @@ class MockViewPresenter(val view: MockView): MockTransformer {
           transformParameters(m),
           m.parametersList.mapNotNull { transformClosureParameters(it) },
           transformReturnType(m),
+          MakeFunctionCallVisitor.make(m),
           m.throws,
+          isClass,
           transformDeclarationText(m.declarationText.trim(), isClass)
       )
     }

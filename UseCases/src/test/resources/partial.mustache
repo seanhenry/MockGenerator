@@ -67,6 +67,10 @@
         {{scope}} var stubbed{{capitalizedUniqueName}}Result: {{{iuoType}}} {{{defaultValueAssignment}}}
     {{/resultType}}
 
+    {{#isImplemented}}
+    var forwardToOriginal{{capitalizedUniqueName}} = false
+    {{/isImplemented}}
+
     {{{declarationText}}} {
 
     invoked{{capitalizedUniqueName}} = true
@@ -76,6 +80,13 @@
         invoked{{capitalizedUniqueName}}Parameters = {{{tupleAssignment}}}
         invoked{{capitalizedUniqueName}}ParametersList.append({{{tupleAssignment}}})
     {{/escapingParameters}}
+
+    {{#isImplemented}}
+    if forwardToOriginal{{capitalizedUniqueName}} {
+    {{#resultType}}return {{/resultType}}{{#throws}}try {{/throws}}super.{{functionCall}}
+    {{^resultType}}return{{/resultType}}
+    }
+    {{/isImplemented}}
 
     {{#closureParameter}}
         {{#hasArguments}}

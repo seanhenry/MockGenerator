@@ -112,7 +112,7 @@ abstract class ViewPresenterTest: TestCase() {
     runTest(TupleTest())
   }
 
-  private fun runTest(template: MockGeneratorTestTemplate) {
+  fun runTest(template: MockGeneratorTestTemplate) {
     template.build(generator)
     generator.generate()
     assertEquals(template.getExpected(getType()), view.rendered)
