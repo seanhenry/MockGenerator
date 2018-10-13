@@ -16,6 +16,10 @@
     {{scope}} var invoked{{capitalizedUniqueName}}GetterCount = 0
     {{scope}} var stubbed{{capitalizedUniqueName}}: {{{iuoType}}} {{{defaultValueAssignment}}}
 
+    {{#isImplemented}}
+        var forwardToOriginal{{capitalizedUniqueName}} = false
+    {{/isImplemented}}
+
     {{{declarationText}}} {
 
     {{#hasSetter}}
@@ -24,16 +28,31 @@
         invoked{{capitalizedUniqueName}}SetterCount += 1
         invoked{{capitalizedUniqueName}} = newValue
         invoked{{capitalizedUniqueName}}List.append(newValue)
+        {{#isImplemented}}
+            if forwardToOriginal{{capitalizedUniqueName}} {
+                super.{{name}} = newValue
+            }
+        {{/isImplemented}}
         }
         get {
         invoked{{capitalizedUniqueName}}Getter = true
         invoked{{capitalizedUniqueName}}GetterCount += 1
+        {{#isImplemented}}
+            if forwardToOriginal{{capitalizedUniqueName}} {
+                return super.{{name}}
+            }
+        {{/isImplemented}}
         return stubbed{{capitalizedUniqueName}}
         }
     {{/hasSetter}}
     {{^hasSetter}}
         invoked{{capitalizedUniqueName}}Getter = true
         invoked{{capitalizedUniqueName}}GetterCount += 1
+    {{#isImplemented}}
+        if forwardToOriginal{{capitalizedUniqueName}} {
+        return super.{{name}}
+        }
+    {{/isImplemented}}
         return stubbed{{capitalizedUniqueName}}
     {{/hasSetter}}
 

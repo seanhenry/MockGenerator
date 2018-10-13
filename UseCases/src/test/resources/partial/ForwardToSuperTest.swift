@@ -1,3 +1,70 @@
+var invokedPropASetter = false
+var invokedPropASetterCount = 0
+var invokedPropA: Int?
+var invokedPropAList = [Int]()
+var invokedPropAGetter = false
+var invokedPropAGetterCount = 0
+var stubbedPropA: Int! = 0
+var forwardToOriginalPropA = false
+override var propA: Int {
+set {
+invokedPropASetter = true
+invokedPropASetterCount += 1
+invokedPropA = newValue
+invokedPropAList.append(newValue)
+if forwardToOriginalPropA {
+super.propA = newValue
+}
+}
+get {
+invokedPropAGetter = true
+invokedPropAGetterCount += 1
+if forwardToOriginalPropA {
+return super.propA
+}
+return stubbedPropA
+}
+}
+var invokedReadonlyGetter = false
+var invokedReadonlyGetterCount = 0
+var stubbedReadonly: Int! = 0
+var forwardToOriginalReadonly = false
+override var readonly: Int {
+invokedReadonlyGetter = true
+invokedReadonlyGetterCount += 1
+if forwardToOriginalReadonly {
+return super.readonly
+}
+return stubbedReadonly
+}
+var invokedProtocolPropertySetter = false
+var invokedProtocolPropertySetterCount = 0
+var invokedProtocolProperty: Int?
+var invokedProtocolPropertyList = [Int]()
+var invokedProtocolPropertyGetter = false
+var invokedProtocolPropertyGetterCount = 0
+var stubbedProtocolProperty: Int! = 0
+var protocolProperty: Int {
+set {
+invokedProtocolPropertySetter = true
+invokedProtocolPropertySetterCount += 1
+invokedProtocolProperty = newValue
+invokedProtocolPropertyList.append(newValue)
+}
+get {
+invokedProtocolPropertyGetter = true
+invokedProtocolPropertyGetterCount += 1
+return stubbedProtocolProperty
+}
+}
+var invokedProtocolReadonlyPropertyGetter = false
+var invokedProtocolReadonlyPropertyGetterCount = 0
+var stubbedProtocolReadonlyProperty: Int! = 0
+var protocolReadonlyProperty: Int {
+invokedProtocolReadonlyPropertyGetter = true
+invokedProtocolReadonlyPropertyGetterCount += 1
+return stubbedProtocolReadonlyProperty
+}
 var invokedMethod = false
 var invokedMethodCount = 0
 var forwardToOriginalMethod = false

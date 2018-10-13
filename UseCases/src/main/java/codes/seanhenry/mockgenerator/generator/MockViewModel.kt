@@ -5,13 +5,15 @@ class MockViewModel(var initializer: List<InitializerViewModel>,
                     var method: List<MethodViewModel>,
                     var scope: String?)
 
-class PropertyViewModel(var capitalizedUniqueName: String,
+class PropertyViewModel(var name: String,
+                        var capitalizedUniqueName: String,
                         var hasSetter: Boolean,
                         var type: String,
                         var optionalType: String,
                         var iuoType: String,
                         var defaultValueAssignment: String,
                         var defaultValue: String,
+                        var isImplemented: Boolean,
                         var declarationText: String)
 
 class MethodViewModel(var capitalizedUniqueName: String,
