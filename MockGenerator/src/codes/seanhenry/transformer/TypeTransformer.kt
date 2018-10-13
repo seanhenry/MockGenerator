@@ -53,12 +53,13 @@ class TypeTransformer : SwiftVisitor() {
   }
 
   override fun visitArrayDictionaryTypeElement(element: SwiftArrayDictionaryTypeElement) {
-    val keyType = transform(element.keyTypeElement) ?: return
+    val keyType = element.keyTypeElement ?: return
+    val transformedKeyType = transform(keyType) ?: return
     if (!element.isDictionary) {
-      transformedType = ArrayType(keyType, false)
+      transformedType = ArrayType(transformedKeyType, false)
     } else {
       transform(element.valueTypeElement!!)?.let {
-        transformedType = DictionaryType(keyType, it, false)
+        transformedType = DictionaryType(transformedKeyType, it, false)
       }
     }
   }
