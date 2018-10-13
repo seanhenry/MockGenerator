@@ -21,7 +21,7 @@ override var b: Int {
 invokedBGetter = true
 invokedBGetterCount += 1
 if forwardToOriginalB {
-super.b
+return super.b
 }
 return stubbedB
 }
@@ -33,6 +33,7 @@ invokedMethodA = true
 invokedMethodACount += 1
 if forwardToOriginalMethodA {
 super.methodA()
+return
 }
 }
 var invokedMethodB = false
@@ -43,5 +44,6 @@ invokedMethodB = true
 invokedMethodBCount += 1
 if forwardToOriginalMethodB {
 super.methodB()
+return
 }
 }

@@ -33,6 +33,7 @@ invokedMethod = true
 invokedMethodCount += 1
 if forwardToOriginalMethod {
 super.method()
+return
 }
 }
 var invokedAnotherMethod = false
@@ -43,5 +44,6 @@ invokedAnotherMethod = true
 invokedAnotherMethodCount += 1
 if forwardToOriginalAnotherMethod {
 super.anotherMethod()
+return
 }
 }

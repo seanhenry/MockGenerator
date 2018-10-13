@@ -21,5 +21,6 @@ invokedMethodA = true
 invokedMethodACount += 1
 if forwardToOriginalMethodA {
 super.methodA()
+return
 }
 }
