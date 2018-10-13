@@ -22,7 +22,7 @@ You can generate a spy, stub or dummy. [See here](https://martinfowler.com/bliki
 
 - Create an empty class conforming to one or many protocols and/or a class.
 - With the cursor inside the class declaration, press `⌥↵`.
-- Select 'Generate spy|stub|dummy'.
+- Select 'Generate spy|stub|dummy|partial spy'.
 
 ## How to recreate a Swift test double
 
@@ -38,6 +38,7 @@ To regenerate the test double, place the cursor anywhere inside the test double 
 | Generate and regenerate a spy.|✅|
 | Generate and regenerate a stub.|✅|
 | Generate and regenerate a dummy.|✅|
+| Generate and regenerate a partial spy (forwards invocations to original implementation if required).|✅|
 | **Classes and protocols** |
 | Generates test doubles conforming to one or many protocols.|✅|
 | Generates test doubles conforming to a class.|✅|
