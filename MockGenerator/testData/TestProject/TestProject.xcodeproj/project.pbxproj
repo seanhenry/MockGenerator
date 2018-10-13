@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		144CE31E2171F4AD008E3DC7 /* PartialSpyClassMock_expected.swift in Sources */ = {isa = PBXBuildFile; fileRef = 144CE31C2171F484008E3DC7 /* PartialSpyClassMock_expected.swift */; };
+		144CE31F2171F4B3008E3DC7 /* PartialSpyClassMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 144CE31A2171F456008E3DC7 /* PartialSpyClassMock.swift */; };
+		144CE3202171F4B8008E3DC7 /* PartialSpyClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 144CE3182171F424008E3DC7 /* PartialSpyClass.swift */; };
 		1491BB7C20C26F9F0017CFEA /* ParameterAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1491BB7B20C26F9F0017CFEA /* ParameterAnnotation.swift */; };
 		1491BB8120C26FF90017CFEA /* ParameterAnnotationMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1491BB7D20C26FBB0017CFEA /* ParameterAnnotationMock.swift */; };
 		1491BB8220C26FFC0017CFEA /* ParameterAnnotationMock_expected.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1491BB7F20C26FC90017CFEA /* ParameterAnnotationMock_expected.swift */; };
@@ -174,6 +177,9 @@
 
 /* Begin PBXFileReference section */
 		142E998B1F15812000B9D7ED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.info; path = Info.plist; sourceTree = "<group>"; };
+		144CE3182171F424008E3DC7 /* PartialSpyClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartialSpyClass.swift; sourceTree = "<group>"; };
+		144CE31A2171F456008E3DC7 /* PartialSpyClassMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartialSpyClassMock.swift; sourceTree = "<group>"; };
+		144CE31C2171F484008E3DC7 /* PartialSpyClassMock_expected.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartialSpyClassMock_expected.swift; sourceTree = "<group>"; };
 		1491BB7B20C26F9F0017CFEA /* ParameterAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParameterAnnotation.swift; sourceTree = "<group>"; };
 		1491BB7D20C26FBB0017CFEA /* ParameterAnnotationMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParameterAnnotationMock.swift; sourceTree = "<group>"; };
 		1491BB7F20C26FC90017CFEA /* ParameterAnnotationMock_expected.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParameterAnnotationMock_expected.swift; sourceTree = "<group>"; };
@@ -575,6 +581,9 @@
 				35CDFF6EEF6FC10D3964E0D7 /* MultipleVariable.swift */,
 				35CDF35BCB6431F745940E32 /* MultipleVariableMock.swift */,
 				35CDFD089D852AF3A7F1A486 /* MultipleVariableMock_expected.swift */,
+				144CE3182171F424008E3DC7 /* PartialSpyClass.swift */,
+				144CE31A2171F456008E3DC7 /* PartialSpyClassMock.swift */,
+				144CE31C2171F484008E3DC7 /* PartialSpyClassMock_expected.swift */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -905,6 +914,7 @@
 				35CDFC5338DFA9191CF913B9 /* PrivateInitializerClass.swift in Sources */,
 				35CDF2CBD6250013167AB431 /* MultipleVariable.swift in Sources */,
 				35CDF95FEA1019A252398847 /* TupleProtocol.swift in Sources */,
+				144CE3202171F4B8008E3DC7 /* PartialSpyClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -938,6 +948,7 @@
 				14F747751FC35B4700944F3A /* ClassAndProtocolMock_expected.swift in Sources */,
 				14F747931FC35B9A00944F3A /* PropertyProtocolMock_expected.swift in Sources */,
 				14F747911FC35B9A00944F3A /* OptionalProtocolMock_expected.swift in Sources */,
+				144CE31E2171F4AD008E3DC7 /* PartialSpyClassMock_expected.swift in Sources */,
 				14F747891FC35B9A00944F3A /* ClosureProtocolMock_expected.swift in Sources */,
 				14F747771FC35B5100944F3A /* KeywordsTest.swift in Sources */,
 				14F747781FC35B5100944F3A /* InitialiserTest.swift in Sources */,
@@ -978,6 +989,7 @@
 				14F747A11FC35BB100944F3A /* OptionalProtocolMock.swift in Sources */,
 				14F747C41FC35C2100944F3A /* ArgumentInitialiserClassMock.swift in Sources */,
 				14F747A01FC35BB100944F3A /* OpenProtocolMock.swift in Sources */,
+				144CE31F2171F4B3008E3DC7 /* PartialSpyClassMock.swift in Sources */,
 				14F7479B1FC35BB100944F3A /* DefaultValuesMock.swift in Sources */,
 				1491BB8120C26FF90017CFEA /* ParameterAnnotationMock.swift in Sources */,
 				14F747C61FC35C2100944F3A /* FailableInitialiserClassMock.swift in Sources */,

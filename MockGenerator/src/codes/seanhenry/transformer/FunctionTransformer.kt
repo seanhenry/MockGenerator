@@ -34,7 +34,8 @@ class FunctionTransformer: SwiftVisitor() {
         resolvedReturnType,
         parameters,
         declarationText,
-        element.throwsClause?.isThrows == true)
+        element.throwsClause?.isThrows == true,
+        element.throwsClause?.isRethrows == true)
   }
 
   private fun transformGenericParameters(clause: SwiftGenericParameterClause?): List<String> {
