@@ -17,7 +17,7 @@
     {{scope}} var stubbed{{capitalizedUniqueName}}: {{{iuoType}}} {{{defaultValueAssignment}}}
 
     {{#isImplemented}}
-        var forwardToOriginal{{capitalizedUniqueName}} = false
+        {{scope}} var forwardToOriginal{{capitalizedUniqueName}} = false
     {{/isImplemented}}
 
     {{{declarationText}}} {
@@ -62,27 +62,27 @@
 
 {{#subscript}}
 
-    var invoked{{capitalizedUniqueName}}Getter = false
-    var invoked{{capitalizedUniqueName}}GetterCount = 0
+    {{scope}} var invoked{{capitalizedUniqueName}}Getter = false
+    {{scope}} var invoked{{capitalizedUniqueName}}GetterCount = 0
     {{#escapingParameters}}
         {{scope}} var invoked{{capitalizedUniqueName}}GetterParameters: {{{tupleRepresentation}}}?
         {{scope}} var invoked{{capitalizedUniqueName}}GetterParametersList = [{{{tupleRepresentation}}}]()
     {{/escapingParameters}}
-    var stubbed{{capitalizedUniqueName}}Result: {{{resultType.iuoType}}} {{{resultType.defaultValueAssignment}}}
+    {{scope}} var stubbed{{capitalizedUniqueName}}Result: {{{resultType.iuoType}}} {{{resultType.defaultValueAssignment}}}
 
     {{#hasSetter}}
-        var invoked{{capitalizedUniqueName}}Setter = false
-        var invoked{{capitalizedUniqueName}}SetterCount = 0
+        {{scope}} var invoked{{capitalizedUniqueName}}Setter = false
+        {{scope}} var invoked{{capitalizedUniqueName}}SetterCount = 0
         {{#escapingParameters}}
             {{scope}} var invoked{{capitalizedUniqueName}}SetterParameters: {{{tupleRepresentation}}}?
             {{scope}} var invoked{{capitalizedUniqueName}}SetterParametersList = [{{{tupleRepresentation}}}]()
         {{/escapingParameters}}
-        var invoked{{capitalizedUniqueName}}: {{{resultType.type}}}?
-        var invoked{{capitalizedUniqueName}}List = [{{{resultType.type}}}]()
+        {{scope}} var invoked{{capitalizedUniqueName}}: {{{resultType.type}}}?
+        {{scope}} var invoked{{capitalizedUniqueName}}List = [{{{resultType.type}}}]()
     {{/hasSetter}}
 
     {{#isImplemented}}
-        var forwardToOriginal{{capitalizedUniqueName}} = false
+        {{scope}} var forwardToOriginal{{capitalizedUniqueName}} = false
     {{/isImplemented}}
 
     {{{declarationText}}} {
@@ -164,7 +164,7 @@
     {{/resultType}}
 
     {{#isImplemented}}
-    var forwardToOriginal{{capitalizedUniqueName}} = false
+        {{scope}} var forwardToOriginal{{capitalizedUniqueName}} = false
     {{/isImplemented}}
 
     {{{declarationText}}} {

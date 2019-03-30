@@ -18,6 +18,34 @@ invokedVariableGetterCount += 1
 return stubbedVariable
 }
 }
+open var invokedSubscriptGetter = false
+open var invokedSubscriptGetterCount = 0
+open var invokedSubscriptGetterParameters: (a: Int, Void)?
+open var invokedSubscriptGetterParametersList = [(a: Int, Void)]()
+open var stubbedSubscriptResult: Int! = 0
+open var invokedSubscriptSetter = false
+open var invokedSubscriptSetterCount = 0
+open var invokedSubscriptSetterParameters: (a: Int, Void)?
+open var invokedSubscriptSetterParametersList = [(a: Int, Void)]()
+open var invokedSubscript: Int?
+open var invokedSubscriptList = [Int]()
+open subscript(a: Int) -> Int {
+set {
+invokedSubscriptSetter = true
+invokedSubscriptSetterCount += 1
+invokedSubscriptSetterParameters = (a, ())
+invokedSubscriptSetterParametersList.append((a, ()))
+invokedSubscript = newValue
+invokedSubscriptList.append(newValue)
+}
+get {
+invokedSubscriptGetter = true
+invokedSubscriptGetterCount += 1
+invokedSubscriptGetterParameters = (a, ())
+invokedSubscriptGetterParametersList.append((a, ()))
+return stubbedSubscriptResult
+}
+}
 open var invokedMethod = false
 open var invokedMethodCount = 0
 open var invokedMethodParameters: (param: Object, Void)?

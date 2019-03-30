@@ -373,6 +373,9 @@ class MockViewPresenter(val view: MockView): MockTransformer {
 
   private fun transformSubscriptDeclarationText(subscript: Subscript, isOverriding: Boolean): String {
     var modifiers = ""
+    if (scope != null) {
+      modifiers += "${scope} "
+    }
     if (isOverriding) {
       modifiers += "override "
     }

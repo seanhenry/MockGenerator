@@ -2,6 +2,8 @@ package codes.seanhenry.mockgenerator.generator.templates
 
 import codes.seanhenry.mockgenerator.entities.Method
 import codes.seanhenry.mockgenerator.entities.Property
+import codes.seanhenry.mockgenerator.entities.Subscript
+import codes.seanhenry.mockgenerator.entities.TypeIdentifier
 import codes.seanhenry.mockgenerator.generator.MockTransformer
 
 class ScopeProtocolTest : MockGeneratorTestTemplate() {
@@ -18,6 +20,11 @@ class ScopeProtocolTest : MockGeneratorTestTemplate() {
             .parameter("param") { it.type("Object") }
             .parameter("closure") { it.type().function { } }
             .returnType("Object")
+            .build()
+    )
+    generator.add(
+        Subscript.Builder(TypeIdentifier("Int"))
+            .parameter("a") { it.type("Int") }
             .build()
     )
   }
