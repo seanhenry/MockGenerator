@@ -303,10 +303,14 @@ class MockViewPresenter(val view: MockView): MockTransformer {
   }
 
   private fun transformParameters(method: Method): ParametersViewModel? {
-    if (method.parametersList.isEmpty()) {
+    return transformParameters(method.parametersList, method.genericParameters)
+  }
+
+  private fun transformParameters(parametersList: List<Parameter>, genericParameters: List<String>): ParametersViewModel? {
+    if (parametersList.isEmpty()) {
       return null
     }
-    val declaration = transformToTupleDeclaration(method.parametersList, method.genericParameters) ?: return null
+    val declaration = transformToTupleDeclaration(parametersList, genericParameters) ?: return null
     val assignment = transformToTupleAssignment(declaration) ?: return null
     return ParametersViewModel(
         declaration.text,
@@ -326,6 +330,7 @@ class MockViewPresenter(val view: MockView): MockTransformer {
     return protocolSubscripts.map {
       SubscriptViewModel(
           "subscript".capitalize(), // TODO: overloaded
+          transformParameters(it.parameters, emptyList()),
           it.isWritable,
           transformReturnType(it.returnType, emptyList()),
           it.declarationText

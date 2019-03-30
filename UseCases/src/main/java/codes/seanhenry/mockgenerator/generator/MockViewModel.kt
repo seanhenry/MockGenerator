@@ -47,6 +47,7 @@ class InitializerViewModel(var declarationText: String,
                            var initializerCall: String)
 
 class SubscriptViewModel(var capitalizedUniqueName: String,
+                         var escapingParameters: ParametersViewModel?,
                          var hasSetter: Boolean,
                          var resultType: ResultTypeViewModel,
                          var declarationText: String)

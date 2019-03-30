@@ -112,12 +112,16 @@ abstract class ViewPresenterTest: TestCase() {
     runTest(TupleTest())
   }
 
-  fun testReadOnlySubscriptProtocolTest() {
+  fun testReadOnlySubscriptProtocol() {
     runTest(ReadOnlySubscriptProtocolTest())
   }
 
-  fun testSubscriptProtocolTest() {
+  fun testSubscriptProtocol() {
     runTest(SubscriptProtocolTest())
+  }
+
+  fun testArgumentsSubscriptProtocol() {
+    runTest(ArgumentsSubscriptProtocolTest())
   }
 
   fun runTest(template: MockGeneratorTestTemplate) {
