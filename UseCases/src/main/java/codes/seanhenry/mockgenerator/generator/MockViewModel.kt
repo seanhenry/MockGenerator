@@ -31,6 +31,7 @@ class ResultTypeViewModel(var defaultValueAssignment: String,
                           var defaultValue: String?,
                           var optionalType: String,
                           var iuoType: String,
+                          var type: String,
                           var returnCastStatement: String)
 
 class ParametersViewModel(var tupleRepresentation: String,
@@ -46,5 +47,6 @@ class InitializerViewModel(var declarationText: String,
                            var initializerCall: String)
 
 class SubscriptViewModel(var capitalizedUniqueName: String,
+                         var hasSetter: Boolean,
                          var resultType: ResultTypeViewModel,
                          var declarationText: String)

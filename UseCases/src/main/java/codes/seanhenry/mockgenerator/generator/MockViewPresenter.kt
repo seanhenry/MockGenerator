@@ -271,6 +271,7 @@ class MockViewPresenter(val view: MockView): MockTransformer {
         getDefaultValue(type.resolvedType),
         surroundWithOptional(removeOptional(erased), false).text,
         surroundWithOptional(removeOptionalRecursively(erased), true).text,
+        optionalizeIUO(erased).text,
         transformReturnCastStatement(type.originalType, erased)
     )
   }
@@ -325,6 +326,7 @@ class MockViewPresenter(val view: MockView): MockTransformer {
     return protocolSubscripts.map {
       SubscriptViewModel(
           "subscript".capitalize(), // TODO: overloaded
+          it.isWritable,
           transformReturnType(it.returnType, emptyList()),
           it.declarationText
       )

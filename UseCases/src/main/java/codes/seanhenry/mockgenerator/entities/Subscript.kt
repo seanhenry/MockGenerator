@@ -2,7 +2,7 @@ package codes.seanhenry.mockgenerator.entities
 
 import codes.seanhenry.mockgenerator.visitor.Visitor
 
-class Subscript(val returnType: ResolvedType, val parameters: List<Parameter>, val declarationText: String): Element {
+class Subscript(val returnType: ResolvedType, val parameters: List<Parameter>, val isWritable: Boolean, val declarationText: String): Element {
   override fun accept(visitor: Visitor) {
     TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
   }
@@ -10,6 +10,7 @@ class Subscript(val returnType: ResolvedType, val parameters: List<Parameter>, v
   class Builder(val returnType: ResolvedType) {
 
     private val parameters = ArrayList<Parameter>()
+    private var isWritable = true
 
     constructor(returnType: Type) : this(ResolvedType(returnType, returnType))
 
@@ -28,8 +29,13 @@ class Subscript(val returnType: ResolvedType, val parameters: List<Parameter>, v
       return this
     }
 
+    fun readonly(): Builder {
+      isWritable = false
+      return this
+    }
+
     fun build(): Subscript {
-      return Subscript(returnType, parameters, getDeclarationText())
+      return Subscript(returnType, parameters, isWritable, getDeclarationText())
     }
 
     private fun getDeclarationText(): String {

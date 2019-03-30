@@ -27,4 +27,17 @@ class SubscriptBuilderTest : TestCase() {
     assertEquals("b b: UInt", subscript.parameters[1].text)
     assertEquals("subscript(a: String, b b: UInt) -> Int", subscript.declarationText)
   }
+
+  fun testShouldBuildSubscriptWritableByDefault() {
+    val subscript = Subscript.Builder(TypeIdentifier.INT)
+        .build()
+    assertTrue(subscript.isWritable)
+  }
+
+  fun testShouldBuildSubscriptReadOnly() {
+    val subscript = Subscript.Builder(TypeIdentifier.INT)
+        .readonly()
+        .build()
+    assertFalse(subscript.isWritable)
+  }
 }

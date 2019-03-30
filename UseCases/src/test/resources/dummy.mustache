@@ -34,7 +34,17 @@
 {{#subscript}}
 
     {{{declarationText}}} {
-    return {{{resultType.defaultValue}}}
+
+    {{#hasSetter}}
+        set {
+        }
+        get {
+        return {{{resultType.defaultValue}}}
+        }
+    {{/hasSetter}}
+    {{^hasSetter}}
+        return {{{resultType.defaultValue}}}
+    {{/hasSetter}}
     }
 
 {{/subscript}}

@@ -30,7 +30,17 @@
     var stubbed{{capitalizedUniqueName}}Result: {{{resultType.iuoType}}} {{{resultType.defaultValueAssignment}}}
 
     {{{declarationText}}} {
-    return stubbed{{capitalizedUniqueName}}Result
+
+    {{#hasSetter}}
+        set {
+        }
+        get {
+        return stubbed{{capitalizedUniqueName}}Result
+        }
+    {{/hasSetter}}
+    {{^hasSetter}}
+        return stubbed{{capitalizedUniqueName}}Result
+    {{/hasSetter}}
     }
 
 {{/subscript}}

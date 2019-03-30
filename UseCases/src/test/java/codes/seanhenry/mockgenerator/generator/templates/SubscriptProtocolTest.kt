@@ -4,11 +4,10 @@ import codes.seanhenry.mockgenerator.entities.Subscript
 import codes.seanhenry.mockgenerator.entities.TypeIdentifier
 import codes.seanhenry.mockgenerator.generator.MockTransformer
 
-class ReadOnlySubscriptProtocolTest : MockGeneratorTestTemplate() {
+class SubscriptProtocolTest: MockGeneratorTestTemplate() {
   override fun build(generator: MockTransformer) {
     generator.add(
-        Subscript.Builder(TypeIdentifier.INT)
-            .readonly()
+        Subscript.Builder(TypeIdentifier("Int"))
             .build()
     )
   }
