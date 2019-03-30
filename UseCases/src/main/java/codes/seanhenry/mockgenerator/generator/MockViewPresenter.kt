@@ -50,6 +50,10 @@ class MockViewPresenter(val view: MockView): MockTransformer {
     addProperties(listOf(*properties))
   }
 
+  override fun add(vararg subscripts: Subscript) {
+    addSubscripts(listOf(*subscripts))
+  }
+
   override fun addInitialisers(initializers: List<Initializer>) {
     for (initializer in initializers) {
       this.initialisers.add(initializer)
@@ -65,6 +69,12 @@ class MockViewPresenter(val view: MockView): MockTransformer {
   override fun addProperties(properties: List<Property>) {
     for (property in properties) {
       this.protocolProperties.add(property)
+    }
+  }
+
+  override fun addSubscripts(subscripts: List<Subscript>) {
+    for (subscript in subscripts) {
+      this.protocolSubscripts.add(subscript)
     }
   }
 
@@ -152,9 +162,10 @@ class MockViewPresenter(val view: MockView): MockTransformer {
   private fun generateOverloadedNames() {
     val protocolProperties = protocolProperties.map { toMethodModel(it) }
     val protocolMethods = protocolMethods.map { toMethodModel(it) }
+    val protocolSubscripts = protocolSubscripts.map { toMethodModel(it) }
     val classMethods = classMethods.map { toMethodModel(it) }
     val classProperties = classProperties.map { toMethodModel(it) }
-    nameGenerator = UniqueMethodNameGenerator(protocolProperties + protocolMethods + classMethods + classProperties)
+    nameGenerator = UniqueMethodNameGenerator(protocolProperties + protocolMethods + protocolSubscripts + classMethods + classProperties)
     nameGenerator.generateMethodNames()
   }
 
@@ -164,6 +175,10 @@ class MockViewPresenter(val view: MockView): MockTransformer {
 
   private fun toMethodModel(property: Property): MethodModel {
     return MethodModel(property.name, "")
+  }
+
+  private fun toMethodModel(subscript: Subscript): MethodModel {
+    return MethodModel("subscript", subscript.parameters)
   }
 
   private fun transformProperties(): List<PropertyViewModel> {
@@ -249,6 +264,8 @@ class MockViewPresenter(val view: MockView): MockTransformer {
       nameGenerator.getMethodName(toMethodModel(method).id)!!
   private fun getUniqueName(property: Property) =
       nameGenerator.getMethodName(toMethodModel(property).id)!!
+  private fun getUniqueName(subscript: Subscript) =
+      nameGenerator.getMethodName(toMethodModel(subscript).id)!!
 
   private fun transformClosureParameters(parameter: Parameter): ClosureParameterViewModel? {
     val visitor = FunctionParameterTransformer(parameter.internalName)
@@ -329,7 +346,7 @@ class MockViewPresenter(val view: MockView): MockTransformer {
   private fun transformSubscripts(): List<SubscriptViewModel> {
     return protocolSubscripts.map {
       SubscriptViewModel(
-          "subscript".capitalize(), // TODO: overloaded
+          getUniqueName(it).capitalize(),
           transformParameters(it.parameters, emptyList()),
           it.isWritable,
           transformReturnType(it.returnType, emptyList()),

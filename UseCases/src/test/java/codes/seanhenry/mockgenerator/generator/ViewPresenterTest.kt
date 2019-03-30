@@ -124,6 +124,10 @@ abstract class ViewPresenterTest: TestCase() {
     runTest(ArgumentsSubscriptProtocolTest())
   }
 
+  fun testOverloadedSubscriptProtocol() {
+    runTest(OverloadedSubscriptProtocolTest())
+  }
+
   fun runTest(template: MockGeneratorTestTemplate) {
     template.build(generator)
     generator.generate()
