@@ -29,6 +29,11 @@ class SignatureGenerator: Visitor() {
     signature = "${declaration.name}($parameters)$returnType"
   }
 
+  override fun visitSubscript(subscript: Subscript) {
+    val parameters = getParametersSignature(subscript.parameters)
+    signature = "subscript($parameters):${subscript.returnType.resolvedType.text}"
+  }
+
   private fun getParametersSignature(parameters: List<Parameter>) =
       parameters.joinToString(",") { signature(it) }
 

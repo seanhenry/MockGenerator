@@ -30,6 +30,15 @@ class ProtocolBuilderTest: TestCase() {
     assertEquals("b", protocol.properties[1].name)
   }
 
+  fun testShouldBuildProtocolWithSubscripts() {
+    val protocol = Protocol.Builder()
+        .subscript(TypeIdentifier("Int")) { }
+        .subscript(TypeIdentifier("String")) { }
+        .build()
+    assertEquals("subscript() -> Int", protocol.subscripts[0].declarationText)
+    assertEquals("subscript() -> String", protocol.subscripts[1].declarationText)
+  }
+
   fun testShouldBuildProtocolWithInitializers() {
     val protocol = Protocol.Builder()
         .initializer { }

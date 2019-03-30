@@ -31,6 +31,15 @@ class ClassBuilderTest: TestCase() {
     assertEquals("b", c.properties[1].name)
   }
 
+  fun testShouldBuildClassWithSubscripts() {
+    val c = Class.Builder()
+        .subscript(TypeIdentifier("Int")) { }
+        .subscript(TypeIdentifier("String")) { }
+        .build()
+    assertEquals("subscript() -> Int", c.subscripts[0].declarationText)
+    assertEquals("subscript() -> String", c.subscripts[1].declarationText)
+  }
+
   fun testShouldBuildClassWithInitializers() {
     val c = Class.Builder()
         .initializer { }

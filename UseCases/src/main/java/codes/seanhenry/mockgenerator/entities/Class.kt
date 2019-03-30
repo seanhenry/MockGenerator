@@ -1,12 +1,13 @@
 package codes.seanhenry.mockgenerator.entities
 
-class Class(initializers: List<Initializer>, properties: List<Property>, methods: List<Method>, val inheritedClass: Class?): TypeDeclaration(initializers, properties, methods, emptyList()) {
+class Class(initializers: List<Initializer>, properties: List<Property>, methods: List<Method>, subscripts: List<Subscript>, val inheritedClass: Class?): TypeDeclaration(initializers, properties, methods, subscripts, emptyList()) {
 
   class Builder {
 
     private val methods = mutableListOf<Method>()
     private val properties = mutableListOf<Property>()
     private val initializers = mutableListOf<Initializer>()
+    private val subscripts = mutableListOf<Subscript>()
     private var superclass: Class? = null
 
     fun initializer(build: (Initializer.Builder) -> Unit): Builder {
@@ -30,6 +31,13 @@ class Class(initializers: List<Initializer>, properties: List<Property>, methods
       return this
     }
 
+    fun subscript(returnType: Type, build: (Subscript.Builder) -> Unit): Builder {
+      val builder = Subscript.Builder(returnType)
+      build(builder)
+      subscripts.add(builder.build())
+      return this
+    }
+
     fun superclass(build: (Builder) -> Unit): Builder {
       val builder = Builder()
       build(builder)
@@ -38,7 +46,7 @@ class Class(initializers: List<Initializer>, properties: List<Property>, methods
     }
 
     fun build(): Class {
-      return Class(initializers, properties, methods, superclass)
+      return Class(initializers, properties, methods, subscripts, superclass)
     }
   }
 }
