@@ -25,5 +25,7 @@ interface MockTransformer {
   fun addClassMethods(methods: List<Method>)
   fun addClassProperties(vararg properties: Property)
   fun addClassProperties(properties: List<Property>)
+  fun addClassSubscripts(vararg subscripts: Subscript)
+  fun addClassSubscripts(subscripts: List<Subscript>)
   fun generate(): String
 }

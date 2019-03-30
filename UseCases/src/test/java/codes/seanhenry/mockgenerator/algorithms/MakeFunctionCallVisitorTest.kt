@@ -1,6 +1,8 @@
 package codes.seanhenry.mockgenerator.algorithms
 
 import codes.seanhenry.mockgenerator.entities.Method
+import codes.seanhenry.mockgenerator.entities.Subscript
+import codes.seanhenry.mockgenerator.entities.TypeIdentifier
 import junit.framework.TestCase
 
 class MakeFunctionCallVisitorTest : TestCase() {
@@ -34,8 +36,22 @@ class MakeFunctionCallVisitorTest : TestCase() {
     })
   }
 
+  fun testShouldCallSubscript() {
+    assertEquals("[a, b, c: d]", makeSubscript {
+      it.parameter("a") { it.type("Int") }
+          .parameter("_", "b") { it.type("Int") }
+          .parameter("c", "d") { it.type("Int") }
+    })
+  }
+
   private fun make(build: (Method.Builder) -> Unit): String? {
     val builder = Method.Builder("method")
+    build(builder)
+    return MakeFunctionCallVisitor.make(builder.build())
+  }
+
+  private fun makeSubscript(build: (Subscript.Builder) -> Unit): String? {
+    val builder = Subscript.Builder(TypeIdentifier("Int"))
     build(builder)
     return MakeFunctionCallVisitor.make(builder.build())
   }

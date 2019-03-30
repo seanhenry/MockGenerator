@@ -13,10 +13,11 @@ import codes.seanhenry.mockgenerator.util.*
 class MockViewPresenter(val view: MockView): MockTransformer {
 
   private val protocolMethods = ArrayList<Method>()
-  private val classMethods = ArrayList<Method>()
   private val protocolProperties = ArrayList<Property>()
   private val protocolSubscripts = ArrayList<Subscript>()
+  private val classMethods = ArrayList<Method>()
   private val classProperties = ArrayList<Property>()
+  private var classSubscripts = ArrayList<Subscript>()
   private var classInitializer: Initializer? = null
   private var initialisers = ArrayList<Initializer>()
   private var scope: String? = null
@@ -104,6 +105,14 @@ class MockViewPresenter(val view: MockView): MockTransformer {
     classProperties += properties
   }
 
+  override fun addClassSubscripts(vararg subscripts: Subscript) {
+    classSubscripts.addAll(subscripts)
+  }
+
+  override fun addClassSubscripts(subscripts: List<Subscript>) {
+    classSubscripts.addAll(subscripts)
+  }
+
   override fun generate(): String {
     generateOverloadedNames()
     val mockModel = MockViewModel(
@@ -165,7 +174,8 @@ class MockViewPresenter(val view: MockView): MockTransformer {
     val protocolSubscripts = protocolSubscripts.map { toMethodModel(it) }
     val classMethods = classMethods.map { toMethodModel(it) }
     val classProperties = classProperties.map { toMethodModel(it) }
-    nameGenerator = UniqueMethodNameGenerator(protocolProperties + protocolMethods + protocolSubscripts + classMethods + classProperties)
+    val classSubscripts = classSubscripts.map { toMethodModel(it) }
+    nameGenerator = UniqueMethodNameGenerator(protocolProperties + protocolMethods + protocolSubscripts + classMethods + classProperties + classSubscripts)
     nameGenerator.generateMethodNames()
   }
 
@@ -344,14 +354,28 @@ class MockViewPresenter(val view: MockView): MockTransformer {
   }
 
   private fun transformSubscripts(): List<SubscriptViewModel> {
-    return protocolSubscripts.map {
+    return transformSubscripts(classSubscripts, true) + transformSubscripts(protocolSubscripts, false)
+  }
+
+  private fun transformSubscripts(subscripts: List<Subscript>, isClass: Boolean): List<SubscriptViewModel> {
+    return subscripts.map {
       SubscriptViewModel(
           getUniqueName(it).capitalize(),
           transformParameters(it.parameters, emptyList()),
           it.isWritable,
           transformReturnType(it.returnType, emptyList()),
-          it.declarationText
+          MakeFunctionCallVisitor.make(it),
+          isClass,
+          transformSubscriptDeclarationText(it, isClass)
       )
     }
+  }
+
+  private fun transformSubscriptDeclarationText(subscript: Subscript, isOverriding: Boolean): String {
+    var modifiers = ""
+    if (isOverriding) {
+      modifiers += "override "
+    }
+    return "$modifiers${subscript.declarationText}"
   }
 }

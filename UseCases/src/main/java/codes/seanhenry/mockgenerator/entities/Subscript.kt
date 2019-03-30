@@ -4,7 +4,7 @@ import codes.seanhenry.mockgenerator.visitor.Visitor
 
 class Subscript(val returnType: ResolvedType, val parameters: List<Parameter>, val isWritable: Boolean, val declarationText: String): Element {
   override fun accept(visitor: Visitor) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    visitor.visitSubscript(this)
   }
 
   class Builder(val returnType: ResolvedType) {

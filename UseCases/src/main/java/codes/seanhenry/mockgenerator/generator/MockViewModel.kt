@@ -50,4 +50,6 @@ class SubscriptViewModel(var capitalizedUniqueName: String,
                          var escapingParameters: ParametersViewModel?,
                          var hasSetter: Boolean,
                          var resultType: ResultTypeViewModel,
+                         var functionCall: String?,
+                         var isImplemented: Boolean,
                          var declarationText: String)

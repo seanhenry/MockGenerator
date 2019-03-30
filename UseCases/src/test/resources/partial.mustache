@@ -80,7 +80,11 @@
         var invoked{{capitalizedUniqueName}}: {{{resultType.type}}}?
         var invoked{{capitalizedUniqueName}}List = [{{{resultType.type}}}]()
     {{/hasSetter}}
-    
+
+    {{#isImplemented}}
+        var forwardToOriginal{{capitalizedUniqueName}} = false
+    {{/isImplemented}}
+
     {{{declarationText}}} {
 
     {{#hasSetter}}
@@ -93,6 +97,11 @@
         {{/escapingParameters}}
         invoked{{capitalizedUniqueName}} = newValue
         invoked{{capitalizedUniqueName}}List.append(newValue)
+        {{#isImplemented}}
+            if forwardToOriginal{{capitalizedUniqueName}} {
+            super{{functionCall}} = newValue
+            }
+        {{/isImplemented}}
         }
         get {
         invoked{{capitalizedUniqueName}}Getter = true
@@ -101,6 +110,11 @@
             invoked{{capitalizedUniqueName}}GetterParameters = {{{tupleAssignment}}}
             invoked{{capitalizedUniqueName}}GetterParametersList.append({{{tupleAssignment}}})
         {{/escapingParameters}}
+        {{#isImplemented}}
+            if forwardToOriginal{{capitalizedUniqueName}} {
+            return super{{functionCall}}
+            }
+        {{/isImplemented}}
         return stubbed{{capitalizedUniqueName}}Result
         }
     {{/hasSetter}}
@@ -111,6 +125,11 @@
             invoked{{capitalizedUniqueName}}GetterParameters = {{{tupleAssignment}}}
             invoked{{capitalizedUniqueName}}GetterParametersList.append({{{tupleAssignment}}})
         {{/escapingParameters}}
+        {{#isImplemented}}
+            if forwardToOriginal{{capitalizedUniqueName}} {
+            return super{{functionCall}}
+            }
+        {{/isImplemented}}
         return stubbed{{capitalizedUniqueName}}Result
     {{/hasSetter}}
     }
