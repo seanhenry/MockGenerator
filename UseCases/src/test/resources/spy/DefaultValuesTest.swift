@@ -81,7 +81,7 @@ return stubbedDoubleOptional
 var invokedIuoSetter = false
 var invokedIuoSetterCount = 0
 var invokedIuo: Int?
-var invokedIuoList = [Int!]()
+var invokedIuoList = [Int?]()
 var invokedIuoGetter = false
 var invokedIuoGetterCount = 0
 var stubbedIuo: Int!

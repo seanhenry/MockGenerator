@@ -49,7 +49,7 @@ return stubbedOptional
 var invokedUnwrappedSetter = false
 var invokedUnwrappedSetterCount = 0
 var invokedUnwrapped: String?
-var invokedUnwrappedList = [String!]()
+var invokedUnwrappedList = [String?]()
 var invokedUnwrappedGetter = false
 var invokedUnwrappedGetterCount = 0
 var stubbedUnwrapped: String!

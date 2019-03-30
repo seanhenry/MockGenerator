@@ -170,7 +170,7 @@ class MockViewPresenter(val view: MockView): MockTransformer {
           it.name,
           getUniqueName(it).capitalize(),
           it.isWritable,
-          it.type.text,
+          optionalizeIUO(it.type).text,
           surroundWithOptional(removeOptional(it.type), false).text,
           surroundWithOptional(removeOptionalRecursively(it.type), true).text,
           getDefaultValueAssignment(it.type),
@@ -178,6 +178,10 @@ class MockViewPresenter(val view: MockView): MockTransformer {
           isClass,
           transformDeclarationText(it.getTrimmedDeclarationText(), isClass))
     }
+  }
+
+  private fun optionalizeIUO(type: Type): Type {
+    return OptionalizeIUOVisitor.optionalize(type)
   }
 
   private fun removeOptional(type: Type): Type {
