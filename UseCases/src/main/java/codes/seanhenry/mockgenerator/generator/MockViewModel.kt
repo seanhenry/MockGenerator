@@ -3,6 +3,7 @@ package codes.seanhenry.mockgenerator.generator
 class MockViewModel(var initializer: List<InitializerViewModel>,
                     var property: List<PropertyViewModel>,
                     var method: List<MethodViewModel>,
+                    var subscript: List<SubscriptViewModel>,
                     var scope: String?)
 
 class PropertyViewModel(var name: String,
@@ -43,3 +44,7 @@ class ClosureParameterViewModel(var capitalizedName: String,
 
 class InitializerViewModel(var declarationText: String,
                            var initializerCall: String)
+
+class SubscriptViewModel(var capitalizedUniqueName: String,
+                         var resultType: ResultTypeViewModel,
+                         var declarationText: String)

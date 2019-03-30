@@ -59,6 +59,21 @@
     }
 {{/property}}
 
+
+{{#subscript}}
+
+    var invoked{{capitalizedUniqueName}}Getter = false
+    var invoked{{capitalizedUniqueName}}GetterCount = 0
+    var stubbed{{capitalizedUniqueName}}Result: {{{resultType.iuoType}}} {{{resultType.defaultValueAssignment}}}
+
+    {{{declarationText}}} {
+    invoked{{capitalizedUniqueName}}Getter = true
+    invoked{{capitalizedUniqueName}}GetterCount += 1
+    return stubbed{{capitalizedUniqueName}}Result
+    }
+
+{{/subscript}}
+
 {{#method}}
 
     {{scope}} var invoked{{capitalizedUniqueName}} = false

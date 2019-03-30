@@ -24,6 +24,17 @@
     }
 {{/property}}
 
+
+{{#subscript}}
+
+    var stubbed{{capitalizedUniqueName}}Result: {{{resultType.iuoType}}} {{{resultType.defaultValueAssignment}}}
+
+    {{{declarationText}}} {
+    return stubbed{{capitalizedUniqueName}}Result
+    }
+
+{{/subscript}}
+
 {{#method}}
 
     {{#resultType}}

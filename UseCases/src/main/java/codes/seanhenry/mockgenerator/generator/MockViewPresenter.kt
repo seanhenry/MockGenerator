@@ -15,6 +15,7 @@ class MockViewPresenter(val view: MockView): MockTransformer {
   private val protocolMethods = ArrayList<Method>()
   private val classMethods = ArrayList<Method>()
   private val protocolProperties = ArrayList<Property>()
+  private val protocolSubscripts = ArrayList<Subscript>()
   private val classProperties = ArrayList<Property>()
   private var classInitializer: Initializer? = null
   private var initialisers = ArrayList<Initializer>()
@@ -31,6 +32,10 @@ class MockViewPresenter(val view: MockView): MockTransformer {
 
   override fun add(property: Property) {
     protocolProperties.add(property)
+  }
+
+  override fun add(subscript: Subscript) {
+    protocolSubscripts.add(subscript)
   }
 
   override fun add(vararg initializers: Initializer) {
@@ -95,6 +100,7 @@ class MockViewPresenter(val view: MockView): MockTransformer {
         transformInitializers(),
         transformProperties(),
         transformMethods(),
+        transformSubscripts(),
         scope
     )
     view.render(mockModel)
@@ -253,16 +259,20 @@ class MockViewPresenter(val view: MockView): MockTransformer {
   private fun transformReturnType(method: Method): ResultTypeViewModel? {
     val type = method.returnType
     if (!TypeIdentifier.isEmpty(type.resolvedType)) {
-      val erased = erase(type.originalType, method.genericParameters)
-      return ResultTypeViewModel(
-          getDefaultValueAssignment(type.resolvedType),
-          getDefaultValue(type.resolvedType),
-          surroundWithOptional(removeOptional(erased), false).text,
-          surroundWithOptional(removeOptionalRecursively(erased), true).text,
-          transformReturnCastStatement(type.originalType, erased)
-      )
+      return transformReturnType(type, method.genericParameters)
     }
     return null
+  }
+
+  private fun transformReturnType(type: ResolvedType, genericParameters: List<String>): ResultTypeViewModel {
+    val erased = erase(type.originalType, genericParameters)
+    return ResultTypeViewModel(
+        getDefaultValueAssignment(type.resolvedType),
+        getDefaultValue(type.resolvedType),
+        surroundWithOptional(removeOptional(erased), false).text,
+        surroundWithOptional(removeOptionalRecursively(erased), true).text,
+        transformReturnCastStatement(type.originalType, erased)
+    )
   }
 
   private fun erase(type: Type, genericParameters: List<String>): Type {
@@ -309,5 +319,15 @@ class MockViewPresenter(val view: MockView): MockTransformer {
 
   private fun transformToTupleAssignment(tuple: TuplePropertyDeclaration): String? {
     return SwiftStringTupleForwardCall().transform(tuple)
+  }
+
+  private fun transformSubscripts(): List<SubscriptViewModel> {
+    return protocolSubscripts.map {
+      SubscriptViewModel(
+          "subscript".capitalize(), // TODO: overloaded
+          transformReturnType(it.returnType, emptyList()),
+          it.declarationText
+      )
+    }
   }
 }
