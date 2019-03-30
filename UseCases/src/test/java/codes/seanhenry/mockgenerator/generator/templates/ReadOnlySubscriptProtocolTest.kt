@@ -7,7 +7,7 @@ import codes.seanhenry.mockgenerator.generator.MockTransformer
 class ReadOnlySubscriptProtocolTest : MockGeneratorTestTemplate() {
   override fun build(generator: MockTransformer) {
     generator.add(
-        Subscript.Builder(TypeIdentifier.INT)
+        Subscript.Builder(TypeIdentifier("A"))
             .readonly()
             .build()
     )

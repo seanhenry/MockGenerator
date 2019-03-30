@@ -1,7 +1,7 @@
 var invokedSubscriptGetter = false
 var invokedSubscriptGetterCount = 0
-var stubbedSubscriptResult: Int! = 0
-subscript() -> Int {
+var stubbedSubscriptResult: A!
+subscript() -> A {
 invokedSubscriptGetter = true
 invokedSubscriptGetterCount += 1
 return stubbedSubscriptResult

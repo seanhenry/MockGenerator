@@ -1,3 +1,3 @@
-subscript() -> Int {
-return 0
+subscript() -> A {
+fatalError("Dummy implementation")
 }

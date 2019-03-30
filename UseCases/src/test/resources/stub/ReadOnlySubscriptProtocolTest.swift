@@ -1,4 +1,4 @@
-var stubbedSubscriptResult: Int! = 0
-subscript() -> Int {
+var stubbedSubscriptResult: A!
+subscript() -> A {
 return stubbedSubscriptResult
 }

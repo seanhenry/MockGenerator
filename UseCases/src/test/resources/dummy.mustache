@@ -30,7 +30,6 @@
 
 {{/property}}
 
-
 {{#subscript}}
 
     {{{declarationText}}} {
@@ -43,7 +42,8 @@
         }
     {{/hasSetter}}
     {{^hasSetter}}
-        return {{{resultType.defaultValue}}}
+        {{#resultType.defaultValue}}return {{{resultType.defaultValue}}}{{/resultType.defaultValue}}
+        {{^resultType.defaultValue}}fatalError("Dummy implementation"){{/resultType.defaultValue}}
     {{/hasSetter}}
     }
 
