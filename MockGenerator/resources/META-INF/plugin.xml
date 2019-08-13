@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>codes.seanhenry.mockgenerator</id>
     <name>Swift Mock Generator for AppCode</name>
-    <version>15</version>
+    <version>16</version>
     <vendor email="hello@seanhenry.codes" url="https://github.com/seanhenry/MockGenerator">Sean Henry</vendor>
 
     <description><![CDATA[
@@ -68,16 +68,13 @@ class DataStoreSpy: DataStore {
 
     <change-notes><![CDATA[
       <ul>
-        <li>Can now generate a 'partial spy'. A partial spy offers the option to forward invocations to the original implementation. Only works for test doubles which inherit from a class.</li>
-        <li>Dummies now generate a fatal error when a default value cannot be derived since dummies are only really meant as placeholders.</li>
-        <li>Tuple argument labels are preserved and accessible when using the invoked parameter properties.</li>
-        <li>Supports AppCode 2018.2.4</li>
+        <li>Supports AppCode 2019.2</li>
       </ul>
     ]]>
     </change-notes>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-    <idea-version since-build="182.4892"/>
+    <idea-version since-build="192"/>
 
     <actions>
     </actions>
