@@ -39,14 +39,14 @@ class TypeTransformer : SwiftVisitor() {
   }
 
   override fun visitOptionalTypeElement(element: SwiftOptionalTypeElement) {
-    val transformed = transform(element.typeElement)
+    val transformed = transform(element.originalElement)
     if (transformed != null) {
       transformedType = OptionalType(transformed, false, false)
     }
   }
 
   override fun visitImplicitlyUnwrappedOptionalTypeElement(element: SwiftImplicitlyUnwrappedOptionalTypeElement) {
-    val transformed = transform(element.typeElement)
+    val transformed = transform(element.originalElement)
     if (transformed != null) {
       transformedType = OptionalType(transformed, true, false)
     }
@@ -65,7 +65,7 @@ class TypeTransformer : SwiftVisitor() {
   }
 
   override fun visitTupleTypeElement(element: SwiftTupleTypeElement) {
-    val elements = element.tupleTypeItemList
+    val elements = element.items
         .mapNotNull { item -> transform(item.typeElement)?.let { TupleType.TupleElement(item.name, it) } }
     transformedType = TupleType(elements)
   }
@@ -75,13 +75,17 @@ class TypeTransformer : SwiftVisitor() {
   }
 
   override fun visitFunctionTypeElement(element: SwiftFunctionTypeElement) {
-    if (element.typeElementList.size < 2) {
+    val tuple = element
+        .children
+        .map { it as? SwiftTupleTypeElement }
+        .firstOrNull() ?: return
+    if (tuple.items.size < 2) {
       return
     }
-    val tuple = element.typeElementList[0] as SwiftTupleTypeElement
-    val arguments = tuple.tupleTypeItemList
+    val arguments = tuple
+        .items
         .mapNotNull { transform(it) }
-    val returnType = transform(element.typeElementList[1])
+    val returnType = transform(tuple.items[1])
     transformedType = FunctionType(arguments, returnType ?: TypeIdentifier.EMPTY_TUPLE, isThrowing(element.throwsClause))
   }
 
@@ -90,7 +94,7 @@ class TypeTransformer : SwiftVisitor() {
   }
 
   override fun visitInoutTypeElement(element: SwiftInoutTypeElement) {
-    transformedType = transform(element.typeElement!!)
+    transformedType = transform(element.originalElement!!)
   }
 
   override fun visitMetaTypeElement(element: SwiftMetaTypeElement) {

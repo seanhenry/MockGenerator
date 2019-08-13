@@ -1,4 +1,4 @@
-APPCODE_BUILD=183.5153
+APPCODE_BUILD=192
 
 .PHONY: bootstrap downloadcommunity updateandroid updateandroidtools buildcommunity ant maven
 
