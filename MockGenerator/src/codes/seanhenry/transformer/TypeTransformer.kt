@@ -39,14 +39,14 @@ class TypeTransformer : SwiftVisitor() {
   }
 
   override fun visitOptionalTypeElement(element: SwiftOptionalTypeElement) {
-    val transformed = transform(element.originalElement)
+    val transformed = transform(element.component)
     if (transformed != null) {
       transformedType = OptionalType(transformed, false, false)
     }
   }
 
   override fun visitImplicitlyUnwrappedOptionalTypeElement(element: SwiftImplicitlyUnwrappedOptionalTypeElement) {
-    val transformed = transform(element.originalElement)
+    val transformed = transform(element.component)
     if (transformed != null) {
       transformedType = OptionalType(transformed, true, false)
     }
@@ -75,17 +75,17 @@ class TypeTransformer : SwiftVisitor() {
   }
 
   override fun visitFunctionTypeElement(element: SwiftFunctionTypeElement) {
-    val tuple = element
+    val types = element
         .children
-        .map { it as? SwiftTupleTypeElement }
-        .firstOrNull() ?: return
-    if (tuple.items.size < 2) {
+        .mapNotNull { it as? SwiftTypeElement }
+    if (types.size != 2) {
       return
     }
+    val tuple = types[0] as SwiftTupleTypeElement
     val arguments = tuple
         .items
         .mapNotNull { transform(it) }
-    val returnType = transform(tuple.items[1])
+    val returnType = transform(types[1])
     transformedType = FunctionType(arguments, returnType ?: TypeIdentifier.EMPTY_TUPLE, isThrowing(element.throwsClause))
   }
 
@@ -94,7 +94,7 @@ class TypeTransformer : SwiftVisitor() {
   }
 
   override fun visitInoutTypeElement(element: SwiftInoutTypeElement) {
-    transformedType = transform(element.originalElement!!)
+    transformedType = transform(element.component!!)
   }
 
   override fun visitMetaTypeElement(element: SwiftMetaTypeElement) {
