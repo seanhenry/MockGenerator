@@ -13,7 +13,7 @@
     </content>
     <orderEntry type="jdk" jdkName="AppCode OC-193.5233.118" jdkType="IDEA JDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" scope="TEST">
       <library name="Test Framework Classes">
         <CLASSES>
           <root url="file://$MODULE_DIR$/../community/out/idea-ce/classes/production/intellij.platform.testFramework" />
