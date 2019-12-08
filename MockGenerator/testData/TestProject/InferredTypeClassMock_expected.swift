@@ -168,8 +168,7 @@ class InferredTypeClassMock: InferredTypeClass {
     var invokedEmptyClosureList = [() -> ()]()
     var invokedEmptyClosureGetter = false
     var invokedEmptyClosureGetterCount = 0
-    var stubbedEmptyClosure: (() -> ())! = {
-    }
+    var stubbedEmptyClosure: (() -> ())! = {}
     override var emptyClosure: () -> () {
         set {
             invokedEmptyClosureSetter = true
@@ -189,9 +188,7 @@ class InferredTypeClassMock: InferredTypeClass {
     var invokedClosureSignatureList = [(Int, String) throws -> UInt]()
     var invokedClosureSignatureGetter = false
     var invokedClosureSignatureGetterCount = 0
-    var stubbedClosureSignature: ((Int, String) throws -> UInt)! = { _, _ in
-        return 0
-    }
+    var stubbedClosureSignature: ((Int, String) throws -> UInt)! = { _, _ in return 0 }
     override var closureSignature: (Int, String) throws -> UInt {
         set {
             invokedClosureSignatureSetter = true
@@ -211,9 +208,7 @@ class InferredTypeClassMock: InferredTypeClass {
     var invokedReturnClosureList = [() -> Int]()
     var invokedReturnClosureGetter = false
     var invokedReturnClosureGetterCount = 0
-    var stubbedReturnClosure: (() -> Int)! = {
-        return 0
-    }
+    var stubbedReturnClosure: (() -> Int)! = { return 0 }
     override var returnClosure: () -> Int {
         set {
             invokedReturnClosureSetter = true

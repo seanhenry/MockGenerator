@@ -27,7 +27,7 @@ public class AssociatedTypeGenericConverter {
 
   private List<String> getAssociatedTypeNames(List<SwiftProtocolDeclaration> protocols) {
     AssociatedTypeVisitor visitor = new AssociatedTypeVisitor();
-    protocols.stream().flatMap(p -> p.getStatementList().stream()).forEach(s -> s.accept(visitor));
+    protocols.stream().flatMap(p -> p.getDeclarations().stream()).forEach(s -> s.accept(visitor));
     return visitor.typeNames;
   }
 

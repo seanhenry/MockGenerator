@@ -73,8 +73,7 @@ class MockClosureProtocol: ClosureProtocol {
 
     var invokedReturnClosure = false
     var invokedReturnClosureCount = 0
-    var stubbedReturnClosureResult: (() -> ())! = {
-    }
+    var stubbedReturnClosureResult: (() -> ())! = {}
 
     func returnClosure() -> (() -> ()) {
         invokedReturnClosure = true
@@ -84,9 +83,7 @@ class MockClosureProtocol: ClosureProtocol {
 
     var invokedReturnClosureArgs = false
     var invokedReturnClosureArgsCount = 0
-    var stubbedReturnClosureArgsResult: ((Int, String) -> (String))! = { _, _ in
-        return ""
-    }
+    var stubbedReturnClosureArgsResult: ((Int, String) -> (String))! = { _, _ in return "" }
 
     func returnClosureArgs() -> (Int, String) -> (String) {
         invokedReturnClosureArgs = true

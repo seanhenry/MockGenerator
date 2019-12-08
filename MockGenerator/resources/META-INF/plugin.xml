@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>codes.seanhenry.mockgenerator</id>
     <name>Swift Mock Generator for AppCode</name>
-    <version>16</version>
+    <version>17</version>
     <vendor email="hello@seanhenry.codes" url="https://github.com/seanhenry/MockGenerator">Sean Henry</vendor>
 
     <description><![CDATA[
@@ -68,13 +68,13 @@ class DataStoreSpy: DataStore {
 
     <change-notes><![CDATA[
       <ul>
-        <li>Supports AppCode 2019.2</li>
+        <li>Supports AppCode 2019.3</li>
       </ul>
     ]]>
     </change-notes>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-    <idea-version since-build="192"/>
+    <idea-version since-build="193"/>
 
     <actions>
     </actions>

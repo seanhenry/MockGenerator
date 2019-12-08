@@ -174,17 +174,17 @@ public abstract class BaseGeneratingIntention extends PsiElementBaseIntentionAct
   }
 
   private PsiElement findFirstClassElement() {
-    if (classDeclaration.getStatementList().isEmpty()) {
+    if (classDeclaration.getDeclarations().isEmpty()) {
       return null;
     }
-    return classDeclaration.getStatementList().get(0);
+    return classDeclaration.getDeclarations().get(0);
   }
 
   private PsiElement findLastClassElement() {
-    if (classDeclaration.getStatementList().isEmpty()) {
+    if (classDeclaration.getDeclarations().isEmpty()) {
       return null;
     }
-    return classDeclaration.getStatementList().get(classDeclaration.getStatementList().size() - 1);
+    return classDeclaration.getDeclarations().get(classDeclaration.getDeclarations().size() - 1);
   }
 
   private void generateMock(Generator generator, MustacheView view) {

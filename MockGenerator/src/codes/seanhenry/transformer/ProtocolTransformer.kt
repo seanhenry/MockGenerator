@@ -21,7 +21,7 @@ class ProtocolTransformer: SwiftVisitor() {
     if (element.name == "NSObjectProtocol") {
       return
     }
-    val items = element.statementList
+    val items = element.declarations
     val initializers = items.mapNotNull { InitializerTransformer.transform(it) }
     val methods = items.mapNotNull { FunctionTransformer.transform(it) }
     val properties = items.flatMap { VariableTransformer.transform(it) }
