@@ -183,18 +183,7 @@ Despite being called a Mock Generator, this plugin actually generates a spy, stu
 ## Build
 
 If you would like to try building the plugin yourself follow these steps.
-```
-$ make
-```
-- Run the above command in Terminal.
-- Open the project directory in IntelliJ.
-- Go to `File -> Project Structure` (`⌘;`)
-- Configure a JDK pointing to an installation of JDK 1.8.
-- Configure an IntelliJ platform plugin SDK named "OC-\<AppCode build number\>", pointing to the version of AppCode*. Example: OC-173.2463
 
-\* See `APPCODE_BUILD` in the [Makefile](Makefile) for the intended build number.
-
-### Run
-Run the MockGenerator configuration.
-### Test
-Run the MockGeneratorTest configuration. 
+- Open `build.gradle`
+- Change `intellij.localPath` and `runIde.ideDirectory` to the path of your AppCode app
+- Run `./gradlew runIde`

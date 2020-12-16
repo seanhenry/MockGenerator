@@ -1,34 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <excludeFromCompile>
-      <file url="file://$PROJECT_DIR$/community/jps/jps-builders-6/src/org/jetbrains/jps/javac/OptimizedFileManager.java" />
-      <file url="file://$PROJECT_DIR$/community/jps/jps-builders-6/src/org/jetbrains/jps/javac/OptimizedFileManager17.java" />
-      <file url="file://$PROJECT_DIR$/community/java/java-tests/testSrc/com/intellij/index/IndexTestGenerator.scala" />
-      <file url="file://$PROJECT_DIR$/community/java/execution/jshell-frontend/src/com/intellij/execution/jshell/frontend/Main.java" />
-    </excludeFromCompile>
-    <wildcardResourcePatterns>
-      <entry name="!*.form" />
-      <entry name="!*.java" />
-      <entry name="!*.class" />
-      <entry name="!*.groovy" />
-      <entry name="!*.flex" />
-      <entry name="!*.kt" />
-      <entry name="!*.iml" />
-      <entry name="!*.gant" />
-    </wildcardResourcePatterns>
-    <annotationProcessing>
-      <profile name="Maven default annotation processors profile" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <module name="MockGenerator" />
-        <module name="MockGeneratorUseCases" />
-      </profile>
-    </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="MockGenerator" target="1.8" />
-      <module name="MockGeneratorUseCases" target="1.5" />
-    </bytecodeTargetLevel>
+    <bytecodeTargetLevel target="1.8" />
   </component>
 </project>

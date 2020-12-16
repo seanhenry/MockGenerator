@@ -1,0 +1,103 @@
+<idea-plugin>
+    <id>codes.seanhenry.mockgenerator</id>
+    <name>Swift Mock Generator for AppCode</name>
+    <vendor email="sean@binarypulsar.org" url="https://github.com/seanhenry/MockGenerator">Sean Henry</vendor>
+
+    <description><![CDATA[
+      Automatically generate your mocks in one action.
+      <ul>
+        <li>Generates spies, stubs, dummies and partial spies.</li>
+        <li>Generates test double conforming to one or many protocols.</li>
+        <li>Generates test double conforming to a class.</li>
+        <li>Captures invocation status of methods.</li>
+        <li>Captures invocation status of properties.</li>
+        <li>Records multiple invocations of methods.</li>
+        <li>Records multiple invocations of properties.</li>
+        <li>Captures invoked method parameters.</li>
+        <li>Records multiple invocations of method parameters.</li>
+        <li>Supports multiple properties in the same declaration.</li>
+        <li>Stubs values for your mocks to return.</li>
+        <li>Stubs a default value for return values where possible.</li>
+        <li>Automatically calls closure parameters with stubbed values.</li>
+        <li>Generates convenience initializers requiring no parameters.</li>
+        <li>Supports initializers with arguments.</li>
+        <li>Supports failable initializers.</li>
+        <li>Supports required initializers.</li>
+        <li>Stub an error for your mock method to throw.</li>
+        <li>Supports throwing initializers.</li>
+        <li>Supports throwing closures.</li>
+        <li>Generates generic mocks from protocols with associated types.</li>
+        <li>Captures invoked generic parameters.</li>
+        <li>Captures invoked generic return values.</li>
+        <li>Avoids naming clashes from overloaded methods.</li>
+        <li>Supports parameter type-annotation attributes and `inout`.</li>
+        <li>Respects the mock scope and generates `public` and `open` methods and properties.</li>
+        <li>Generate mock inheriting from items in 3rd party frameworks.</li>
+      </ul>
+      <h3>Before:</h3>
+      <pre>
+class DataStoreSpy: DataStore {
+
+}
+      </pre>
+      <h3>After:</h3>
+      <pre>
+class DataStoreSpy: DataStore {
+
+    var invokedSave = false
+    var invokedSaveCount = 0
+    var invokedSaveParameters: (data: Data, file: URL)?
+    var invokedSaveParametersList = [(data: Data, file: URL)]()
+    var stubbedSaveError: Error?
+    var stubbedSaveResult: Bool! = false
+
+    func save(_ data: Data, to file: URL) throws -> Bool {
+        invokedSave = true
+        invokedSaveCount += 1
+        invokedSaveParameters = (data, file)
+        invokedSaveParametersList.append((data, file))
+        if let error = stubbedSaveError {
+            throw error
+        }
+        return stubbedSaveResult
+    }
+}
+      </pre>
+    ]]></description>
+
+    <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.swift.lang</depends>
+
+    <actions>
+    </actions>
+
+    <project-components>
+        <component>
+            <implementation-class>codes.seanhenry.intentions.SpyGeneratingIntention</implementation-class>
+            <implementation-class>codes.seanhenry.intentions.StubGeneratingIntention</implementation-class>
+            <implementation-class>codes.seanhenry.intentions.DummyGeneratingIntention</implementation-class>
+            <implementation-class>codes.seanhenry.intentions.PartialGeneratingIntention</implementation-class>
+        </component>
+    </project-components>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <intentionAction>
+            <className>codes.seanhenry.intentions.SpyGeneratingIntention</className>
+            <category>Swift</category>
+        </intentionAction>
+        <intentionAction>
+            <className>codes.seanhenry.intentions.StubGeneratingIntention</className>
+            <category>Swift</category>
+        </intentionAction>
+        <intentionAction>
+            <className>codes.seanhenry.intentions.DummyGeneratingIntention</className>
+            <category>Swift</category>
+        </intentionAction>
+        <intentionAction>
+            <className>codes.seanhenry.intentions.PartialGeneratingIntention</className>
+            <category>Swift</category>
+        </intentionAction>
+    </extensions>
+</idea-plugin>
