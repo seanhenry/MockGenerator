@@ -86,7 +86,7 @@ class TypePatternTransformer : SwiftVisitor() {
   override fun visitClosureExpression(element: SwiftClosureExpression) {
     val arguments = transformClosureArguments(element)
     val returnType = transformClosureReturnType(element)
-    val throws = element.closureSignature?.throwsClause?.isThrows == true
+    val throws = element.closureSignature?.asyncThrowsClause?.isThrows == true
     transformedType = FunctionType(arguments, returnType, throws)
     if (element.parent is SwiftCallExpression) {
       transformedType = returnType

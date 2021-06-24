@@ -5,7 +5,7 @@ import com.intellij.psi.PsiElement
 import com.jetbrains.swift.psi.*
 
 class TypeTransformer : SwiftVisitor() {
-  
+
   companion object {
     fun transform(element: PsiElement): Type? {
       val visitor = TypeTransformer()
@@ -86,10 +86,10 @@ class TypeTransformer : SwiftVisitor() {
         .items
         .mapNotNull { transform(it) }
     val returnType = transform(types[1])
-    transformedType = FunctionType(arguments, returnType ?: TypeIdentifier.EMPTY_TUPLE, isThrowing(element.throwsClause))
+    transformedType = FunctionType(arguments, returnType ?: TypeIdentifier.EMPTY_TUPLE, isThrowing(element.asyncThrowsClause))
   }
 
-  private fun isThrowing(clause: SwiftThrowsClause?): Boolean {
+  private fun isThrowing(clause: SwiftAsyncThrowsClause?): Boolean {
     return clause?.isThrows ?: false
   }
 
