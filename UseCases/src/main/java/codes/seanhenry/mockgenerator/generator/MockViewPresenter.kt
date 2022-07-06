@@ -84,7 +84,7 @@ class MockViewPresenter(val view: MockView): MockTransformer {
   }
 
   override fun setClassInitialisers(initializers: List<Initializer>) {
-    classInitializer = initializers.minBy {
+    classInitializer = initializers.minByOrNull {
       it.parametersList.size
     }
   }
