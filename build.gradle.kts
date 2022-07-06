@@ -42,13 +42,13 @@ tasks {
   }
 
   patchPluginXml {
-    changeNotes.set("Adds support for AppCode 2021.3")
+    changeNotes.set("Adds support for AppCode 2022.1")
     sinceBuild.set("221")
   }
 
   signPlugin {
-    certificateChain.set(System.getenv("CERTIFICATE_CHAIN"))
-    privateKey.set(System.getenv("PRIVATE_KEY"))
+    certificateChain.set(File("./signing/chain.crt").readText())
+    privateKey.set(File("./signing/private.pem").readText())
     password.set(System.getenv("PRIVATE_KEY_PASSWORD"))
   }
 

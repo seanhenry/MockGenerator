@@ -7,6 +7,7 @@ MockGenerator.zip
 MockGenerator.jar
 MockGenerator/target/*
 MockGenerator/test_results
+/signing
 
 ## Various settings
 *.pbxuser
