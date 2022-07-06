@@ -46,4 +46,7 @@ open class Visitor {
 
   open fun visitParameter(parameter: Parameter) {
   }
+
+  open fun visitSubscript(subscript: Subscript) {
+  }
 }

@@ -31,6 +31,6 @@ class ProtocolTransformer: SwiftVisitor() {
       resolved = clause.typeElementList.mapNotNull { Resolver.resolve(it) }
     }
     val protocols = resolved.mapNotNull { ProtocolTransformer.transform(it) }
-    transformedProtocol = Protocol(initializers, properties, methods, protocols)
+    transformedProtocol = Protocol(initializers, properties, methods, emptyList(), protocols)
   }
 }

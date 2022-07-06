@@ -39,6 +39,16 @@ class ClassBuilderTest {
   }
 
   @Test
+  fun testShouldBuildClassWithSubscripts() {
+    val c = Class.Builder()
+        .subscript(TypeIdentifier("Int")) { }
+        .subscript(TypeIdentifier("String")) { }
+        .build()
+    assertEquals("subscript() -> Int", c.subscripts[0].declarationText)
+    assertEquals("subscript() -> String", c.subscripts[1].declarationText)
+  }
+
+  @Test
   fun testShouldBuildClassWithInitializers() {
     val c = Class.Builder()
         .initializer { }

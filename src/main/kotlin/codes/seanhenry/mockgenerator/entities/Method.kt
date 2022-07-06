@@ -40,12 +40,10 @@ data class Method(val name: String, val genericParameters: List<String>, val ret
     }
 
     fun parameter(name: String, build: (Parameter.Builder) -> Unit): Builder {
-      val builder = Parameter.Builder(name)
-      build(builder)
-      return parameter(builder.build())
+      return parameter(null, name, build)
     }
 
-    fun parameter(externalName: String, internalName: String, build: (Parameter.Builder) -> Unit): Builder {
+    fun parameter(externalName: String?, internalName: String, build: (Parameter.Builder) -> Unit): Builder {
       val builder = Parameter.Builder(externalName, internalName)
       build(builder)
       return parameter(builder.build())

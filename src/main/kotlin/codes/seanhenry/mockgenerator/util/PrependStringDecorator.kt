@@ -5,7 +5,7 @@ class PrependStringDecorator(decorator: StringDecorator?, private val prefix: St
   override fun decorate(string: String): String {
     if (string.isEmpty()) return ""
     if (prefix.isEmpty()) return string
-    var capitalised = string.substring(0, 1).toUpperCase()
+    var capitalised = string.substring(0, 1).uppercase()
     if (1 < string.length)
       capitalised += string.substring(1)
     return prefix + capitalised

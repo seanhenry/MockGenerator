@@ -86,14 +86,14 @@ class TypeTransformer : SwiftVisitor() {
         .items
         .mapNotNull { transform(it) }
     val returnType = transform(types[1])
-    transformedType = FunctionType(arguments, returnType ?: TypeIdentifier.EMPTY_TUPLE, isThrowing(element.throwsClause))
+    transformedType = FunctionType(arguments, returnType ?: TypeIdentifier.EMPTY_TUPLE, isThrowing(element.asyncThrowsClause))
   }
 
-  private fun isThrowing(clause: SwiftThrowsClause?): Boolean {
+  private fun isThrowing(clause: SwiftAsyncThrowsClause?): Boolean {
     return clause?.isThrows ?: false
   }
 
-  override fun visitInoutTypeElement(element: SwiftInoutTypeElement) {
+  override fun visitInoutIsolatedTypeElement(element: SwiftInoutIsolatedTypeElement) {
     transformedType = transform(element.component!!)
   }
 

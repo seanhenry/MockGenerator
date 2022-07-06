@@ -1,6 +1,6 @@
 package codes.seanhenry.mockgenerator.entities
 
-class MockClass(val inheritedClass: Class?, protocols: List<Protocol>, val scope: String?): TypeDeclaration(emptyList(), emptyList(), emptyList(), protocols) {
+class MockClass(val inheritedClass: Class?, protocols: List<Protocol>, val scope: String?): TypeDeclaration(emptyList(), emptyList(), emptyList(), emptyList(), protocols) {
 
   class Builder {
 

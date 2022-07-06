@@ -1,9 +1,6 @@
 package codes.seanhenry.mockgenerator.algorithms
 
-import codes.seanhenry.mockgenerator.entities.Element
-import codes.seanhenry.mockgenerator.entities.Initializer
-import codes.seanhenry.mockgenerator.entities.Method
-import codes.seanhenry.mockgenerator.entities.Property
+import codes.seanhenry.mockgenerator.entities.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -63,6 +60,26 @@ class SignatureGeneratorTest  {
         .type("Int")
         .build()
     assertEquals("property", getSignature(method))
+  }
+
+  fun testShouldGenerateSubscript() {
+    val subscript = Subscript.Builder(TypeIdentifier("Int"))
+        .build()
+    assertEquals("subscript():Int", getSignature(subscript))
+  }
+
+  fun testShouldGenerateSubscriptFromResolvedType() {
+    val subscript = Subscript.Builder(ResolvedType(TypeIdentifier("A"), TypeIdentifier("B")))
+        .build()
+    assertEquals("subscript():B", getSignature(subscript))
+  }
+
+  fun testShouldGenerateSubscriptWithParameters() {
+    val subscript = Subscript.Builder(TypeIdentifier("Int"))
+        .parameter("a") { it.type("String") }
+        .parameter("b", "c") { it.type("UInt") }
+        .build()
+    assertEquals("subscript(a:String,b:UInt):Int", getSignature(subscript))
   }
 
   private fun getSignature(element: Element): String {

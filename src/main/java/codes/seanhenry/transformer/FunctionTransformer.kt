@@ -7,6 +7,7 @@ import com.intellij.psi.PsiElement
 import com.jetbrains.swift.psi.SwiftFunctionDeclaration
 import com.jetbrains.swift.psi.SwiftGenericParameterClause
 import com.jetbrains.swift.psi.SwiftVisitor
+import com.jetbrains.swift.symbols.SwiftCallableSymbol
 
 class FunctionTransformer: SwiftVisitor() {
 
@@ -34,8 +35,8 @@ class FunctionTransformer: SwiftVisitor() {
         resolvedReturnType,
         parameters,
         declarationText,
-        element.throwsClause?.isThrows == true,
-        element.throwsClause?.isRethrows == true)
+        element.throwKind == SwiftCallableSymbol.ThrowKind.THROWS,
+      element.throwKind == SwiftCallableSymbol.ThrowKind.RETHROWS)
   }
 
   private fun transformGenericParameters(clause: SwiftGenericParameterClause?): List<String> {

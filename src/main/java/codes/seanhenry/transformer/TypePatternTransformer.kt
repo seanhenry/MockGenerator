@@ -3,6 +3,7 @@ package codes.seanhenry.transformer
 import codes.seanhenry.mockgenerator.entities.*
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.PsiTreeUtil
+import com.jetbrains.swift.codeinsight.asyncThrows.isInThrowingContext
 import com.jetbrains.swift.psi.*
 
 class TypePatternTransformer : SwiftVisitor() {
@@ -86,7 +87,7 @@ class TypePatternTransformer : SwiftVisitor() {
   override fun visitClosureExpression(element: SwiftClosureExpression) {
     val arguments = transformClosureArguments(element)
     val returnType = transformClosureReturnType(element)
-    val throws = element.closureSignature?.throwsClause?.isThrows == true
+    val throws = element.closureSignature?.asyncThrowsClause?.isThrows ?: false
     transformedType = FunctionType(arguments, returnType, throws)
     if (element.parent is SwiftCallExpression) {
       transformedType = returnType

@@ -38,6 +38,10 @@ abstract class GeneratorTest  {
     runTest(DeepProtocolInheritanceTest())
   }
 
+  fun testAugmentedClassSubscript() {
+    runTest(AugmentedClassSubscriptTest())
+  }
+
   private fun runTest(template: GeneratorTestTemplate) {
     val view = MustacheMockView(getType())
     val generator = Generator(view)

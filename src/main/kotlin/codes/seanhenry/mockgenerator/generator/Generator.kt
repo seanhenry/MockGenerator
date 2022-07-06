@@ -30,9 +30,11 @@ class Generator(private val view: MockView) {
     presenter.setClassInitialisers(getClassInitializersRemovingDuplicates())
     presenter.addClassProperties(getClassPropertiesRemovingDuplicates())
     presenter.addClassMethods(getClassMethodsRemovingDuplicates())
+    presenter.addClassSubscripts(getClassSubscriptsRemovingDuplicates())
     presenter.addInitialisers(getInitializersRemovingDuplicates())
     presenter.addProperties(getPropertiesRemovingDuplicates())
     presenter.addMethods(getMethodsRemovingDuplicates())
+    presenter.addSubscripts(getSubscriptsRemovingDuplicates())
     return presenter.generate()
   }
 
@@ -57,6 +59,11 @@ class Generator(private val view: MockView) {
         .distinctBy { SignatureGenerator.signature(it) }
   }
 
+  private fun getClassSubscriptsRemovingDuplicates(): List<Subscript> {
+    return classes.flatMap { it.subscripts }
+        .distinctBy { SignatureGenerator.signature(it) }
+  }
+
   private fun getInitializersRemovingDuplicates(): List<Initializer> {
     return protocols.flatMap { it.initializers }
         .distinctBy { SignatureGenerator.signature(it) }
@@ -72,6 +79,13 @@ class Generator(private val view: MockView) {
   private fun getMethodsRemovingDuplicates(): List<Method> {
     val classSignatures = classes.flatMap { it.methods }.map { SignatureGenerator.signature(it) }
     return protocols.flatMap { it.methods }
+        .filter { !classSignatures.contains(SignatureGenerator.signature(it)) }
+        .distinctBy { SignatureGenerator.signature(it) }
+  }
+
+  private fun getSubscriptsRemovingDuplicates(): List<Subscript> {
+    val classSignatures = classes.flatMap { it.subscripts }.map { SignatureGenerator.signature(it) }
+    return protocols.flatMap { it.subscripts }
         .filter { !classSignatures.contains(SignatureGenerator.signature(it)) }
         .distinctBy { SignatureGenerator.signature(it) }
   }

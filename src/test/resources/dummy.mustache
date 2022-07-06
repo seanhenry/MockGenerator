@@ -30,6 +30,25 @@
 
 {{/property}}
 
+{{#subscript}}
+
+    {{{declarationText}}} {
+
+    {{#hasSetter}}
+        set {
+        }
+        get {
+        return {{{resultType.defaultValue}}}
+        }
+    {{/hasSetter}}
+    {{^hasSetter}}
+        {{#resultType.defaultValue}}return {{{resultType.defaultValue}}}{{/resultType.defaultValue}}
+        {{^resultType.defaultValue}}fatalError("Dummy implementation"){{/resultType.defaultValue}}
+    {{/hasSetter}}
+    }
+
+{{/subscript}}
+
 {{#method}}
 
     {{{declarationText}}} {

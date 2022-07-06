@@ -99,8 +99,8 @@ class MethodModel(private val methodName: String, paramLabels: List<Parameter>) 
 
   private fun toCapitalizedString(param: String): String {
     if (param.length > 1) {
-      return param.substring(0, 1).toUpperCase() + param.substring(1)
+      return param.substring(0, 1).uppercase() + param.substring(1)
     }
-    return param.toUpperCase()
+    return param.uppercase()
   }
 }

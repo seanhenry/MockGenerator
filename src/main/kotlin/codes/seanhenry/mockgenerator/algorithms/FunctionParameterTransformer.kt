@@ -11,7 +11,7 @@ class FunctionParameterTransformer(val name: String): RecursiveVisitor() {
 
   override fun visitFunctionType(type: FunctionType) {
     transformed = ClosureParameterViewModel(
-        name.capitalize(),
+        name.replaceFirstChar(Char::titlecase),
         name,
         transformClosureToTupleDeclaration(type.arguments),
         transformClosureToImplicitTupleAssignment(type),

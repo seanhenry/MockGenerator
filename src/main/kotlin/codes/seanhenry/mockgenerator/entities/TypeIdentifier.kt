@@ -32,6 +32,7 @@ data class TypeIdentifier(var identifiers: MutableList<String>): Type {
     val EMPTY_TUPLE = TupleType.Builder().build()
     val VOID_TUPLE = TupleType.Builder().element(VOID).build()
     val EMPTY = TypeIdentifier("")
+    val INT = TypeIdentifier("Int")
   }
 
   class Builder(identifier: String) {
