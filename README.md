@@ -1,3 +1,5 @@
+> ⚠️ This plugin is no longer being actively worked on as the author is no longer writing much Swift. Updating AppCode can cause breaking changes from time to time so feel free to raise an issue or make a pull request and I will try to fix the problem. Thank you everyone for your support!
+
 # Swift Mock Generator for AppCode
 
 An AppCode plugin to generate spy, stub and dummy classes automatically. 
@@ -32,47 +34,46 @@ To regenerate the test double, place the cursor anywhere inside the test double 
 
 ## Features
 
-| Feature | Supported |
-|---|---|
-| Swift 3 and 4.|✅|
-| Generate and regenerate a spy.|✅|
-| Generate and regenerate a stub.|✅|
-| Generate and regenerate a dummy.|✅|
-| Generate and regenerate a partial spy (forwards invocations to original implementation if required).|✅|
-| **Classes and protocols** |
-| Generates test doubles conforming to one or many protocols.|✅|
-| Generates test doubles conforming to a class.|✅|
-| Generates test doubles conforming to both classes and protocols.|✅|
-| **Recording methods and properties** |
-| Captures invocation status of methods.|✅|
-| Captures invocation status of properties.|✅|
-| Records multiple invocations of methods.|✅|
-| Records multiple invocations of properties.|✅|
-| Captures invoked method parameters.|✅|
-| Records multiple invocations of method parameters.|✅|
-| Supports multiple properties in the same declaration.|✅|
-| **Stubbing return values and closures** |
-| Stubs values for your test doubles to return.|✅|
-| Stubs a default value for return values where possible.|✅|
-| Automatically calls closure parameters with stubbed values.|✅|
-| **Initializers** |
-| Generates convenience initializers requiring no parameters.|✅|
-| Supports initializers with arguments.|✅|
-| Supports failable initializers.|✅|
-| Supports required initializers.|✅|
-| **Throws** |
-| Stub an error for your overridden method to throw. |✅|
-| Supports throwing initializers. |✅|
-| Supports throwing closures. |✅|
-| **Generics** |
-| Generates generic test doubles from protocols with associated types.|✅|
-| Captures invoked generic parameters. |✅|
-| Captures invoked generic return values. |✅|
-| **Scope, keywords, and more** |
-| Avoids naming clashes from overloaded methods.|✅|
-| Supports parameter type-annotation attributes and `inout`.|✅|
-| Respects the test double scope and generates `public` and `open` methods and properties.|✅(protocols only)|
-| Generate test doubles inheriting from items in 3rd party frameworks.|✅(protocols only)|
+| Feature                                                                                              | Supported         |
+|------------------------------------------------------------------------------------------------------|-------------------|
+| Generate and regenerate a spy.                                                                       | ✅                 |
+| Generate and regenerate a stub.                                                                      | ✅                 |
+| Generate and regenerate a dummy.                                                                     | ✅                 |
+| Generate and regenerate a partial spy (forwards invocations to original implementation if required). | ✅                 |
+| **Classes and protocols**                                                                            |
+| Generates test doubles conforming to one or many protocols.                                          | ✅                 |
+| Generates test doubles conforming to a class.                                                        | ✅                 |
+| Generates test doubles conforming to both classes and protocols.                                     | ✅                 |
+| **Recording methods and properties**                                                                 |
+| Captures invocation status of methods.                                                               | ✅                 |
+| Captures invocation status of properties.                                                            | ✅                 |
+| Records multiple invocations of methods.                                                             | ✅                 |
+| Records multiple invocations of properties.                                                          | ✅                 |
+| Captures invoked method parameters.                                                                  | ✅                 |
+| Records multiple invocations of method parameters.                                                   | ✅                 |
+| Supports multiple properties in the same declaration.                                                | ✅                 |
+| **Stubbing return values and closures**                                                              |
+| Stubs values for your test doubles to return.                                                        | ✅                 |
+| Stubs a default value for return values where possible.                                              | ✅                 |
+| Automatically calls closure parameters with stubbed values.                                          | ✅                 |
+| **Initializers**                                                                                     |
+| Generates convenience initializers requiring no parameters.                                          | ✅                 |
+| Supports initializers with arguments.                                                                | ✅                 |
+| Supports failable initializers.                                                                      | ✅                 |
+| Supports required initializers.                                                                      | ✅                 |
+| **Throws**                                                                                           |
+| Stub an error for your overridden method to throw.                                                   | ✅                 |
+| Supports throwing initializers.                                                                      | ✅                 |
+| Supports throwing closures.                                                                          | ✅                 |
+| **Generics**                                                                                         |
+| Generates generic test doubles from protocols with associated types.                                 | ✅                 |
+| Captures invoked generic parameters.                                                                 | ✅                 |
+| Captures invoked generic return values.                                                              | ✅                 |
+| **Scope, keywords, and more**                                                                        |
+| Avoids naming clashes from overloaded methods.                                                       | ✅                 |
+| Supports parameter type-annotation attributes and `inout`.                                           | ✅                 |
+| Respects the test double scope and generates `public` and `open` methods and properties.             | ✅(protocols only) |
+| Generate test doubles inheriting from items in 3rd party frameworks.                                 | ✅(protocols only) |
 
 ## Usage example
 
