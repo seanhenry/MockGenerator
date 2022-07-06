@@ -1,4 +1,4 @@
-import org.jetbrains.kotlin.backend.common.push
+val idePath = "/Users/seanhenry/Library/Application Support/JetBrains/Toolbox/apps/AppCode/ch-0/221.5921.25/AppCode.app/Contents"
 
 plugins {
   id("java")
@@ -21,7 +21,7 @@ dependencies {
 }
 
 intellij {
-  localPath.set("/Users/seanhenry/Library/Application Support/JetBrains/Toolbox/apps/AppCode/ch-0/221.5921.25/AppCode.app/Contents")
+  localPath.set(idePath)
   // look in AppCode.app/Contents/Plugins/builtinRegistry.xml to find bundled plugins
   plugins.set(listOf("com.intellij.swift.lang", "com.intellij.cidr.base"))
 }
@@ -37,7 +37,7 @@ tasks {
   }
 
   runIde {
-    ideDir.set(File("/Users/seanhenry/Library/Application Support/JetBrains/Toolbox/apps/AppCode/ch-0/221.5921.25/AppCode.app/Contents"))
+    ideDir.set(File(idePath))
     jvmArgs("-Xmx4096m")
   }
 
