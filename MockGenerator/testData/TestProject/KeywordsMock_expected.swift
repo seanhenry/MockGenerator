@@ -36,7 +36,7 @@ class KeywordsMock: Keywords {
 
     var invokedFor = false
     var invokedForCount = 0
-    var invokedForParameters: (in : String, Void)?
+    var invokedForParameters: (in: String, Void)?
     var invokedForParametersList = [(in: String, Void)]()
 
     func `for`(in: String) {
@@ -48,7 +48,7 @@ class KeywordsMock: Keywords {
 
     var invokedStatements = false
     var invokedStatementsCount = 0
-    var invokedStatementsParameters: (break: Int, case : Int, continue: Int, default: Int, defer: Int, do: Int, else: Int, fallthrough: Int, for: Int, guard: Int, if: Int, in : Int, repeat: Int, return : Int, switch: Int, where : Int, while: Int)?
+    var invokedStatementsParameters: (break: Int, case: Int, continue: Int, default: Int, defer: Int, do: Int, else: Int, fallthrough: Int, for: Int, guard: Int, if: Int, in: Int, repeat: Int, return: Int, switch: Int, where: Int, while: Int)?
     var invokedStatementsParametersList = [(break: Int, case: Int, continue: Int, default: Int, defer: Int, do: Int, else: Int, fallthrough: Int, for: Int, guard: Int, if: Int, in: Int, repeat: Int, return: Int, switch: Int, where: Int, while: Int)]()
 
     func statements(break: Int, case: Int, continue: Int, default: Int, defer: Int, do: Int, else: Int, fallthrough: Int, for: Int, guard: Int, if: Int, in: Int, repeat: Int, return: Int, switch: Int, where: Int, while: Int) {
@@ -60,7 +60,7 @@ class KeywordsMock: Keywords {
 
     var invokedDeclarations = false
     var invokedDeclarationsCount = 0
-    var invokedDeclarationsParameters: (associatedtype : Int, class : Int, deinit: Int, enum : Int, extension : Int, fileprivate: Int, func : Int, import : Int, init: Int, `inout`: Int, internal: Int, `let`: Int, open: Int, operator : Int, private: Int, protocol: Int, public: Int, static: Int, struct : Int, subscript: Int, typealias : Int, `var`: Int)?
+    var invokedDeclarationsParameters: (associatedtype: Int, class: Int, deinit: Int, enum: Int, extension: Int, fileprivate: Int, func: Int, import: Int, init: Int, `inout`: Int, internal: Int, `let`: Int, open: Int, operator: Int, private: Int, protocol: Int, public: Int, static: Int, struct: Int, subscript: Int, typealias: Int, `var`: Int)?
     var invokedDeclarationsParametersList = [(associatedtype: Int, class: Int, deinit: Int, enum: Int, extension: Int, fileprivate: Int, func: Int, import: Int, init: Int, `inout`: Int, internal: Int, `let`: Int, open: Int, operator: Int, private: Int, protocol: Int, public: Int, static: Int, struct: Int, subscript: Int, typealias: Int, `var`: Int)]()
 
     func declarations(associatedtype: Int, class: Int, deinit: Int, enum: Int, extension: Int, fileprivate: Int, func: Int, import: Int, init: Int, `inout`: Int, internal: Int, `let`: Int, open: Int, operator: Int, private: Int, protocol: Int, public: Int, static: Int, struct: Int, subscript: Int, typealias: Int, `var`: Int) {
