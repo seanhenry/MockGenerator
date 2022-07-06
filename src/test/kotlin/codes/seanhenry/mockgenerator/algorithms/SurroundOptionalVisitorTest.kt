@@ -13,20 +13,18 @@ class SurroundOptionalVisitorTest  {
   @Test
   fun testShouldSurroundType() {
     val type = TypeIdentifier.Builder("A").build()
-    val transformed = SurroundOptionalVisitor.surround(type, false)
-    assertTrue(transformed is OptionalType)
-    val optional = transformed as OptionalType
+    val optional = SurroundOptionalVisitor.surround(type, false)
+    assertTrue(optional is OptionalType)
     assertEquals(type, optional.type)
   }
 
   @Test
   fun testShouldSurroundFunctionTypeWithTupleToo() {
     val type = FunctionType.Builder().build()
-    val transformed = SurroundOptionalVisitor.surround(type, false)
-    assertTrue(transformed is OptionalType)
-    val optional = transformed as OptionalType
-    assertTrue(optional.type is TupleType)
-    val tuple = optional.type as TupleType
+    val optional = SurroundOptionalVisitor.surround(type, false)
+    assertTrue(optional is OptionalType)
+    val tuple = optional.type
+    assertTrue(tuple is TupleType)
     assertEquals(1, tuple.types.size)
     assertEquals(type, tuple.types[0])
   }
@@ -34,18 +32,16 @@ class SurroundOptionalVisitorTest  {
   @Test
   fun testShouldSurroundTypeWithIUO() {
     val type = TypeIdentifier.Builder("A").build()
-    val transformed = SurroundOptionalVisitor.surround(type, true)
-    assertTrue(transformed is OptionalType)
-    val optional = transformed as OptionalType
+    val optional = SurroundOptionalVisitor.surround(type, true)
+    assertTrue(optional is OptionalType)
     assertTrue(optional.isImplicitlyUnwrapped)
   }
 
   @Test
   fun testShouldSurroundFunctionTypeWithTupleTooWithIUO() {
     val type = FunctionType.Builder().build()
-    val transformed = SurroundOptionalVisitor.surround(type, true)
-    assertTrue(transformed is OptionalType)
-    val optional = transformed as OptionalType
+    val optional = SurroundOptionalVisitor.surround(type, true)
+    assertTrue(optional is OptionalType)
     assertTrue(optional.isImplicitlyUnwrapped)
   }
 }

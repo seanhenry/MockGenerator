@@ -15,6 +15,9 @@ repositories {
 
 dependencies {
   implementation("com.github.spullara.mustache.java:compiler:0.9.10")
+  testImplementation(kotlin("test"))
+  testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
+  testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 }
 
 intellij {
@@ -51,5 +54,9 @@ tasks {
 
   publishPlugin {
     token.set(System.getenv("PUBLISH_TOKEN"))
+  }
+
+  test {
+    useJUnitPlatform()
   }
 }
