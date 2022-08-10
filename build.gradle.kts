@@ -1,13 +1,13 @@
-val idePath = "/Users/seanhenry/Library/Application Support/JetBrains/Toolbox/apps/AppCode/ch-0/221.5921.25/AppCode.app/Contents"
+val idePath = "/Users/seanhenry/Library/Application Support/JetBrains/Toolbox/apps/AppCode/ch-0/222.3345.144/AppCode.app/Contents"
 
 plugins {
   id("java")
   id("org.jetbrains.kotlin.jvm") version "1.6.20"
-  id("org.jetbrains.intellij") version "1.5.2"
+  id("org.jetbrains.intellij") version "1.7.0"
 }
 
 group = "codes.seanhenry.mockgenerator"
-version = "19"
+version = "20"
 
 repositories {
   mavenCentral()
@@ -42,8 +42,8 @@ tasks {
   }
 
   patchPluginXml {
-    changeNotes.set("Adds support for AppCode 2022.1")
-    sinceBuild.set("221")
+    changeNotes.set("Adds support for AppCode 2022.2")
+    sinceBuild.set("222")
   }
 
   signPlugin {
